@@ -2,7 +2,7 @@
 // 
 // 
 
-#include "amu.h"
+#include "amulib.h"
 
 #ifdef ARDUINO
 #include <Arduino.h>

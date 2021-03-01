@@ -7,14 +7,14 @@
 //#include "amulib/amu_config_template.h"
 //#endif
 
-#include "amulib/amu_config.h"
-#include "amulib/amu_device.h"
-#include "amulib/amu_types.h"
-#include "amulib/amu_regs.h"
-#include "amulib/amu_commands.h"
+#include "amulibc/amu_config_internal.h"
+#include "amulibc/amu_device.h"
+#include "amulibc/amu_types.h"
+#include "amulibc/amu_regs.h"
+#include "amulibc/amu_commands.h"
 
 #ifdef	__AMU_USE_SCPI__
-#include "amulib/scpi.h"
+#include "amulibc/scpi.h"
 #endif
 
 #include <stdint.h>

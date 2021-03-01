@@ -6,11 +6,12 @@
  * @date	5/7/2019 3:56:47 PM
  */
 
-#include "amu_config.h"
 #include "amu_device.h"
 #include "amu_types.h"
 #include "amu_regs.h"
 #include "amu_commands.h"
+#include "amu_config_internal.h"
+
 #ifdef __AMU_USE_SCPI__
 #include "scpi.h"
 #endif

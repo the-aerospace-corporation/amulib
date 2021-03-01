@@ -1,4 +1,4 @@
-#include <amu.h>
+#include <amulib.h>
 #include <Wire.h>
 
 #define AMU_TWI_BUS         Wire

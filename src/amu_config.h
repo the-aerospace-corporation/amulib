@@ -10,7 +10,7 @@
 #ifndef AMU_CONFIG_H_
 #define AMU_CONFIG_H_
 
-#define __AMU_DEVICE__
+//#define __AMU_DEVICE__
 
 #define __AMU_USE_SCPI__
 

@@ -9,22 +9,15 @@
 #include "scpi.h"
 #include "amu_device.h"
 #include "amu_regs.h"
-#include "amu_config.h"
+#include "amu_config_internal.h"
 #include <stdio.h>
 
 static uint8_t scpi_channel_list[65];
 static volatile amu_device_t* scpi_amu_dev;
 
-#ifdef SCPI_INPUT_BUFFER_LENGTH
+#ifdef __AMU_USE_SCPI__
 static char scpi_input_buffer[SCPI_INPUT_BUFFER_LENGTH];
-#else
-static char scpi_input_buffer[32];
-#endif
-
-#ifdef SCPI_ERROR_QUEUE_SIZE
 static scpi_error_t scpi_error_queue_data[SCPI_ERROR_QUEUE_SIZE];
-#else
-static scpi_error_t scpi_error_queue_data[4];
 #endif
 
 static scpi_t scpi_context;
