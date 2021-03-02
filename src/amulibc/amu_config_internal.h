@@ -10,8 +10,6 @@
 #ifndef AMU_CONFIG_INTERNAL_H_
 #define AMU_CONFIG_INTERNAL_H_
 
-#include <stdint.h>
-
 #ifdef CONFIG_AMU_CONFIG_SKIP
 #define AMU_CONFIG_SKIP
 #endif

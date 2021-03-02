@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifdef	__cplusplus
 
 class AMU {
 
@@ -211,5 +212,7 @@ protected:
 	template <typename T>
 	int8_t write_twi_reg(uint8_t reg, T * data, size_t len);
 };
+
+#endif
 
 #endif
