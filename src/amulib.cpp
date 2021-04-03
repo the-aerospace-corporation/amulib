@@ -168,28 +168,40 @@ quad_photo_sensor_t * AMU::readSunSensorMeasurement() { sun_sensor = read_twi_re
 
 amu_meas_t AMU::readMeasurement(void) { return read_twi_reg<amu_meas_t>(AMU_REG_TRANSFER_PTR); }
 
-uint32_t * AMU::readSweepTimestamps(void) { return read_twi_reg<uint32_t>(AMU_REG_DATA_PTR_TIMESTAMP, (uint32_t *)&amu_dev->sweep_data->timestamp, sizeof(uint32_t) * sweep_config.numPoints); }
-float * AMU::readSweepVoltages(void) { return read_twi_reg<float>(AMU_REG_DATA_PTR_VOLTAGE, (float *)&amu_dev->sweep_data->voltage, sizeof(float) * sweep_config.numPoints); }
-float * AMU::readSweepCurrents(void) { return read_twi_reg<float>(AMU_REG_DATA_PTR_CURRENT, (float*)&amu_dev->sweep_data->current, sizeof(float) * sweep_config.numPoints); }
-float * AMU::readSweepYaws(void) { return read_twi_reg<float>(AMU_REG_DATA_PTR_SS_YAW, (float*)&amu_dev->sweep_data->yaw, sizeof(float) * sweep_config.numPoints); }
-float * AMU::readSweepPitches(void) { return read_twi_reg<float>(AMU_REG_DATA_PTR_SS_PITCH, (float*)&amu_dev->sweep_data->pitch, sizeof(float) * sweep_config.numPoints); }
+uint32_t * AMU::readSweepTimestamps(uint32_t* data) { return read_twi_reg<uint32_t>(AMU_REG_DATA_PTR_TIMESTAMP, data, sizeof(uint32_t) * sweep_config.numPoints); }
+float * AMU::readSweepVoltages(float* data) { return read_twi_reg<float>(AMU_REG_DATA_PTR_VOLTAGE, data, sizeof(float) * sweep_config.numPoints); }
+float * AMU::readSweepCurrents(float* data) { return read_twi_reg<float>(AMU_REG_DATA_PTR_CURRENT, data, sizeof(float) * sweep_config.numPoints); }
+float* AMU::readSweepYaws(float* data) { return read_twi_reg<float>(AMU_REG_DATA_PTR_SS_YAW, data, sizeof(float) * sweep_config.numPoints); }
+float* AMU::readSweepPitches(float* data) { return read_twi_reg<float>(AMU_REG_DATA_PTR_SS_PITCH, data, sizeof(float) * sweep_config.numPoints); }
 
-ivsweep_packet_t* AMU::readSweepIV(void) {
-	readSweepVoltages();
-	readSweepCurrents();
+
+ivsweep_packet_t* AMU::readSweepIV(ivsweep_packet_t* sweep_packet) {
+	readSweepVoltages(sweep_packet->voltage);
+	readSweepCurrents(sweep_packet->current);
+	return sweep_packet;
+}
+
+ivsweep_packet_t* AMU::readSweepSunAngle(ivsweep_packet_t* sweep_packet) {
+#ifndef __AMU_LOW_MEMORY__
+	readSweepYaws(sweep_packet->yaw);
+	readSweepPitches(sweep_packet->pitch);
+#else
+	readSweepYaws(sweep_packet->voltage);
+	readSweepPitches(sweep_packet->current);
+#endif
+	return sweep_packet;
+}
+
+ivsweep_packet_t* AMU::readSweepAll(ivsweep_packet_t* sweep_packet) {
+	readSweepIV(sweep_packet);
+#ifndef __AMU_LOW_MEMORY__
+	readSweepSunAngle(sweep_packet);
+#endif
 	return (ivsweep_packet_t*)amu_dev->sweep_data;
 }
 
-ivsweep_packet_t* AMU::readSweepSunAngle(void) {
-	readSweepYaws();
-	readSweepPitches();
-	return (ivsweep_packet_t * )amu_dev->sweep_data;
-}
-
-ivsweep_packet_t* AMU::readSweepAll(void) {
-	readSweepIV();
-	readSweepSunAngle();
-	return (ivsweep_packet_t*)amu_dev->sweep_data;
+void AMU::loadSweepDatapoints(uint8_t offset) {
+	sendCommand((CMD_t)CMD_SWEEP_DATAPOINT_LOAD, &offset, 1);
 }
 
 bool AMU::goodSunAngle(float minAngle) {
@@ -322,21 +334,23 @@ int8_t AMU::write_twi_reg(uint8_t reg, T *data, size_t len) {
 
 amu_device_t* AMU::amu_lib_init(amu_transfer_fptr_t i2c_transfer_func) {
 
-	amu_device_t * dev = (amu_device_t * )amu_dev_init();
+	amu_device_t * dev = (amu_device_t * )amu_dev_init(i2c_transfer_func);
 
-	dev->transfer = i2c_transfer_func;
-
-#ifdef ARDUINO
-	dev->delay = delay;
-	dev->millis = millis;
-#endif
+	dev->delay = delay;		// delay function pointer amu_delay_fptr_t
+	dev->millis = millis;	// millis fucnction pointer amu_milis_fptr_t
 
 	return dev;
 }
 
 amu_scpi_dev_t* AMU::amu_scpi_init(size_t(*write_cmd)(const char* data, size_t len), void(*flush_cmd)(void)) {
+#ifdef __AMU_USE_SCPI__
 	amu_scpi_dev_t* scpi_dev = (amu_scpi_dev_t *)amu_get_scpi_dev();
-	scpi_dev->write_cmd = write_cmd;
-	scpi_dev->flush_cmd = flush_cmd;
+	if (scpi_dev != NULL) {
+		scpi_dev->write_cmd = write_cmd;
+		scpi_dev->flush_cmd = flush_cmd;
+	}
 	return scpi_dev;
+#else
+	return nullptr;
+#endif
 }

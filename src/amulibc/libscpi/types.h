@@ -334,7 +334,7 @@ extern "C" {
         const scpi_command_t * cmd;
         lex_state_t lex_state;
         scpi_const_buffer_t cmd_raw;
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
 		scpi_command_t cmd_s;
 		char cmd_pattern_s[SCPI_MAX_CMD_PATTERN_SIZE + 1];
 #endif

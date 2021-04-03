@@ -12,12 +12,25 @@
 #include "amu_commands.h"
 #include "amu_types.h"
 
-#define AMU_LIB_VERSION					2.0
-
 #define AMU_TWI_DEFAULT_ADDRESS			0x0F
 #define AMU_TWI_ALLCALL_ADDRESS			0x0A
 #define AMU_EYAS_ADDRESS				0x07
-#define AMU_MAX_CONNECTED_DEVICES		63
+
+#ifdef __AMU_LOW_MEMORY__
+#	define AMU_MAX_CONNECTED_DEVICES		16
+#else
+#	define AMU_MAX_CONNECTED_DEVICES		63
+#endif
+
+#define AMU_DEVICE_STR_LEN				10
+#define AMU_MANUFACTURER_STR_LEN		20
+#define AMU_SERIALNUM_STR_LEN			26
+#define AMU_FIRMWARE_STR_LEN			16
+
+#define AMU_DEVICE_DEFAULT_STR			"AMU-128X"
+#define AMU_MANUFACTURER_DEFAULT_STR	"AEROSPACE"
+#define AMU_SERIALNUM_DEFAULT_STR		"0x01"
+#define AMU_FIRMWARE_DEFAULT_STR		"amu-"
 
 #define AMU_TWI_TRANSFER_READ	1
 #define AMU_TWI_TRANSFER_WRITE	0
@@ -26,7 +39,7 @@
 extern "C" {
 #endif
 
-	volatile amu_device_t* 		amu_dev_init(void);
+	volatile amu_device_t* 		amu_dev_init(amu_transfer_fptr_t);
 
 	int8_t						amu_dev_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t rw);
 	uint8_t						amu_dev_busy(uint8_t address);
@@ -36,7 +49,6 @@ extern "C" {
 	int8_t						amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandDataLen, uint8_t responseLength);
 
 	CMD_t						amu_get_next_twi_command(void);
-	int8_t						amu_get_twi_status(void);
 	void						amu_command_complete(void);
 
 	uint8_t						amu_scan_for_devices(uint8_t startAddress, uint8_t endAddress);
@@ -46,22 +58,29 @@ extern "C" {
 
 	uint8_t						_amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t transferLen, bool query);
 
-	amu_data_reg_t*				amu_get_register_ptr(uint8_t amu_register);
+	void						_amu_transfer_read(size_t offset, void* data, size_t len);
+	void						_amu_transfer_write(size_t offset, void* data, size_t len);
 
+	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
+
+
+#ifdef __AMU_DEVICE__
 	volatile ivsweep_packet_t*	amu_dev_get_sweep_packet_ptr(void);
 	volatile amu_twi_regs_t*	amu_dev_get_twi_regs_ptr(void);
-	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
 	volatile amu_scpi_dev_t*	amu_get_scpi_dev(void);
+
+	amu_data_reg_t*				amu_get_register_ptr(uint8_t amu_register);
 
 	char*						amu_dev_getDeviceTypeStr(void);	
 	char*						amu_dev_getManufacturerStr(void);
 	char*						amu_dev_getSerialNumStr(void);
 	char*						amu_dev_getFirmwareStr(void);
-	
 
-	void						_amu_transfer_read(size_t offset, void* data, size_t len);
-	void						_amu_transfer_write(size_t offset, void* data, size_t len);
-
+	char*						amu_dev_setDeviceTypeStr(char* deviceTypeStr);
+	char*						amu_dev_setManufacturerStr(char* manufacturerStr);
+	char*						amu_dev_setSerialNumStr(char* serialNumStr);
+	char*						amu_dev_setFirmwareStr(char* firmwareStr);
+#endif
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }
 #define __TRANSFER_READ_OFFSET(TYPE)			static inline TYPE transfer_read_offset_##TYPE(void) { TYPE data; _amu_transfer_read(1, &data, sizeof(TYPE)); return data; }

@@ -1,5 +1,5 @@
 /**
- * @file amu_config.h
+ * @file amu_config_internal.h
  * @brief
  *
  * @author  CJM28241
@@ -10,32 +10,26 @@
 #ifndef AMU_CONFIG_INTERNAL_H_
 #define AMU_CONFIG_INTERNAL_H_
 
-#ifdef CONFIG_AMU_CONFIG_SKIP
-#define AMU_CONFIG_SKIP
+#if defined(__has_include) && __has_include("amu_config.h")
+
+#	define AMU_CONFIG_MESSAGE	"Using CUSTOM amu_config.h file"
+#	include "amu_config.h"
+
+#else
+
+#	define AMU_CONFIG_MESSAGE	"Using DEFAULT amu_config.h file"
+#	define __AMU_LOW_MEMORY__
+
 #endif
 
-/* If "amu_config.h" is available from here try to use it later.*/
-#if defined __has_include
-#  if __has_include("amu_config.h")
-#   ifndef AMU_CONFIG_INCLUDE_SIMPLE
-#    define AMU_CONFIG_INCLUDE_SIMPLE
-#   endif
-#  endif
-#endif
-
-/*If amu_config.h is not skipped include it*/
-#if !defined(AMU_CONFIG_SKIP)
-#  if defined(AMU_CONFIG_PATH)											/*If there is a path defined for amu_config.h use it*/
-#    define __LV_TO_STR_AUX(x) #x
-#    define __LV_TO_STR(x) __LV_TO_STR_AUX(x)
-#    include __LV_TO_STR(AMU_CONFIG_PATH)
-#    undef __LV_TO_STR_AUX
-#    undef __LV_TO_STR
-#  elif defined(AMU_CONFIG_INCLUDE_SIMPLE)        /*Or simply include amu_config.h is enabled*/
-#    include "amu_config.h"
-#  else
-#    include "../amu_config.h"                 /*Else assume amu_config.h is in the src folder */
-#  endif
+#ifdef __AMU_USE_SCPI__
+#	ifdef __AMU_LOW_MEMORY__
+#		define SCPI_INPUT_BUFFER_LENGTH 64
+#		define SCPI_ERROR_QUEUE_SIZE 4
+#	else
+#		define SCPI_INPUT_BUFFER_LENGTH 1024
+#		define SCPI_ERROR_QUEUE_SIZE 16
+#	endif
 #endif
 
 #endif /* AMU_CONFIG_INTERNAL_H_ */

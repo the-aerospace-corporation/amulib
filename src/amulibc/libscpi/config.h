@@ -44,7 +44,7 @@ extern "C" {
 #include "cc.h"
 #include "../amu_config_internal.h"
 
-#define		SCPI_MAX_CMD_PATTERN_SIZE		48
+#define		SCPI_MAX_CMD_PATTERN_SIZE		32
 
 /* set the termination character(s)   */
 #define LINE_ENDING_CR          "\r"    /*   use a <CR> carriage return as termination charcter */

@@ -10,9 +10,8 @@
 #include "amu_device.h"
 #include "amu_regs.h"
 #include "amu_config_internal.h"
-#include <stdio.h>
 
-static uint8_t scpi_channel_list[65];
+static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
 
 #ifdef __AMU_USE_SCPI__
@@ -441,13 +440,20 @@ static size_t SCPI_Write(scpi_t* context, const char* data, size_t len) {
 }
 
 static scpi_result_t SCPI_Write_Control(scpi_t* context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val) {
-	(void)context;
+
+	char buffer[8];
 
 	if (ctrl == 1) {
-		printf("**SRQ: 0x%X (%d)\r\n", val, val);
+		context->interface->write(context, "**SRQ: 0x", 10);
+		context->interface->write(context, itoa(val, buffer, 16), sizeof(buffer));
+		context->interface->write(context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 	}
 	else {
-		printf("**CTRL %02x: 0x%X (%d)\r\n", ctrl, val, val);
+		context->interface->write(context, "**CTRL: 0x", 11);
+		context->interface->write(context, itoa(ctrl, buffer, 16), sizeof(buffer));
+		context->interface->write(context, ": 0x", 5);
+		context->interface->write(context, itoa(val, buffer, 16), sizeof(buffer));
+		context->interface->write(context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 	}
 
 	return SCPI_RES_OK;
@@ -471,17 +477,31 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 // The first call creates program memory char[] pointers for every command as a variable which looks like i.e. scpi_amu_heater_CMD_WRITE_HEATER_PID
 // After defining all the areas, we redefine SCPI_COMMAND to place these arrays into the scpi_commands[] array, with the corresponding function and tag calls
 
-__AMU_DEFAULT_CMD_LIST__
+#ifdef __AMU_LOW_MEMORY__
+	__AMU_DEFAULT_CMD_LIST__
+#else
+	__AMU_DEFAULT_CMD_LIST__
+	__AMU_EXTENDED_CMD_LIST__
+#endif
+
 #undef SCPI_COMMAND
 
 #define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
 static const scpi_command_t scpi_def_commands[] PROGMEM = {
 #else
 static const scpi_command_t scpi_def_commands[] = {
 #endif
+	
+#ifdef __AMU_LOW_MEMORY__
 	__AMU_DEFAULT_CMD_LIST__
 	SCPI_CMD_LIST_END
+#else
+	__AMU_DEFAULT_CMD_LIST__
+	__AMU_EXTENDED_CMD_LIST__
+	SCPI_CMD_LIST_END
+#endif
+
 };
 #undef SCPI_COMMAND
 
@@ -523,27 +543,27 @@ void amu_scpi_list_commands(void) {
 
 	int32_t i;
 
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
 
 	char cmd_pattern[SCPI_MAX_CMD_PATTERN_SIZE];
 
 	PGM_P pattern = (PGM_P)pgm_read_word(&(scpi_context.def_cmdlist[0].pattern));
 	strncpy_P(cmd_pattern, pattern, SCPI_MAX_CMD_PATTERN_SIZE);
-	printf("%s", cmd_pattern);
+	scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 
 	for (i = 1; (pattern = (PGM_P)pgm_read_word(&(scpi_context.def_cmdlist[i].pattern))) != 0; i++) {
 		strncpy_P(cmd_pattern, pattern, SCPI_MAX_CMD_PATTERN_SIZE);
-		printf(",%s", cmd_pattern);
+		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 	}
 
 	if (scpi_context.aux_cmdlist != NULL) {
 		PGM_P pattern = (PGM_P)pgm_read_word(&(scpi_context.aux_cmdlist[0].pattern));
 		strncpy_P(cmd_pattern, pattern, SCPI_MAX_CMD_PATTERN_SIZE);
-		printf("%s", cmd_pattern);
+		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 
 		for (i = 1; (pattern = (PGM_P)pgm_read_word(&(scpi_context.aux_cmdlist[i].pattern))) != 0; i++) {
 			strncpy_P(cmd_pattern, pattern, SCPI_MAX_CMD_PATTERN_SIZE);
-			printf(",%s", cmd_pattern);
+			scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 		}
 	}
 
@@ -552,18 +572,17 @@ void amu_scpi_list_commands(void) {
 	char* cmd_pattern;
 
 	for (i = 0; (cmd_pattern = (char*)scpi_context.def_cmdlist[i].pattern) != 0; i++) {
-		printf(",%s", cmd_pattern);
+		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 	}
 
 	for (i = 0; (cmd_pattern = (char*)scpi_context.aux_cmdlist[i].pattern) != 0; i++) {
-		printf(",%s", cmd_pattern);
+		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 	}
 
 	#endif
 
 #endif
-
-	printf(SCPI_LINE_ENDING);
+	scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 
 }
 

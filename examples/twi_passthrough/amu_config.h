@@ -10,17 +10,12 @@
 #ifndef AMU_CONFIG_H_
 #define AMU_CONFIG_H_
 
-//#define __AMU_DEVICE__
+#define __AMU_DEVICE__
 
 #define __AMU_USE_SCPI__
 
-//#define AMU_LOW_MEMORY
+//#define __AMU_LOW_MEMORY__
 
-/** @name SCPI */
-#ifdef __AMU_USE_SCPI__
-#define SCPI_INPUT_BUFFER_LENGTH 1024
-#define SCPI_ERROR_QUEUE_SIZE 16
-//#define SCPI_USE_PROGMEM
-#endif
+//#define __AMU_SCPI_USE_PROGMEM__
 
 #endif /* AMU_CONFIG_H_ */

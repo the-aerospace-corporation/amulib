@@ -17,10 +17,10 @@
 #include "amulibc/scpi.h"
 #endif
 
-#include <stdint.h>
+#ifdef	__cplusplus
+
 #include <stdlib.h>
 
-#ifdef	__cplusplus
 
 class AMU {
 
@@ -84,14 +84,16 @@ public:
 	quad_photo_sensor_t	*	readSunSensorMeasurement(void);
 
 	amu_meas_t			readMeasurement(void);
-	uint32_t *			readSweepTimestamps(void);
-	float *				readSweepVoltages(void);
-	float *				readSweepCurrents(void);
-	float *				readSweepYaws(void);
-	float *				readSweepPitches(void);
-	ivsweep_packet_t *	readSweepIV(void);
-	ivsweep_packet_t *	readSweepSunAngle(void);
-	ivsweep_packet_t *	readSweepAll(void);
+	uint32_t *			readSweepTimestamps(uint32_t*);
+	float *				readSweepVoltages(float*);
+	float *				readSweepCurrents(float*);
+	float *				readSweepYaws(float*);
+	float *				readSweepPitches(float*);
+	ivsweep_packet_t *	readSweepIV(ivsweep_packet_t*);
+	ivsweep_packet_t *	readSweepSunAngle(ivsweep_packet_t*);
+	ivsweep_packet_t *	readSweepAll(ivsweep_packet_t*);
+
+	void			loadSweepDatapoints(uint8_t offset);
 
 	uint8_t			getAddress(void) { return address; }
 
@@ -161,8 +163,6 @@ public:
 	static void setErrorPrintFunction(errorPrintFncPtr_t fptr) { errorPrintFncPtr = fptr; }
 	static void	setAMUResetFuncPtr(resetFncPtr_t fptr) { amuResetFncPtr = fptr; }
 	static void	setEYASResetFuncPtr(resetFncPtr_t fptr) { eyasResetFncPtr = fptr; }
-
-	
 
 protected:
 

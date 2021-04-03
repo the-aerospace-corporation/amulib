@@ -6,34 +6,39 @@
  * @date	5/7/2019 3:56:47 PM
  */
 
+#include "amu_config_internal.h"
+#pragma message(AMU_CONFIG_MESSAGE)
+
 #include "amu_device.h"
 #include "amu_types.h"
 #include "amu_regs.h"
 #include "amu_commands.h"
-#include "amu_config_internal.h"
 
 #ifdef __AMU_USE_SCPI__
 #include "scpi.h"
 #endif
 
+static uint8_t amu_dev_initialized = 0;
+static uint8_t amu_device_addresses[AMU_MAX_CONNECTED_DEVICES];
+static volatile uint8_t amu_transfer_reg[AMU_TRANSFER_REG_SIZE];
+
 #ifdef __AMU_DEVICE__
 static uint8_t amu_num_devices = 1;
+static volatile amu_twi_regs_t amu_twi_regs;
+
+static char deviceType_str[AMU_DEVICE_STR_LEN] = AMU_DEVICE_DEFAULT_STR;
+static char manufacturer_str[AMU_MANUFACTURER_STR_LEN] = AMU_MANUFACTURER_DEFAULT_STR;
+static char serialNumber_str[AMU_SERIALNUM_STR_LEN] = AMU_SERIALNUM_DEFAULT_STR;
+static char firmware_str[AMU_FIRMWARE_STR_LEN] = AMU_FIRMWARE_DEFAULT_STR;
+
 #else
 static uint8_t amu_num_devices = 0;
 #endif
 
-static uint8_t amu_device_addresses[AMU_MAX_CONNECTED_DEVICES];
-
-static volatile uint8_t amu_transfer_reg[AMU_TRANSFER_REG_SIZE];
-static volatile ivsweep_packet_t amu_sweep_packet;
-static volatile amu_twi_regs_t amu_twi_regs;
-static uint8_t amu_dev_initialized = 0;
-
 static volatile amu_device_t amu_device = {
-
 	.transfer_reg = amu_transfer_reg,
-	.sweep_data = &amu_sweep_packet,
-	.amu_regs = &amu_twi_regs,
+	.sweep_data = NULL,
+	.amu_regs = NULL,
 
 	.transfer = NULL,
 	.delay = NULL,
@@ -41,33 +46,29 @@ static volatile amu_device_t amu_device = {
 	.hardware_reset = NULL,
 	.millis = NULL,
 	.process_cmd = NULL,
-
 };
-
-static char deviceType_str[AMU_DEVICE_STR_LEN];
-static char manufacturer_str[AMU_MANUFACTURER_STR_LEN];
-static char serialNumber_str[AMU_SERIALNUM_STR_LEN];
-static char firmware_str[AMU_FIRMWARE_STR_LEN];
 
 /**
  * @brief TODO
  *
  * @param amu_device_t Any AMU device
  */
-volatile amu_device_t* amu_dev_init(void) {
+volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 
 	if (amu_dev_initialized > 0)
 		return &amu_device;
 
 	else {
 
+		amu_device.transfer = transfer_ptr;
+
 #ifdef __AMU_DEVICE__
 		amu_device_addresses[0] = AMU_THIS_DEVICE;
+		amu_device.amu_regs = &amu_twi_regs;
 #else
 		amu_device_addresses[0] = AMU_NO_ADDRESS_MATCH;
 #endif
-
-		//amu_device.amu_regs->command = 0;
+		
 
 #ifdef __AMU_USE_SCPI__
 		amu_scpi_init(&amu_device, deviceType_str, manufacturer_str, serialNumber_str, firmware_str);
@@ -76,7 +77,7 @@ volatile amu_device_t* amu_dev_init(void) {
 		amu_dev_initialized = 1;
 
 		return &amu_device;
-}
+	}
 }
 
 /**
@@ -100,8 +101,14 @@ int8_t amu_dev_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len,
  * @return uint8_t 	1 is busy, 0 otherwise
  */
 uint8_t amu_dev_busy(uint8_t address) {
+#ifdef __AMU_DEVICE__
 	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&amu_device.amu_regs->twi_status, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
 	return amu_device.amu_regs->twi_status;
+#else
+	uint8_t cmd;
+	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, &cmd, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
+	return cmd;
+#endif
 }
 
 /**
@@ -125,7 +132,7 @@ int8_t amu_dev_send_command(uint8_t address, CMD_t command) {
  */
 int8_t amu_dev_send_command_data(uint8_t address, CMD_t command, uint8_t len) {
 	if (len > 0)
-		amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_device.transfer_reg, len, AMU_TWI_TRANSFER_WRITE);
+		amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_transfer_reg, len, AMU_TWI_TRANSFER_WRITE);
 	return amu_dev_send_command(address, command);
 }
 
@@ -154,7 +161,7 @@ int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandData
 	if (repeat >= 200)
 		return -3;
 	else
-		return amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_device.transfer_reg, responseLength, AMU_TWI_TRANSFER_READ);
+		return amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_transfer_reg, responseLength, AMU_TWI_TRANSFER_READ);
 }
 
 /**
@@ -235,7 +242,7 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 		return 0;
 
 	if ((deviceNum >= amu_num_devices) || (deviceNum == AMU_DEVICE_END_LIST)) {
-		memset((uint8_t*)amu_device.transfer_reg, 0x00, transferLen);			// Clear the transfer reg
+		memset((uint8_t*)amu_transfer_reg, 0x00, transferLen);			// Clear the transfer reg
 		return 0;
 	}
 
@@ -254,10 +261,10 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 			}
 			else {
 				if (query) {
-					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_device.transfer_reg, transferLen, AMU_TWI_TRANSFER_READ);
+					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_READ);
 				}
 				else
-					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_device.transfer_reg, transferLen, AMU_TWI_TRANSFER_WRITE);
+					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_WRITE);
 			}
 		}
 	}
@@ -272,10 +279,10 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 			amu_data_reg_t* amu_register = amu_get_register_ptr(cmd & 0xFF);
 
 			if (query) {
-				memcpy((uint8_t*)&amu_device.transfer_reg[0], (uint8_t*)amu_register, transferLen);
+				memcpy((uint8_t*)amu_transfer_reg, (uint8_t*)amu_register, transferLen);
 			}
 			else {
-				memcpy((uint8_t*)amu_register, (uint8_t*)&amu_device.transfer_reg[0], transferLen);
+				memcpy((uint8_t*)amu_register, (uint8_t*)amu_transfer_reg, transferLen);
 			}
 		}
 	}
@@ -283,42 +290,6 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 	return true;
 }
 
-
-inline CMD_t amu_get_next_twi_command() {
-	return (amu_device.amu_regs->command + CMD_I2C_USB);
-}
-
-int8_t amu_get_twi_status(void) {
-	return amu_twi_regs.twi_status;
-}
-
-inline void amu_command_complete() {
-	amu_device.amu_regs->command = 0;
-}
-
-inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
-
-	volatile uint8_t* twi_reg = (volatile uint8_t*)&amu_device.amu_regs->command;
-
-	switch (amu_register) {
-	case AMU_REG_DATA_PTR_TIMESTAMP:		return (amu_data_reg_t*)amu_device.sweep_data->timestamp;				break;
-	case AMU_REG_DATA_PTR_VOLTAGE:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;				break;
-	case AMU_REG_DATA_PTR_CURRENT:			return (amu_data_reg_t*)amu_device.sweep_data->current;				break;
-	case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->yaw;					break;
-	case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->pitch;					break;
-	case AMU_REG_DATA_PTR_SWEEP_CONFIG:		return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config;			break;
-	case AMU_REG_DATA_PTR_SWEEP_META:		return (amu_data_reg_t*)&amu_device.amu_regs->meta;					break;
-	case AMU_REG_DATA_PTR_SUNSENSOR:		return (amu_data_reg_t*)&amu_device.amu_regs->ss_angle;				break;
-	case AMU_REG_TRANSFER_PTR:				return (amu_data_reg_t*)amu_device.transfer_reg;						break;
-	default:								return (amu_data_reg_t*)&twi_reg[amu_register];						break;
-
-	}
-}
-
-inline volatile ivsweep_packet_t* amu_dev_get_sweep_packet_ptr(void) { return &amu_sweep_packet; }
-inline volatile amu_twi_regs_t* amu_dev_get_twi_regs_ptr(void) { return &amu_twi_regs; }
-inline volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
-inline volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_scpi_dev_t *)&amu_device.scpi_dev; }
 
 /**
  * @brief TODO: explain the transfer part of a transfer read
@@ -329,7 +300,7 @@ inline volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_sc
  */
 void _amu_transfer_read(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
-		memcpy(data, (void*)&amu_device.transfer_reg[offset], len);
+		memcpy(data, (void*)&amu_transfer_reg[offset], len);
 	}
 	else
 		memset(data, 0, len);
@@ -344,7 +315,48 @@ void _amu_transfer_read(size_t offset, void* data, size_t len) {
  */
 void _amu_transfer_write(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
-		memcpy((void*)&amu_device.transfer_reg[offset], data, len);
+		memcpy((void*)&amu_transfer_reg[offset], data, len);
+	}
+}
+
+
+inline volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
+
+#ifdef __AMU_DEVICE__
+
+inline volatile ivsweep_packet_t* amu_dev_get_sweep_packet_ptr(void) { return amu_device.sweep_data; }
+inline volatile amu_twi_regs_t* amu_dev_get_twi_regs_ptr(void) { return &amu_twi_regs; }
+inline volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_scpi_dev_t*)&amu_device.scpi_dev; }
+
+inline CMD_t amu_get_next_twi_command() {
+	return (amu_device.amu_regs->command + CMD_I2C_USB);
+}
+
+inline void amu_command_complete() {
+	amu_device.amu_regs->command = 0;
+}
+
+inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
+
+	volatile uint8_t* twi_reg = (volatile uint8_t*)&amu_device.amu_regs->command;
+
+	switch (amu_register) {
+	case AMU_REG_DATA_PTR_TIMESTAMP:		return (amu_data_reg_t*)amu_device.sweep_data->timestamp;				break;
+	case AMU_REG_DATA_PTR_VOLTAGE:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
+	case AMU_REG_DATA_PTR_CURRENT:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
+#ifndef __AMU_LOW_MEMORY__
+	case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->yaw;						break;
+	case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->pitch;					break;
+#else
+	case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
+	case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
+#endif
+	case AMU_REG_DATA_PTR_SWEEP_CONFIG:		return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config;				break;
+	case AMU_REG_DATA_PTR_SWEEP_META:		return (amu_data_reg_t*)&amu_device.amu_regs->meta;						break;
+	case AMU_REG_DATA_PTR_SUNSENSOR:		return (amu_data_reg_t*)&amu_device.amu_regs->ss_angle;					break;
+	case AMU_REG_TRANSFER_PTR:				return (amu_data_reg_t*)amu_device.transfer_reg;						break;
+	default:								return (amu_data_reg_t*)&twi_reg[amu_register];							break;
+
 	}
 }
 
@@ -363,3 +375,25 @@ char* amu_dev_getSerialNumStr(void) {
 char* amu_dev_getFirmwareStr(void) {
 	return firmware_str;
 }
+
+char* amu_dev_setDeviceTypeStr(char* deviceTypeStr) {
+	memcpy(deviceType_str, deviceTypeStr, AMU_DEVICE_STR_LEN);
+	return deviceType_str;
+}
+
+char* amu_dev_setManufacturerStr(char* manufacturerStr) {
+	memcpy(manufacturer_str, manufacturerStr, AMU_MANUFACTURER_STR_LEN);
+	return manufacturer_str;
+}
+
+char* amu_dev_setSerialNumStr(char* serialNumStr) {
+	memcpy(serialNumber_str, serialNumStr, AMU_SERIALNUM_STR_LEN);
+	return serialNumber_str;
+}
+
+char* amu_dev_setFirmwareStr(char* firmwareStr) {
+	memcpy(firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
+	return firmware_str;
+}
+
+#endif

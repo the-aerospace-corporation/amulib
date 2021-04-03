@@ -46,7 +46,7 @@
 #include "constants.h"
 #include "utils.h"
 
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
 #include <avr/pgmspace.h>
 #endif
 
@@ -174,7 +174,7 @@ static scpi_bool_t processCommand(scpi_t * context) {
 static scpi_bool_t findCommandHeader(scpi_t* context, const char* header, int len) {
     int32_t i;
 
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
     PGM_P pattern;
 
     for (i = 0; (pattern = (PGM_P)pgm_read_word(&context->def_cmdlist[i].pattern)) != 0; i++) {
@@ -352,7 +352,7 @@ void SCPI_Init(scpi_t * context,
     context->buffer.length = input_buffer_length;
     context->buffer.position = 0;
 	
-#ifdef SCPI_USE_PROGMEM
+#ifdef __AMU_SCPI_USE_PROGMEM__
 	//Initialize cmd_s for using PROGMEM SCPI commands
 	context->param_list.cmd_s.pattern = context->param_list.cmd_pattern_s;
 	context->param_list.cmd = &context->param_list.cmd_s;

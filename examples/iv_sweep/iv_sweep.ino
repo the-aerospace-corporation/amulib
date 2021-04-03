@@ -1,19 +1,23 @@
 #include <Wire.h>
-#include <amu.h>
+#include <amulib.h>
 
 #define AMU_TWI_BUS   Wire
 
 void triggerSweep(Stream* s);
+void readSweepData(Stream* s, uint8_t numPoints);
+void readSweepDataLowMemory(Stream* s, uint8_t numPoints);
+
 void triggerVOC(Stream* s);
 void triggerISC(Stream* s);
 void printInfo(Stream* s);
+
 int amu_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read);
 
 int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) { return (int8_t)amu_wire_transfer(&AMU_TWI_BUS, address, reg, data, len, read); }
 
 AMU amu;
 
-char notes[64];
+char notes[32];
 
 bool amu_found = false;
 
@@ -142,11 +146,6 @@ void triggerSweep(Stream* s) {
     amu_int_volt_t int_volt = amu.measureInternalVoltages();
     ivsweep_config_t* sweep_config = amu.readSweepConfig();
     ivsweep_meta_t * meta = amu.readMeta();
-    
-
-    uint32_t * timestamp = amu.readSweepTimestamps();
-    float * voltage = amu.readSweepVoltages();
-    float * current = amu.readSweepCurrents();
 
     s->print(F("\nAddress\t"));	                s->print(amu.getAddress());
     s->print(F("\nManufacturer\t"));		    s->print(amu.getDutManufacturer());
@@ -187,13 +186,49 @@ void triggerSweep(Stream* s) {
     s->print(F("\nCRC-32\t0x"));               s->print(meta->crc, HEX);
     s->print(F("\nAMU Time(ms)\tVoltage (V)\tCurrent (A)"));
 
-    for (int i = 0; i < sweep_config->numPoints; i++) {
+}
+
+void readSweepData(Stream* s, uint8_t numPoints) {
+
+    uint32_t* timestamp = amu.readSweepTimestamps();
+    float* voltage = amu.readSweepVoltages();
+    float* current = amu.readSweepCurrents();
+
+    for (int i = 0; i < numPoints; i++) {
         s->print("\n");
         s->print(timestamp[i]);     s->print("\t");
         s->print(voltage[i], 6);    s->print("\t");
         s->print(current[i], 6);
     }
+
+    s->println();
 }
+
+void readSweepDataLowMemory(Stream* s, uint8_t numPoints) {
+
+    ivsweep_datapoint_t datapoint;
+
+    for (uint8_t i = 0; i < numPoints / 10; i++) {
+
+        amu.loadSweepDatapoints(i * 10);
+
+        AMU_TWI_BUS.beginTransmission(amu.getAddress());
+        AMU_TWI_BUS.write(AMU_REG_TRANSFER_PTR);
+        AMU_TWI_BUS.endTransmission();
+
+        for (uint8_t j = 0; j < 10; j++) {
+            AMU_TWI_BUS.requestFrom(amu.getAddress(), sizeof(ivsweep_datapoint_t));
+            AMU_TWI_BUS.readBytes((uint8_t*)&datapoint, sizeof(ivsweep_datapoint_t));
+            s->print("\n");
+            s->print(datapoint.voltage, 6);    s->print("\t");
+            s->print(datapoint.current, 6);
+        }
+    }
+
+    s->println();
+
+}
+
 
 int amu_wire_transfer(TwoWire *wire, uint8_t address, uint8_t reg, uint8_t *data, size_t len, uint8_t read) {
     

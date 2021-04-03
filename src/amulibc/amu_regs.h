@@ -166,6 +166,7 @@
 		AMU_REG_DATA_PTR_SWEEP_META = AMU_REG_DATA_PTR + 0x06, 		/*!< Max determined by TWI data definition, partially memory dependent*/
 		AMU_REG_DATA_PTR_SUNSENSOR = AMU_REG_DATA_PTR + 0x07, 		/*!< Max determined by TWI data definition, partially memory dependent*/
 		AMU_REG_DATA_PTR_PRESSURE = AMU_REG_DATA_PTR + 0x08, 		/*!< Max determined by TWI data definition, partially memory dependent*/
+		AMU_REG_DATA_PTR_DATAPOINT = AMU_REG_DATA_PTR + 0x09,		/*!< Max determined by TWI data definition, partially memory dependent*/
 	} AMU_REG_DATA_PTR_t;
 
 

@@ -75,7 +75,6 @@ extern "C" {
 #endif
 
 	#define __AMU_DEFAULT_CMD_LIST__																							\
-																																\
 	SCPI_COMMAND("*CLS",							SCPI_CoreCls,						0									)	\
 	SCPI_COMMAND("*ESE?",							SCPI_CoreEseQ,						0									)	\
 	SCPI_COMMAND("*ESR?",							SCPI_CoreEsrQ,						0									)	\
@@ -132,26 +131,6 @@ extern "C" {
 	SCPI_COMMAND("DUT:TSENSor:NUMber[?]",			scpi_cmd_rw_uint8_t,				CMD_DUT_TSENSOR_NUMBER				)	\
 	SCPI_COMMAND("DUT:TSENSor:FIT[?]",				scpi_cmd_rw_amu_coeff_t,			CMD_DUT_TSENSOR_FIT					)	\
 																																\
-	SCPI_COMMAND("MEASure:ADC:CH#[:RAW]?",			_scpi_cmd_measure_channel,			CMD_EXEC_MEAS_CHANNEL				)	\
-	SCPI_COMMAND("MEASure:ADC:VOLTage[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_VOLTAGE					)	\
-	SCPI_COMMAND("MEASure:ADC:CURRent[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_CURRENT					)	\
-	SCPI_COMMAND("MEASure:ADC:TSENSor[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR					)	\
-	SCPI_COMMAND("MEASure:ADC:TSENSOR0[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_0				)	\
-	SCPI_COMMAND("MEASure:ADC:TSENSOR1[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_1				)	\
-	SCPI_COMMAND("MEASure:ADC:TSENSOR2[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_2				)	\
-	SCPI_COMMAND("MEASure:ADC:TSENSORS[:RAW]?",		_scpi_cmd_measure_tsensors,			CMD_EXEC_MEAS_TSENSORS				)	\
-	SCPI_COMMAND("MEASure:ADC:SSTL[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_TL					)	\
-	SCPI_COMMAND("MEASure:ADC:SSBL[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_BL					)	\
-	SCPI_COMMAND("MEASure:ADC:SSBR[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_BR					)	\
-	SCPI_COMMAND("MEASure:ADC:SSTR[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_TR					)	\
-	SCPI_COMMAND("MEASure:ADC:BIAS[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_BIAS					)	\
-	SCPI_COMMAND("MEASure:ADC:OFFset[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_OFFSET					)	\
-	SCPI_COMMAND("MEASure:ADC:TEMP[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_TEMP					)	\
-	SCPI_COMMAND("MEASure:ADC:AVDD[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_AVDD					)	\
-	SCPI_COMMAND("MEASure:ADC:IOVDD[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_IOVDD					)	\
-	SCPI_COMMAND("MEASure:ADC:ALDO[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_ALDO					)	\
-	SCPI_COMMAND("MEASure:ADC:DLDO[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_DLDO					)	\
-																																\
 	SCPI_COMMAND("MEASure:ADC:ACTive[:RAW]?",		_scpi_cmd_measure_active_ch,		CMD_EXEC_MEAS_ACTIVE_CHANNELS		)	\
 	SCPI_COMMAND("MEASure:INTERNALvoltages?",		scpi_cmd_rw_amu_int_volt_t,			CMD_EXEC_MEAS_INTERNAL_VOLTAGES		)	\
 	SCPI_COMMAND("MEASure:SUNSensor?",				scpi_cmd_rw_ss_angle_t,				CMD_EXEC_MEAS_SUN_SENSOR			)	\
@@ -169,8 +148,6 @@ extern "C" {
 	SCPI_COMMAND("ADC:CH#:RATE[?]",					scpi_cmd_rw_float,					CMD_ADC_CH_RATE						)	\
 	SCPI_COMMAND("ADC:CH#:PGA[?]",					scpi_cmd_rw_uint8_t,				CMD_ADC_CH_PGA						)	\
 	SCPI_COMMAND("ADC:CH#:MAX?",					scpi_cmd_rw_float,					CMD_ADC_CH_PGA_MAX					)	\
-	SCPI_COMMAND("ADC:VOLTage:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_ADC_CH_PGA_VMAX					)	\
-	SCPI_COMMAND("ADC:CURRent:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_ADC_CH_PGA_IMAX					)	\
 	SCPI_COMMAND("ADC:CH#:SAVE",					scpi_cmd_execute,					CMD_ADC_CH_SAVE						)	\
 	SCPI_COMMAND("ADC:CH#:OFFset[?]",				scpi_cmd_rw_uint32_t,				CMD_ADC_CH_OFFSET_COEFF				)	\
 	SCPI_COMMAND("ADC:CH#:GAIN[?]",					scpi_cmd_rw_uint32_t,				CMD_ADC_CH_GAIN_COEFF				)	\
@@ -179,76 +156,34 @@ extern "C" {
 	SCPI_COMMAND("ADC:CH#:CALibrate:FULL",			scpi_cmd_execute,					CMD_ADC_CH_CAL_FULL_SCALE			)	\
 	SCPI_COMMAND("ADC:CH#:CALibrate:RESet",			scpi_cmd_execute,					CMD_ADC_CH_CAL_RESET				)	\
 	SCPI_COMMAND("ADC:CH#:CALibrate:SAVe",			scpi_cmd_execute,					CMD_ADC_CH_CAL_SAVE					)	\
-	SCPI_COMMAND("ADC:VOLTage:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_ZERO		)	\
-	SCPI_COMMAND("ADC:VOLTage:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_FULL		)	\
-	SCPI_COMMAND("ADC:VOLTage:CALibrate:RESet",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_RESET		)	\
-	SCPI_COMMAND("ADC:VOLTage:CALibrate:SAVe",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_SAVE		)	\
-	SCPI_COMMAND("ADC:VOLTage:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_VOLTAGE_PGA				)	\
-	SCPI_COMMAND("ADC:VOLTage:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX				)	\
-	SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)	\
-	SCPI_COMMAND("ADC:VOLTage:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_GAIN			)	\
-	SCPI_COMMAND("ADC:CURRent:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_ZERO		)	\
-	SCPI_COMMAND("ADC:CURRent:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_FULL		)	\
-	SCPI_COMMAND("ADC:CURRent:CALibrate:RESet",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_RESET		)	\
-	SCPI_COMMAND("ADC:CURRent:CALibrate:SAVe",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_SAVE		)	\
-	SCPI_COMMAND("ADC:CURRent:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_CURRENT_PGA				)	\
-	SCPI_COMMAND("ADC:CURRent:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX				)	\
-	SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
-	SCPI_COMMAND("ADC:CURRent:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_GAIN			)	\
 																																\
 	SCPI_COMMAND("ADC:STATus?",						scpi_cmd_rw_uint32_t,				AMU_REG_SYSTEM_STATUS_HRADC			)	\
 																																\
-	SCPI_COMMAND("READ:META:VOC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VOC				)	\
-	SCPI_COMMAND("READ:META:ISC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ISC				)	\
-	SCPI_COMMAND("READ:META:TSENSor:START?",		scpi_cmd_rw_float,					AMU_REG_SWEEP_META_TSENSOR_START	)	\
-	SCPI_COMMAND("READ:META:TSENSor:END?",			scpi_cmd_rw_float,					AMU_REG_SWEEP_META_TSENSOR_END		)	\
-	SCPI_COMMAND("READ:META:FF?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_FF				)	\
-	SCPI_COMMAND("READ:META:EFF?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_EFF				)	\
-	SCPI_COMMAND("READ:META:VMAX?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VMAX				)	\
-	SCPI_COMMAND("READ:META:IMAX?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_IMAX				)	\
-	SCPI_COMMAND("READ:META:PMAX?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_PMAX				)	\
-	SCPI_COMMAND("READ:META:ADC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ADC				)	\
-	SCPI_COMMAND("READ:META:TIMEstamp?",			scpi_cmd_rw_uint32_t,				AMU_REG_SWEEP_META_TIMESTAMP		)	\
-	SCPI_COMMAND("READ:META:CRC?",					scpi_cmd_rw_uint32_t,				AMU_REG_SWEEP_META_CRC				)	\
-	SCPI_COMMAND("READ:META?",						_scpi_read_ptr,						AMU_REG_DATA_PTR_SWEEP_META			)	\
-	SCPI_COMMAND("WRITE:META",						_scpi_write_meta_ptr,				AMU_REG_DATA_PTR_SWEEP_META			)	\
+	SCPI_COMMAND("SUNSensor?",						_scpi_read_ptr,						AMU_REG_DATA_PTR_SUNSENSOR			)	\
 																																\
-	SCPI_COMMAND("READ:SS?",						_scpi_read_ptr,						AMU_REG_DATA_PTR_SUNSENSOR			)	\
-	SCPI_COMMAND("READ:SS:TL?",						scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_TL				)	\
-	SCPI_COMMAND("READ:SS:BL?",						scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_BL				)	\
-	SCPI_COMMAND("READ:SS:BR?",						scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_BR				)	\
-	SCPI_COMMAND("READ:SS:TR?",						scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_TR				)	\
-	SCPI_COMMAND("READ:SS:YAW?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_YAW				)	\
-	SCPI_COMMAND("READ:SS:PITCH?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_PITCH				)	\
+	SCPI_COMMAND("SWEEP:TIMEstamp?",				_scpi_read_ptr,						AMU_REG_DATA_PTR_TIMESTAMP			)	\
+	SCPI_COMMAND("SWEEP:VOLTage?",					_scpi_read_ptr,						AMU_REG_DATA_PTR_VOLTAGE			)	\
+	SCPI_COMMAND("SWEEP:CURRent?",					_scpi_read_ptr,						AMU_REG_DATA_PTR_CURRENT			)	\
+	SCPI_COMMAND("SWEEP:YAW?",						_scpi_read_ptr,						AMU_REG_DATA_PTR_SS_YAW				)	\
+	SCPI_COMMAND("SWEEP:PITCH?",					_scpi_read_ptr,						AMU_REG_DATA_PTR_SS_PITCH			)	\
 																																\
-	SCPI_COMMAND("READ:SWEEP:TIMEstamp?",			_scpi_read_ptr,						AMU_REG_DATA_PTR_TIMESTAMP			)	\
-	SCPI_COMMAND("READ:SWEEP:VOLTage?",				_scpi_read_ptr,						AMU_REG_DATA_PTR_VOLTAGE			)	\
-	SCPI_COMMAND("READ:SWEEP:CURRent?",				_scpi_read_ptr,						AMU_REG_DATA_PTR_CURRENT			)	\
-	SCPI_COMMAND("READ:SWEEP:YAW?",					_scpi_read_ptr,						AMU_REG_DATA_PTR_SS_YAW				)	\
-	SCPI_COMMAND("READ:SWEEP:PITCH?",				_scpi_read_ptr,						AMU_REG_DATA_PTR_SS_PITCH			)	\
-																																\
-	SCPI_COMMAND("WRITE:SWEEP:VOLTage",				_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_VOLTAGE			)	\
-	SCPI_COMMAND("WRITE:SWEEP:CURRent",				_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_CURRENT			)	\
-	SCPI_COMMAND("WRITE:SWEEP:YAW",					_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_SS_YAW				)	\
-	SCPI_COMMAND("WRITE:SWEEP:PITCH",				_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_SS_PITCH			)	\
+	SCPI_COMMAND("SWEEP:VOLTage",					_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_VOLTAGE			)	\
+	SCPI_COMMAND("SWEEP:CURRent",					_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_CURRENT			)	\
+	SCPI_COMMAND("SWEEP:YAW",						_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_SS_YAW				)	\
+	SCPI_COMMAND("SWEEP:PITCH",						_scpi_write_sweep_ptr,				AMU_REG_DATA_PTR_SS_PITCH			)	\
 																																\
 	SCPI_COMMAND("HEATer:STATE[?]",					scpi_cmd_rw_uint8_t,				CMD_AUX_HEATER_STATE				)	\
 	SCPI_COMMAND("HEATer:SETpoint[?]",				scpi_cmd_rw_float,					CMD_AUX_HEATER_SETPOINT				)	\
 	SCPI_COMMAND("HEATer:PID[?]",					scpi_cmd_rw_amu_pid_t,				CMD_AUX_HEATER_PID					)	\
 	SCPI_COMMAND("HEATer:PID:SAVE",					scpi_cmd_execute,					CMD_EXEC_HEATER_PID_SAVE			)	\
 																																\
+	SCPI_COMMAND("SWEEP:META?",						_scpi_read_ptr,						AMU_REG_DATA_PTR_SWEEP_META			)	\
+	SCPI_COMMAND("SWEEP:META",						_scpi_write_meta_ptr,				AMU_REG_DATA_PTR_SWEEP_META			)	\
+																																\
 	SCPI_COMMAND("SWEEP:CONFig?",					_scpi_read_ptr,						AMU_REG_DATA_PTR_SWEEP_CONFIG		)	\
 	SCPI_COMMAND("SWEEP:CONFig",					_scpi_write_config_ptr,				AMU_REG_DATA_PTR_SWEEP_CONFIG		)	\
-	SCPI_COMMAND("SWEEP:CONFig:TYPE[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_TYPE			)	\
-	SCPI_COMMAND("SWEEP:CONFig:NUMpoints[?]",		scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_NUM_POINTS		)	\
-	SCPI_COMMAND("SWEEP:CONFig:DELAY[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DELAY			)	\
-	SCPI_COMMAND("SWEEP:CONFig:RATIO[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_RATIO			)	\
-	SCPI_COMMAND("SWEEP:CONFig:POWER[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_PWR_MODE		)	\
-	SCPI_COMMAND("SWEEP:CONFig:GAIN[?]"	,			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DAC_GAIN		)	\
-	SCPI_COMMAND("SWEEP:CONFig:AVERages[?]"	,		scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_AVERAGES		)	\
-	SCPI_COMMAND("SWEEP:CONFig:AM0[?]",				scpi_cmd_rw_float,					AMU_REG_SWEEP_CONFIG_AM0			)	\
-	SCPI_COMMAND("SWEEP:CONFig:AREA[?]",			scpi_cmd_rw_float,					AMU_REG_SWEEP_CONFIG_AREA			)	\
 	SCPI_COMMAND("SWEEP:CONFig:SAVe",				scpi_cmd_execute,					CMD_SWEEP_CONFIG_SAVE				)	\
+																																\
 	SCPI_COMMAND("SWEEP:DISable",					scpi_cmd_execute,					CMD_SWEEP_DISABLE					)	\
 	SCPI_COMMAND("SWEEP:ENAble",					scpi_cmd_execute,					CMD_SWEEP_ENABLE					)	\
 	SCPI_COMMAND("SWEEP:TRIGger",					scpi_cmd_execute,					CMD_SWEEP_TRIG_SWEEP				)	\
@@ -273,13 +208,6 @@ extern "C" {
 	SCPI_COMMAND("DAC:VOLTage[?]",					scpi_cmd_rw_float,					CMD_AUX_DAC_VOLTAGE					)	\
 	SCPI_COMMAND("DAC:VOLTage:RAW[?]",				scpi_cmd_rw_uint16_t,				CMD_AUX_DAC_VOLTAGE_RAW				)	\
 																																\
-	SCPI_COMMAND("SS:FIT:YAW[?]",					scpi_cmd_rw_amu_coeff_t,			CMD_AUX_SUNSENSOR_FIT_YAW_COEFF		)	\
-	SCPI_COMMAND("SS:FIT:PITCH[?]",					scpi_cmd_rw_amu_coeff_t,			CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF	)	\
-	SCPI_COMMAND("SS:FIT:SAVE",						scpi_cmd_execute,					CMD_EXEC_SUNSENSOR_COEFF_SAVE		)	\
-	SCPI_COMMAND("SS:HVAL[?]",						scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_HVAL				)	\
-	SCPI_COMMAND("SS:RVAL[?]",						scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_RVAL				)	\
-	SCPI_COMMAND("SS:THRESHold[?]",					scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_THRESHOLD			)	\
-																																\
 	SCPI_COMMAND("MEMory:ERASE:ALL",				scpi_cmd_execute,					CMD_USB_EEPROM_ERASE_ALL			)	\
 	SCPI_COMMAND("MEMory:ERASE:CONFig",				scpi_cmd_execute,					CMD_USB_EEPROM_ERASE_CONFIG			)	\
 	SCPI_COMMAND("MEMory:ADC:CH#:OFFset[?]",		scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_OFFSET				)	\
@@ -287,7 +215,83 @@ extern "C" {
 	SCPI_COMMAND("MEMory:VOLTage:OFFset#[?]",		scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_VOLTAGE_OFFSET		)	\
 	SCPI_COMMAND("MEMory:CURRent:OFFset#[?]",		scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_CURRENT_OFFSET		)	\
 	SCPI_COMMAND("MEMory:VOLTage:GAIN#[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_VOLTAGE_GAIN			)	\
-	SCPI_COMMAND("MEMory:CURRent:GAIN#[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_CURRENT_GAIN			)	\
+	SCPI_COMMAND("MEMory:CURRent:GAIN#[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_EEPROM_CURRENT_GAIN			)
+
+#define __AMU_EXTENDED_CMD_LIST__																								\
+	SCPI_COMMAND("ADC:VOLTage:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_ZERO		)	\
+	SCPI_COMMAND("ADC:VOLTage:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_FULL		)	\
+	SCPI_COMMAND("ADC:VOLTage:CALibrate:RESet",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_RESET		)	\
+	SCPI_COMMAND("ADC:VOLTage:CALibrate:SAVe",		scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_CAL_SAVE		)	\
+	SCPI_COMMAND("ADC:VOLTage:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_VOLTAGE_PGA				)	\
+	SCPI_COMMAND("ADC:VOLTage:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX				)	\
+	SCPI_COMMAND("ADC:VOLTage:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_ADC_CH_PGA_VMAX					)	\
+	SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)	\
+	SCPI_COMMAND("ADC:VOLTage:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_GAIN			)	\
+	SCPI_COMMAND("ADC:CURRent:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_ZERO		)	\
+	SCPI_COMMAND("ADC:CURRent:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_FULL		)	\
+	SCPI_COMMAND("ADC:CURRent:CALibrate:RESet",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_RESET		)	\
+	SCPI_COMMAND("ADC:CURRent:CALibrate:SAVe",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_SAVE		)	\
+	SCPI_COMMAND("ADC:CURRent:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_CURRENT_PGA				)	\
+	SCPI_COMMAND("ADC:CURRent:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX				)	\
+	SCPI_COMMAND("ADC:CURRent:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_ADC_CH_PGA_IMAX					)	\
+	SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
+	SCPI_COMMAND("ADC:CURRent:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_GAIN			)	\
+																																\
+	SCPI_COMMAND("SWEEP:META:VOC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VOC				)	\
+	SCPI_COMMAND("SWEEP:META:ISC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ISC				)	\
+	SCPI_COMMAND("SWEEP:META:TSENSor:START?",		scpi_cmd_rw_float,					AMU_REG_SWEEP_META_TSENSOR_START	)	\
+	SCPI_COMMAND("SWEEP:META:TSENSor:END?",			scpi_cmd_rw_float,					AMU_REG_SWEEP_META_TSENSOR_END		)	\
+	SCPI_COMMAND("SWEEP:META:FF?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_FF				)	\
+	SCPI_COMMAND("SWEEP:META:EFF?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_EFF				)	\
+	SCPI_COMMAND("SWEEP:META:VMAX?",				scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VMAX				)	\
+	SCPI_COMMAND("SWEEP:META:IMAX?",				scpi_cmd_rw_float,					AMU_REG_SWEEP_META_IMAX				)	\
+	SCPI_COMMAND("SWEEP:META:PMAX?",				scpi_cmd_rw_float,					AMU_REG_SWEEP_META_PMAX				)	\
+	SCPI_COMMAND("SWEEP:META:ADC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ADC				)	\
+	SCPI_COMMAND("SWEEP:META:TIMEstamp?",			scpi_cmd_rw_uint32_t,				AMU_REG_SWEEP_META_TIMESTAMP		)	\
+	SCPI_COMMAND("SWEEP:META:CRC?",					scpi_cmd_rw_uint32_t,				AMU_REG_SWEEP_META_CRC				)	\
+																																\
+	SCPI_COMMAND("SWEEP:CONFig:TYPE[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_TYPE			)	\
+	SCPI_COMMAND("SWEEP:CONFig:NUMpoints[?]",		scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_NUM_POINTS		)	\
+	SCPI_COMMAND("SWEEP:CONFig:DELAY[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DELAY			)	\
+	SCPI_COMMAND("SWEEP:CONFig:RATIO[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_RATIO			)	\
+	SCPI_COMMAND("SWEEP:CONFig:POWER[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_PWR_MODE		)	\
+	SCPI_COMMAND("SWEEP:CONFig:GAIN[?]"	,			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DAC_GAIN		)	\
+	SCPI_COMMAND("SWEEP:CONFig:AVERages[?]"	,		scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_AVERAGES		)	\
+	SCPI_COMMAND("SWEEP:CONFig:AM0[?]",				scpi_cmd_rw_float,					AMU_REG_SWEEP_CONFIG_AM0			)	\
+	SCPI_COMMAND("SWEEP:CONFig:AREA[?]",			scpi_cmd_rw_float,					AMU_REG_SWEEP_CONFIG_AREA			)	\
+																																\
+	SCPI_COMMAND("SUNSensor:TL?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_TL				)	\
+	SCPI_COMMAND("SUNSensor:BL?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_BL				)	\
+	SCPI_COMMAND("SUNSensor:BR?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_BR				)	\
+	SCPI_COMMAND("SUNSensor:TR?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_TR				)	\
+	SCPI_COMMAND("SUNSensor:YAW?",					scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_YAW				)	\
+	SCPI_COMMAND("SUNSensor:PITCH?",				scpi_cmd_rw_float,					AMU_REG_SUNSENSOR_PITCH				)	\
+	SCPI_COMMAND("SUNSensor:FIT:YAW[?]",			scpi_cmd_rw_amu_coeff_t,			CMD_AUX_SUNSENSOR_FIT_YAW_COEFF		)	\
+	SCPI_COMMAND("SUNSensor:FIT:PITCH[?]",			scpi_cmd_rw_amu_coeff_t,			CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF	)	\
+	SCPI_COMMAND("SUNSensor:FIT:SAVE",				scpi_cmd_execute,					CMD_EXEC_SUNSENSOR_COEFF_SAVE		)	\
+	SCPI_COMMAND("SUNSensor:HVAL[?]",				scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_HVAL				)	\
+	SCPI_COMMAND("SUNSensor:RVAL[?]",				scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_RVAL				)	\
+	SCPI_COMMAND("SUNSensor:THRESHold[?]",			scpi_cmd_rw_float,					CMD_AUX_SUNSENSOR_THRESHOLD			)	\
+																																\
+	SCPI_COMMAND("MEASure:ADC:CH#[:RAW]?",			_scpi_cmd_measure_channel,			CMD_EXEC_MEAS_CHANNEL				)	\
+	SCPI_COMMAND("MEASure:ADC:VOLTage[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_VOLTAGE					)	\
+	SCPI_COMMAND("MEASure:ADC:CURRent[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_CURRENT					)	\
+	SCPI_COMMAND("MEASure:ADC:TSENSor[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR					)	\
+	SCPI_COMMAND("MEASure:ADC:TSENSOR0[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_0				)	\
+	SCPI_COMMAND("MEASure:ADC:TSENSOR1[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_1				)	\
+	SCPI_COMMAND("MEASure:ADC:TSENSOR2[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_TSENSOR_2				)	\
+	SCPI_COMMAND("MEASure:ADC:TSENSORS[:RAW]?",		_scpi_cmd_measure_tsensors,			CMD_EXEC_MEAS_TSENSORS				)	\
+	SCPI_COMMAND("MEASure:ADC:SSTL[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_TL					)	\
+	SCPI_COMMAND("MEASure:ADC:SSBL[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_BL					)	\
+	SCPI_COMMAND("MEASure:ADC:SSBR[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_BR					)	\
+	SCPI_COMMAND("MEASure:ADC:SSTR[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_SS_TR					)	\
+	SCPI_COMMAND("MEASure:ADC:BIAS[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_BIAS					)	\
+	SCPI_COMMAND("MEASure:ADC:OFFset[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_OFFSET					)	\
+	SCPI_COMMAND("MEASure:ADC:TEMP[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_TEMP					)	\
+	SCPI_COMMAND("MEASure:ADC:AVDD[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_AVDD					)	\
+	SCPI_COMMAND("MEASure:ADC:IOVDD[:RAW]?",		_scpi_cmd_measure_channel,			CMD_MEAS_CH_IOVDD					)	\
+	SCPI_COMMAND("MEASure:ADC:ALDO[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_ALDO					)	\
+	SCPI_COMMAND("MEASure:ADC:DLDO[:RAW]?",			_scpi_cmd_measure_channel,			CMD_MEAS_CH_DLDO					)	\
 
 #ifdef	__cplusplus
 }

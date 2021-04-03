@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <amu.h>
+#include <amulib.h>
 
 #define AMU_TWI_BUS   Wire
 
@@ -11,7 +11,7 @@ int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uin
 
 AMU amu;
 
-char notes[64];
+char notes[32];
 
 bool amu_found = false;
 

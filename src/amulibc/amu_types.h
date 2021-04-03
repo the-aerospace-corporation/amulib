@@ -23,18 +23,13 @@
 
 #define AMU_NOTES_SIZE					128
 
-#ifdef AMU_LOW_MEMORY
+#ifdef __AMU_LOW_MEMORY__
 #define IVSWEEP_MAX_POINTS				40
+#define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float))
 #else
 #define IVSWEEP_MAX_POINTS				100
+#define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float) * 2)
 #endif
-
-#define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * 4)
-
-#define AMU_DEVICE_STR_LEN				10
-#define AMU_MANUFACTURER_STR_LEN		20
-#define AMU_SERIALNUM_STR_LEN			26
-#define AMU_FIRMWARE_STR_LEN			16
 
 #define AMU_DUT_MANUFACTURER_STR_LEN	16
 #define AMU_DUT_MODEL_STR_LEN			16
@@ -167,9 +162,16 @@ typedef struct {
 	uint32_t timestamp[IVSWEEP_MAX_POINTS];
 	float voltage[IVSWEEP_MAX_POINTS];
 	float current[IVSWEEP_MAX_POINTS];
+#ifndef __AMU_LOW_MEMORY__
 	float yaw[IVSWEEP_MAX_POINTS];
 	float pitch[IVSWEEP_MAX_POINTS];
+#endif
 } ivsweep_packet_t;
+
+typedef struct {
+	float voltage;
+	float current;
+} ivsweep_datapoint_t;
 
 typedef union {
 	struct {
@@ -246,7 +248,13 @@ typedef struct {
 	ivsweep_meta_t meta;
 } amu_twi_regs_t;
 
-typedef int8_t(*amu_transfer_fptr_t)(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read);
+typedef int8_t(*amu_transfer_fptr_t) (
+	uint8_t address,		/*!< Address of AMU */
+	uint8_t reg,			/*!< Register to read or write from */
+	uint8_t* data,			/*!< Data pointer */
+	size_t len,				/*!< Length of data to read/write */
+	uint8_t read );			/*!< 1 for read, 0 for write */
+
 typedef void(*amu_delay_fptr_t)(uint32_t period);
 typedef void(*amu_watchdog_fptr_t)(void);
 typedef void(*amu_watchdog_reset_fptr_t)(void);
