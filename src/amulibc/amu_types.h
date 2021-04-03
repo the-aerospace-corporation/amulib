@@ -6,8 +6,8 @@
  */
 
 
-#ifndef AMU_TYPES_H_
-#define AMU_TYPES_H_
+#ifndef __AMU_TYPES_H__
+#define __AMU_TYPES_H__
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -159,6 +159,11 @@ typedef struct {
 } ivsweep_meta_t;
 
 typedef struct {
+	float voltage;
+	float current;
+} ivsweep_datapoint_t;
+
+typedef struct {
 	uint32_t timestamp[IVSWEEP_MAX_POINTS];
 	float voltage[IVSWEEP_MAX_POINTS];
 	float current[IVSWEEP_MAX_POINTS];
@@ -167,11 +172,6 @@ typedef struct {
 	float pitch[IVSWEEP_MAX_POINTS];
 #endif
 } ivsweep_packet_t;
-
-typedef struct {
-	float voltage;
-	float current;
-} ivsweep_datapoint_t;
 
 typedef union {
 	struct {
@@ -299,4 +299,4 @@ typedef struct {
 
 typedef volatile uint8_t amu_data_reg_t;
 
-#endif /* AMU_TYPES_H_ */
+#endif /* __AMU_TYPES_H__ */

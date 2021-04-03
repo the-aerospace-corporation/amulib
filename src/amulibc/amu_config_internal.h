@@ -1,5 +1,5 @@
 /**
- * @file amu_config_internal.h
+ * @file amu_config.h
  * @brief
  *
  * @author  CJM28241
@@ -7,19 +7,15 @@
  */
 
 
-#ifndef AMU_CONFIG_INTERNAL_H_
-#define AMU_CONFIG_INTERNAL_H_
+#ifndef __AMU_CONFIG_INTERNAL_H__
+#define __AMU_CONFIG_INTERNAL_H__
 
 #if defined(__has_include) && __has_include("amu_config.h")
-
 #	define AMU_CONFIG_MESSAGE	"Using CUSTOM amu_config.h file"
 #	include "amu_config.h"
-
 #else
-
 #	define AMU_CONFIG_MESSAGE	"Using DEFAULT amu_config.h file"
 #	define __AMU_LOW_MEMORY__
-
 #endif
 
 #ifdef __AMU_USE_SCPI__
@@ -32,4 +28,4 @@
 #	endif
 #endif
 
-#endif /* AMU_CONFIG_INTERNAL_H_ */
+#endif /* __AMU_CONFIG_INTERNAL_H__ */

@@ -9,8 +9,8 @@
  */ 
 
 
-#ifndef SCPI_H_
-#define SCPI_H_
+#ifndef __SCPI_H__
+#define __SCPI_H__
 
 #include "libscpi\libscpi.h"
 #include "amu_commands.h"

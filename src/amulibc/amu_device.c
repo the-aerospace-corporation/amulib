@@ -261,6 +261,7 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 			}
 			else {
 				if (query) {
+					memset((void *)amu_transfer_reg, 0x00, transferLen);			//clear transfer reg to zeros before new data is read in.
 					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_READ);
 				}
 				else
@@ -319,8 +320,32 @@ void _amu_transfer_write(size_t offset, void* data, size_t len) {
 	}
 }
 
-
 inline volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
+	
+inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
+
+	volatile uint8_t* twi_reg = (volatile uint8_t*)&amu_device.amu_regs->command;
+
+	switch (amu_register) {
+		case AMU_REG_DATA_PTR_TIMESTAMP:		return (amu_data_reg_t*)amu_device.sweep_data->timestamp;				break;
+		case AMU_REG_DATA_PTR_VOLTAGE:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
+		case AMU_REG_DATA_PTR_CURRENT:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
+#ifndef __AMU_LOW_MEMORY__
+		case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->yaw;						break;
+		case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->pitch;					break;
+#else
+		case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
+		case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
+#endif
+		case AMU_REG_DATA_PTR_SWEEP_CONFIG:		return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config;				break;
+		case AMU_REG_DATA_PTR_SWEEP_META:		return (amu_data_reg_t*)&amu_device.amu_regs->meta;						break;
+		case AMU_REG_DATA_PTR_SUNSENSOR:		return (amu_data_reg_t*)&amu_device.amu_regs->ss_angle;					break;
+		case AMU_REG_TRANSFER_PTR:				return (amu_data_reg_t*)amu_device.transfer_reg;						break;
+		default:								return (amu_data_reg_t*)&twi_reg[amu_register];							break;
+
+	}
+}
+
 
 #ifdef __AMU_DEVICE__
 
@@ -334,30 +359,6 @@ inline CMD_t amu_get_next_twi_command() {
 
 inline void amu_command_complete() {
 	amu_device.amu_regs->command = 0;
-}
-
-inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
-
-	volatile uint8_t* twi_reg = (volatile uint8_t*)&amu_device.amu_regs->command;
-
-	switch (amu_register) {
-	case AMU_REG_DATA_PTR_TIMESTAMP:		return (amu_data_reg_t*)amu_device.sweep_data->timestamp;				break;
-	case AMU_REG_DATA_PTR_VOLTAGE:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
-	case AMU_REG_DATA_PTR_CURRENT:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
-#ifndef __AMU_LOW_MEMORY__
-	case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->yaw;						break;
-	case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->pitch;					break;
-#else
-	case AMU_REG_DATA_PTR_SS_YAW:			return (amu_data_reg_t*)amu_device.sweep_data->voltage;					break;
-	case AMU_REG_DATA_PTR_SS_PITCH:			return (amu_data_reg_t*)amu_device.sweep_data->current;					break;
-#endif
-	case AMU_REG_DATA_PTR_SWEEP_CONFIG:		return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config;				break;
-	case AMU_REG_DATA_PTR_SWEEP_META:		return (amu_data_reg_t*)&amu_device.amu_regs->meta;						break;
-	case AMU_REG_DATA_PTR_SUNSENSOR:		return (amu_data_reg_t*)&amu_device.amu_regs->ss_angle;					break;
-	case AMU_REG_TRANSFER_PTR:				return (amu_data_reg_t*)amu_device.transfer_reg;						break;
-	default:								return (amu_data_reg_t*)&twi_reg[amu_register];							break;
-
-	}
 }
 
 char* amu_dev_getDeviceTypeStr(void) {

@@ -7,8 +7,8 @@
  */ 
 
 
-#ifndef AMU_COMMANDS_H_
-#define AMU_COMMANDS_H_
+#ifndef __AMU_COMMANDS_H__
+#define __AMU_COMMANDS_H__
 
 #include "amu_types.h"
 
@@ -267,4 +267,4 @@ typedef enum {
 
 
 
-#endif /* AMU_COMMANDS_H_ */
+#endif /* __AMU_COMMANDS_H__ */

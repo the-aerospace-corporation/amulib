@@ -1,11 +1,7 @@
 // amu.h
 
-#ifndef _AMU_h
-#define _AMU_h
-
-//#ifndef AMU_CONFIG_H_
-//#include "amulib/amu_config_template.h"
-//#endif
+#ifndef __AMULIB_H__
+#define __AMULIB_H__
 
 #include "amulibc/amu_config_internal.h"
 #include "amulibc/amu_device.h"
@@ -215,4 +211,4 @@ protected:
 
 #endif
 
-#endif
+#endif	/* __AMULIB_H__ */

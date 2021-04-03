@@ -11,7 +11,6 @@ int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uin
 size_t hal_usb_write(const char* data, size_t len);
 void hal_usb_flush(void);
 
-AMU amu[AMU_DEVICES_MAX];
 amu_device_t * amu_dev;
 
 char notes[64];
@@ -24,28 +23,21 @@ void setup() {
     AMU_TWI_BUS.setClock(400000);
     AMU_TWI_BUS.setTimeout(250000);
 
+    delay(500);
+
     while (!Serial);
 
     amu_dev = AMU::amu_lib_init(twi_transfer);
 
     AMU::amu_scpi_init(hal_usb_write, hal_usb_flush);
 
-
-    amu_scan_for_devices(0x0B,0x20);
-
-    if (amu_get_num_connected_devices() > 0) {
-        for (uint8_t i = 0; i < amu_get_num_connected_devices(); i++) {
-
-            amu[i].begin(amu_get_device_address(i + 1));
-
-            amu[i].readNotes(notes, sizeof(notes));
-        }
-    }
-    else {
+    if (amu_scan_for_devices(0x0B, 0x20) <= 1) {
         Serial.println(F("No AMUs found."));
     }
+    else {
+        Serial.printf("%i AMU Found at address: 0x%02X", amu_get_num_connected_devices(), amu_get_device_address(1));
+    }
 
-    
 }
 
 void loop() {

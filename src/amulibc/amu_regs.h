@@ -7,8 +7,8 @@
  */
 
 
-#ifndef AMU_REGS_H_
-#define AMU_REGS_H_
+#ifndef __AMU_REGS_H__
+#define __AMU_REGS_H__
 
 #include "amu_types.h"
 
@@ -170,4 +170,4 @@
 	} AMU_REG_DATA_PTR_t;
 
 
-#endif /* AMU_REGS_H_ */
+#endif /* __AMU_REGS_H__ */

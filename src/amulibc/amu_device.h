@@ -6,8 +6,8 @@
  */
 
 
-#ifndef AMU_DEVICE_H_
-#define AMU_DEVICE_H_
+#ifndef __AMU_DEVICE_H__
+#define __AMU_DEVICE_H__
 
 #include "amu_commands.h"
 #include "amu_types.h"
@@ -63,13 +63,12 @@ extern "C" {
 
 	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
 
-
+	amu_data_reg_t*				amu_get_register_ptr(uint8_t amu_register);
+	
 #ifdef __AMU_DEVICE__
 	volatile ivsweep_packet_t*	amu_dev_get_sweep_packet_ptr(void);
 	volatile amu_twi_regs_t*	amu_dev_get_twi_regs_ptr(void);
 	volatile amu_scpi_dev_t*	amu_get_scpi_dev(void);
-
-	amu_data_reg_t*				amu_get_register_ptr(uint8_t amu_register);
 
 	char*						amu_dev_getDeviceTypeStr(void);	
 	char*						amu_dev_getManufacturerStr(void);
@@ -119,4 +118,4 @@ extern "C" {
 }
 #endif
 
-#endif /* AMU_DEVICE_H_ */
+#endif /* __AMU_DEVICE_H__ */
