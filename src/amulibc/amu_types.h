@@ -85,6 +85,7 @@ typedef enum {
 	AMU_HARDWARE_REVISION_AMU_1_1 = 0x11,
 	AMU_HARDWARE_REVISION_AMU_2_0 = 0x20,		// em version
 	AMU_HARDWARE_REVISION_AMU_2_1 = 0x21,
+    AMU_HARDWARE_REVISION_AMU_3_0 = 0x30,
 	AMU_HARDWARE_REVISION_AMU_SP_DEV = 0x80,
 	AMU_HARDWARE_REVISION_AMU_SP = 0x81,
 } amu_hardware_revision_t;
@@ -104,6 +105,12 @@ typedef enum LED_PATTERN_enum {
 	AMU_LED_PATTERN_GREEN_FLASH = 5,
 	AMU_LED_PATTERN_BLUE_FLASH = 6,
 } amu_led_pattern_t;
+
+typedef enum {
+    AMU_SLEEP_MODE_NONE = 0,
+    AMU_SLEEP_MODE_STANDBY = 1,
+    AMU_SLEEP_MODE_DEEP = 2
+} amu_sleep_mode_t;
 
 typedef union {
 	struct {
@@ -293,7 +300,7 @@ typedef struct {
 
 
 	/*! function to execute local commands */
-	uint8_t(*process_cmd)(uint16_t cmd);
+	uint8_t(*process_cmd)(uint16_t  cmd);
 
 } amu_device_t;
 

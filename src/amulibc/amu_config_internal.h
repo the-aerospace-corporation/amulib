@@ -10,7 +10,8 @@
 #ifndef __AMU_CONFIG_INTERNAL_H__
 #define __AMU_CONFIG_INTERNAL_H__
 
-#if defined(__has_include) && __has_include("amu_config.h")
+
+#if defined(__has_include) && (__has_include("amu_config.h") || __has_include("../amu_config.h"))
 #	define AMU_CONFIG_MESSAGE	"Using CUSTOM amu_config.h file"
 #	include "amu_config.h"
 #else

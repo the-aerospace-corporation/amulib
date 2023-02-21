@@ -128,6 +128,47 @@ extern "C" {
 #define HAVE_STRTOF				1
 #define HAVE_STDBOOL			1
 #endif
+    
+    
+/* ARM */
+#if defined(__arm__)
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+    
+#ifndef HAVE_SNPRINTF
+#define HAVE_SNPRINTF           1
+#endif
+
+#ifndef HAVE_STDBOOL
+#define HAVE_STDBOOL			1
+#endif
+    
+#ifndef HAVE_ISNAN
+#define HAVE_ISNAN              1
+#endif
+
+#ifndef HAVE_ISFINITE
+#define HAVE_ISFINITE           1
+#endif
+    
+#ifndef HAVE_FINITE
+#define HAVE_FINITE             1
+#endif
+    
+#ifndef HAVE_SIGNBIT
+#define HAVE_SIGNBIT            1
+#endif
+    
+#ifndef HAVE_STRTOF
+#define HAVE_STRTOF             1
+#endif
+    
+#ifndef HAVE_STRTOLL
+#define HAVE_STRTOLL            1
+#endif
+
+#endif
 
 /* default values */
 #ifndef HAVE_STRNLEN
