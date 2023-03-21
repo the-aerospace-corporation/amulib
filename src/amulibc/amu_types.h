@@ -27,7 +27,7 @@
 #define IVSWEEP_MAX_POINTS				40
 #define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float))
 #else
-#define IVSWEEP_MAX_POINTS				100
+#define IVSWEEP_MAX_POINTS				80 //IS THIS WHY 20 OF THE 100-POINT SWEEPS WERE GARBAGE !?
 #define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float) * 2)
 #endif
 
@@ -55,6 +55,12 @@ typedef enum {
 	AMU_ADC_CH_SS_TR = 15,
 	AMU_ADC_CH_NUM = 16
 } AMU_ADC_CH_t;
+
+typedef enum {
+    AMU_ADC_POWER_MODE_LOW = 0,
+    AMU_ADC_POWER_MODE_MID = 1,
+    AMU_ADC_POWER_MODE_HIGH = 2,
+} AMU_ADC_POWER_MODE_t;
 
 typedef enum {
 	AMU_CH_EN_VOLTAGE = (1 << AMU_ADC_CH_VOLTAGE),
@@ -96,7 +102,7 @@ typedef enum {
 	AMU_TSENSOR_TYPE_AD590 = 2,
 } amu_tsensor_type_t;
 
-typedef enum LED_PATTERN_enum {
+typedef enum {
 	AMU_LED_PATTERN_OFF = 0,
 	AMU_LED_PATTERN_WHITE_FLASH = 1,
 	AMU_LED_PATTERN_QUICK_RGB_FADE = 2,
@@ -107,9 +113,17 @@ typedef enum LED_PATTERN_enum {
 } amu_led_pattern_t;
 
 typedef enum {
-    AMU_SLEEP_MODE_NONE = 0,
+	AMU_STATUS_SLEEP = 0x01,
+	AMU_STATUS_MEASURE = 0x02,
+	AMU_STATUS_HEATER = 0x04,
+	AMU_STATUS_MPPT = 0x08,
+} amu_status_t;
+
+typedef enum {
+    AMU_SLEEP_MODE_DEEP = 0,
     AMU_SLEEP_MODE_STANDBY = 1,
-    AMU_SLEEP_MODE_DEEP = 2
+    AMU_SLEEP_MODE_IDLE = 2,
+    AMU_SLEEP_MODE_OFF = 3,            
 } amu_sleep_mode_t;
 
 typedef union {
@@ -245,7 +259,7 @@ typedef struct {
 	uint8_t tsensor_type;
 	uint8_t tsensor_num;
 	uint16_t activeADCchannels;
-	uint32_t hradc_status;
+	uint32_t adc_status;
 	amu_dut_t dut;
 	adc_channnels_t adc_raw;
 	ss_angle_t ss_angle;
@@ -300,7 +314,7 @@ typedef struct {
 
 
 	/*! function to execute local commands */
-	uint8_t(*process_cmd)(uint16_t  cmd);
+	uint8_t(*process_cmd)(uint16_t cmd);
 
 } amu_device_t;
 

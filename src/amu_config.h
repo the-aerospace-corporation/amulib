@@ -12,7 +12,7 @@
 
 #define __AMU_DEVICE__
 
-//#define __AMU_USE_SCPI__
+#define __AMU_USE_SCPI__
 
 //#define AMU_LOW_MEMORY
 

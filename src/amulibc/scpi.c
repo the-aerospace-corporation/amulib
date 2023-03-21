@@ -488,33 +488,39 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 // First SCPI_COMMAND def applies above, (SCPI_COMMANDS hasn't been called yet, so we can define it after)
 // The first call creates program memory char[] pointers for every command as a variable which looks like i.e. scpi_amu_heater_CMD_WRITE_HEATER_PID
 // After defining all the areas, we redefine SCPI_COMMAND to place these arrays into the scpi_commands[] array, with the corresponding function and tag calls
-
-#ifdef __AMU_LOW_MEMORY__
-	__AMU_DEFAULT_CMD_LIST__
-#else
-	__AMU_DEFAULT_CMD_LIST__
-	__AMU_EXTENDED_CMD_LIST__
+#if defined(__AMU_USE_SCPI__)
+    #ifdef __AMU_LOW_MEMORY__
+        __AMU_DEFAULT_CMD_LIST__
+    #else
+        __AMU_DEFAULT_CMD_LIST__
+        __AMU_EXTENDED_CMD_LIST__
+    #endif
 #endif
 
 #undef SCPI_COMMAND
 
-#define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
-#ifdef __AMU_SCPI_USE_PROGMEM__
-static const scpi_command_t scpi_def_commands[] PROGMEM = {
-#else
-static const scpi_command_t scpi_def_commands[] = {
+#if defined(__AMU_USE_SCPI__)
+    #define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
+    #ifdef __AMU_SCPI_USE_PROGMEM__
+        static const scpi_command_t scpi_def_commands[] PROGMEM = {
+    #else
+        static const scpi_command_t scpi_def_commands[] = {
+    #endif
 #endif
 	
-#ifdef __AMU_LOW_MEMORY__
-	__AMU_DEFAULT_CMD_LIST__
-	SCPI_CMD_LIST_END
-#else
-	__AMU_DEFAULT_CMD_LIST__
-	__AMU_EXTENDED_CMD_LIST__
-	SCPI_CMD_LIST_END
+#if defined(__AMU_USE_SCPI__)
+
+    #ifdef __AMU_LOW_MEMORY__
+        __AMU_DEFAULT_CMD_LIST__
+        SCPI_CMD_LIST_END
+    #else
+        __AMU_DEFAULT_CMD_LIST__
+        __AMU_EXTENDED_CMD_LIST__
+        SCPI_CMD_LIST_END
+    #endif
+};
 #endif
 
-};
 #undef SCPI_COMMAND
 
 void amu_scpi_init(volatile amu_device_t* dev, const char* idn1, const char* idn2, const char* idn3, const char* idn4) {
