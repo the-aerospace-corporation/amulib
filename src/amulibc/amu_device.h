@@ -27,7 +27,7 @@
 #define AMU_SERIALNUM_STR_LEN			26
 #define AMU_FIRMWARE_STR_LEN			16
 
-#define AMU_DEVICE_DEFAULT_STR			"AMU-128X"
+#define AMU_DEVICE_DEFAULT_STR			"AMU-M0+"
 #define AMU_MANUFACTURER_DEFAULT_STR	"AEROSPACE"
 #define AMU_SERIALNUM_DEFAULT_STR		"0x01"
 #define AMU_FIRMWARE_DEFAULT_STR		"amu-"
@@ -64,8 +64,8 @@ extern "C" {
 
 	uint8_t						_amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t transferLen, bool query);
 
-	void						_amu_transfer_read(size_t offset, void* data, size_t len);
-	void						_amu_transfer_write(size_t offset, void* data, size_t len);
+	void						_amu_transfer_read(size_t offset, void *data, size_t len);
+	void						_amu_transfer_write(size_t offset, void *data, size_t len);
 
 	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
 

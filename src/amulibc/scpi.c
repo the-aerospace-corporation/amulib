@@ -441,18 +441,30 @@ static size_t SCPI_Write(scpi_t* context, const char* data, size_t len) {
 
 static scpi_result_t SCPI_Write_Control(scpi_t* context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val) {
 
-	char buffer[8];
+	char buffer[32];
 
-	if (ctrl == 1) {
-		context->interface->write(context, "**SRQ: 0x", 10);
-		context->interface->write(context, itoa(val, buffer, 16), sizeof(buffer));
-		context->interface->write(context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
+if (ctrl == 1) {
+    
+#if defined(__arm__)
+        snprintf(buffer, sizeof(buffer), "**SRQ: 0x%X", val);
+        context->interface->write(context, buffer, sizeof(buffer));
+#else
+        context->interface->write(context, "**SRQ: 0x", 10);
+        context->interface->write(context, itoa(val, buffer, 16), sizeof(buffer));
+#endif
+        context->interface->write(context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 	}
 	else {
-		context->interface->write(context, "**CTRL: 0x", 11);
+		
+#if defined(__arm__)
+        snprintf(buffer, sizeof(buffer), "**CTRL: 0x%X: 0x%X", ctrl, val);
+        
+#else
+        context->interface->write(context, "**CTRL: 0x", 11);
 		context->interface->write(context, itoa(ctrl, buffer, 16), sizeof(buffer));
 		context->interface->write(context, ": 0x", 5);
 		context->interface->write(context, itoa(val, buffer, 16), sizeof(buffer));
+#endif
 		context->interface->write(context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 	}
 
@@ -488,23 +500,28 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 
 #undef SCPI_COMMAND
 
-#define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
-#ifdef __AMU_SCPI_USE_PROGMEM__
-static const scpi_command_t scpi_def_commands[] PROGMEM = {
-#else
-static const scpi_command_t scpi_def_commands[] = {
+#if defined(__AMU_USE_SCPI__)
+    #define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
+    #ifdef __AMU_SCPI_USE_PROGMEM__
+        static const scpi_command_t scpi_def_commands[] PROGMEM = {
+    #else
+        static const scpi_command_t scpi_def_commands[] = {
+    #endif
 #endif
 	
-#ifdef __AMU_LOW_MEMORY__
-	__AMU_DEFAULT_CMD_LIST__
-	SCPI_CMD_LIST_END
-#else
-	__AMU_DEFAULT_CMD_LIST__
-	__AMU_EXTENDED_CMD_LIST__
-	SCPI_CMD_LIST_END
+#if defined(__AMU_USE_SCPI__)
+
+    #ifdef __AMU_LOW_MEMORY__
+        __AMU_DEFAULT_CMD_LIST__
+        SCPI_CMD_LIST_END
+    #else
+        __AMU_DEFAULT_CMD_LIST__
+        __AMU_EXTENDED_CMD_LIST__
+        SCPI_CMD_LIST_END
+    #endif
+};
 #endif
 
-};
 #undef SCPI_COMMAND
 
 #endif
