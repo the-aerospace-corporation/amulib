@@ -129,6 +129,14 @@ extern "C" {
 #define HAVE_STDBOOL			1
 #endif
 
+#if defined(__SAMD21E18A__)
+#include <stdlib.h>
+#define HAVE_DTOSTRE            0
+#define HAVE_STRTOF				1
+#define HAVE_STDBOOL			1
+#define HAVE_STRNLEN            1
+#endif
+
 /* default values */
 #ifndef HAVE_STRNLEN
 #define HAVE_STRNLEN            0

@@ -13,7 +13,7 @@
 #include "amulibc/scpi.h"
 #endif
 
-#ifdef	__cplusplus
+#ifdef __AMU_REMOTE_DEVICE__
 
 #include <stdlib.h>
 

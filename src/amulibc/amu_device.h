@@ -39,6 +39,12 @@
 extern "C" {
 #endif
 
+	extern volatile amu_device_t amu_device;
+	extern char dut_deviceType_str[AMU_DEVICE_STR_LEN];
+	extern char dut_manufacturer_str[AMU_MANUFACTURER_STR_LEN];
+	extern char dut_serialNumber_str[AMU_SERIALNUM_STR_LEN];
+	extern char dut_firmware_str[AMU_FIRMWARE_STR_LEN];
+
 	volatile amu_device_t* 		amu_dev_init(amu_transfer_fptr_t);
 
 	int8_t						amu_dev_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t rw);
@@ -48,8 +54,8 @@ extern "C" {
 	int8_t						amu_dev_send_command_data(uint8_t address, CMD_t command, uint8_t len);
 	int8_t						amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandDataLen, uint8_t responseLength);
 
-	CMD_t						amu_get_next_twi_command(void);
-	void						amu_command_complete(void);
+	static inline CMD_t			amu_get_next_twi_command(void) { return (CMD_t)(amu_device.amu_regs->command + CMD_I2C_USB); }
+	static inline void			amu_command_complete(void) { amu_device.amu_regs->command = 0;}
 
 	uint8_t						amu_scan_for_devices(uint8_t startAddress, uint8_t endAddress);
 	int8_t						amu_get_num_devices(void);
@@ -70,15 +76,15 @@ extern "C" {
 	volatile amu_twi_regs_t*	amu_dev_get_twi_regs_ptr(void);
 	volatile amu_scpi_dev_t*	amu_get_scpi_dev(void);
 
-	char*						amu_dev_getDeviceTypeStr(void);	
-	char*						amu_dev_getManufacturerStr(void);
-	char*						amu_dev_getSerialNumStr(void);
-	char*						amu_dev_getFirmwareStr(void);
+	static inline char*			amu_dut_getDeviceTypeStr(void) { return dut_deviceType_str; }
+	static inline char*			amu_dut_getManufacturerStr(void) { return dut_manufacturer_str; }
+	static inline char*			amu_dut_getSerialNumStr(void) { return dut_serialNumber_str; }
+	static inline char*			amu_dut_getFirmwareStr(void) { return dut_firmware_str; }
 
-	char*						amu_dev_setDeviceTypeStr(char* deviceTypeStr);
-	char*						amu_dev_setManufacturerStr(char* manufacturerStr);
-	char*						amu_dev_setSerialNumStr(char* serialNumStr);
-	char*						amu_dev_setFirmwareStr(char* firmwareStr);
+	char*						amu_dut_setDeviceTypeStr(char* deviceTypeStr);
+	char*						amu_dut_setManufacturerStr(char* manufacturerStr);
+	char*						amu_dut_setSerialNumStr(char* serialNumStr);
+	char*						amu_dut_setFirmwareStr(char* firmwareStr);
 #endif
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }

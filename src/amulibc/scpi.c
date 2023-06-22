@@ -477,6 +477,8 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 // The first call creates program memory char[] pointers for every command as a variable which looks like i.e. scpi_amu_heater_CMD_WRITE_HEATER_PID
 // After defining all the areas, we redefine SCPI_COMMAND to place these arrays into the scpi_commands[] array, with the corresponding function and tag calls
 
+#ifdef __AMU_USE_SCPI__
+
 #ifdef __AMU_LOW_MEMORY__
 	__AMU_DEFAULT_CMD_LIST__
 #else
@@ -504,6 +506,9 @@ static const scpi_command_t scpi_def_commands[] = {
 
 };
 #undef SCPI_COMMAND
+
+#endif
+
 
 void amu_scpi_init(volatile amu_device_t* dev, const char* idn1, const char* idn2, const char* idn3, const char* idn4) {
 

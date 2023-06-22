@@ -1,6 +1,7 @@
 // 
 // 
 // 
+#ifdef __AMU_REMOTE_DEVICE__
 
 #include "amulib.h"
 
@@ -354,3 +355,5 @@ amu_scpi_dev_t* AMU::amu_scpi_init(size_t(*write_cmd)(const char* data, size_t l
 	return nullptr;
 #endif
 }
+
+#endif

@@ -24,18 +24,19 @@ static volatile uint8_t amu_transfer_reg[AMU_TRANSFER_REG_SIZE];
 
 #ifdef __AMU_DEVICE__
 static uint8_t amu_num_devices = 1;
+
 static volatile amu_twi_regs_t amu_twi_regs;
 
-static char deviceType_str[AMU_DEVICE_STR_LEN] = AMU_DEVICE_DEFAULT_STR;
-static char manufacturer_str[AMU_MANUFACTURER_STR_LEN] = AMU_MANUFACTURER_DEFAULT_STR;
-static char serialNumber_str[AMU_SERIALNUM_STR_LEN] = AMU_SERIALNUM_DEFAULT_STR;
-static char firmware_str[AMU_FIRMWARE_STR_LEN] = AMU_FIRMWARE_DEFAULT_STR;
+char dut_deviceType_str[AMU_DEVICE_STR_LEN] = AMU_DEVICE_DEFAULT_STR;
+char dut_manufacturer_str[AMU_MANUFACTURER_STR_LEN] = AMU_MANUFACTURER_DEFAULT_STR;
+char dut_serialNumber_str[AMU_SERIALNUM_STR_LEN] = AMU_SERIALNUM_DEFAULT_STR;
+char dut_firmware_str[AMU_FIRMWARE_STR_LEN] = AMU_FIRMWARE_DEFAULT_STR;
 
 #else
 static uint8_t amu_num_devices = 0;
 #endif
 
-static volatile amu_device_t amu_device = {
+volatile amu_device_t amu_device = {
 	.transfer_reg = amu_transfer_reg,
 	.sweep_data = NULL,
 	.amu_regs = NULL,
@@ -71,7 +72,7 @@ volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 		
 
 #ifdef __AMU_USE_SCPI__
-		amu_scpi_init(&amu_device, deviceType_str, manufacturer_str, serialNumber_str, firmware_str);
+		amu_scpi_init(&amu_device, dut_deviceType_str, dut_manufacturer_str, dut_serialNumber_str, dut_firmware_str);
 #endif
 
 		amu_dev_initialized = 1;
@@ -320,9 +321,9 @@ void _amu_transfer_write(size_t offset, void* data, size_t len) {
 	}
 }
 
-inline volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
+volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
 	
-inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
+amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
 
 	volatile uint8_t* twi_reg = (volatile uint8_t*)&amu_device.amu_regs->command;
 
@@ -349,52 +350,29 @@ inline amu_data_reg_t* amu_get_register_ptr(uint8_t amu_register) {
 
 #ifdef __AMU_DEVICE__
 
-inline volatile ivsweep_packet_t* amu_dev_get_sweep_packet_ptr(void) { return amu_device.sweep_data; }
-inline volatile amu_twi_regs_t* amu_dev_get_twi_regs_ptr(void) { return &amu_twi_regs; }
-inline volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_scpi_dev_t*)&amu_device.scpi_dev; }
+volatile ivsweep_packet_t* amu_dev_get_sweep_packet_ptr(void) { return amu_device.sweep_data; }
+volatile amu_twi_regs_t* amu_dev_get_twi_regs_ptr(void) { return &amu_twi_regs; }
+volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_scpi_dev_t*)&amu_device.scpi_dev; }
 
-inline CMD_t amu_get_next_twi_command() {
-	return (amu_device.amu_regs->command + CMD_I2C_USB);
+
+char* amu_dut_setDeviceTypeStr(char* deviceTypeStr) {
+	memcpy(dut_deviceType_str, deviceTypeStr, AMU_DEVICE_STR_LEN);
+	return dut_deviceType_str;
 }
 
-inline void amu_command_complete() {
-	amu_device.amu_regs->command = 0;
+char* amu_dut_setManufacturerStr(char* manufacturerStr) {
+	memcpy(dut_manufacturer_str, manufacturerStr, AMU_MANUFACTURER_STR_LEN);
+	return dut_manufacturer_str;
 }
 
-char* amu_dev_getDeviceTypeStr(void) {
-	return deviceType_str;
+char* amu_dut_setSerialNumStr(char* serialNumStr) {
+	memcpy(dut_serialNumber_str, serialNumStr, AMU_SERIALNUM_STR_LEN);
+	return dut_serialNumber_str;
 }
 
-char* amu_dev_getManufacturerStr(void) {
-	return manufacturer_str;
-}
-
-char* amu_dev_getSerialNumStr(void) {
-	return serialNumber_str;
-}
-
-char* amu_dev_getFirmwareStr(void) {
-	return firmware_str;
-}
-
-char* amu_dev_setDeviceTypeStr(char* deviceTypeStr) {
-	memcpy(deviceType_str, deviceTypeStr, AMU_DEVICE_STR_LEN);
-	return deviceType_str;
-}
-
-char* amu_dev_setManufacturerStr(char* manufacturerStr) {
-	memcpy(manufacturer_str, manufacturerStr, AMU_MANUFACTURER_STR_LEN);
-	return manufacturer_str;
-}
-
-char* amu_dev_setSerialNumStr(char* serialNumStr) {
-	memcpy(serialNumber_str, serialNumStr, AMU_SERIALNUM_STR_LEN);
-	return serialNumber_str;
-}
-
-char* amu_dev_setFirmwareStr(char* firmwareStr) {
-	memcpy(firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
-	return firmware_str;
+char* amu_dut_setFirmwareStr(char* firmwareStr) {
+	memcpy(dut_firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
+	return dut_firmware_str;
 }
 
 #endif
