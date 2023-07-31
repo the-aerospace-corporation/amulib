@@ -26,6 +26,9 @@ void setup() {
     Serial.begin(115200);
 
     AMU_TWI_BUS.begin();
+    AMU_TWI_BUS.setClock(400000);
+    AMU_TWI_BUS.setTimeout(1000);
+
 
     while(!Serial);
 
@@ -72,6 +75,7 @@ void loop() {
             case 't':
                 Serial.println();
                 triggerSweep(&Serial);
+                readSweepData(&Serial, amu.getSweepConfig()->numPoints);
                 break;
             case 'v':
                 Serial.println();
@@ -94,16 +98,6 @@ void loop() {
             
         }
 
-        loopTest(loopActive);
-
-    }
-
-}
-
-void loopTest(uint8_t active) {
-
-    if (active) {
-        triggerVOC(&Serial);
     }
 
 }
@@ -190,9 +184,12 @@ void triggerSweep(Stream* s) {
 
 void readSweepData(Stream* s, uint8_t numPoints) {
 
-    uint32_t* timestamp = amu.readSweepTimestamps();
-    float* voltage = amu.readSweepVoltages();
-    float* current = amu.readSweepCurrents();
+    uint32_t timestamp[numPoints];
+    float voltage[numPoints], current[numPoints];
+
+    amu.readSweepTimestamps(timestamp);
+    amu.readSweepVoltages(voltage);
+    amu.readSweepCurrents(current);
 
     for (int i = 0; i < numPoints; i++) {
         s->print("\n");
@@ -235,37 +232,29 @@ int amu_wire_transfer(TwoWire *wire, uint8_t address, uint8_t reg, uint8_t *data
     uint8_t packetNum = 0;
 
     if (read) {
-      if (len > 0) {
+        if (len > 0) {
 
-          wire->beginTransmission(address);
-          wire->write(reg);
-          wire->endTransmission();
-          while (len > BUFFER_LENGTH) {
-              wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, (uint8_t)0);
-              if (wire->available()) {
-                  wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-                  packetNum++;
-                  len -= BUFFER_LENGTH;
-              }
-          }
-          wire->requestFrom(address, (uint8_t)len);
-          if (wire->available())
-              wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
-
-      }
-      else {
-        wire->beginTransmission(address);
-        return wire->endTransmission();
-      }
+            wire->beginTransmission(address);
+            wire->write(reg);
+            wire->endTransmission();
+            while (len > BUFFER_LENGTH) {
+                wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, false);
+                wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
+                packetNum++;
+                len -= BUFFER_LENGTH;
+            }
+            wire->requestFrom(address, (uint8_t)len);
+            wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
+        }
+        else {
+            wire->beginTransmission(address);
+            return wire->endTransmission();
+        }
     }
     else {
         wire->beginTransmission(address);
         wire->write(reg);
-        while (len > BUFFER_LENGTH) {
-            wire->write(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-            len -= BUFFER_LENGTH;
-        }
-        wire->write(&data[packetNum * BUFFER_LENGTH], len);
+        wire->write(data, len);
         wire->endTransmission();
     }
 

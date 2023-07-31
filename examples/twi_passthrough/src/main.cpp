@@ -35,7 +35,7 @@ void setup() {
         Serial.println(F("No AMUs found."));
     }
     else {
-        Serial.printf("%i AMU Found at address: 0x%02X", amu_get_num_connected_devices(), amu_get_device_address(1));
+        Serial.printf("%i AMU Found at address: 0x%02X\n", amu_get_num_connected_devices(), amu_get_device_address(1));
     }
 
 }
@@ -86,18 +86,8 @@ int arduino_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* 
             wire->beginTransmission(address);
             wire->write(reg);
             wire->endTransmission();
-            while (len > BUFFER_LENGTH) {
-                wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, (uint8_t)0);
-                if (wire->available()) {
-                    wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-                    packetNum++;
-                    len -= BUFFER_LENGTH;
-                }
-            }
             wire->requestFrom(address, (uint8_t)len);
-            if (wire->available())
-                wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
-
+            wire->readBytes(data, len);
         }
         else {
             wire->beginTransmission(address);
@@ -107,11 +97,7 @@ int arduino_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* 
     else {
         wire->beginTransmission(address);
         wire->write(reg);
-        while (len > BUFFER_LENGTH) {
-            wire->write(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-            len -= BUFFER_LENGTH;
-        }
-        wire->write(&data[packetNum * BUFFER_LENGTH], len);
+        wire->write(data, len);
         wire->endTransmission();
     }
 
