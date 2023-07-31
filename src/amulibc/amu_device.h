@@ -40,10 +40,10 @@ extern "C" {
 #endif
 
 	extern volatile amu_device_t amu_device;
-	extern char dut_deviceType_str[AMU_DEVICE_STR_LEN];
-	extern char dut_manufacturer_str[AMU_MANUFACTURER_STR_LEN];
-	extern char dut_serialNumber_str[AMU_SERIALNUM_STR_LEN];
-	extern char dut_firmware_str[AMU_FIRMWARE_STR_LEN];
+	extern char dev_deviceType_str[AMU_DEVICE_STR_LEN];
+	extern char dev_manufacturer_str[AMU_MANUFACTURER_STR_LEN];
+	extern char dev_serialNumber_str[AMU_SERIALNUM_STR_LEN];
+	extern char dev_firmware_str[AMU_FIRMWARE_STR_LEN];
 
 	volatile amu_device_t* 		amu_dev_init(amu_transfer_fptr_t);
 

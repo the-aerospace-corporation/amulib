@@ -356,23 +356,23 @@ volatile amu_scpi_dev_t* amu_get_scpi_dev(void) { return (volatile amu_scpi_dev_
 
 
 char* amu_dev_setDeviceTypeStr(char* deviceTypeStr) {
-	memcpy(dut_deviceType_str, deviceTypeStr, AMU_DEVICE_STR_LEN);
-	return dut_deviceType_str;
+	memcpy(dev_deviceType_str, deviceTypeStr, AMU_DEVICE_STR_LEN);
+	return dev_deviceType_str;
 }
 
 char* amu_dev_setManufacturerStr(char* manufacturerStr) {
-	memcpy(dut_manufacturer_str, manufacturerStr, AMU_MANUFACTURER_STR_LEN);
-	return dut_manufacturer_str;
+	memcpy(dev_manufacturer_str, manufacturerStr, AMU_MANUFACTURER_STR_LEN);
+	return dev_manufacturer_str;
 }
 
 char* amu_dev_setSerialNumStr(char* serialNumStr) {
-	memcpy(dut_serialNumber_str, serialNumStr, AMU_SERIALNUM_STR_LEN);
-	return dut_serialNumber_str;
+	memcpy(dev_serialNumber_str, serialNumStr, AMU_SERIALNUM_STR_LEN);
+	return dev_serialNumber_str;
 }
 
 char* amu_dev_setFirmwareStr(char* firmwareStr) {
-	memcpy(dut_firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
-	return dut_firmware_str;
+	memcpy(dev_firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
+	return dev_firmware_str;
 }
 
 #endif
