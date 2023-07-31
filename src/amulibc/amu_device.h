@@ -76,15 +76,15 @@ extern "C" {
 	volatile amu_twi_regs_t*	amu_dev_get_twi_regs_ptr(void);
 	volatile amu_scpi_dev_t*	amu_get_scpi_dev(void);
 
-	static inline char*			amu_dut_getDeviceTypeStr(void) { return dut_deviceType_str; }
-	static inline char*			amu_dut_getManufacturerStr(void) { return dut_manufacturer_str; }
-	static inline char*			amu_dut_getSerialNumStr(void) { return dut_serialNumber_str; }
-	static inline char*			amu_dut_getFirmwareStr(void) { return dut_firmware_str; }
+	static inline char*			amu_dev_getDeviceTypeStr(void) { return dev_deviceType_str; }
+	static inline char*			amu_dev_getManufacturerStr(void) { return dev_manufacturer_str; }
+	static inline char*			amu_dev_getSerialNumStr(void) { return dev_serialNumber_str; }
+	static inline char*			amu_dev_getFirmwareStr(void) { return dev_firmware_str; }
 
-	char*						amu_dut_setDeviceTypeStr(char* deviceTypeStr);
-	char*						amu_dut_setManufacturerStr(char* manufacturerStr);
-	char*						amu_dut_setSerialNumStr(char* serialNumStr);
-	char*						amu_dut_setFirmwareStr(char* firmwareStr);
+	char*						amu_dev_setDeviceTypeStr(char* deviceTypeStr);
+	char*						amu_dev_setManufacturerStr(char* manufacturerStr);
+	char*						amu_dev_setSerialNumStr(char* serialNumStr);
+	char*						amu_dev_setFirmwareStr(char* firmwareStr);
 #endif
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }
