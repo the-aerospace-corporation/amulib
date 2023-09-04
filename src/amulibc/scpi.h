@@ -106,6 +106,7 @@ extern "C" {
         SCPI_COMMAND("SYSTem:LED:PAT",					_scpi_cmd_led,						CMD_SYSTEM_LED						)	\
         SCPI_COMMAND("SYSTem:LED:COLOR[?]",				scpi_cmd_rw_amu_pid_t,				CMD_SYSTEM_LED_COLOR				)	\
         SCPI_COMMAND("SYSTem:SERial?",					_scpi_cmd_query_str,				CMD_SYSTEM_SERIAL_NUM				)	\
+        SCPI_COMMAND("SYSTem:SLEEP",                    scpi_cmd_execute,				    CMD_SYSTEM_SLEEP					)	\
         SCPI_COMMAND("SYSTem:STATus?",					scpi_cmd_rw_uint8_t,				AMU_REG_SYSTEM_AMU_STATUS			)	\
         SCPI_COMMAND("SYSTem:TEMPerature?",				scpi_cmd_rw_float,					CDM_SYSTEM_TEMPERATURE				)	\
         SCPI_COMMAND("SYSTem:TIMEstamp[?]",				scpi_cmd_rw_uint32_t,				CMD_SYSTEM_TIME						)	\
