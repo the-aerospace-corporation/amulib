@@ -102,14 +102,14 @@ int8_t amu_dev_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len,
  * @return uint8_t 	1 is busy, 0 otherwise
  */
 uint8_t amu_dev_busy(uint8_t address) {
-#ifdef __AMU_DEVICE__
-	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&amu_device.amu_regs->twi_status, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
-	return amu_device.amu_regs->twi_status;
-#else
+// #ifdef __AMU_DEVICE__
+// 	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&amu_device.amu_regs->twi_status, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
+// 	return amu_device.amu_regs->twi_status;
+// #else
 	uint8_t cmd;
 	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, &cmd, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
 	return cmd;
-#endif
+// #endif
 }
 
 /**
@@ -149,15 +149,14 @@ int8_t amu_dev_send_command_data(uint8_t address, CMD_t command, uint8_t len) {
 int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandDataLen, uint8_t responseLength) {
 	uint8_t repeat = 0;
 	amu_dev_send_command_data(address, (command | CMD_READ), commandDataLen);
-	//if (amu_device.delay)
-	//	amu_device.delay(3);
-	while (amu_dev_busy(address) && (repeat < 200)) {
+
+	do {
 		if (amu_device.delay)
-			amu_device.delay(5);
+			amu_device.delay(3);
 		if (amu_device.watchdog_kick)
 			amu_device.watchdog_kick();
 		repeat++;
-	}
+	} while (amu_dev_busy(address) && (repeat < 200));
 
 	if (repeat >= 200)
 		return -3;
