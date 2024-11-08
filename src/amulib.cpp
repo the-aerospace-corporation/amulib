@@ -272,7 +272,7 @@ int8_t AMU::sendCommand(CMD_t cmd) {
 }
 
 int8_t AMU::sendCommand(CMD_t cmd, void *params, uint8_t param_len) {
-	amu_dev_transfer(address, AMU_REG_TRANSFER_PTR, (uint8_t*)&params, param_len, AMU_TWI_TRANSFER_WRITE);
+	amu_dev_transfer(address, AMU_REG_TRANSFER_PTR, (uint8_t*)params, param_len, AMU_TWI_TRANSFER_WRITE);
 	return sendCommand(cmd);
 }
 
