@@ -81,10 +81,10 @@ extern "C" {
 	static inline char*			amu_dev_getSerialNumStr(void) { return dev_serialNumber_str; }
 	static inline char*			amu_dev_getFirmwareStr(void) { return dev_firmware_str; }
 
-	char*						amu_dev_setDeviceTypeStr(char* deviceTypeStr);
-	char*						amu_dev_setManufacturerStr(char* manufacturerStr);
-	char*						amu_dev_setSerialNumStr(char* serialNumStr);
-	char*						amu_dev_setFirmwareStr(char* firmwareStr);
+	char*						amu_dev_setDeviceTypeStr(const char* deviceTypeStr);
+	char*						amu_dev_setManufacturerStr(const char* manufacturerStr);
+	char*						amu_dev_setSerialNumStr(const char* serialNumStr);
+	char*						amu_dev_setFirmwareStr(const char* firmwareStr);
 #endif
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }

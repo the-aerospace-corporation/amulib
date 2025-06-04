@@ -92,6 +92,9 @@ typedef enum {
 	AMU_HARDWARE_REVISION_AMU_2_0 = 0x20,		// em version
 	AMU_HARDWARE_REVISION_AMU_2_1 = 0x21,
     AMU_HARDWARE_REVISION_AMU_3_0 = 0x30,
+	AMU_HARDWARE_REVISION_AMU_3_2 = 0x32,
+	AMU_HARDWARE_REVISION_AMU_3_3 = 0x33,
+	
 	AMU_HARDWARE_REVISION_AMU_SP_DEV = 0x80,
 	AMU_HARDWARE_REVISION_AMU_SP = 0x81,
 } amu_hardware_revision_t;
@@ -281,8 +284,11 @@ typedef void(*amu_watchdog_fptr_t)(void);
 typedef void(*amu_watchdog_reset_fptr_t)(void);
 typedef void(*amu_hardware_reset_fptr_t)(void);
 typedef int(*amu_print_fptr_t)(const char* fmt, ...);
+#if defined(ESP32)
+typedef unsigned long(*amu_milis_fptr_t)(void);
+#else
 typedef uint32_t(*amu_milis_fptr_t)(void);
-
+#endif
 typedef struct {
 	size_t(*write_cmd)(const char* data, size_t len);
 	void(*reset_cmd)(void);
