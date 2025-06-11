@@ -54,13 +54,29 @@ typedef enum {
 	AMU_ADC_CH_SS_BR = 14,
 	AMU_ADC_CH_SS_TR = 15,
 	AMU_ADC_CH_NUM = 16
-} AMU_ADC_CH_t;
+} amu_adc_ch_t;
+
+typedef amu_adc_ch_t AMU_ADC_CH_t;	// for backwards consistency 
+
+typedef enum {
+	ADC_PGA_1X = 0,
+	ADC_PGA_2X = 1,
+	ADC_PGA_4X = 2,
+	ADC_PGA_8X = 3,
+	ADC_PGA_16X = 4,
+	ADC_PGA_32X = 5,
+	ADC_PGA_64X = 6,
+	ADC_PGA_128X = 7,
+	ADC_PGA_NUM = 8
+} amu_adc_pga_t;
 
 typedef enum {
     AMU_ADC_POWER_MODE_LOW = 0,
     AMU_ADC_POWER_MODE_MID = 1,
     AMU_ADC_POWER_MODE_HIGH = 2,
-} AMU_ADC_POWER_MODE_t;
+} amu_adc_power_mode_t;
+
+typedef amu_adc_power_mode_t AMU_ADC_POWER_MODE_t;
 
 typedef enum {
 	AMU_CH_EN_VOLTAGE = (1 << AMU_ADC_CH_VOLTAGE),
@@ -83,7 +99,9 @@ typedef enum {
 	AMU_CH_EN_SS_TR = (1 << AMU_ADC_CH_SS_TR),
 	AMU_CH_EN_SUNSENSOR = (AMU_CH_EN_SS_TL | AMU_CH_EN_SS_BL | AMU_CH_EN_SS_BR | AMU_CH_EN_SS_TR),
 	AMU_CH_EN_ALL = (0xFFFF)
-} AMU_CH_EN_t;
+} amu_ch_en_t;
+
+typedef amu_ch_en_t AMU_CH_EN_t;
 
 typedef enum {
 	AMU_HARDWARE_REVISION_ISC2 = 0x01,
