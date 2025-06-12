@@ -74,6 +74,7 @@ typedef enum {
     AMU_ADC_POWER_MODE_LOW = 0,
     AMU_ADC_POWER_MODE_MID = 1,
     AMU_ADC_POWER_MODE_HIGH = 2,
+	AMU_ADC_POWER_MODE_STANDBY = 3
 } amu_adc_power_mode_t;
 
 typedef amu_adc_power_mode_t AMU_ADC_POWER_MODE_t;
