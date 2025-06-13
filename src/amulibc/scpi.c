@@ -595,10 +595,12 @@ void amu_scpi_list_commands(void) {
 
 	for (i = 0; (cmd_pattern = (char*)scpi_context.def_cmdlist[i].pattern) != 0; i++) {
 		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
+		scpi_context.interface->write(&scpi_context, ",", 1);
 	}
 
 	for (i = 0; (cmd_pattern = (char*)scpi_context.aux_cmdlist[i].pattern) != 0; i++) {
 		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
+		scpi_context.interface->write(&scpi_context, ",", 1);
 	}
 
 	#endif

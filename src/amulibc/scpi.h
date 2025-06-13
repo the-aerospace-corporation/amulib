@@ -300,7 +300,7 @@ extern "C" {
         SCPI_COMMAND("SYSTem:CONFig:CURRent:GAIN[?]",   scpi_cmd_rw_float,				    CMD_USB_SYSTEM_CONFIG_CURR_GAIN	    )	\
         SCPI_COMMAND("SYSTem:CONFig:CURRent:Rsense[?]",	scpi_cmd_rw_float,				    CMD_USB_SYSTEM_CONFIG_CURR_RSENSE	)	\
         SCPI_COMMAND("SYSTem:CONFig:VOLTage:R1[?]",		scpi_cmd_rw_float,				    CMD_USB_SYSTEM_CONFIG_VOLT_R1	    )	\
-        SCPI_COMMAND("SYSTem:CONFig:VOLTage:R2[?]",		scpi_cmd_rw_float,				    CMD_USB_SYSTEM_CONFIG_VOLT_R2	    )
+        SCPI_COMMAND("SYSTem:CONFig:VOLTage:R2[?]",		scpi_cmd_rw_float,				    CMD_USB_SYSTEM_CONFIG_VOLT_R2	    )   \
 
 #endif
     
