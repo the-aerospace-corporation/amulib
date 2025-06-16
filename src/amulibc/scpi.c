@@ -94,6 +94,7 @@ scpi_result_t scpi_cmd_rw_##TYPE(scpi_t *context) {																	\
 SCPI_CMD_RW(uint8_t)
 SCPI_CMD_RW(uint16_t)
 SCPI_CMD_RW(uint32_t)
+SCPI_CMD_RW(int32_t)
 SCPI_CMD_RW(float)
 SCPI_CMD_RW(amu_pid_t)
 SCPI_CMD_RW(amu_coeff_t)

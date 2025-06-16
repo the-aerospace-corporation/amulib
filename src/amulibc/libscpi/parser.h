@@ -70,6 +70,7 @@ extern "C" {
 #define SCPI_Result_uint16_t(c, v) SCPI_ResultUInt32Base((c), (v), 10)
 #define SCPI_Result_uint32_t(c, v) SCPI_ResultUInt32Base((c), (v), 10)
 #define SCPI_ResultUInt32(c, v) SCPI_ResultUInt32Base((c), (v), 10)
+#define SCPI_Result_int32_t(c, v) SCPI_ResultInt32((c), (v))
     size_t SCPI_ResultInt32(scpi_t * context, int32_t val);
     size_t SCPI_ResultUInt64Base(scpi_t * context, uint64_t val, int8_t base);
 #define SCPI_ResultUInt64(c, v) SCPI_ResultUInt64Base((c), (v), 10)
@@ -113,6 +114,7 @@ extern "C" {
 #define SCPI_Param_uint32_t(c, v, b)	SCPI_ParamUInt32(c, v, b)
 #define SCPI_Param_uint16_t(c, v, b)	SCPI_ParamUInt32(c, v, b)
 #define SCPI_Param_uint8_t(c, v, b)		SCPI_ParamUInt32(c, v, b)
+#define SCPI_Param_int32_t(c, v, b)		SCPI_ParamInt32(c, v, b)
     scpi_bool_t SCPI_ParamInt64(scpi_t * context, int64_t * value, scpi_bool_t mandatory);
     scpi_bool_t SCPI_ParamUInt64(scpi_t * context, uint64_t * value, scpi_bool_t mandatory);
     scpi_bool_t SCPI_ParamFloat(scpi_t * context, void * value, scpi_bool_t mandatory);
