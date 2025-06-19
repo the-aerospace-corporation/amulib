@@ -556,6 +556,10 @@ void amu_scpi_update(const char incomingByte) {
 	SCPI_Input(&scpi_context, &incomingByte, 1);
 }
 
+void amu_scpi_update_buffer(const char* buffer, size_t len) {
+	SCPI_Input(&scpi_context, buffer, len);
+}
+
 void amu_scpi_add_aux_commands(const scpi_command_t* aux_cmd_list) {
 	scpi_context.aux_cmdlist = aux_cmd_list;
 }

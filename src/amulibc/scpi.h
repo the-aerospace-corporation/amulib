@@ -29,6 +29,7 @@ extern "C" {
 
 	void amu_scpi_init(volatile amu_device_t *dev, const char * idn1, const char * idn2, const char * idn3, const char * idn4);
 	void amu_scpi_update(const char incomingByte);
+    void amu_scpi_update_buffer(const char* buffer, size_t len);
 	void amu_scpi_list_commands(void);
 	void amu_scpi_add_aux_commands(const scpi_command_t* aux_cmd_list);
 	scpi_result_t scpi_cmd_execute(scpi_t *context);
