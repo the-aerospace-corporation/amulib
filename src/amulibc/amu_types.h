@@ -162,7 +162,7 @@ typedef union {
 	uint8_t raw[16];
 } amu_coeff_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float P;
 	float I;
 	float D;
@@ -170,7 +170,7 @@ typedef struct {
 
 typedef char amu_notes_t[AMU_NOTES_SIZE];
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	uint8_t type;
 	uint8_t numPoints;
 	uint8_t delay;
@@ -183,12 +183,12 @@ typedef struct {
 	float area;
 } ivsweep_config_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float measurement;
 	float temperature;
 } amu_meas_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float voc;
 	float isc;
 	float tsensor_start;
@@ -203,12 +203,12 @@ typedef struct {
 	uint32_t crc;
 } ivsweep_meta_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float voltage;
 	float current;
 } ivsweep_datapoint_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	uint32_t timestamp[IVSWEEP_MAX_POINTS];
 	float voltage[IVSWEEP_MAX_POINTS];
 	float current[IVSWEEP_MAX_POINTS];
@@ -218,7 +218,7 @@ typedef struct {
 #endif
 } ivsweep_packet_t;
 
-typedef union {
+typedef union __attribute__((packed)) {
 	struct {
 		uint32_t voltage;
 		uint32_t current;
@@ -238,31 +238,31 @@ typedef union {
 	uint32_t channel[16];
 } adc_channnels_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float yaw;
 	float pitch;
 } ss_angle_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float diode[4];
 	ss_angle_t angle;
 } quad_photo_sensor_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float pressure;
 	float temperature;
 	float humidity;
 	float status;
 } press_data_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	float avdd;
 	float iovdd;
 	float aldo;
 	float dldo;
 } amu_int_volt_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	uint8_t junction;
 	uint8_t coverglass;
 	uint8_t interconnect;
@@ -275,7 +275,7 @@ typedef struct {
 	float dose;
 } amu_dut_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	uint8_t command;
 	uint8_t amu_status;
 	int8_t twi_status;
@@ -316,7 +316,7 @@ typedef struct {
 	void(*flush_cmd)(void);
 } amu_scpi_dev_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 
 	volatile uint8_t twi_address;
 	volatile amu_twi_regs_t* amu_regs;
