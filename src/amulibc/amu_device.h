@@ -70,6 +70,7 @@ extern "C" {
 	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
 
 	amu_data_reg_t*				amu_get_register_ptr(uint8_t amu_register);
+
 	
 #ifdef __AMU_DEVICE__
 	volatile ivsweep_packet_t*	amu_dev_get_sweep_packet_ptr(void);
@@ -85,6 +86,8 @@ extern "C" {
 	char*						amu_dev_setManufacturerStr(const char* manufacturerStr);
 	char*						amu_dev_setSerialNumStr(const char* serialNumStr);
 	char*						amu_dev_setFirmwareStr(const char* firmwareStr);
+
+	uint16_t 					amu_reg_get_length(uint8_t reg);
 #endif
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }

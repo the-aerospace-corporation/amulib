@@ -156,9 +156,9 @@ int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandData
 		if (amu_device.watchdog_kick)
 			amu_device.watchdog_kick();
 		repeat++;
-	} while (amu_dev_busy(address) && (repeat < 200));
+	} while (amu_dev_busy(address) && (repeat < 10));
 
-	if (repeat >= 200)
+	if (repeat >= 10)
 		return -3;
 	else
 		return amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_transfer_reg, responseLength, AMU_TWI_TRANSFER_READ);
@@ -372,6 +372,24 @@ char* amu_dev_setSerialNumStr(const char* serialNumStr) {
 char* amu_dev_setFirmwareStr(const char* firmwareStr) {
 	memcpy(dev_firmware_str, firmwareStr, AMU_FIRMWARE_STR_LEN);
 	return dev_firmware_str;
+}
+
+uint16_t amu_reg_get_length(uint8_t reg) {
+    switch(reg) {
+        case AMU_REG_DATA_PTR_TIMESTAMP:
+        case AMU_REG_DATA_PTR_VOLTAGE:
+        case AMU_REG_DATA_PTR_CURRENT:
+        case AMU_REG_DATA_PTR_SS_YAW:
+        case AMU_REG_DATA_PTR_SS_PITCH:			return amu_twi_regs.sweep_config.numPoints * sizeof(float);
+    
+        case AMU_REG_DATA_PTR_SWEEP_CONFIG:		return sizeof(amu_twi_regs.sweep_config);
+        case AMU_REG_DATA_PTR_SWEEP_META:		return sizeof(amu_twi_regs.meta);
+        case AMU_REG_DATA_PTR_SUNSENSOR:		return sizeof(amu_twi_regs.ss_angle);
+        case AMU_REG_DATA_PTR_PRESSURE:			return sizeof(press_data_t);
+        
+        case AMU_REG_TRANSFER_PTR:				return AMU_TRANSFER_REG_SIZE;
+        default:								return sizeof(amu_twi_regs) - reg;
+    }
 }
 
 #endif
