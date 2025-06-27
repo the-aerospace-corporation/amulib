@@ -30,7 +30,19 @@
 		AMU_REG_DATA_PTR = 0xF0,					
 		AMU_REG_TRANSFER_PTR = 0xFE,				
 	} AMU_REG_t;
-	
+
+	#define AMU_REG_SYSTEM_OFFSET	AMU_REG_SYSTEM
+	typedef enum {
+		AMU_REG_SYSTEM_CMD = AMU_REG_SYSTEM_OFFSET + 0x00,						//no command
+		AMU_REG_SYSTEM_AMU_STATUS = AMU_REG_SYSTEM_OFFSET + 0x01,				/*!< uint8_t amu status byte enum */
+		AMU_REG_SYSTEM_TWI_STATUS = AMU_REG_SYSTEM_OFFSET + 0x02,				/*!< uint8_t twi status byte enum */
+		AMU_REG_SYSTEM_HARDWARE_REVISION = AMU_REG_SYSTEM_OFFSET + 0x03,		/*!< uint8_t hardware revision enum */
+		AMU_REG_SYSTEM_TSENSOR_TYPE = AMU_REG_SYSTEM_OFFSET + 0x04,			/*!< uint8_t type of temperature sensor (PT100, PT1000, NPT, AD590, etc.. */
+		AMU_REG_SYSTEM_TSENSOR_NUM = AMU_REG_SYSTEM_OFFSET + 0x05,				/*!< uint8_t number of temperature sensors (1-3) */
+		AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS = AMU_REG_SYSTEM_OFFSET + 0x06,		/*!< uin16_t enabled ADC channels */
+		AMU_REG_SYSTEM_STATUS_HRADC = AMU_REG_SYSTEM_OFFSET + 0x08,			/*!< uint32_t packed with HRADC ID and 3 error bytes from AD7124 */
+	} AMU_REG_SYSTEM_t;
+	#undef AMU_REG_SYSTEM_OFFSET
 
 	#define AMU_REG_DUT_OFFSET		AMU_REG_DUT
 	typedef enum {
@@ -46,19 +58,6 @@
 		AMU_REG_DUT_DOSE = AMU_REG_DUT_OFFSET + 0x50,				/*!< float dose of irradiation, positive for proton, negative for electron */
 	} AMU_REG_DUT_t;
 	#undef AMU_REG_DUT_OFFSET
-
-	#define AMU_REG_SYSTEM_OFFSET	AMU_REG_SYSTEM
-	typedef enum {
-		AMU_REG_SYSTEM_CMD = AMU_REG_SYSTEM_OFFSET + 0x00,						//no command
-		AMU_REG_SYSTEM_AMU_STATUS = AMU_REG_SYSTEM_OFFSET + 0x01,				/*!< uint8_t amu status byte enum */
-		AMU_REG_SYSTEM_TWI_STATUS = AMU_REG_SYSTEM_OFFSET + 0x02,				/*!< uint8_t twi status byte enum */
-		AMU_REG_SYSTEM_HARDWARE_REVISION = AMU_REG_SYSTEM_OFFSET + 0x03,		/*!< uint8_t hardware revision enum */
-		AMU_REG_SYSTEM_TSENSOR_TYPE = AMU_REG_SYSTEM_OFFSET + 0x04,			/*!< uint8_t type of temperature sensor (PT100, PT1000, NPT, AD590, etc.. */
-		AMU_REG_SYSTEM_TSENSOR_NUM = AMU_REG_SYSTEM_OFFSET + 0x05,				/*!< uint8_t number of temperature sensors (1-3) */
-		AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS = AMU_REG_SYSTEM_OFFSET + 0x06,		/*!< uin16_t enabled ADC channels */
-		AMU_REG_SYSTEM_STATUS_HRADC = AMU_REG_SYSTEM_OFFSET + 0x08,			/*!< uint32_t packed with HRADC ID and 3 error bytes from AD7124 */
-	} AMU_REG_SYSTEM_t;
-	#undef AMU_REG_SYSTEM_OFFSET
 
 	#define AMU_REG_ADC_DATA_REG_OFFSET		AMU_REG_ADC_DATA
 	typedef enum {
@@ -148,5 +147,10 @@
 		AMU_REG_DATA_PTR_DATAPOINT = AMU_REG_DATA_PTR_OFFSET + 0x09,		/*!< Max determined by TWI data definition, partially memory dependent*/
 	} AMU_REG_DATA_PTR_t;
 	#undef AMU_REG_DATA_PTR_OFFSET
+
+	uint16_t amu_regs_get_register_length(uint8_t reg);
+
+	volatile amu_twi_regs_t* amu_regs_get_twi_regs_ptr(void);
+
 
 #endif /* __AMU_REGS_H__ */

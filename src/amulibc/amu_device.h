@@ -88,7 +88,11 @@ extern "C" {
 	char*						amu_dev_setFirmwareStr(const char* firmwareStr);
 
 	uint16_t 					amu_reg_get_length(uint8_t reg);
+
+
 #endif
+
+
 	
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }
 #define __TRANSFER_READ_OFFSET(TYPE)			static inline TYPE transfer_read_offset_##TYPE(void) { TYPE data; _amu_transfer_read(1, &data, sizeof(TYPE)); return data; }
