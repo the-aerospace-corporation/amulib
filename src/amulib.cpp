@@ -283,30 +283,97 @@ int8_t AMU::sendCommandandWait(CMD_t cmd, uint32_t wait) {
 
 template <typename T>
 T AMU::query(CMD_t command) {
+	if (!amu_dev || !amu_dev->transfer_reg) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Error: amu_dev or transfer_reg is null\n");
+		}
+		return T{}; // Return default-constructed value
+	}
+	
+	int8_t result = amu_dev_query_command(address, command, 0, sizeof(T));
+	if (result < 0) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);
+		}
+		return T{};
+	}
+	
 	T* data = (T*)amu_dev->transfer_reg;
-	amu_dev_query_command(address, command, 0, sizeof(T));
 	return *data;
 }
 
 template <typename T>
 T AMU::query(CMD_t command, T* data) {
-	amu_dev_query_command(address, command, 0, sizeof(T));
-	_amu_transfer_read(0, (void*)data, sizeof(T));
+	if (!data) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Error: data pointer is null\n");
+		}
+		return T{};
+	}
+	
+	int8_t result = amu_dev_query_command(address, command, 0, sizeof(T));
+	if (result < 0) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);
+		}
+		return *data; // Return existing data value
+	}
+	
+	_amu_transfer_read(0, data, sizeof(T));
+	
 	return *data;
 }
 
 template <typename T>
 T * AMU::query(CMD_t command, T *data, size_t len) {
-	amu_dev_query_command(address, command, 0, len);
-	_amu_transfer_read(0, (void*)data, len);
+	if (!data) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Error: data pointer is null\n");
+		}
+		return nullptr;
+	}
+	
+	if (len == 0) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Error: len is zero\n");
+		}
+		return data;
+	}
+	
+	int8_t result = amu_dev_query_command(address, command, 0, len);
+	if (result < 0) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);
+		}
+		return data; // Return original pointer
+	}
+	
+	_amu_transfer_read(0, data, len);
+
+	
 	return data;
 }
 
 template <typename T>
 T AMU::queryChannel(CMD_t command, uint8_t channel) {
-	T* data = (T*)amu_dev->transfer_reg;
+	if (!amu_dev || !amu_dev->transfer_reg) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Error: amu_dev or transfer_reg is null\n");
+		}
+		return T{};
+	}
+	
 	_amu_transfer_write(0, &channel, 1);
-	amu_dev_query_command(address, command, 0, sizeof(T));
+	
+	int8_t result = amu_dev_query_command(address, command, 0, sizeof(T));
+	if (result != 0) {
+		if (AMU::errorPrintFncPtr) {
+			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);
+		}
+		return T{};
+	}
+	
+	T* data = (T*)amu_dev->transfer_reg;
 	return *data;
 }
 
