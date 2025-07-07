@@ -150,7 +150,9 @@ int8_t amu_dev_send_command_data(uint8_t address, CMD_t command, uint8_t len) {
  * @return int8_t
  */
 int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandDataLen, uint8_t responseLength) {
+	
 	uint8_t repeat = 0;
+
 	amu_dev_send_command_data(address, (command | CMD_READ), commandDataLen);
 
 	do {
@@ -159,9 +161,9 @@ int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandData
 		if (amu_device.watchdog_kick)
 			amu_device.watchdog_kick();
 		repeat++;
-	} while (amu_dev_busy(address) && (repeat < 10));
+	} while (amu_dev_busy(address) && (repeat < 200));
 
-	if (repeat >= 10)
+	if (repeat >= 200)
 		return -3;
 	else
 		return amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_transfer_reg, responseLength, AMU_TWI_TRANSFER_READ);
