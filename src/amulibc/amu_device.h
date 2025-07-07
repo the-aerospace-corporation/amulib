@@ -97,6 +97,7 @@ extern "C" {
 #define __TRANSFER_READ_(TYPE)					static inline TYPE transfer_read_##TYPE(void) { TYPE data; _amu_transfer_read(0, &data, sizeof(TYPE)); return data; }
 #define __TRANSFER_READ_OFFSET(TYPE)			static inline TYPE transfer_read_offset_##TYPE(void) { TYPE data; _amu_transfer_read(1, &data, sizeof(TYPE)); return data; }
 #define __TRANSFER_WRITE_(TYPE)					static inline void transfer_write_##TYPE(TYPE data)  { _amu_transfer_write(0, &data, sizeof(TYPE)); }
+#define __TRANSFER_WRITE_OFFSET(TYPE)			static inline void transfer_write_offset_##TYPE(uint8_t num, TYPE data)  { _amu_transfer_write(num*sizeof(TYPE), &data, sizeof(TYPE)); }
 
 	__TRANSFER_READ_(uint8_t)
 	__TRANSFER_READ_(uint16_t)
@@ -124,6 +125,8 @@ extern "C" {
 	__TRANSFER_WRITE_(amu_pid_t)
 	__TRANSFER_WRITE_(press_data_t)
 	__TRANSFER_WRITE_(ss_angle_t)
+
+	__TRANSFER_WRITE_OFFSET(float)
 
 	static inline void transfer_write_str(const char* str, uint8_t len) { _amu_transfer_write(0, (void*)str, len); }
 	static inline void transfer_read_str(const char* str, uint8_t len) { _amu_transfer_read(0, (void*)str, len); }

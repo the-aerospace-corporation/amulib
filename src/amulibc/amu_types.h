@@ -38,7 +38,8 @@
 #define AMU_DUT_TECHNOLOGY_STR_LEN		16
 #define AMU_DUT_SERIALNUM_STR_LEN		24
 
-typedef enum {
+
+typedef enum amu_adc_ch_enum_t : uint8_t {
 	AMU_ADC_CH_VOLTAGE = 0,
 	AMU_ADC_CH_CURRENT = 1,
 	AMU_ADC_CH_TSENSOR0 = 2,
@@ -60,7 +61,7 @@ typedef enum {
 
 typedef amu_adc_ch_t AMU_ADC_CH_t;	// for backwards consistency 
 
-typedef enum {
+typedef enum amu_adc_pga_enum_t : uint8_t {
 	ADC_PGA_1X = 0,
 	ADC_PGA_2X = 1,
 	ADC_PGA_4X = 2,
@@ -72,7 +73,7 @@ typedef enum {
 	ADC_PGA_NUM = 8
 } amu_adc_pga_t;
 
-typedef enum {
+typedef enum amu_adc_power_mode_enum_t : uint8_t {
     AMU_ADC_POWER_MODE_LOW = 0,
     AMU_ADC_POWER_MODE_MID = 1,
     AMU_ADC_POWER_MODE_HIGH = 2,
@@ -81,7 +82,7 @@ typedef enum {
 
 typedef amu_adc_power_mode_t AMU_ADC_POWER_MODE_t;
 
-typedef enum {
+typedef enum amu_ch_en_enum_t : uint16_t {
 	AMU_CH_EN_VOLTAGE = (1 << AMU_ADC_CH_VOLTAGE),
 	AMU_CH_EN_CURRENT = (1 << AMU_ADC_CH_CURRENT),
 	AMU_CH_EN_TSENSOR0 = (1 << AMU_ADC_CH_TSENSOR0),
@@ -106,7 +107,7 @@ typedef enum {
 
 typedef amu_ch_en_t AMU_CH_EN_t;
 
-typedef enum {
+typedef enum amu_hardware_revision_enum_t : uint8_t {
 	AMU_HARDWARE_REVISION_ISC2 = 0x01,
 	AMU_HARDWARE_REVISION_AMU_1_0 = 0x10,
 	AMU_HARDWARE_REVISION_AMU_1_1 = 0x11,
@@ -120,13 +121,13 @@ typedef enum {
 	AMU_HARDWARE_REVISION_AMU_SP = 0x81,
 } amu_hardware_revision_t;
 
-typedef enum {
+typedef enum amu_tsensor_type_enum_t : uint8_t {
 	AMU_TSENSOR_TYPE_PT1000_RTD = 0,
 	AMU_TSENSOR_TYPE_PT100_RTD = 1,
 	AMU_TSENSOR_TYPE_AD590 = 2,
 } amu_tsensor_type_t;
 
-typedef enum {
+typedef enum amu_led_pattern_enum_t : uint8_t {
 	AMU_LED_PATTERN_OFF = 0,
 	AMU_LED_PATTERN_WHITE_FLASH = 1,
 	AMU_LED_PATTERN_QUICK_RGB_FADE = 2,
@@ -136,14 +137,14 @@ typedef enum {
 	AMU_LED_PATTERN_BLUE_FLASH = 6,
 } amu_led_pattern_t;
 
-typedef enum {
+typedef enum amu_status_enum_t : uint8_t {
 	AMU_STATUS_SLEEP = 0x01,
 	AMU_STATUS_MEASURE = 0x02,
 	AMU_STATUS_HEATER = 0x04,
 	AMU_STATUS_MPPT = 0x08,
 } amu_status_t;
 
-typedef enum {
+typedef enum amu_sleep_mode_enum_t : uint8_t {
     AMU_SLEEP_MODE_DEEP = 0,
     AMU_SLEEP_MODE_STANDBY = 1,
     AMU_SLEEP_MODE_IDLE = 2,
@@ -236,7 +237,7 @@ typedef union {
 		uint32_t ss_tr;
 	} val;
 	uint32_t channel[16];
-} adc_channnels_t;
+} adc_channels_t;
 
 typedef struct {
 	float yaw;
@@ -285,7 +286,7 @@ typedef struct {
 	uint16_t activeADCchannels;
 	uint32_t adc_status;
 	amu_dut_t dut;
-	adc_channnels_t adc_raw;
+	adc_channels_t adc_raw;
 	ss_angle_t ss_angle;
 	uint32_t utc_time;
 	uint32_t milliseconds;
