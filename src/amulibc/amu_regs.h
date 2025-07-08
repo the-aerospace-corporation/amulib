@@ -17,7 +17,7 @@
 	 * 
 	 * TODO
 	 */
-	typedef enum amu_reg_t : uint8_t {
+	typedef enum amu_reg_t  {
 		AMU_REG_CMD = 0x00,							/*!< 1 byte register, new commands are placed here */
 		AMU_REG_SYSTEM = 0x00,						/*!< 16 byte register */
 		AMU_REG_DUT = 0x0C,							
@@ -32,7 +32,7 @@
 	} AMU_REG_t;
 
 	#define AMU_REG_SYSTEM_OFFSET	AMU_REG_SYSTEM
-	typedef enum amu_reg_system_t : uint8_t {
+	typedef enum amu_reg_system_t  {
 		AMU_REG_SYSTEM_CMD = AMU_REG_SYSTEM_OFFSET + 0x00,						//no command
 		AMU_REG_SYSTEM_AMU_STATUS = AMU_REG_SYSTEM_OFFSET + 0x01,				/*!< uint8_t amu status byte enum */
 		AMU_REG_SYSTEM_TWI_STATUS = AMU_REG_SYSTEM_OFFSET + 0x02,				/*!< uint8_t twi status byte enum */
@@ -45,7 +45,7 @@
 	#undef AMU_REG_SYSTEM_OFFSET
 
 	#define AMU_REG_DUT_OFFSET		AMU_REG_DUT
-	typedef enum amu_reg_dut_t : uint8_t {
+	typedef enum amu_reg_dut_t {
 		AMU_REG_DUT_JUNCTION = AMU_REG_DUT_OFFSET + 0x00,			
 		AMU_REG_DUT_COVERGLASS = AMU_REG_DUT_OFFSET + 0x01,		
 		AMU_REG_DUT_INTERCONNECT = AMU_REG_DUT_OFFSET + 0x02,		
@@ -60,7 +60,7 @@
 	#undef AMU_REG_DUT_OFFSET
 
 	#define AMU_REG_ADC_DATA_REG_OFFSET		AMU_REG_ADC_DATA
-	typedef enum amu_reg_adc_data_t : uint8_t {
+	typedef enum amu_reg_adc_data_t {
 		AMU_REG_ADC_DATA_VOLTAGE = AMU_REG_ADC_DATA_REG_OFFSET + 0x00,		/*!< float - converted value of voltage measurement */
 		AMU_REG_ADC_DATA_CURRENT = AMU_REG_ADC_DATA_REG_OFFSET + 0x04,		/*!< float - converted value of current measurement */
 		AMU_REG_ADC_DATA_TSENSOR = AMU_REG_ADC_DATA_REG_OFFSET + 0x08,		/*!< float - converted value of RTD temperature sensor */
@@ -83,7 +83,7 @@
 	#undef AMU_REG_ADC_DATA_REG_OFFSET
 
 	#define AMU_REG_SUNSENSOR_OFFSET	AMU_REG_SUNSENSOR
-	typedef enum amu_reg_sunsensor_t : uint8_t {
+	typedef enum amu_reg_sunsensor_t {
 		AMU_REG_SUNSENSOR_TL = AMU_REG_SUNSENSOR_OFFSET + 0x00,	
 		AMU_REG_SUNSENSOR_BL = AMU_REG_SUNSENSOR_OFFSET + 0x04,	
 		AMU_REG_SUNSENSOR_BR = AMU_REG_SUNSENSOR_OFFSET + 0x08,	
@@ -94,14 +94,14 @@
 	#undef AMU_REG_SUNSENSOR_OFFSET
 
 	#define AMU_REG_TIME_OFFSET	AMU_REG_TIME
-	typedef enum amu_reg_time_t : uint8_t {
+	typedef enum amu_reg_time_t {
 		AMU_REG_TIME_MILLIS = AMU_REG_TIME_OFFSET + 0x00,	
 		AMU_REG_TIME_UTC = AMU_REG_TIME_OFFSET + 0x04,		
 	} AMU_REG_TIME_t;
 	#undef AMU_REG_TIME_OFFSET
 
 	#define AMU_REG_SWEEP_CONFIG_OFFSET	AMU_REG_SWEEP_CONFIG
-	typedef enum amu_reg_sweep_config_t : uint8_t {
+	typedef enum amu_reg_sweep_config_t {
 		AMU_REG_SWEEP_CONFIG_TYPE = AMU_REG_SWEEP_CONFIG_OFFSET + 0x00,				/*!< uint8_t - IV_SWEEP_t (i.e. optimized, linear, user_defined etc. ) */
 		AMU_REG_SWEEP_CONFIG_NUM_POINTS = AMU_REG_SWEEP_CONFIG_OFFSET + 0x01,			/*!< uint8_t - IV Sweep number of points */
 		AMU_REG_SWEEP_CONFIG_DELAY = AMU_REG_SWEEP_CONFIG_OFFSET + 0x02,				/*!< uint8_t - IV sweep delay between changing load points */
@@ -116,7 +116,7 @@
 	#undef AMU_REG_SWEEP_CONFIG_OFFSET
 
 	#define AMU_REG_SWEEP_META_OFFSET	AMU_REG_SWEEP_META
-	typedef enum amu_reg_sweep_meta_t : uint8_t {
+	typedef enum amu_reg_sweep_meta_t {
 		AMU_REG_SWEEP_META_VOC = AMU_REG_SWEEP_META_OFFSET+ 0x00,					/*!< float - converted Isc value of sweep */
 		AMU_REG_SWEEP_META_ISC = AMU_REG_SWEEP_META_OFFSET+ 0x04,					/*!< float - converted Voc value of sweep  */
 		AMU_REG_SWEEP_META_TSENSOR_START = AMU_REG_SWEEP_META_OFFSET+ 0x08,		/*!< float - converted Tsensor value at start of measurement */
@@ -133,7 +133,7 @@
 	#undef AMU_REG_SWEEP_META_OFFSET
 	
 	#define AMU_REG_DATA_PTR_OFFSET	AMU_REG_DATA_PTR
-	typedef enum amu_reg_data_ptr_t : uint8_t {
+	typedef enum amu_reg_data_ptr_t {
 		AMU_REG_DATA_PTR_COMMAND = 0x00,
 		AMU_REG_DATA_PTR_TIMESTAMP = AMU_REG_DATA_PTR_OFFSET + 0x00,		/*!< Max determined by TWI data definition, partially memory dependent*/
 		AMU_REG_DATA_PTR_VOLTAGE = AMU_REG_DATA_PTR_OFFSET + 0x01, 			/*!< Max determined by TWI data definition, partially memory dependent*/

@@ -21,7 +21,7 @@ void AMU::begin(uint8_t twiAddress) {
 
 	readSerialStr();
 
-	hardware_revision = read_twi_reg< amu_hardware_revision_t>(AMU_REG_SYSTEM_HARDWARE_REVISION);
+	hardware_revision = (amu_hardware_revision_t)read_twi_reg< uint8_t >(AMU_REG_SYSTEM_HARDWARE_REVISION);
 
 	dut = read_twi_reg<amu_dut_t>(AMU_REG_DUT);
 
