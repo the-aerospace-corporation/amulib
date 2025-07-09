@@ -1,6 +1,6 @@
 # AMU Library
 
-A C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices over the I2C interface.
+A C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices over the I2C or USB interface.
 
 ## Overview
 
