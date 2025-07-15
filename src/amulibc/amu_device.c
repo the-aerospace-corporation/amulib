@@ -382,16 +382,16 @@ amu_data_reg_t* amu_get_register_ptr(uint8_t reg) {
         case AMU_REG_TIME_MILLIS:                       return (amu_data_reg_t*)&amu_device.amu_regs->milliseconds;            break;
         case AMU_REG_TIME_UTC:                          return (amu_data_reg_t*)&amu_device.amu_regs->utc_time;                break;
 
-        case AMU_REG_SWEEP_CONFIG_TYPE:                return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.type;              break;
-        case AMU_REG_SWEEP_CONFIG_NUM_POINTS:          return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.numPoints;        break;
-        case AMU_REG_SWEEP_CONFIG_DELAY:               return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.delay;             break;
-        case AMU_REG_SWEEP_CONFIG_RATIO:               return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.ratio;             break;
-        case AMU_REG_SWEEP_CONFIG_PWR_MODE:            return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.power;             break;
-        case AMU_REG_SWEEP_CONFIG_DAC_GAIN:           return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.dac_gain;          break;
-        case AMU_REG_SWEEP_CONFIG_AVERAGES:            return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.averages;          break;
-        case AMU_REG_SWEEP_CONFIG_RES_1:            	return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.reserved;          break;
-        case AMU_REG_SWEEP_CONFIG_AM0:                 return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.am0;                 break;
-        case AMU_REG_SWEEP_CONFIG_AREA:                return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.area;                break;
+        case AMU_REG_SWEEP_CONFIG_TYPE:                return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.type;              	break;
+        case AMU_REG_SWEEP_CONFIG_NUM_POINTS:          return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.numPoints;        	break;
+        case AMU_REG_SWEEP_CONFIG_DELAY:               return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.delay;             	break;
+        case AMU_REG_SWEEP_CONFIG_RATIO:               return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.ratio;             	break;
+        case AMU_REG_SWEEP_CONFIG_PWR_MODE:            return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.power;             	break;
+        case AMU_REG_SWEEP_CONFIG_DAC_GAIN:            return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.dac_gain;          	break;
+        case AMU_REG_SWEEP_CONFIG_AVERAGES:            return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.sweep_averages;       break;
+        case AMU_REG_SWEEP_CONFIG_ADC_AVERAGES:        return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.adc_averages;         break;
+        case AMU_REG_SWEEP_CONFIG_AM0:                 return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.am0;                 	break;
+        case AMU_REG_SWEEP_CONFIG_AREA:                return (amu_data_reg_t*)&amu_device.amu_regs->sweep_config.area;                	break;
 
         case AMU_REG_SWEEP_META_VOC:                  return (amu_data_reg_t*)&amu_device.amu_regs->meta.voc;                        break;
         case AMU_REG_SWEEP_META_ISC:                  return (amu_data_reg_t*)&amu_device.amu_regs->meta.isc;                        break;

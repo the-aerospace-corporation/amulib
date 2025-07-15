@@ -71,8 +71,8 @@ uint16_t amu_regs_get_register_length(uint8_t reg) {
         case AMU_REG_SWEEP_CONFIG_RATIO:                return MEMBER_SIZE(ivsweep_config_t, ratio);                break;
         case AMU_REG_SWEEP_CONFIG_PWR_MODE:             return MEMBER_SIZE(ivsweep_config_t, power);                break;
         case AMU_REG_SWEEP_CONFIG_DAC_GAIN:             return MEMBER_SIZE(ivsweep_config_t, dac_gain);             break;
-        case AMU_REG_SWEEP_CONFIG_AVERAGES:             return MEMBER_SIZE(ivsweep_config_t, averages);             break;
-        case AMU_REG_SWEEP_CONFIG_RES_1:                return MEMBER_SIZE(ivsweep_config_t, reserved);             break;
+        case AMU_REG_SWEEP_CONFIG_AVERAGES:             return MEMBER_SIZE(ivsweep_config_t, sweep_averages);       break;
+        case AMU_REG_SWEEP_CONFIG_ADC_AVERAGES:         return MEMBER_SIZE(ivsweep_config_t, adc_averages);         break;
         case AMU_REG_SWEEP_CONFIG_AM0:                  return MEMBER_SIZE(ivsweep_config_t, am0);                  break;
         case AMU_REG_SWEEP_CONFIG_AREA:                 return MEMBER_SIZE(ivsweep_config_t, area);                 break;
 

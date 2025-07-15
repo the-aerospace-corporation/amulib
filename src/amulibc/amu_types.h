@@ -178,8 +178,8 @@ typedef struct {
 	uint8_t ratio;
 	uint8_t power;
 	uint8_t dac_gain;
-	uint8_t averages;
-	uint8_t reserved;
+	uint8_t sweep_averages;
+	uint8_t adc_averages;
 	float am0;
 	float area;
 } ivsweep_config_t;

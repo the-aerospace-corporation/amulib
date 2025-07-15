@@ -258,6 +258,7 @@ extern "C" {
         SCPI_COMMAND("SWEEP:CONFig:TYPE[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_TYPE			)	\
         SCPI_COMMAND("SWEEP:CONFig:NUMpoints[?]",		scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_NUM_POINTS		)	\
         SCPI_COMMAND("SWEEP:CONFig:DELAY[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DELAY			)	\
+        SCPI_COMMAND("SWEEP:CONFig:ADC:AVERages[?]",	scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_ADC_AVERAGES	)	\
         SCPI_COMMAND("SWEEP:CONFig:RATIO[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_RATIO			)	\
         SCPI_COMMAND("SWEEP:CONFig:POWER[?]",			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_PWR_MODE		)	\
         SCPI_COMMAND("SWEEP:CONFig:GAIN[?]"	,			scpi_cmd_rw_uint8_t,				AMU_REG_SWEEP_CONFIG_DAC_GAIN		)	\

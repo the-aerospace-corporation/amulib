@@ -109,7 +109,7 @@
 		AMU_REG_SWEEP_CONFIG_PWR_MODE = AMU_REG_SWEEP_CONFIG_OFFSET + 0x04,			/*!< uint8_t - power mode, type PWR_MODE_t */
 		AMU_REG_SWEEP_CONFIG_DAC_GAIN = AMU_REG_SWEEP_CONFIG_OFFSET + 0x05,			/*!< uint8_t - gain setting of DAC during sweep */
 		AMU_REG_SWEEP_CONFIG_AVERAGES = AMU_REG_SWEEP_CONFIG_OFFSET + 0x06,			/*!< uint8_t - number of averages to do (full sweep, current steps are assumed constant, voltages are averaged */
-		AMU_REG_SWEEP_CONFIG_RES_1 = AMU_REG_SWEEP_CONFIG_OFFSET + 0x07,				/*!< uint8_t - reserved for future use */
+		AMU_REG_SWEEP_CONFIG_ADC_AVERAGES = AMU_REG_SWEEP_CONFIG_OFFSET + 0x07,		/*!< uint8_t - number of ADC datapoint averages to do */
 		AMU_REG_SWEEP_CONFIG_AM0 = AMU_REG_SWEEP_CONFIG_OFFSET + 0x08,					/*!< float - sun power (default 1366.1 W/m� based on ASTM E-490) */
 		AMU_REG_SWEEP_CONFIG_AREA = AMU_REG_SWEEP_CONFIG_OFFSET + 0x0C,				/*!< float - cell area as defined by user (2x2 = 0.0004 m�) */
 	} AMU_REG_SWEEP_CONFIG_t;
