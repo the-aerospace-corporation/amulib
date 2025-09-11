@@ -17,6 +17,7 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
 
 class AMU {
 
@@ -209,6 +210,8 @@ protected:
 	int8_t write_twi_reg(uint8_t reg, T * data, size_t len);
 };
 
-#endif
+#endif // __cplusplus
+
+#endif // __AMU_REMOTE_DEVICE__
 
 #endif	/* __AMULIB_H__ */
