@@ -1,13 +1,18 @@
 // 
 // 
-// 
-#ifdef __AMU_REMOTE_DEVICE__
+//
 
 #include "amulib.h"
+
+#ifdef __AMU_REMOTE_DEVICE__
+
+
+#ifdef __cplusplus
 
 #ifdef ARDUINO
 #include <Arduino.h>
 #endif
+
 
 AMU::errorPrintFncPtr_t AMU::errorPrintFncPtr = nullptr;
 AMU::resetFncPtr_t AMU::amuResetFncPtr = nullptr;
@@ -404,8 +409,10 @@ amu_device_t* AMU::amu_lib_init(amu_transfer_fptr_t i2c_transfer_func) {
 
 	amu_device_t * dev = (amu_device_t * )amu_dev_init(i2c_transfer_func);
 
+#ifdef ARDUINO
 	dev->delay = delay;		// delay function pointer amu_delay_fptr_t
 	dev->millis = millis;	// millis fucnction pointer amu_milis_fptr_t
+#endif
 
 	return dev;
 }
@@ -423,4 +430,6 @@ amu_scpi_dev_t* AMU::amu_scpi_init(size_t(*write_cmd)(const char* data, size_t l
 #endif
 }
 
-#endif
+#endif // __cplusplus
+
+#endif // __AMU_REMOTE_DEVICE__
