@@ -6,8 +6,8 @@
  * @date	5/7/2019 3:56:47 PM
  */
 
-#include "amu_config_internal.h"
-#pragma message(AMU_CONFIG_MESSAGE)
+// #include "amu_config_internal.h"
+// #pragma message(AMU_CONFIG_MESSAGE)
 
 #include "amu_device.h"
 #include "amu_types.h"
@@ -170,11 +170,11 @@ int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandData
 }
 
 /**
- * @brief Scans for any devices that might be TODO in order to TODO
+ * @brief Scans for any devices that might be connected in order to identify them
  *
- * @param startAddress 	TODO
- * @param endAddress 	TODO
- * @return uint8_t TODO
+ * @param startAddress 	Start address of the scan range
+ * @param endAddress 	End address of the scan range
+ * @return uint8_t 	Number of devices found, including this device if __AMU_DEVICE__ is defined
  */
 uint8_t amu_scan_for_devices(uint8_t startAddress, uint8_t endAddress) {
 

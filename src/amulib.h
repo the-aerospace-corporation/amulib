@@ -3,7 +3,6 @@
 #ifndef __AMULIB_H__
 #define __AMULIB_H__
 
-#include "amulibc/amu_config_internal.h"
 #include "amulibc/amu_device.h"
 #include "amulibc/amu_types.h"
 #include "amulibc/amu_regs.h"
