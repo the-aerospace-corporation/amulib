@@ -163,6 +163,10 @@ quad_photo_sensor_t AMU::measureSunSensor() {
 	return query<quad_photo_sensor_t>((CMD_t)CMD_EXEC_MEAS_SUN_SENSOR, &sun_sensor);
 }
 
+float AMU::measureSystemTemperature() {
+	return query<float>((CMD_t)CMD_SYSTEM_TEMPERATURE);
+}
+
 ivsweep_config_t * AMU::readSweepConfig() { sweep_config = read_twi_reg<ivsweep_config_t>(AMU_REG_DATA_PTR_SWEEP_CONFIG); return &sweep_config; }
 ivsweep_meta_t * AMU::readMeta() { meta = read_twi_reg<ivsweep_meta_t>(AMU_REG_DATA_PTR_SWEEP_META); return &meta; }
 

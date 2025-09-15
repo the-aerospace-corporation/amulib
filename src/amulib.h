@@ -65,6 +65,8 @@ public:
 	amu_int_volt_t			measureInternalVoltages(void);
 	quad_photo_sensor_t		measureSunSensor(void);
 
+	float					measureSystemTemperature(void);
+
 	/*** EYAS FUNCTIONS ***/
 	press_data_t	measurePressureSensor(void);
 	float			measurePressure(void);
