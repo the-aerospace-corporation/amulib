@@ -1,0 +1,44 @@
+/**
+ * @page scpi_command_reference SCPI Command Reference
+ * @brief Complete reference guide for all SCPI commands supported by the AMU (Aerospace Measurement Unit)
+ * 
+ * This document provides a comprehensive reference for all SCPI (Standard Commands for Programmable Instruments)
+ * commands supported by the AMU hardware. Commands are organized by functional groups for easy navigation.
+ * 
+ * @section scpi_overview Overview
+ * 
+ * The AMU supports SCPI commands over both USB and I2C interfaces. Commands follow the standard SCPI syntax:
+ * - Commands are case-insensitive
+ * - Query commands end with '?'
+ * - Parameters are separated by spaces or commas
+ * - Multiple commands can be separated by semicolons
+ * 
+ * @section scpi_command_groups Command Groups
+ * 
+ * Commands are organized into the following functional groups:
+ * - @ref scpi_system_commands "System Commands" - Device control and status
+ * - @ref scpi_measurement_commands "Measurement Commands" - Data acquisition
+ * - @ref scpi_dut_commands "DUT Commands" - Device Under Test configuration
+ * - @ref scpi_adc_commands "ADC Commands" - Analog-to-Digital Converter control
+ * - @ref scpi_sweep_commands "Sweep Commands" - I-V sweep operations
+ * - @ref scpi_dac_commands "DAC Commands" - Digital-to-Analog Converter control
+ * - @ref scpi_heater_commands "Heater Commands" - Temperature control
+ * - @ref scpi_sunsensor_commands "Sun Sensor Commands" - Solar tracking
+ * - @ref scpi_memory_commands "Memory Commands" - EEPROM operations
+ * 
+ * @section scpi_syntax Command Syntax
+ * 
+ * @subsection scpi_syntax_notation Notation
+ * - [ ] = Optional parameters
+ * - | = Alternative choices
+ * - # = Numeric suffix (e.g., CH0, CH1, etc.)
+ * - ? = Query form of command
+ * 
+ * @subsection scpi_syntax_examples Examples
+ * @code
+ * *IDN?                           // Query device identification
+ * SYSTem:LED:COLOR 1.0,0.0,0.0   // Set LED to red
+ * MEASure:ADC:VOLTage?           // Measure voltage
+ * ADC:CH0:PGA?                   // Query PGA setting for channel 0
+ * @endcode
+ */

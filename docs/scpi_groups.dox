@@ -1,0 +1,118 @@
+/**
+ * @defgroup scpi_commands SCPI Commands
+ * @brief All SCPI commands supported by the AMU
+ * 
+ * This module contains all SCPI commands organized by functional groups.
+ * Each command includes its SCPI syntax, description, parameters, and usage examples.
+ */
+
+/**
+ * @defgroup scpi_system_commands System Commands
+ * @ingroup scpi_commands
+ * @brief System-level commands for device control and configuration
+ * 
+ * These commands control basic system functions including:
+ * - Device identification and status
+ * - LED control
+ * - Sleep mode
+ * - Temperature monitoring
+ * - I2C configuration
+ * - Firmware information
+ */
+
+/**
+ * @defgroup scpi_measurement_commands Measurement Commands
+ * @ingroup scpi_commands
+ * @brief Commands for data acquisition and measurement
+ * 
+ * These commands perform various measurements including:
+ * - Voltage and current measurements
+ * - Temperature sensor readings
+ * - Sun sensor data
+ * - Pressure sensor data
+ * - Internal voltage monitoring
+ */
+
+/**
+ * @defgroup scpi_dut_commands DUT Commands
+ * @ingroup scpi_commands
+ * @brief Device Under Test configuration commands
+ * 
+ * These commands configure the device under test parameters:
+ * - Physical characteristics (junction, coverglass, interconnect)
+ * - Manufacturer information
+ * - Energy and dose tracking
+ * - Temperature sensor configuration
+ */
+
+/**
+ * @defgroup scpi_adc_commands ADC Commands
+ * @ingroup scpi_commands
+ * @brief Analog-to-Digital Converter control commands
+ * 
+ * These commands control ADC operation:
+ * - Channel configuration
+ * - PGA (Programmable Gain Amplifier) settings
+ * - Calibration procedures
+ * - Filter settings
+ * - Sample rates
+ */
+
+/**
+ * @defgroup scpi_sweep_commands Sweep Commands
+ * @ingroup scpi_commands
+ * @brief I-V sweep measurement commands
+ * 
+ * These commands control current-voltage sweep operations:
+ * - Sweep configuration
+ * - Trigger control
+ * - Data retrieval
+ * - EEPROM storage
+ * - Metadata access
+ */
+
+/**
+ * @defgroup scpi_dac_commands DAC Commands
+ * @ingroup scpi_commands
+ * @brief Digital-to-Analog Converter control commands
+ * 
+ * These commands control DAC operation:
+ * - Current and voltage output
+ * - Calibration
+ * - Raw value access
+ * - Offset and gain correction
+ */
+
+/**
+ * @defgroup scpi_heater_commands Heater Commands
+ * @ingroup scpi_commands
+ * @brief Temperature control commands
+ * 
+ * These commands control the integrated heater:
+ * - Heater state control
+ * - Temperature setpoint
+ * - PID controller parameters
+ */
+
+/**
+ * @defgroup scpi_sunsensor_commands Sun Sensor Commands
+ * @ingroup scpi_commands
+ * @brief Solar tracking and sun sensor commands
+ * 
+ * These commands control sun sensor operation:
+ * - Quadrant measurements
+ * - Angle calculations
+ * - Calibration coefficients
+ * - Threshold settings
+ */
+
+/**
+ * @defgroup scpi_memory_commands Memory Commands
+ * @ingroup scpi_commands
+ * @brief EEPROM and memory management commands
+ * 
+ * These commands manage non-volatile memory:
+ * - EEPROM erase operations
+ * - Calibration data storage
+ * - Configuration persistence
+ */
