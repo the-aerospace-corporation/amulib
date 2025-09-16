@@ -1,0 +1,78 @@
+# AMU Library Doxygen Configuration
+PROJECT_NAME           = "AMU Library"
+PROJECT_NUMBER         = 2.1
+PROJECT_BRIEF          = "C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices"
+
+# Input and output settings
+INPUT                  = ../src ../docs
+FILE_PATTERNS          = *.h *.cpp *.c *.dox
+RECURSIVE              = YES
+OUTPUT_DIRECTORY       = ../docs/html
+
+# Source browser
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+
+# Documentation extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Preprocessing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = NO
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           = ../src
+
+# Predefined macros to help with parsing
+PREDEFINED             = __AMU_USE_SCPI__ \
+                        SCPI_COMMAND(P,C,T)=/** @brief P */ \
+                        __cplusplus
+
+# Group related pages
+USE_MDFILE_AS_MAINPAGE = scpi_command_reference.dox
+
+# HTML output options
+GENERATE_HTML          = YES
+HTML_OUTPUT            = .
+HTML_FILE_EXTENSION    = .html
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_GAMMA  = 80
+HTML_TIMESTAMP         = YES
+HTML_DYNAMIC_SECTIONS  = YES
+HTML_INDEX_NUM_ENTRIES = 100
+
+# Generate additional formats
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_MAN           = NO
+GENERATE_XML           = NO
+
+# Call graph and collaboration diagrams
+HAVE_DOT               = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+COLLABORATION_GRAPH    = NO
+UML_LOOK               = NO
+TEMPLATE_RELATIONS     = NO
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
+DIRECTORY_GRAPH        = NO
+
+# Search engine
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
+
+# Optimization for C
+OPTIMIZE_OUTPUT_FOR_C  = YES
+TYPEDEF_HIDES_STRUCT   = YES
+
+# Warnings
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = NO

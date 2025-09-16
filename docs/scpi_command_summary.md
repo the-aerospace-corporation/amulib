@@ -17,7 +17,7 @@ Calibrate all internal ADC channels
 
 ### `ADC:CALibrate:TSENSor`
 
-Calibrate temperature sensor at 25Â°C
+Calibrate temperature sensor at 25°C
 
 - **Handler:** scpi_cmd_rw_float
 - **Command ID:** CMD_EXEC_TSENSOR_CAL_25C
