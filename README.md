@@ -6,6 +6,10 @@ A C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices 
 
 This Arduino-compatible library provides a comprehensive interface for controlling and reading data from AMU devices via I2C communication. The library supports multiple AMU devices on the same I2C bus and includes SCPI-based communication capabilities.
 
+## Documentation and API Reference
+
+Doxygen generated [documentation](https://the-aerospace-corporation.github.io/amulib/html/index.html).
+
 ## Features
 
 - **I2C Communication**: Full support for communicating with AMU devices over the I2C bus
