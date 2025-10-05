@@ -29,10 +29,10 @@
  * @section scpi_syntax Command Syntax
  * 
  * @subsection scpi_syntax_notation Notation
- * - [ ] = Optional parameters
- * - | = Alternative choices
+ * - * = IEEE 488.2 Common Commands for instrument control, such as *CLS, *RST, etc.
  * - # = Numeric suffix (e.g., CH0, CH1, etc.)
  * - ? = Query form of command
+ * - | = Alternative choices
  * 
  * @subsection scpi_syntax_examples Examples
  * @code
