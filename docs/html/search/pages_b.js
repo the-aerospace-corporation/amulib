@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['main_20classes_0',['Main Classes',['../api_reference.html#main_classes',1,'']]],
-  ['measurement_20commands_1',['Measurement Commands',['../index.html#measurement_commands_overview',1,'']]]
+  ['library_0',['AMU Library',['../index.html',1,'']]],
+  ['license_1',['License',['../index.html#license_sec',1,'']]]
 ];

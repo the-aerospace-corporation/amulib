@@ -15,5 +15,22 @@ var index =
     ] ],
     [ "Compatibility", "index.html#compatibility_sec", null ],
     [ "License", "index.html#license_sec", null ],
-    [ "Author", "index.html#author_sec", null ]
+    [ "Author", "index.html#author_sec", null ],
+    [ "C++ API Reference", "api_reference.html", [
+      [ "Main Classes", "api_reference.html#main_classes", null ],
+      [ "Data Types", "api_reference.html#data_types", null ],
+      [ "Error Handling", "api_reference.html#error_handling", null ]
+    ] ],
+    [ "Interface Commands", "interface_commands.html", null ],
+    [ "Code Examples", "examples.html", [
+      [ "Basic Examples", "examples.html#basic_examples", null ],
+      [ "Advanced Examples", "examples.html#advanced_examples", null ]
+    ] ],
+    [ "Hardware Reference", "hardware.html", [
+      [ "Electrical Specifications", "hardware.html#electrical_specs", null ],
+      [ "Interface Specifications", "hardware.html#interfaces", [
+        [ "I2C Interface", "hardware.html#i2c_interface", null ],
+        [ "USB Interface", "hardware.html#usb_interface", null ]
+      ] ]
+    ] ]
 ];

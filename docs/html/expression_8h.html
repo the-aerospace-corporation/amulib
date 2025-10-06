@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: C:/Users/cjm28241/source/repos/amulib/src/amulibc/libscpi/expression.h File Reference</title>
+<title>AMU Library: C:/Users/colin/source/repos/amulib/src/amulibc/libscpi/expression.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -106,9 +107,13 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a810fa104d42ef99e96cf10bf47e57b5a" id="r_a810fa104d42ef99e96cf10bf47e57b5a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5a">_scpi_expr_result_t</a> { <a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090">SCPI_EXPR_OK</a> = 0
-, <a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0">SCPI_EXPR_ERROR</a>
-, <a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515">SCPI_EXPR_NO_MORE</a>
+<tr class="memitem:a810fa104d42ef99e96cf10bf47e57b5a" id="r_a810fa104d42ef99e96cf10bf47e57b5a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5a">_scpi_expr_result_t</a> { <br />
+&#160;&#160;<a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090">SCPI_EXPR_OK</a> = 0
+, <br />
+&#160;&#160;<a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0">SCPI_EXPR_ERROR</a>
+, <br />
+&#160;&#160;<a class="el" href="#a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515">SCPI_EXPR_NO_MORE</a>
+<br />
  }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
@@ -152,9 +157,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090" name="a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090"></a>SCPI_EXPR_OK&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0" name="a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0"></a>SCPI_EXPR_ERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515" name="a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515"></a>SCPI_EXPR_NO_MORE&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090" name="a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090"></a>SCPI_EXPR_OK&#160;</td><td class="fieldinit">0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0" name="a810fa104d42ef99e96cf10bf47e57b5aa4c33a61b33aae1c9ec825a95901299a0"></a>SCPI_EXPR_ERROR&#160;</td><td class="fieldinit">&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515" name="a810fa104d42ef99e96cf10bf47e57b5aab1e6c372b63a7a1f99ca870063d48515"></a>SCPI_EXPR_NO_MORE&#160;</td><td class="fieldinit">&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="expression_8h_source.html#l00045">45</a> of file <a class="el" href="expression_8h_source.html">expression.h</a>.</p>

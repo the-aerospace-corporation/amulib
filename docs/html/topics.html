@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -94,16 +95,22 @@ $(function(){initNavTree('topics.html','',''); });
 <div class="contents">
 <div class="textblock">Here is a list of all topics with brief descriptions:</div><div class="directory">
 <div class="levels">[detail level <span onclick="javascript:dynsection.toggleLevel(1);">1</span><span onclick="javascript:dynsection.toggleLevel(2);">2</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="dynsection.toggleFolder('0_')"><span class="arrowhead opened"></span></span><a class="el" href="group__scpi__commands.html" target="_self">SCPI Commands</a></td><td class="desc">All SCPI commands supported by the AMU </td></tr>
-<tr id="row_0_0_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__system__commands.html" target="_self">System Commands</a></td><td class="desc">System-level commands for device control and configuration </td></tr>
-<tr id="row_0_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__measurement__commands.html" target="_self">Measurement Commands</a></td><td class="desc">Commands for data acquisition and measurement </td></tr>
-<tr id="row_0_2_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__dut__commands.html" target="_self">DUT Commands</a></td><td class="desc">Device Under Test configuration commands </td></tr>
-<tr id="row_0_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__adc__commands.html" target="_self">ADC Commands</a></td><td class="desc">Analog-to-Digital Converter control commands </td></tr>
-<tr id="row_0_4_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__sweep__commands.html" target="_self">Sweep Commands</a></td><td class="desc">I-V sweep measurement commands </td></tr>
-<tr id="row_0_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__dac__commands.html" target="_self">DAC Commands</a></td><td class="desc">Digital-to-Analog Converter control commands </td></tr>
-<tr id="row_0_6_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__heater__commands.html" target="_self">Heater Commands</a></td><td class="desc">Temperature control commands </td></tr>
-<tr id="row_0_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__sunsensor__commands.html" target="_self">Sun Sensor Commands</a></td><td class="desc">Solar tracking and sun sensor commands </td></tr>
-<tr id="row_0_8_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__memory__commands.html" target="_self">Memory Commands</a></td><td class="desc">EEPROM and memory management commands </td></tr>
+<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="dynsection.toggleFolder('0_')"><span class="arrowhead opened"></span></span><a class="el" href="group__i2c__commands.html" target="_self">I2C Commands</a></td><td class="desc">I2C protocol commands for direct hardware communication </td></tr>
+<tr id="row_0_0_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__system__commands.html" target="_self">I2C System Commands</a></td><td class="desc">System-level I2C commands for device control and configuration </td></tr>
+<tr id="row_0_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__dut__commands.html" target="_self">I2C DUT Commands</a></td><td class="desc">Device Under Test I2C commands for configuration and identification </td></tr>
+<tr id="row_0_2_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__measurement__commands.html" target="_self">I2C Measurement Commands</a></td><td class="desc">I2C commands for data acquisition and measurement operations </td></tr>
+<tr id="row_0_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__adc__commands.html" target="_self">I2C ADC Commands</a></td><td class="desc">I2C Analog-to-Digital Converter control and calibration commands </td></tr>
+<tr id="row_0_4_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__sweep__commands.html" target="_self">I2C Sweep Commands</a></td><td class="desc">I2C current-voltage sweep measurement and control commands </td></tr>
+<tr id="row_0_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__aux__commands.html" target="_self">I2C Auxiliary Commands</a></td><td class="desc">I2C auxiliary subsystem control commands </td></tr>
+<tr id="row_0_6_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__i2c__memory__commands.html" target="_self">I2C Memory Commands</a></td><td class="desc">I2C EEPROM and memory management commands </td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="dynsection.toggleFolder('1_')"><span class="arrowhead opened"></span></span><a class="el" href="group__scpi__commands.html" target="_self">SCPI Commands</a></td><td class="desc">SCPI (Standard Commands for Programmable Instruments) interface commands </td></tr>
+<tr id="row_1_0_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__system__commands.html" target="_self">SCPI System Commands</a></td><td class="desc">System-level SCPI commands for device control and configuration </td></tr>
+<tr id="row_1_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__measurement__commands.html" target="_self">SCPI Measurement Commands</a></td><td class="desc">Commands for data acquisition and measurement </td></tr>
+<tr id="row_1_2_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__dut__commands.html" target="_self">SCPI DUT Commands</a></td><td class="desc">Device Under Test configuration commands </td></tr>
+<tr id="row_1_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__adc__commands.html" target="_self">SCPI ADC Commands</a></td><td class="desc">Analog-to-Digital Converter control commands </td></tr>
+<tr id="row_1_4_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__sweep__commands.html" target="_self">SCPI Sweep Commands</a></td><td class="desc">I-V sweep measurement commands </td></tr>
+<tr id="row_1_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__aux__commands.html" target="_self">SCPI Auxiliary Commands</a></td><td class="desc">Auxiliary hardware control commands </td></tr>
+<tr id="row_1_6_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__scpi__memory__commands.html" target="_self">SCPI Memory Commands</a></td><td class="desc">EEPROM and memory management commands </td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->

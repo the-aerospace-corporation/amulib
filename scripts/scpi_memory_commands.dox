@@ -1,0 +1,159 @@
+/**
+ * @page scpi_memory_reference SCPI Memory Commands Reference
+ * @ingroup scpi_memory_commands
+ * @brief Detailed SCPI memory management command reference
+ * 
+ * Memory commands control data storage, retrieval, and management
+ * operations for measurement data and system configuration.
+ * 
+ * ## Memory Allocation
+ * 
+ * ### MEM:ALLOcate
+ * **Description:** Allocates memory for data storage operations.
+ * 
+ * **Syntax:** `MEM:ALLOcate`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_MEM_ALLOCATE
+ * 
+ * **Note:** Must be called before memory write operations
+ * 
+ * **Example:**
+ * ```
+ * MEM:ALLOcate
+ * ```
+ * 
+ * ---
+ * 
+ * ### MEM:FREe
+ * **Description:** Frees allocated memory and clears data buffers.
+ * 
+ * **Syntax:** `MEM:FREe`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_MEM_FREE
+ * 
+ * **Note:** Clears all stored measurement data
+ * 
+ * **Example:**
+ * ```
+ * MEM:FREe
+ * ```
+ * 
+ * ---
+ * 
+ * ## Data Write Operations
+ * 
+ * ### MEM:WRITe:ADC
+ * **Description:** Writes ADC measurement data to memory.
+ * 
+ * **Syntax:** `MEM:WRITe:ADC`
+ * 
+ * **Parameters:** None (uses current ADC readings)
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_MEM_WRITE_ADC
+ * 
+ * **Note:** Memory must be allocated before writing
+ * 
+ * **Example:**
+ * ```
+ * MEM:ALLOcate
+ * MEM:WRITe:ADC
+ * ```
+ * 
+ * ---
+ * 
+ * ### MEM:WRITe:SWEep
+ * **Description:** Writes sweep measurement data to memory.
+ * 
+ * **Syntax:** `MEM:WRITe:SWEep`
+ * 
+ * **Parameters:** None (uses last sweep data)
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_MEM_WRITE_SWEEP
+ * 
+ * **Note:** Sweep must be completed before writing data
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:TRIGger
+ * MEM:WRITe:SWEep
+ * ```
+ * 
+ * ---
+ * 
+ * ## Data Read Operations
+ * 
+ * ### MEM:READ:ADC
+ * **Description:** Reads stored ADC measurement data from memory.
+ * 
+ * **Syntax:** `MEM:READ:ADC?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Stored ADC measurement values (format depends on data)
+ * 
+ * **I2C Equivalent:** CMD_MEM_READ_ADC
+ * 
+ * **Note:** Returns most recently stored ADC data
+ * 
+ * **Example:**
+ * ```
+ * MEM:READ:ADC?
+ * 1.234567,2.345678,3.456789
+ * ```
+ * 
+ * ---
+ * 
+ * ### MEM:READ:SWEep
+ * **Description:** Reads stored sweep measurement data from memory.
+ * 
+ * **Syntax:** `MEM:READ:SWEep?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Stored sweep data (voltage and current arrays)
+ * 
+ * **I2C Equivalent:** CMD_MEM_READ_SWEEP
+ * 
+ * **Note:** Returns complete I-V curve data
+ * 
+ * **Example:**
+ * ```
+ * MEM:READ:SWEep?
+ * 0.0,0.0012;0.1,0.0011;0.2,0.0010;...
+ * ```
+ * 
+ * ---
+ * 
+ * ## Memory Status
+ * 
+ * ### MEM:STATus
+ * **Description:** Returns memory allocation and usage status.
+ * 
+ * **Syntax:** `MEM:STATus?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Memory status information
+ * 
+ * **I2C Equivalent:** CMD_MEM_STATUS
+ * 
+ * **Note:** Useful for checking available memory space
+ * 
+ * **Example:**
+ * ```
+ * MEM:STATus?
+ * ALLOCATED,75%,USED
+ * ```
+ */

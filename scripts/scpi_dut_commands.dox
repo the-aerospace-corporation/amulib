@@ -1,0 +1,232 @@
+/**
+ * @page scpi_dut_reference SCPI DUT Commands Reference
+ * @ingroup scpi_dut_commands
+ * @brief Detailed SCPI DUT command reference
+ * 
+ * Device Under Test (DUT) configuration commands for setting up and managing
+ * the device being tested. These commands configure physical characteristics,
+ * manufacturer information, and calibration parameters.
+ * 
+ * ## Junction Configuration
+ * 
+ * ### DUT:JUNCtion
+ * **Description:** Sets or queries the DUT junction type identifier for proper measurement configuration.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:JUNCtion?`
+ * - Set: `DUT:JUNCtion <type>`
+ * 
+ * **Parameters:** 
+ * - `type`: Junction type ID (0=Unknown, 1=Silicon, 2=GaAs, 3=InGaP, 4=Ge)
+ * 
+ * **Returns:** Current junction type identifier
+ * 
+ * **I2C Equivalent:** CMD_DUT_JUNCTION (0x0200)
+ * 
+ * **Note:** Junction type affects measurement range and calibration coefficients
+ * 
+ * **Example:**
+ * ```
+ * DUT:JUNCtion 1
+ * DUT:JUNCtion?
+ * 1
+ * ```
+ * 
+ * ---
+ * 
+ * ## Coverglass Configuration
+ * 
+ * ### DUT:COVERglass
+ * **Description:** Sets or queries the DUT coverglass type for optical correction factors.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:COVERglass?`
+ * - Set: `DUT:COVERglass <type>`
+ * 
+ * **Parameters:** 
+ * - `type`: Coverglass type ID (0=None, 1=0.1mm, 2=0.2mm, 3=0.3mm, 4=Custom)
+ * 
+ * **Returns:** Current coverglass type identifier
+ * 
+ * **I2C Equivalent:** CMD_DUT_COVERGLASS (0x0201)
+ * 
+ * **Note:** Affects optical calibration and measurement corrections
+ * 
+ * **Example:**
+ * ```
+ * DUT:COVERglass 2
+ * DUT:COVERglass?
+ * 2
+ * ```
+ * 
+ * ---
+ * 
+ * ## Serial Number
+ * 
+ * ### DUT:SERialnumber
+ * **Description:** Sets or queries the DUT serial number for traceability.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:SERialnumber?`
+ * - Set: `DUT:SERialnumber <serial>`
+ * 
+ * **Parameters:** 
+ * - `serial`: Serial number string (max 32 characters)
+ * 
+ * **Returns:** Current DUT serial number
+ * 
+ * **I2C Equivalent:** CMD_DUT_SERIAL_NUMBER (0x0207)
+ * 
+ * **Example:**
+ * ```
+ * DUT:SERialnumber "DUT-2023-001"
+ * DUT:SERialnumber?
+ * DUT-2023-001
+ * ```
+ * 
+ * ---
+ * 
+ * ## Energy Tracking
+ * 
+ * ### DUT:ENERGY
+ * **Description:** Sets or queries the DUT energy parameter for radiation testing.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:ENERGY?`
+ * - Set: `DUT:ENERGY <energy>`
+ * 
+ * **Parameters:** 
+ * - `energy`: Energy value in appropriate units
+ * 
+ * **Returns:** Current energy setting
+ * 
+ * **I2C Equivalent:** CMD_DUT_ENERGY (0x0208)
+ * 
+ * **Example:**
+ * ```
+ * DUT:ENERGY 1.5e15
+ * DUT:ENERGY?
+ * 1.500000e+15
+ * ```
+ * 
+ * ---
+ * 
+ * ## Dose Tracking
+ * 
+ * ### DUT:DOSE
+ * **Description:** Sets or queries the DUT dose parameter for radiation testing.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:DOSE?`
+ * - Set: `DUT:DOSE <dose>`
+ * 
+ * **Parameters:** 
+ * - `dose`: Dose value in appropriate units
+ * 
+ * **Returns:** Current dose setting
+ * 
+ * **I2C Equivalent:** CMD_DUT_DOSE (0x0209)
+ * 
+ * **Example:**
+ * ```
+ * DUT:DOSE 2.5e14
+ * DUT:DOSE?
+ * 2.500000e+14
+ * ```
+ * 
+ * ---
+ * 
+ * ## Notes
+ * 
+ * ### DUT:NOTEs
+ * **Description:** Sets or queries notes about the DUT for documentation.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:NOTEs?`
+ * - Set: `DUT:NOTEs <notes>`
+ * 
+ * **Parameters:** 
+ * - `notes`: Notes string (max length varies)
+ * 
+ * **Returns:** Current DUT notes
+ * 
+ * **I2C Equivalent:** CMD_DUT_NOTES (0x020B)
+ * 
+ * **Example:**
+ * ```
+ * DUT:NOTEs "Post-irradiation test #3"
+ * DUT:NOTEs?
+ * Post-irradiation test #3
+ * ```
+ * 
+ * ---
+ * 
+ * ## Temperature Sensor Configuration
+ * 
+ * ### DUT:TSENSor:TYPE
+ * **Description:** Sets or queries the DUT temperature sensor type.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:TSENSor:TYPE?`
+ * - Set: `DUT:TSENSor:TYPE <type>`
+ * 
+ * **Parameters:** 
+ * - `type`: Temperature sensor type identifier
+ * 
+ * **Returns:** Current sensor type
+ * 
+ * **I2C Equivalent:** CMD_DUT_TSENSOR_TYPE (0x020D)
+ * 
+ * **Example:**
+ * ```
+ * DUT:TSENSor:TYPE 1
+ * DUT:TSENSor:TYPE?
+ * 1
+ * ```
+ * 
+ * ---
+ * 
+ * ### DUT:TSENSor:NUMber
+ * **Description:** Sets or queries the number of temperature sensors on the DUT.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:TSENSor:NUMber?`
+ * - Set: `DUT:TSENSor:NUMber <count>`
+ * 
+ * **Parameters:** 
+ * - `count`: Number of temperature sensors
+ * 
+ * **Returns:** Current sensor count
+ * 
+ * **I2C Equivalent:** CMD_DUT_TSENSOR_NUMBER (0x020E)
+ * 
+ * **Example:**
+ * ```
+ * DUT:TSENSor:NUMber 4
+ * DUT:TSENSor:NUMber?
+ * 4
+ * ```
+ * 
+ * ---
+ * 
+ * ### DUT:TSENSor:FIT
+ * **Description:** Sets or queries temperature sensor calibration coefficients.
+ * 
+ * **Syntax:** 
+ * - Query: `DUT:TSENSor:FIT?`
+ * - Set: `DUT:TSENSor:FIT <coeffs>`
+ * 
+ * **Parameters:** 
+ * - `coeffs`: Calibration coefficients
+ * 
+ * **Returns:** Current calibration coefficients
+ * 
+ * **I2C Equivalent:** CMD_DUT_TSENSOR_FIT (0x020F)
+ * 
+ * **Example:**
+ * ```
+ * DUT:TSENSor:FIT 1.0,0.5,0.01
+ * DUT:TSENSor:FIT?
+ * 1.000000,0.500000,0.010000
+ * ```
+ */

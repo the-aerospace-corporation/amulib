@@ -1,7 +1,7 @@
 var searchData=
 [
   ['handling_0',['Error Handling',['../api_reference.html#error_handling',1,'']]],
-  ['hardware_20reference_1',['Hardware Reference',['../hardware.html',1,'']]],
+  ['hardware_20reference_1',['Hardware Reference',['../hardware.html',1,'index']]],
   ['hardware_5freset_2',['hardware_reset',['../structamu__device__t.html#a07a68f5a788085f4dd2e28787f7c9ced',1,'amu_device_t']]],
   ['hardware_5frevision_3',['hardware_revision',['../structamu__twi__regs__t.html#a569e926448434c8b936a7e0ee28c5123',1,'amu_twi_regs_t']]],
   ['has_5fparam_4',['has_param',['../struct__scpi__t.html#a870dff4a235749c3206d43f8d8a002dc',1,'_scpi_t']]],
@@ -17,6 +17,16 @@ var searchData=
   ['have_5fstrnlen_14',['HAVE_STRNLEN',['../cc_8h.html#a9bee6d8db098b2230690f8e8db9ffb74',1,'cc.h']]],
   ['have_5fstrtof_15',['HAVE_STRTOF',['../cc_8h.html#a44f52bdf0fa611048315709cec45d1e0',1,'cc.h']]],
   ['have_5fstrtoll_16',['HAVE_STRTOLL',['../cc_8h.html#ad7c2edb2365c947f4bff624c7be9f890',1,'cc.h']]],
-  ['heater_20commands_17',['Heater Commands',['../group__scpi__heater__commands.html',1,'']]],
-  ['humidity_18',['humidity',['../structpress__data__t.html#a85696527d4506ca4b783e0024b43aee9',1,'press_data_t']]]
+  ['heat_3adisable_17',['HEAT:DISable',['../group__scpi__aux__commands.html#autotoc_md74',1,'']]],
+  ['heat_3aenable_18',['HEAT:ENAble',['../group__scpi__aux__commands.html#autotoc_md72',1,'']]],
+  ['heat_3apower_19',['HEAT:POWer',['../group__scpi__aux__commands.html#autotoc_md82',1,'HEAT:POWer'],['../group__scpi__aux__commands.html#autotoc_md84',1,'HEAT:POWer?']]],
+  ['heat_3asetpoint_20',['HEAT:SETPoint',['../group__scpi__aux__commands.html#autotoc_md77',1,'HEAT:SETPoint'],['../group__scpi__aux__commands.html#autotoc_md79',1,'HEAT:SETPoint?']]],
+  ['heat_3astatus_21',['HEAT:STATus',['../group__scpi__aux__commands.html#autotoc_md87',1,'']]],
+  ['heat_3atemperature_22',['HEAT:TEMPerature',['../group__scpi__aux__commands.html#autotoc_md90',1,'']]],
+  ['heater_20commands_20reference_23',['SCPI Heater Commands Reference',['../group__scpi__aux__commands.html',1,'']]],
+  ['heater_20control_24',['Heater Control',['../group__scpi__aux__commands.html#autotoc_md71',1,'']]],
+  ['heater_20power_20control_25',['Heater Power Control',['../group__scpi__aux__commands.html#autotoc_md81',1,'']]],
+  ['heater_20set_20points_26',['Heater Set Points',['../group__scpi__aux__commands.html#autotoc_md76',1,'']]],
+  ['heater_20status_27',['Heater Status',['../group__scpi__aux__commands.html#autotoc_md86',1,'']]],
+  ['humidity_28',['humidity',['../structpress__data__t.html#a85696527d4506ca4b783e0024b43aee9',1,'press_data_t']]]
 ];

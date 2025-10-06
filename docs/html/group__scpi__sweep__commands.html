@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: Sweep Commands</title>
+<title>AMU Library: SCPI Sweep Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -89,40 +90,12 @@ $(function(){initNavTree('group__scpi__sweep__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Sweep Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">SCPI Sweep Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>I-V sweep measurement commands.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ga44297234037c2bd3d604216cf0d75856" id="r_ga44297234037c2bd3d604216cf0d75856"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga44297234037c2bd3d604216cf0d75856">CMD_SWEEP_t</a> { <br />
-&#160;&#160;<a class="el" href="#gga44297234037c2bd3d604216cf0d75856af95e3a168cddee7004d1da33c0eb0760">CMD_SWEEP_DISABLE</a> = 0x0100 + 0x40+ 0x00
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856ad940ebe5cd7297c13531c1e979db71a4">CMD_SWEEP_ENABLE</a> = 0x0100 + 0x40+ 0x01
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a6e4545775784037ea7e946d7f6f7dc08">CMD_SWEEP_TRIG_SWEEP</a> = 0x0100 + 0x40+ 0x02
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a39f6c664429425eefee23411bd67f8b7">CMD_SWEEP_TRIG_ISC</a> = 0x0100 + 0x40+ 0x03
-, <br />
-&#160;&#160;<a class="el" href="#gga44297234037c2bd3d604216cf0d75856abb4b36a1f037a01fd10ed0ac17e9150f">CMD_SWEEP_TRIG_VOC</a> = 0x0100 + 0x40+ 0x04
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a13f45a3ae8e5a0f1a7d544f929f33b08">CMD_SWEEP_CONFIG_SAVE</a> = 0x0100 + 0x40+ 0x05
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a98b4738ffc967deb4d21908d046ffd23">CMD_SWEEP_IV_SAVE_TO_EEPROM</a> = 0x0100 + 0x40+ 0x06
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856aeeec7320cee1a13642954da95729b67e">CMD_SWEEP_IV_LOAD_FROM_EEPROM</a> = 0x0100 + 0x40+ 0x07
-, <br />
-&#160;&#160;<a class="el" href="#gga44297234037c2bd3d604216cf0d75856a97e8a71a6520117887ae17e47d8cc190">CMD_SWEEP_AES_ENCODE</a> = 0x0100 + 0x40+ 0x08
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a2e7519eaaee53c06e98fd929aa2c5764">CMD_SWEEP_AES_DECODE</a> = 0x0100 + 0x40+ 0x09
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a5cb84e10085874b1e530ea63321f8913">CMD_SWEEP_DATAPOINT_SAVE</a> = 0x0100 + 0x40+ 0x0A
-, <a class="el" href="#gga44297234037c2bd3d604216cf0d75856a83e8e53534092e392db2db03f98db20f">CMD_SWEEP_TRIG_INIT</a> = 0x0100 + 0x40+ 0x0B
-, <br />
-&#160;&#160;<a class="el" href="#gga44297234037c2bd3d604216cf0d75856a8e09b9c428d2861c803db1b3ade4657f">CMD_SWEEP_DATAPOINT_LOAD</a> = 0x0100 + 0x40+ 0x0C
-<br />
- }</td></tr>
-<tr class="memdesc:ga44297234037c2bd3d604216cf0d75856"><td class="mdescLeft">&#160;</td><td class="mdescRight">I-V sweep control command identifiers.  <a href="#ga44297234037c2bd3d604216cf0d75856">More...</a><br /></td></tr>
-<tr class="memitem:gac99bef4da8256accd127698da2d4263a" id="r_gac99bef4da8256accd127698da2d4263a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac99bef4da8256accd127698da2d4263a">CMD_USB_SWEEP_t</a> { <a class="el" href="#ggac99bef4da8256accd127698da2d4263aa47296671f7824fc7a017a8ad57f9e929">CMD_USB_SWEEP_TRIGGER</a> = 0x0200 + 0x40+ 0x00
- }</td></tr>
-<tr class="memdesc:gac99bef4da8256accd127698da2d4263a"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB-only sweep command identifiers.  <a href="#gac99bef4da8256accd127698da2d4263a">More...</a><br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+</p>
 <p>I-V sweep measurement commands. </p>
 <p>These commands control current-voltage sweep operations:</p><ul>
 <li>Sweep configuration</li>
@@ -131,92 +104,78 @@ Enumerations</h2></td></tr>
 <li>EEPROM storage</li>
 <li>Metadata access </li>
 </ul>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga44297234037c2bd3d604216cf0d75856" name="ga44297234037c2bd3d604216cf0d75856"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga44297234037c2bd3d604216cf0d75856">&#9670;&#160;</a></span>CMD_SWEEP_t</h2>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#ga44297234037c2bd3d604216cf0d75856">CMD_SWEEP_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
-<p>I-V sweep control command identifiers. </p>
-<p>These commands control current-voltage sweep operations for solar cell characterization. Sweeps can be configured, triggered, and data can be stored/retrieved from EEPROM. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856af95e3a168cddee7004d1da33c0eb0760" name="gga44297234037c2bd3d604216cf0d75856af95e3a168cddee7004d1da33c0eb0760"></a>CMD_SWEEP_DISABLE&#160;</td><td class="fielddoc"><p>Disable sweep operations @scpi_cmd SWEEP:DISable @description Disables sweep functionality and stops any ongoing sweep. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856ad940ebe5cd7297c13531c1e979db71a4" name="gga44297234037c2bd3d604216cf0d75856ad940ebe5cd7297c13531c1e979db71a4"></a>CMD_SWEEP_ENABLE&#160;</td><td class="fielddoc"><p>Enable sweep operations @scpi_cmd SWEEP:ENAble @description Enables sweep functionality for I-V measurements. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a6e4545775784037ea7e946d7f6f7dc08" name="gga44297234037c2bd3d604216cf0d75856a6e4545775784037ea7e946d7f6f7dc08"></a>CMD_SWEEP_TRIG_SWEEP&#160;</td><td class="fielddoc"><p>Trigger I-V sweep @scpi_cmd SWEEP:TRIGger @description Initiates a complete I-V sweep measurement. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a39f6c664429425eefee23411bd67f8b7" name="gga44297234037c2bd3d604216cf0d75856a39f6c664429425eefee23411bd67f8b7"></a>CMD_SWEEP_TRIG_ISC&#160;</td><td class="fielddoc"><p>Measure short-circuit current (Isc) @scpi_cmd SWEEP:TRIGger:ISC? @description Measures and returns short-circuit current value. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856abb4b36a1f037a01fd10ed0ac17e9150f" name="gga44297234037c2bd3d604216cf0d75856abb4b36a1f037a01fd10ed0ac17e9150f"></a>CMD_SWEEP_TRIG_VOC&#160;</td><td class="fielddoc"><p>Measure open-circuit voltage (Voc) @scpi_cmd SWEEP:TRIGger:VOC? @description Measures and returns open-circuit voltage value. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a13f45a3ae8e5a0f1a7d544f929f33b08" name="gga44297234037c2bd3d604216cf0d75856a13f45a3ae8e5a0f1a7d544f929f33b08"></a>CMD_SWEEP_CONFIG_SAVE&#160;</td><td class="fielddoc"><p>Save sweep configuration @scpi_cmd SWEEP:CONFig:SAVe @description Saves current sweep configuration to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a98b4738ffc967deb4d21908d046ffd23" name="gga44297234037c2bd3d604216cf0d75856a98b4738ffc967deb4d21908d046ffd23"></a>CMD_SWEEP_IV_SAVE_TO_EEPROM&#160;</td><td class="fielddoc"><p>Save I-V data to EEPROM @scpi_cmd SWEEP:EEPROM:SAVE @description Saves sweep measurement data to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856aeeec7320cee1a13642954da95729b67e" name="gga44297234037c2bd3d604216cf0d75856aeeec7320cee1a13642954da95729b67e"></a>CMD_SWEEP_IV_LOAD_FROM_EEPROM&#160;</td><td class="fielddoc"><p>Load I-V data from EEPROM @scpi_cmd SWEEP:EEPROM:LOAD @description Loads previously saved sweep data from EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a97e8a71a6520117887ae17e47d8cc190" name="gga44297234037c2bd3d604216cf0d75856a97e8a71a6520117887ae17e47d8cc190"></a>CMD_SWEEP_AES_ENCODE&#160;</td><td class="fielddoc"><p>Encrypt sweep data using AES @scpi_cmd SWEEP:AES:ENCode @description Encrypts sweep data using AES encryption. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a2e7519eaaee53c06e98fd929aa2c5764" name="gga44297234037c2bd3d604216cf0d75856a2e7519eaaee53c06e98fd929aa2c5764"></a>CMD_SWEEP_AES_DECODE&#160;</td><td class="fielddoc"><p>Decrypt sweep data using AES @scpi_cmd SWEEP:AES:DECode @description Decrypts AES-encrypted sweep data. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a5cb84e10085874b1e530ea63321f8913" name="gga44297234037c2bd3d604216cf0d75856a5cb84e10085874b1e530ea63321f8913"></a>CMD_SWEEP_DATAPOINT_SAVE&#160;</td><td class="fielddoc"><p>Save single sweep data point @scpi_cmd SWEEP:DATApoint:SAVE @description Saves a single voltage/current data point. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a83e8e53534092e392db2db03f98db20f" name="gga44297234037c2bd3d604216cf0d75856a83e8e53534092e392db2db03f98db20f"></a>CMD_SWEEP_TRIG_INIT&#160;</td><td class="fielddoc"><p>Initialize sweep trigger system @scpi_cmd SWEEP:TRIGger:INITialize @description Initializes the sweep trigger system. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga44297234037c2bd3d604216cf0d75856a8e09b9c428d2861c803db1b3ade4657f" name="gga44297234037c2bd3d604216cf0d75856a8e09b9c428d2861c803db1b3ade4657f"></a>CMD_SWEEP_DATAPOINT_LOAD&#160;</td><td class="fielddoc"><p>Load single sweep data point @scpi_cmd SWEEP:DATApoint:LOAD @description Loads a single voltage/current data point. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l00381">381</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-<a id="gac99bef4da8256accd127698da2d4263a" name="gac99bef4da8256accd127698da2d4263a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac99bef4da8256accd127698da2d4263a">&#9670;&#160;</a></span>CMD_USB_SWEEP_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#gac99bef4da8256accd127698da2d4263a">CMD_USB_SWEEP_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>USB-only sweep command identifiers. </p>
-<p>These commands provide USB-specific sweep functionality. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac99bef4da8256accd127698da2d4263aa47296671f7824fc7a017a8ad57f9e929" name="ggac99bef4da8256accd127698da2d4263aa47296671f7824fc7a017a8ad57f9e929"></a>CMD_USB_SWEEP_TRIGGER&#160;</td><td class="fielddoc"><p>Trigger sweep via USB @scpi_cmd SWEEP:TRIGger:USB @description Triggers I-V sweep with USB-specific parameters (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l01009">1009</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<h3 class="doxsection"><a id="scpi_sweep_reference" name="scpi_sweep_reference"></a>SCPI Sweep Commands Reference</h3><div class="textblock">Sweep commands control I-V curve measurements and sweeping operations. These commands enable automated characterization of solar cells and other devices under test.<h2 class="doxsection"><a class="anchor" id="autotoc_md139"></a>
+Sweep Control</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md140"></a>
+SWEEP:ENAble</h3>
+<p><b>Description:</b> Enables the sweep measurement system.</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:ENAble</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_ENABLE</p>
+<p><b>Note:</b> Must be enabled before performing sweep measurements</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:ENAble</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md142"></a>
+SWEEP:DISable</h3>
+<p><b>Description:</b> Disables the sweep measurement system.</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:DISable</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_DISABLE</p>
+<p><b>Note:</b> Disabling stops any ongoing sweep operations</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:DISable</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md144"></a>
+Sweep Execution</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md145"></a>
+SWEEP:TRIGger</h3>
+<p><b>Description:</b> Triggers a complete I-V sweep measurement.</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:TRIGger</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (sweep data available via other commands)</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_TRIGGER</p>
+<p><b>Note:</b> Sweep must be enabled before triggering</p>
+<p><b>Warning:</b> Sweep duration depends on configuration settings</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:ENAble</div>
+<div class="line">SWEEP:TRIGger</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md147"></a>
+Sweep Measurements</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md148"></a>
+SWEEP:TRIGger:ISC</h3>
+<p><b>Description:</b> Triggers a sweep and returns the short-circuit current (Isc).</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:TRIGger:ISC?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Short-circuit current in amperes</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_TRIGGER_ISC</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:TRIGger:ISC?</div>
+<div class="line">0.00234567</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md150"></a>
+SWEEP:TRIGger:VOC</h3>
+<p><b>Description:</b> Triggers a sweep and returns the open-circuit voltage (Voc).</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:TRIGger:VOC?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Open-circuit voltage in volts</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_TRIGGER_VOC</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:TRIGger:VOC?</div>
+<div class="line">0.567890</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md152"></a>
+Sweep Configuration</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md153"></a>
+SWEEP:CONFig:SAVe</h3>
+<p><b>Description:</b> Saves current sweep configuration to non-volatile memory.</p>
+<p><b>Syntax:</b> <span class="tt">SWEEP:CONFig:SAVe</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_SWEEP_CONFIG_SAVE</p>
+<p><b>Note:</b> Configuration persists across power cycles</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:CONFig:SAVe</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

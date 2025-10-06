@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: DUT Commands</title>
+<title>AMU Library: SCPI DUT Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -89,38 +90,12 @@ $(function(){initNavTree('group__scpi__dut__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">DUT Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">SCPI DUT Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Device Under Test configuration commands.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ga746e259beafef7decf982f3c0568b8cc" id="r_ga746e259beafef7decf982f3c0568b8cc"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga746e259beafef7decf982f3c0568b8cc">CMD_DUT_t</a> { <br />
-&#160;&#160;<a class="el" href="#gga746e259beafef7decf982f3c0568b8cca63ab1eb9bd85013333cc794015f590fa">CMD_DUT_JUNCTION</a> = 0x0100 + 0x20+ 0x00
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca82738f0a596ec724153e21e55c1c970a">CMD_DUT_COVERGLASS</a> = 0x0100 + 0x20+ 0x01
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca56945dc5803118fc354645551a3f104b">CMD_DUT_INTERCONNECT</a> = 0x0100 + 0x20+ 0x02
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca9928140908a0b38eaeb6d71644b61980">CMD_DUT_RESERVED</a> = 0x0100 + 0x20+ 0x03
-, <br />
-&#160;&#160;<a class="el" href="#gga746e259beafef7decf982f3c0568b8cca38cbb89b0f2d5658edcc6cd384fe3901">CMD_DUT_MANUFACTURER</a> = 0x0100 + 0x20+ 0x04
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca53193561a79e6558c04bb9986d60beda">CMD_DUT_MODEL</a> = 0x0100 + 0x20+ 0x05
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca7b710484e721a7f3abe7c2c79943fc1b">CMD_DUT_TECHNOLOGY</a> = 0x0100 + 0x20+ 0x06
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca9c2a47f5ae23dc24261fc5fde293bb2a">CMD_DUT_SERIAL_NUMBER</a> = 0x0100 + 0x20+ 0x07
-, <br />
-&#160;&#160;<a class="el" href="#gga746e259beafef7decf982f3c0568b8ccab2a82af4e204dc831c336381992ef9c8">CMD_DUT_ENERGY</a> = 0x0100 + 0x20+ 0x08
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8cca531565af4462c0c2d582edf4acda2bc5">CMD_DUT_DOSE</a> = 0x0100 + 0x20+ 0x09
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8ccaa95d8016aa3ff1472104984e2d221d75">CMD_DUT_NOTES</a> = 0x0100 + 0x20+ 0x0B
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8ccaecd3a78e85a34969b903bd640ddec4d2">CMD_DUT_TSENSOR_TYPE</a> = 0x0100 + 0x20+ 0x0D
-, <br />
-&#160;&#160;<a class="el" href="#gga746e259beafef7decf982f3c0568b8ccaec62419607883cc18e23c8ad8462e97a">CMD_DUT_TSENSOR_NUMBER</a> = 0x0100 + 0x20+ 0x0E
-, <a class="el" href="#gga746e259beafef7decf982f3c0568b8ccaa576feb9e6f3c646fdd436ad350c0af9">CMD_DUT_TSENSOR_FIT</a> = 0x0100 + 0x20+ 0x0F
-<br />
- }</td></tr>
-<tr class="memdesc:ga746e259beafef7decf982f3c0568b8cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device Under Test (DUT) command identifiers.  <a href="#ga746e259beafef7decf982f3c0568b8cc">More...</a><br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+</p>
 <p>Device Under Test configuration commands. </p>
 <p>These commands configure the device under test parameters:</p><ul>
 <li>Physical characteristics (junction, coverglass, interconnect)</li>
@@ -128,71 +103,168 @@ Enumerations</h2></td></tr>
 <li>Energy and dose tracking</li>
 <li>Temperature sensor configuration </li>
 </ul>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga746e259beafef7decf982f3c0568b8cc" name="ga746e259beafef7decf982f3c0568b8cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga746e259beafef7decf982f3c0568b8cc">&#9670;&#160;</a></span>CMD_DUT_t</h2>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#ga746e259beafef7decf982f3c0568b8cc">CMD_DUT_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
-<p>Device Under Test (DUT) command identifiers. </p>
-<p>DUT commands configure and query parameters related to the device being tested. These include physical characteristics, manufacturer information, and calibration data. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca63ab1eb9bd85013333cc794015f590fa" name="gga746e259beafef7decf982f3c0568b8cca63ab1eb9bd85013333cc794015f590fa"></a>CMD_DUT_JUNCTION&#160;</td><td class="fielddoc"><p>Junction configuration @scpi_cmd DUT:JUNCtion[?] @description Sets or queries DUT junction type identifier. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca82738f0a596ec724153e21e55c1c970a" name="gga746e259beafef7decf982f3c0568b8cca82738f0a596ec724153e21e55c1c970a"></a>CMD_DUT_COVERGLASS&#160;</td><td class="fielddoc"><p>Coverglass configuration @scpi_cmd DUT:COVERglass[?] @description Sets or queries DUT coverglass type identifier. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca56945dc5803118fc354645551a3f104b" name="gga746e259beafef7decf982f3c0568b8cca56945dc5803118fc354645551a3f104b"></a>CMD_DUT_INTERCONNECT&#160;</td><td class="fielddoc"><p>Interconnect configuration @scpi_cmd DUT:INTERconnect[?] @description Sets or queries DUT interconnect type identifier. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca9928140908a0b38eaeb6d71644b61980" name="gga746e259beafef7decf982f3c0568b8cca9928140908a0b38eaeb6d71644b61980"></a>CMD_DUT_RESERVED&#160;</td><td class="fielddoc"><p>Reserved for future use. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca38cbb89b0f2d5658edcc6cd384fe3901" name="gga746e259beafef7decf982f3c0568b8cca38cbb89b0f2d5658edcc6cd384fe3901"></a>CMD_DUT_MANUFACTURER&#160;</td><td class="fielddoc"><p>DUT manufacturer name @scpi_cmd DUT:MANufacturer[?] @description Sets or queries DUT manufacturer name string. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca53193561a79e6558c04bb9986d60beda" name="gga746e259beafef7decf982f3c0568b8cca53193561a79e6558c04bb9986d60beda"></a>CMD_DUT_MODEL&#160;</td><td class="fielddoc"><p>DUT model designation @scpi_cmd DUT:MODel[?] @description Sets or queries DUT model/part number string. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca7b710484e721a7f3abe7c2c79943fc1b" name="gga746e259beafef7decf982f3c0568b8cca7b710484e721a7f3abe7c2c79943fc1b"></a>CMD_DUT_TECHNOLOGY&#160;</td><td class="fielddoc"><p>DUT technology type @scpi_cmd DUT:TECHnology[?] @description Sets or queries DUT technology description (e.g., "Silicon", "GaAs") </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca9c2a47f5ae23dc24261fc5fde293bb2a" name="gga746e259beafef7decf982f3c0568b8cca9c2a47f5ae23dc24261fc5fde293bb2a"></a>CMD_DUT_SERIAL_NUMBER&#160;</td><td class="fielddoc"><p>DUT serial number @scpi_cmd DUT:SERialnumber[?] @description Sets or queries DUT serial number string. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8ccab2a82af4e204dc831c336381992ef9c8" name="gga746e259beafef7decf982f3c0568b8ccab2a82af4e204dc831c336381992ef9c8"></a>CMD_DUT_ENERGY&#160;</td><td class="fielddoc"><p>Total radiation energy exposure @scpi_cmd DUT:ENERGY[?] @description Sets or queries cumulative radiation energy exposure in MeV. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8cca531565af4462c0c2d582edf4acda2bc5" name="gga746e259beafef7decf982f3c0568b8cca531565af4462c0c2d582edf4acda2bc5"></a>CMD_DUT_DOSE&#160;</td><td class="fielddoc"><p>Total radiation dose exposure @scpi_cmd DUT:DOSE[?] @description Sets or queries cumulative radiation dose exposure in krad. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8ccaa95d8016aa3ff1472104984e2d221d75" name="gga746e259beafef7decf982f3c0568b8ccaa95d8016aa3ff1472104984e2d221d75"></a>CMD_DUT_NOTES&#160;</td><td class="fielddoc"><p>DUT notes and comments @scpi_cmd DUT:NOTEs[?] @description Sets or queries free-form notes about the DUT. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8ccaecd3a78e85a34969b903bd640ddec4d2" name="gga746e259beafef7decf982f3c0568b8ccaecd3a78e85a34969b903bd640ddec4d2"></a>CMD_DUT_TSENSOR_TYPE&#160;</td><td class="fielddoc"><p>Temperature sensor type @scpi_cmd DUT:TSENSor:TYPE[?] @description Sets or queries temperature sensor type identifier. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8ccaec62419607883cc18e23c8ad8462e97a" name="gga746e259beafef7decf982f3c0568b8ccaec62419607883cc18e23c8ad8462e97a"></a>CMD_DUT_TSENSOR_NUMBER&#160;</td><td class="fielddoc"><p>Number of temperature sensors @scpi_cmd DUT:TSENSor:NUMber[?] @description Sets or queries number of temperature sensors on DUT. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga746e259beafef7decf982f3c0568b8ccaa576feb9e6f3c646fdd436ad350c0af9" name="gga746e259beafef7decf982f3c0568b8ccaa576feb9e6f3c646fdd436ad350c0af9"></a>CMD_DUT_TSENSOR_FIT&#160;</td><td class="fielddoc"><p>Temperature sensor calibration coefficients @scpi_cmd DUT:TSENSor:FIT[?] @description Sets or queries temperature sensor calibration polynomial coefficients. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l00190">190</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<h3 class="doxsection"><a id="scpi_dut_reference" name="scpi_dut_reference"></a>SCPI DUT Commands Reference</h3><div class="textblock">Device Under Test (DUT) configuration commands for setting up and managing the device being tested. These commands configure physical characteristics, manufacturer information, and calibration parameters.<h2 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
+Junction Configuration</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+DUT:JUNCtion</h3>
+<p><b>Description:</b> Sets or queries the DUT junction type identifier for proper measurement configuration.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:JUNCtion?</span></li>
+<li>Set: <span class="tt">DUT:JUNCtion &lt;type&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">type</span>: Junction type ID (0=Unknown, 1=Silicon, 2=GaAs, 3=InGaP, 4=Ge)</li>
+</ul>
+<p><b>Returns:</b> Current junction type identifier</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_JUNCTION (0x0200)</p>
+<p><b>Note:</b> Junction type affects measurement range and calibration coefficients</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:JUNCtion 1</div>
+<div class="line">DUT:JUNCtion?</div>
+<div class="line">1</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
+Coverglass Configuration</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
+DUT:COVERglass</h3>
+<p><b>Description:</b> Sets or queries the DUT coverglass type for optical correction factors.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:COVERglass?</span></li>
+<li>Set: <span class="tt">DUT:COVERglass &lt;type&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">type</span>: Coverglass type ID (0=None, 1=0.1mm, 2=0.2mm, 3=0.3mm, 4=Custom)</li>
+</ul>
+<p><b>Returns:</b> Current coverglass type identifier</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_COVERGLASS (0x0201)</p>
+<p><b>Note:</b> Affects optical calibration and measurement corrections</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:COVERglass 2</div>
+<div class="line">DUT:COVERglass?</div>
+<div class="line">2</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
+Serial Number</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
+DUT:SERialnumber</h3>
+<p><b>Description:</b> Sets or queries the DUT serial number for traceability.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:SERialnumber?</span></li>
+<li>Set: <span class="tt">DUT:SERialnumber &lt;serial&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">serial</span>: Serial number string (max 32 characters)</li>
+</ul>
+<p><b>Returns:</b> Current DUT serial number</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_SERIAL_NUMBER (0x0207)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:SERialnumber <span class="stringliteral">&quot;DUT-2023-001&quot;</span></div>
+<div class="line">DUT:SERialnumber?</div>
+<div class="line">DUT-2023-001</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
+Energy Tracking</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md57"></a>
+DUT:ENERGY</h3>
+<p><b>Description:</b> Sets or queries the DUT energy parameter for radiation testing.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:ENERGY?</span></li>
+<li>Set: <span class="tt">DUT:ENERGY &lt;energy&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">energy</span>: Energy value in appropriate units</li>
+</ul>
+<p><b>Returns:</b> Current energy setting</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_ENERGY (0x0208)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:ENERGY 1.5e15</div>
+<div class="line">DUT:ENERGY?</div>
+<div class="line">1.500000e+15</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md59"></a>
+Dose Tracking</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md60"></a>
+DUT:DOSE</h3>
+<p><b>Description:</b> Sets or queries the DUT dose parameter for radiation testing.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:DOSE?</span></li>
+<li>Set: <span class="tt">DUT:DOSE &lt;dose&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">dose</span>: Dose value in appropriate units</li>
+</ul>
+<p><b>Returns:</b> Current dose setting</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_DOSE (0x0209)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:DOSE 2.5e14</div>
+<div class="line">DUT:DOSE?</div>
+<div class="line">2.500000e+14</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md62"></a>
+Notes</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md63"></a>
+DUT:NOTEs</h3>
+<p><b>Description:</b> Sets or queries notes about the DUT for documentation.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:NOTEs?</span></li>
+<li>Set: <span class="tt">DUT:NOTEs &lt;notes&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">notes</span>: Notes string (max length varies)</li>
+</ul>
+<p><b>Returns:</b> Current DUT notes</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_NOTES (0x020B)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:NOTEs <span class="stringliteral">&quot;Post-irradiation test #3&quot;</span></div>
+<div class="line">DUT:NOTEs?</div>
+<div class="line">Post-irradiation test #3</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md65"></a>
+Temperature Sensor Configuration</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md66"></a>
+DUT:TSENSor:TYPE</h3>
+<p><b>Description:</b> Sets or queries the DUT temperature sensor type.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:TSENSor:TYPE?</span></li>
+<li>Set: <span class="tt">DUT:TSENSor:TYPE &lt;type&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">type</span>: Temperature sensor type identifier</li>
+</ul>
+<p><b>Returns:</b> Current sensor type</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_TSENSOR_TYPE (0x020D)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:TSENSor:TYPE 1</div>
+<div class="line">DUT:TSENSor:TYPE?</div>
+<div class="line">1</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md68"></a>
+DUT:TSENSor:NUMber</h3>
+<p><b>Description:</b> Sets or queries the number of temperature sensors on the DUT.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:TSENSor:NUMber?</span></li>
+<li>Set: <span class="tt">DUT:TSENSor:NUMber &lt;count&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">count</span>: Number of temperature sensors</li>
+</ul>
+<p><b>Returns:</b> Current sensor count</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_TSENSOR_NUMBER (0x020E)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:TSENSor:NUMber 4</div>
+<div class="line">DUT:TSENSor:NUMber?</div>
+<div class="line">4</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md70"></a>
+DUT:TSENSor:FIT</h3>
+<p><b>Description:</b> Sets or queries temperature sensor calibration coefficients.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Query: <span class="tt">DUT:TSENSor:FIT?</span></li>
+<li>Set: <span class="tt">DUT:TSENSor:FIT &lt;coeffs&gt;</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">coeffs</span>: Calibration coefficients</li>
+</ul>
+<p><b>Returns:</b> Current calibration coefficients</p>
+<p><b>I2C Equivalent:</b> CMD_DUT_TSENSOR_FIT (0x020F)</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">DUT:TSENSor:FIT 1.0,0.5,0.01</div>
+<div class="line">DUT:TSENSor:FIT?</div>
+<div class="line">1.000000,0.500000,0.010000</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

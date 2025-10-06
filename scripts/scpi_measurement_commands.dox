@@ -1,0 +1,140 @@
+/**
+ * @page scpi_measurement_reference SCPI Measurement Commands Reference
+ * @ingroup scpi_measurement_commands
+ * @brief Detailed SCPI measurement command reference
+ * 
+ * Measurement commands perform various data acquisition tasks including
+ * voltage/current measurements, temperature readings, sun sensor data,
+ * pressure readings, and internal voltage monitoring.
+ * 
+ * ## ADC Measurements
+ * 
+ * ### MEASure:ADC:ACTive
+ * **Description:** Measures the currently active ADC channel (raw or processed).
+ * 
+ * **Syntax:** 
+ * - Processed: `MEASure:ADC:ACTive?`
+ * - Raw: `MEASure:ADC:ACTive:RAW?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** ADC reading (processed or raw counts)
+ * 
+ * **I2C Equivalent:** CMD_MEAS_CH_ACTIVE_RAW / CMD_MEAS_CH_ACTIVE
+ * 
+ * **Example:**
+ * ```
+ * MEASure:ADC:ACTive?
+ * 1.234567
+ * MEASure:ADC:ACTive:RAW?
+ * 52341
+ * ```
+ * 
+ * ---
+ * 
+ * ### MEASure:ADC:CH#
+ * **Description:** Measures a specific ADC channel (# = channel number).
+ * 
+ * **Syntax:** 
+ * - Processed: `MEASure:ADC:CH<n>?` (where n = 0-7)
+ * - Raw: `MEASure:ADC:CH<n>:RAW?`
+ * 
+ * **Parameters:** 
+ * - `n`: Channel number (0-7)
+ * 
+ * **Returns:** ADC reading for specified channel
+ * 
+ * **I2C Equivalent:** CMD_MEAS_CH_0 through CMD_MEAS_CH_7
+ * 
+ * **Example:**
+ * ```
+ * MEASure:ADC:CH0?
+ * 2.567890
+ * MEASure:ADC:CH3:RAW?
+ * 41256
+ * ```
+ * 
+ * ---
+ * 
+ * ### MEASure:ADC:TSENSORS
+ * **Description:** Measures all temperature sensors connected to ADC channels.
+ * 
+ * **Syntax:** 
+ * - Processed: `MEASure:ADC:TSENSORS?`
+ * - Raw: `MEASure:ADC:TSENSORS:RAW?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Temperature sensor readings (comma-separated)
+ * 
+ * **I2C Equivalent:** CMD_MEAS_TSENSORS_RAW / CMD_MEAS_TSENSORS
+ * 
+ * **Example:**
+ * ```
+ * MEASure:ADC:TSENSORS?
+ * 25.3,26.1,24.8,25.5
+ * ```
+ * 
+ * ---
+ * 
+ * ## Internal Voltages
+ * 
+ * ### MEASure:INTERNALvoltages
+ * **Description:** Measures internal system voltages for health monitoring.
+ * 
+ * **Syntax:** `MEASure:INTERNALvoltages?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Internal voltage readings
+ * 
+ * **I2C Equivalent:** CMD_MEAS_INT_VOLTAGES
+ * 
+ * **Example:**
+ * ```
+ * MEASure:INTERNALvoltages?
+ * 3.30,5.02,12.01,-12.03
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sun Sensor
+ * 
+ * ### MEASure:SUNSensor
+ * **Description:** Measures sun sensor data (quad photodiode array).
+ * 
+ * **Syntax:** `MEASure:SUNSensor?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Sun sensor measurements (X, Y angles and intensity)
+ * 
+ * **I2C Equivalent:** CMD_MEAS_SUN_SENSOR
+ * 
+ * **Example:**
+ * ```
+ * MEASure:SUNSensor?
+ * 15.2,-8.7,0.856
+ * ```
+ * 
+ * ---
+ * 
+ * ## Pressure Sensor
+ * 
+ * ### MEASure:PRESSure
+ * **Description:** Measures pressure sensor data.
+ * 
+ * **Syntax:** `MEASure:PRESSure?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Pressure reading in appropriate units
+ * 
+ * **I2C Equivalent:** CMD_MEAS_PRESSURE
+ * 
+ * **Example:**
+ * ```
+ * MEASure:PRESSure?
+ * 1013.25
+ * ```
+ */

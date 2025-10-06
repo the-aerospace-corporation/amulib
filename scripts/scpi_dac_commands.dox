@@ -1,0 +1,219 @@
+/**
+ * @page scpi_dac_reference SCPI DAC Commands Reference
+ * @ingroup scpi_aux_commands
+ * @brief Detailed SCPI DAC control command reference
+ * 
+ * DAC (Digital-to-Analog Converter) commands control analog output
+ * generation for bias voltages, reference signals, and test stimuli.
+ * 
+ * ## DAC Control
+ * 
+ * ### DAC:ENAble
+ * **Description:** Enables the DAC output system.
+ * 
+ * **Syntax:** `DAC:ENAble`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_ENABLE
+ * 
+ * **Note:** Must be enabled before DAC output generation
+ * 
+ * **Example:**
+ * ```
+ * DAC:ENAble
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:DISable
+ * **Description:** Disables the DAC output system.
+ * 
+ * **Syntax:** `DAC:DISable`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_DISABLE
+ * 
+ * **Note:** Disabling sets outputs to safe default states
+ * 
+ * **Example:**
+ * ```
+ * DAC:DISable
+ * ```
+ * 
+ * ---
+ * 
+ * ## DAC Output Setting
+ * 
+ * ### DAC:VOLTage
+ * **Description:** Sets the DAC output voltage.
+ * 
+ * **Syntax:** `DAC:VOLTage <voltage>`
+ * 
+ * **Parameters:**
+ * - `<voltage>`: Output voltage in volts
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_VOLTAGE
+ * 
+ * **Note:** Voltage range depends on DAC specifications
+ * 
+ * **Example:**
+ * ```
+ * DAC:VOLTage 2.5
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:VOLTage?
+ * **Description:** Queries the current DAC output voltage setting.
+ * 
+ * **Syntax:** `DAC:VOLTage?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current output voltage in volts
+ * 
+ * **I2C Equivalent:** CMD_DAC_VOLTAGE (read operation)
+ * 
+ * **Example:**
+ * ```
+ * DAC:VOLTage?
+ * 2.5
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:RAW
+ * **Description:** Sets the DAC output using raw digital codes.
+ * 
+ * **Syntax:** `DAC:RAW <code>`
+ * 
+ * **Parameters:**
+ * - `<code>`: Digital code value (0 to maximum DAC resolution)
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_RAW
+ * 
+ * **Note:** Provides direct control of DAC digital input
+ * 
+ * **Range:** 0 to 2^n-1 where n is DAC resolution in bits
+ * 
+ * **Example:**
+ * ```
+ * DAC:RAW 2048
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:RAW?
+ * **Description:** Queries the current DAC raw digital code setting.
+ * 
+ * **Syntax:** `DAC:RAW?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current digital code value
+ * 
+ * **I2C Equivalent:** CMD_DAC_RAW (read operation)
+ * 
+ * **Example:**
+ * ```
+ * DAC:RAW?
+ * 2048
+ * ```
+ * 
+ * ---
+ * 
+ * ## DAC Calibration
+ * 
+ * ### DAC:CALibrate
+ * **Description:** Calibrates the DAC output for accuracy.
+ * 
+ * **Syntax:** `DAC:CALibrate`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_CALIBRATE
+ * 
+ * **Note:** Performs internal calibration routine
+ * 
+ * **Warning:** May temporarily affect DAC output during calibration
+ * 
+ * **Example:**
+ * ```
+ * DAC:CALibrate
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:CALibrate:SAVe
+ * **Description:** Saves DAC calibration data to non-volatile memory.
+ * 
+ * **Syntax:** `DAC:CALibrate:SAVe`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_CALIBRATE_SAVE
+ * 
+ * **Note:** Calibration data persists across power cycles
+ * 
+ * **Example:**
+ * ```
+ * DAC:CALibrate
+ * DAC:CALibrate:SAVe
+ * ```
+ * 
+ * ---
+ * 
+ * ## DAC Reference
+ * 
+ * ### DAC:REFerence
+ * **Description:** Sets the DAC voltage reference source.
+ * 
+ * **Syntax:** `DAC:REFerence <source>`
+ * 
+ * **Parameters:**
+ * - `<source>`: Reference source (INTERNAL, EXTERNAL, VDD, etc.)
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_DAC_REFERENCE
+ * 
+ * **Note:** Reference affects output voltage range and accuracy
+ * 
+ * **Example:**
+ * ```
+ * DAC:REFerence INTERNAL
+ * ```
+ * 
+ * ---
+ * 
+ * ### DAC:REFerence?
+ * **Description:** Queries the current DAC voltage reference setting.
+ * 
+ * **Syntax:** `DAC:REFerence?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current reference source setting
+ * 
+ * **I2C Equivalent:** CMD_DAC_REFERENCE (read operation)
+ * 
+ * **Example:**
+ * ```
+ * DAC:REFerence?
+ * INTERNAL
+ * ```
+ */

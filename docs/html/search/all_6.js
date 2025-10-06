@@ -15,9 +15,10 @@ var searchData=
   ['fifo_5fremove_12',['fifo_remove',['../fifo_8c.html#a61fcd2cae9a564de24486f4494ecf918',1,'fifo_remove(scpi_fifo_t *fifo, scpi_error_t *value):&#160;fifo.c'],['../fifo__private_8h.html#a61fcd2cae9a564de24486f4494ecf918',1,'fifo_remove(scpi_fifo_t *fifo, scpi_error_t *value):&#160;fifo.c']]],
   ['fifo_5fremove_5flast_13',['fifo_remove_last',['../fifo_8c.html#a454885e22f69084e39fccdec5b72fff5',1,'fifo_remove_last(scpi_fifo_t *fifo, scpi_error_t *value):&#160;fifo.c'],['../fifo__private_8h.html#a454885e22f69084e39fccdec5b72fff5',1,'fifo_remove_last(scpi_fifo_t *fifo, scpi_error_t *value):&#160;fifo.c']]],
   ['findcommandheader_14',['findCommandHeader',['../parser_8c.html#a773adeae6c0320774437df46f137cfd5',1,'parser.c']]],
-  ['float_15',['float',['../structamu__pid__t.html#adddc9b8e2cb2a25759be843a0f227a1b',1,'amu_pid_t']]],
-  ['flush_16',['flush',['../struct__scpi__interface__t.html#aa7b9554298fcc771ac5322bd4301de88',1,'_scpi_interface_t']]],
-  ['flush_5fcmd_17',['flush_cmd',['../structamu__scpi__dev__t.html#a1d84fc4a14b4d5da84130bd6992c6348',1,'amu_scpi_dev_t']]],
-  ['flushdata_18',['flushData',['../parser_8c.html#a7260797003e6054e647552079150488b',1,'parser.c']]],
-  ['from_19',['from',['../structerror__reg.html#ad3963a4aaa99283b9752a6c5026e309a',1,'error_reg']]]
+  ['firmware_20information_15',['Firmware Information',['../group__scpi__system__commands.html#autotoc_md22',1,'']]],
+  ['float_16',['float',['../structamu__pid__t.html#adddc9b8e2cb2a25759be843a0f227a1b',1,'amu_pid_t']]],
+  ['flush_17',['flush',['../struct__scpi__interface__t.html#aa7b9554298fcc771ac5322bd4301de88',1,'_scpi_interface_t']]],
+  ['flush_5fcmd_18',['flush_cmd',['../structamu__scpi__dev__t.html#a1d84fc4a14b4d5da84130bd6992c6348',1,'amu_scpi_dev_t']]],
+  ['flushdata_19',['flushData',['../parser_8c.html#a7260797003e6054e647552079150488b',1,'parser.c']]],
+  ['from_20',['from',['../structerror__reg.html#ad3963a4aaa99283b9752a6c5026e309a',1,'error_reg']]]
 ];

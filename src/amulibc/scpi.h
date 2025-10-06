@@ -2866,7 +2866,7 @@ extern "C" {
                                                                                                                                     \
         /**
  * @brief Query sunsensor value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor?`
  * 
@@ -2884,7 +2884,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor?`
  * 
@@ -3239,7 +3239,7 @@ extern "C" {
                                                                                                                                     \
         /**
  * @brief Set heater:state[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:STATE[?]`
  * 
@@ -3257,7 +3257,7 @@ extern "C" {
  */
         /**
  * @brief Set heater:state[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:STATE[?]`
  * 
@@ -3276,7 +3276,7 @@ extern "C" {
         SCPI_COMMAND("HEATer:STATE[?]", scpi_cmd_rw_uint8_t, CMD_AUX_HEATER_STATE)	\
         /**
  * @brief Set heater:setpoint[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:SETpoint[?]`
  * 
@@ -3294,7 +3294,7 @@ extern "C" {
  */
         /**
  * @brief Set heater:setpoint[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:SETpoint[?]`
  * 
@@ -3313,7 +3313,7 @@ extern "C" {
         SCPI_COMMAND("HEATer:SETpoint[?]", scpi_cmd_rw_float, CMD_AUX_HEATER_SETPOINT)	\
         /**
  * @brief Set heater:pid[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:PID[?]`
  * 
@@ -3331,7 +3331,7 @@ extern "C" {
  */
         /**
  * @brief Set heater:pid[?] value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:PID[?]`
  * 
@@ -3350,7 +3350,7 @@ extern "C" {
         SCPI_COMMAND("HEATer:PID[?]", scpi_cmd_rw_amu_pid_t, CMD_AUX_HEATER_PID)	\
         /**
  * @brief Set heater:pid:save value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:PID:SAVE`
  * 
@@ -3368,7 +3368,7 @@ extern "C" {
  */
         /**
  * @brief Set heater:pid:save value
- * @ingroup scpi_heater_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `HEATer:PID:SAVE`
  * 
@@ -4020,7 +4020,7 @@ extern "C" {
                                                                                                                                     \
         /**
  * @brief Set dac:state[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:STATE[?]`
  * 
@@ -4038,7 +4038,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:state[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:STATE[?]`
  * 
@@ -4057,7 +4057,7 @@ extern "C" {
         SCPI_COMMAND("DAC:STATE[?]", scpi_cmd_rw_uint8_t, CMD_AUX_DAC_STATE)	\
         /**
  * @brief Set dac:calibrate[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CALibrate[?]`
  * 
@@ -4075,7 +4075,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:calibrate[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CALibrate[?]`
  * 
@@ -4094,7 +4094,7 @@ extern "C" {
         SCPI_COMMAND("DAC:CALibrate[?]", scpi_cmd_rw_float, CMD_EXEC_DAC_CAL)	\
         /**
  * @brief Set dac:calibrate:save value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CALibrate:SAVe`
  * 
@@ -4112,7 +4112,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:calibrate:save value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CALibrate:SAVe`
  * 
@@ -4131,7 +4131,7 @@ extern "C" {
         SCPI_COMMAND("DAC:CALibrate:SAVe", scpi_cmd_execute, CMD_EXEC_DAC_CAL_SAVE)	\
         /**
  * @brief Set dac:current[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CURRent[?]`
  * 
@@ -4149,7 +4149,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:current[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CURRent[?]`
  * 
@@ -4168,7 +4168,7 @@ extern "C" {
         SCPI_COMMAND("DAC:CURRent[?]", scpi_cmd_rw_float, CMD_AUX_DAC_CURRENT)	\
         /**
  * @brief Set dac:current:raw[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CURRent:RAW[?]`
  * 
@@ -4186,7 +4186,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:current:raw[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:CURRent:RAW[?]`
  * 
@@ -4205,7 +4205,7 @@ extern "C" {
         SCPI_COMMAND("DAC:CURRent:RAW[?]", scpi_cmd_rw_uint16_t, CMD_AUX_DAC_CURRENT_RAW)	\
         /**
  * @brief Set dac:offset[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:OFFset[?]`
  * 
@@ -4223,7 +4223,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:offset[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:OFFset[?]`
  * 
@@ -4242,7 +4242,7 @@ extern "C" {
         SCPI_COMMAND("DAC:OFFset[?]", scpi_cmd_rw_uint16_t, CMD_AUX_DAC_OFFSET)	\
         /**
  * @brief Set dac:offset:correction[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:OFFset:CORRection[?]`
  * 
@@ -4260,7 +4260,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:offset:correction[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:OFFset:CORRection[?]`
  * 
@@ -4279,7 +4279,7 @@ extern "C" {
         SCPI_COMMAND("DAC:OFFset:CORRection[?]", scpi_cmd_rw_float, CMD_AUX_DAC_OFFSET_CORRECTION)	\
         /**
  * @brief Set dac:gain:correction[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:GAIN:CORRection[?]`
  * 
@@ -4297,7 +4297,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:gain:correction[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:GAIN:CORRection[?]`
  * 
@@ -4316,7 +4316,7 @@ extern "C" {
         SCPI_COMMAND("DAC:GAIN:CORRection[?]", scpi_cmd_rw_float, CMD_AUX_DAC_GAIN_CORRECTION)	\
         /**
  * @brief Set dac:voltage[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:VOLTage[?]`
  * 
@@ -4334,7 +4334,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:voltage[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:VOLTage[?]`
  * 
@@ -4353,7 +4353,7 @@ extern "C" {
         SCPI_COMMAND("DAC:VOLTage[?]", scpi_cmd_rw_float, CMD_AUX_DAC_VOLTAGE)	\
         /**
  * @brief Set dac:voltage:raw[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:VOLTage:RAW[?]`
  * 
@@ -4371,7 +4371,7 @@ extern "C" {
  */
         /**
  * @brief Set dac:voltage:raw[?] value
- * @ingroup scpi_dac_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `DAC:VOLTage:RAW[?]`
  * 
@@ -6172,7 +6172,7 @@ extern "C" {
                                                                                                                                     \
         /**
  * @brief Query sunsensor:tl value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:TL?`
  * 
@@ -6190,7 +6190,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:tl value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:TL?`
  * 
@@ -6209,7 +6209,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:TL?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_TL)	\
         /**
  * @brief Query sunsensor:bl value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:BL?`
  * 
@@ -6227,7 +6227,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:bl value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:BL?`
  * 
@@ -6246,7 +6246,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:BL?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_BL)	\
         /**
  * @brief Query sunsensor:br value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:BR?`
  * 
@@ -6264,7 +6264,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:br value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:BR?`
  * 
@@ -6283,7 +6283,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:BR?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_BR)	\
         /**
  * @brief Query sunsensor:tr value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:TR?`
  * 
@@ -6301,7 +6301,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:tr value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:TR?`
  * 
@@ -6320,7 +6320,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:TR?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_TR)	\
         /**
  * @brief Query sunsensor:yaw value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:YAW?`
  * 
@@ -6338,7 +6338,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:yaw value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:YAW?`
  * 
@@ -6357,7 +6357,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:YAW?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_YAW)	\
         /**
  * @brief Query sunsensor:pitch value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:PITCH?`
  * 
@@ -6375,7 +6375,7 @@ extern "C" {
  */
         /**
  * @brief Query sunsensor:pitch value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:PITCH?`
  * 
@@ -6394,7 +6394,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:PITCH?", scpi_cmd_rw_float, AMU_REG_SUNSENSOR_PITCH)	\
         /**
  * @brief Set sunsensor:fit:yaw[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:YAW[?]`
  * 
@@ -6412,7 +6412,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:fit:yaw[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:YAW[?]`
  * 
@@ -6431,7 +6431,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:FIT:YAW[?]", scpi_cmd_rw_amu_coeff_t, CMD_AUX_SUNSENSOR_FIT_YAW_COEFF)	\
         /**
  * @brief Set sunsensor:fit:pitch[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:PITCH[?]`
  * 
@@ -6449,7 +6449,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:fit:pitch[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:PITCH[?]`
  * 
@@ -6468,7 +6468,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:FIT:PITCH[?]", scpi_cmd_rw_amu_coeff_t, CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF)	\
         /**
  * @brief Set sunsensor:fit:save value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:SAVE`
  * 
@@ -6486,7 +6486,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:fit:save value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:FIT:SAVE`
  * 
@@ -6505,7 +6505,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:FIT:SAVE", scpi_cmd_execute, CMD_EXEC_SUNSENSOR_COEFF_SAVE)	\
         /**
  * @brief Set sunsensor:hval[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:HVAL[?]`
  * 
@@ -6523,7 +6523,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:hval[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:HVAL[?]`
  * 
@@ -6542,7 +6542,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:HVAL[?]", scpi_cmd_rw_float, CMD_AUX_SUNSENSOR_HVAL)	\
         /**
  * @brief Set sunsensor:rval[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:RVAL[?]`
  * 
@@ -6560,7 +6560,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:rval[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:RVAL[?]`
  * 
@@ -6579,7 +6579,7 @@ extern "C" {
         SCPI_COMMAND("SUNSensor:RVAL[?]", scpi_cmd_rw_float, CMD_AUX_SUNSENSOR_RVAL)	\
         /**
  * @brief Set sunsensor:threshold[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:THRESHold[?]`
  * 
@@ -6597,7 +6597,7 @@ extern "C" {
  */
         /**
  * @brief Set sunsensor:threshold[?] value
- * @ingroup scpi_sunsensor_commands
+ * @ingroup scpi_aux_commands
  * 
  * **SCPI Command:** `SUNSensor:THRESHold[?]`
  * 

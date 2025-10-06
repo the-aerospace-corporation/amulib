@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: C:/Users/cjm28241/source/repos/amulib/src/amulibc/amu_regs.h File Reference</title>
+<title>AMU Library: C:/Users/colin/source/repos/amulib/src/amulibc/amu_regs.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -114,132 +115,197 @@ Macros</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:a308036ed5bb66f037c9b47c0d14f5c79" id="r_a308036ed5bb66f037c9b47c0d14f5c79"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79">AMU_REG_t</a> { <br />
 &#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a9a4addf1a06e084d2a6dadba3b200254">AMU_REG_CMD</a> = 0x00
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8">AMU_REG_SYSTEM</a> = 0x00
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85">AMU_REG_DUT</a> = 0x0C
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3">AMU_REG_ADC_DATA</a> = 0x60
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8">AMU_REG_SYSTEM</a> = 0x00
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85">AMU_REG_DUT</a> = 0x0C
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3">AMU_REG_ADC_DATA</a> = 0x60
 , <br />
 &#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a6b364e6476aee0e527beb44d77b69ab8">AMU_REG_SUNSENSOR</a> = 0x90
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6">AMU_REG_SUNSENSOR_ANGLE</a> = 0xA0
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6">AMU_REG_TIME</a> = 0xA8
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849">AMU_REG_SWEEP_CONFIG</a> = 0xB0
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6">AMU_REG_SUNSENSOR_ANGLE</a> = 0xA0
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6">AMU_REG_TIME</a> = 0xA8
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849">AMU_REG_SWEEP_CONFIG</a> = 0xB0
 , <br />
 &#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a7c718f50074efa1798cb3333a4d79e73">AMU_REG_SWEEP_META</a> = 0xC0
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288">AMU_REG_DATA_PTR</a> = 0xF0
-, <a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130">AMU_REG_TRANSFER_PTR</a> = 0xFE
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288">AMU_REG_DATA_PTR</a> = 0xF0
+, <br />
+&#160;&#160;<a class="el" href="#a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130">AMU_REG_TRANSFER_PTR</a> = 0xFE
 <br />
  }</td></tr>
 <tr class="memdesc:a308036ed5bb66f037c9b47c0d14f5c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO.  <a href="#a308036ed5bb66f037c9b47c0d14f5c79">More...</a><br /></td></tr>
 <tr class="memitem:a49dfc79173d12624363746126721d4ac" id="r_a49dfc79173d12624363746126721d4ac"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49dfc79173d12624363746126721d4ac">AMU_REG_SYSTEM_t</a> { <br />
 &#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca46763fec2e67ca4ff3ab842dab942ad3">AMU_REG_SYSTEM_CMD</a> = AMU_REG_SYSTEM + 0x00
-, <a class="el" href="#a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5">AMU_REG_SYSTEM_AMU_STATUS</a> = AMU_REG_SYSTEM + 0x01
-, <a class="el" href="#a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661">AMU_REG_SYSTEM_TWI_STATUS</a> = AMU_REG_SYSTEM + 0x02
-, <a class="el" href="#a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502">AMU_REG_SYSTEM_HARDWARE_REVISION</a> = AMU_REG_SYSTEM + 0x03
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5">AMU_REG_SYSTEM_AMU_STATUS</a> = AMU_REG_SYSTEM + 0x01
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661">AMU_REG_SYSTEM_TWI_STATUS</a> = AMU_REG_SYSTEM + 0x02
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502">AMU_REG_SYSTEM_HARDWARE_REVISION</a> = AMU_REG_SYSTEM + 0x03
 , <br />
 &#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca5d1a35205018b6f206c2464e098f6da5">AMU_REG_SYSTEM_TSENSOR_TYPE</a> = AMU_REG_SYSTEM + 0x04
-, <a class="el" href="#a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de">AMU_REG_SYSTEM_TSENSOR_NUM</a> = AMU_REG_SYSTEM + 0x05
-, <a class="el" href="#a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26">AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS</a> = AMU_REG_SYSTEM + 0x06
-, <a class="el" href="#a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7">AMU_REG_SYSTEM_STATUS_HRADC</a> = AMU_REG_SYSTEM + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de">AMU_REG_SYSTEM_TSENSOR_NUM</a> = AMU_REG_SYSTEM + 0x05
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26">AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS</a> = AMU_REG_SYSTEM + 0x06
+, <br />
+&#160;&#160;<a class="el" href="#a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7">AMU_REG_SYSTEM_STATUS_HRADC</a> = AMU_REG_SYSTEM + 0x08
 <br />
  }</td></tr>
 <tr class="memitem:ac4b9301d520390c6dfa807d4fa9fc9eb" id="r_ac4b9301d520390c6dfa807d4fa9fc9eb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eb">AMU_REG_DUT_t</a> { <br />
 &#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba8acf712ec1ce4ddd317c99baa64c63c2">AMU_REG_DUT_JUNCTION</a> = AMU_REG_DUT + 0x00
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4">AMU_REG_DUT_COVERGLASS</a> = AMU_REG_DUT + 0x01
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6">AMU_REG_DUT_INTERCONNECT</a> = AMU_REG_DUT + 0x02
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179">AMU_REG_DUT_RESERVED</a> = AMU_REG_DUT + 0x03
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4">AMU_REG_DUT_COVERGLASS</a> = AMU_REG_DUT + 0x01
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6">AMU_REG_DUT_INTERCONNECT</a> = AMU_REG_DUT + 0x02
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179">AMU_REG_DUT_RESERVED</a> = AMU_REG_DUT + 0x03
 , <br />
 &#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba85bc16c980a0535d7521d0d77d65dc0b">AMU_REG_DUT_MANUFACTURER</a> = AMU_REG_DUT + 0x04
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7">AMU_REG_DUT_MODEL</a> = AMU_REG_DUT + 0x14
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b">AMU_REG_DUT_TECHNOLOGY</a> = AMU_REG_DUT + 0x24
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85">AMU_REG_DUT_SERIAL_NUMBER</a> = AMU_REG_DUT + 0x34
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7">AMU_REG_DUT_MODEL</a> = AMU_REG_DUT + 0x14
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b">AMU_REG_DUT_TECHNOLOGY</a> = AMU_REG_DUT + 0x24
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85">AMU_REG_DUT_SERIAL_NUMBER</a> = AMU_REG_DUT + 0x34
 , <br />
 &#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9eba87bfaa9139eb2b90c6ca76d95de0530d">AMU_REG_DUT_ENERGY</a> = AMU_REG_DUT + 0x4C
-, <a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb">AMU_REG_DUT_DOSE</a> = AMU_REG_DUT + 0x50
+, <br />
+&#160;&#160;<a class="el" href="#ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb">AMU_REG_DUT_DOSE</a> = AMU_REG_DUT + 0x50
 <br />
  }</td></tr>
 <tr class="memitem:ade7088da76b8caba7fd5fa1f69a136a8" id="r_ade7088da76b8caba7fd5fa1f69a136a8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8">AMU_REG_ADC_DATA_t</a> { <br />
 &#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a802226c7b038116733b82ab1e05de497">AMU_REG_ADC_DATA_VOLTAGE</a> = AMU_REG_ADC_DATA + 0x00
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa">AMU_REG_ADC_DATA_CURRENT</a> = AMU_REG_ADC_DATA + 0x04
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402">AMU_REG_ADC_DATA_TSENSOR</a> = AMU_REG_ADC_DATA + 0x08
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c">AMU_REG_ADC_DATA_TSENSORS</a> = AMU_REG_ADC_DATA + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa">AMU_REG_ADC_DATA_CURRENT</a> = AMU_REG_ADC_DATA + 0x04
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402">AMU_REG_ADC_DATA_TSENSOR</a> = AMU_REG_ADC_DATA + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c">AMU_REG_ADC_DATA_TSENSORS</a> = AMU_REG_ADC_DATA + 0x08
 , <br />
 &#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8aea07a9a311e652939e688269ff5d1fc5">AMU_REG_ADC_DATA_TSENSOR_0</a> = AMU_REG_ADC_DATA + 0x08
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a">AMU_REG_ADC_DATA_TSENSOR_1</a> = AMU_REG_ADC_DATA + 0x0C
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333">AMU_REG_ADC_DATA_TSENSOR_2</a> = AMU_REG_ADC_DATA + 0x10
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6">AMU_REG_ADC_DATA_BIAS</a> = AMU_REG_ADC_DATA + 0x14
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a">AMU_REG_ADC_DATA_TSENSOR_1</a> = AMU_REG_ADC_DATA + 0x0C
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333">AMU_REG_ADC_DATA_TSENSOR_2</a> = AMU_REG_ADC_DATA + 0x10
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6">AMU_REG_ADC_DATA_BIAS</a> = AMU_REG_ADC_DATA + 0x14
 , <br />
 &#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a170e584acab8c56db6665d1ed0b64f46">AMU_REG_ADC_DATA_OFFSET</a> = AMU_REG_ADC_DATA + 0x18
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b">AMU_REG_ADC_DATA_TEMP</a> = AMU_REG_ADC_DATA + 0x1C
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2">AMU_REG_ADC_DATA_AVDD</a> = AMU_REG_ADC_DATA + 0x20
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa">AMU_REG_ADC_DATA_IOVDD</a> = AMU_REG_ADC_DATA + 0x24
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b">AMU_REG_ADC_DATA_TEMP</a> = AMU_REG_ADC_DATA + 0x1C
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2">AMU_REG_ADC_DATA_AVDD</a> = AMU_REG_ADC_DATA + 0x20
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa">AMU_REG_ADC_DATA_IOVDD</a> = AMU_REG_ADC_DATA + 0x24
 , <br />
 &#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8ae173a238664db64fc8da2a3e0d9c7c2c">AMU_REG_ADC_DATA_ALDO</a> = AMU_REG_ADC_DATA + 0x28
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed">AMU_REG_ADC_DATA_DLDO</a> = AMU_REG_ADC_DATA + 0x2C
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb">AMU_REG_ADC_DATA_SS_TL</a> = AMU_REG_ADC_DATA + 0x30
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9">AMU_REG_ADC_DATA_SS_BL</a> = AMU_REG_ADC_DATA + 0x34
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed">AMU_REG_ADC_DATA_DLDO</a> = AMU_REG_ADC_DATA + 0x2C
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb">AMU_REG_ADC_DATA_SS_TL</a> = AMU_REG_ADC_DATA + 0x30
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9">AMU_REG_ADC_DATA_SS_BL</a> = AMU_REG_ADC_DATA + 0x34
 , <br />
 &#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a9bfa3f05bc87e1fb151623116346f1b6">AMU_REG_ADC_DATA_SS_BR</a> = AMU_REG_ADC_DATA + 0x38
-, <a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369">AMU_REG_ADC_DATA_SS_TR</a> = AMU_REG_ADC_DATA + 0x3C
+, <br />
+&#160;&#160;<a class="el" href="#ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369">AMU_REG_ADC_DATA_SS_TR</a> = AMU_REG_ADC_DATA + 0x3C
 <br />
  }</td></tr>
 <tr class="memitem:adb06c7f1f76930ceeda8aa9eb0d62227" id="r_adb06c7f1f76930ceeda8aa9eb0d62227"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227">AMU_REG_SUNSENSOR_t</a> { <br />
 &#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a171e4886d735e69c5a742ca4571ce4ce">AMU_REG_SUNSENSOR_TL</a> = AMU_REG_SUNSENSOR + 0x00
-, <a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad">AMU_REG_SUNSENSOR_BL</a> = AMU_REG_SUNSENSOR + 0x04
-, <a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4">AMU_REG_SUNSENSOR_BR</a> = AMU_REG_SUNSENSOR + 0x08
-, <a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039">AMU_REG_SUNSENSOR_TR</a> = AMU_REG_SUNSENSOR + 0x0C
+, <br />
+&#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad">AMU_REG_SUNSENSOR_BL</a> = AMU_REG_SUNSENSOR + 0x04
+, <br />
+&#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4">AMU_REG_SUNSENSOR_BR</a> = AMU_REG_SUNSENSOR + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039">AMU_REG_SUNSENSOR_TR</a> = AMU_REG_SUNSENSOR + 0x0C
 , <br />
 &#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227af18d1bbcdd7650637d5895ac3ee62eaa">AMU_REG_SUNSENSOR_YAW</a> = AMU_REG_SUNSENSOR + 0x10
-, <a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711">AMU_REG_SUNSENSOR_PITCH</a> = AMU_REG_SUNSENSOR + 0x14
+, <br />
+&#160;&#160;<a class="el" href="#adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711">AMU_REG_SUNSENSOR_PITCH</a> = AMU_REG_SUNSENSOR + 0x14
 <br />
  }</td></tr>
-<tr class="memitem:a3ff8d41c240feeccb734d35124906802" id="r_a3ff8d41c240feeccb734d35124906802"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ff8d41c240feeccb734d35124906802">AMU_REG_TIME_t</a> { <a class="el" href="#a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0">AMU_REG_TIME_MILLIS</a> = AMU_REG_TIME + 0x00
-, <a class="el" href="#a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3">AMU_REG_TIME_UTC</a> = AMU_REG_TIME + 0x04
+<tr class="memitem:a3ff8d41c240feeccb734d35124906802" id="r_a3ff8d41c240feeccb734d35124906802"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ff8d41c240feeccb734d35124906802">AMU_REG_TIME_t</a> { <br />
+&#160;&#160;<a class="el" href="#a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0">AMU_REG_TIME_MILLIS</a> = AMU_REG_TIME + 0x00
+, <br />
+&#160;&#160;<a class="el" href="#a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3">AMU_REG_TIME_UTC</a> = AMU_REG_TIME + 0x04
+<br />
  }</td></tr>
 <tr class="memitem:a821c732c63253c6e1b7beedc13b020fa" id="r_a821c732c63253c6e1b7beedc13b020fa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a821c732c63253c6e1b7beedc13b020fa">AMU_REG_SWEEP_CONFIG_t</a> { <br />
 &#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a">AMU_REG_SWEEP_CONFIG_TYPE</a> = AMU_REG_SWEEP_CONFIG + 0x00
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84">AMU_REG_SWEEP_CONFIG_NUM_POINTS</a> = AMU_REG_SWEEP_CONFIG + 0x01
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b">AMU_REG_SWEEP_CONFIG_DELAY</a> = AMU_REG_SWEEP_CONFIG + 0x02
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a">AMU_REG_SWEEP_CONFIG_RATIO</a> = AMU_REG_SWEEP_CONFIG + 0x03
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84">AMU_REG_SWEEP_CONFIG_NUM_POINTS</a> = AMU_REG_SWEEP_CONFIG + 0x01
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b">AMU_REG_SWEEP_CONFIG_DELAY</a> = AMU_REG_SWEEP_CONFIG + 0x02
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a">AMU_REG_SWEEP_CONFIG_RATIO</a> = AMU_REG_SWEEP_CONFIG + 0x03
 , <br />
 &#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038">AMU_REG_SWEEP_CONFIG_PWR_MODE</a> = AMU_REG_SWEEP_CONFIG + 0x04
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29">AMU_REG_SWEEP_CONFIG_DAC_GAIN</a> = AMU_REG_SWEEP_CONFIG + 0x05
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849">AMU_REG_SWEEP_CONFIG_AVERAGES</a> = AMU_REG_SWEEP_CONFIG + 0x06
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f">AMU_REG_SWEEP_CONFIG_ADC_AVERAGES</a> = AMU_REG_SWEEP_CONFIG + 0x07
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29">AMU_REG_SWEEP_CONFIG_DAC_GAIN</a> = AMU_REG_SWEEP_CONFIG + 0x05
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849">AMU_REG_SWEEP_CONFIG_AVERAGES</a> = AMU_REG_SWEEP_CONFIG + 0x06
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f">AMU_REG_SWEEP_CONFIG_ADC_AVERAGES</a> = AMU_REG_SWEEP_CONFIG + 0x07
 , <br />
 &#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574">AMU_REG_SWEEP_CONFIG_AM0</a> = AMU_REG_SWEEP_CONFIG + 0x08
-, <a class="el" href="#a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad">AMU_REG_SWEEP_CONFIG_AREA</a> = AMU_REG_SWEEP_CONFIG + 0x0C
+, <br />
+&#160;&#160;<a class="el" href="#a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad">AMU_REG_SWEEP_CONFIG_AREA</a> = AMU_REG_SWEEP_CONFIG + 0x0C
 <br />
  }</td></tr>
 <tr class="memitem:a6ecef4fa16abf881776d89e5af854ca8" id="r_a6ecef4fa16abf881776d89e5af854ca8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8">AMU_REG_SWEEP_META_t</a> { <br />
 &#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a9cc851ab2feee3eef0813110ea7bc2ed">AMU_REG_SWEEP_META_VOC</a> = AMU_REG_SWEEP_META + 0x00
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2">AMU_REG_SWEEP_META_ISC</a> = AMU_REG_SWEEP_META + 0x04
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5">AMU_REG_SWEEP_META_TSENSOR_START</a> = AMU_REG_SWEEP_META + 0x08
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4">AMU_REG_SWEEP_META_TSENSOR_END</a> = AMU_REG_SWEEP_META + 0x0C
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2">AMU_REG_SWEEP_META_ISC</a> = AMU_REG_SWEEP_META + 0x04
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5">AMU_REG_SWEEP_META_TSENSOR_START</a> = AMU_REG_SWEEP_META + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4">AMU_REG_SWEEP_META_TSENSOR_END</a> = AMU_REG_SWEEP_META + 0x0C
 , <br />
 &#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ad51ba3653b5a6d4ce4d983568d6f8f5c">AMU_REG_SWEEP_META_FF</a> = AMU_REG_SWEEP_META + 0x10
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a">AMU_REG_SWEEP_META_EFF</a> = AMU_REG_SWEEP_META + 0x14
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa">AMU_REG_SWEEP_META_VMAX</a> = AMU_REG_SWEEP_META + 0x18
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661">AMU_REG_SWEEP_META_IMAX</a> = AMU_REG_SWEEP_META + 0x1C
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a">AMU_REG_SWEEP_META_EFF</a> = AMU_REG_SWEEP_META + 0x14
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa">AMU_REG_SWEEP_META_VMAX</a> = AMU_REG_SWEEP_META + 0x18
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661">AMU_REG_SWEEP_META_IMAX</a> = AMU_REG_SWEEP_META + 0x1C
 , <br />
 &#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8ab1793ebb6792deb765babed646418066">AMU_REG_SWEEP_META_PMAX</a> = AMU_REG_SWEEP_META + 0x20
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687">AMU_REG_SWEEP_META_ADC</a> = AMU_REG_SWEEP_META + 0x24
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a">AMU_REG_SWEEP_META_TIMESTAMP</a> = AMU_REG_SWEEP_META + 0x28
-, <a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11">AMU_REG_SWEEP_META_CRC</a> = AMU_REG_SWEEP_META + 0x2C
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687">AMU_REG_SWEEP_META_ADC</a> = AMU_REG_SWEEP_META + 0x24
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a">AMU_REG_SWEEP_META_TIMESTAMP</a> = AMU_REG_SWEEP_META + 0x28
+, <br />
+&#160;&#160;<a class="el" href="#a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11">AMU_REG_SWEEP_META_CRC</a> = AMU_REG_SWEEP_META + 0x2C
 <br />
  }</td></tr>
 <tr class="memitem:a525af9b833212e0ba61732b0f0ce479e" id="r_a525af9b833212e0ba61732b0f0ce479e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a525af9b833212e0ba61732b0f0ce479e">AMU_REG_DATA_PTR_t</a> { <br />
 &#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea937fc808df41bb9c102a96706a179a5e">AMU_REG_DATA_PTR_COMMAND</a> = 0x00
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45">AMU_REG_DATA_PTR_TIMESTAMP</a> = AMU_REG_DATA_PTR + 0x00
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e">AMU_REG_DATA_PTR_VOLTAGE</a> = AMU_REG_DATA_PTR + 0x01
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440">AMU_REG_DATA_PTR_CURRENT</a> = AMU_REG_DATA_PTR + 0x02
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45">AMU_REG_DATA_PTR_TIMESTAMP</a> = AMU_REG_DATA_PTR + 0x00
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e">AMU_REG_DATA_PTR_VOLTAGE</a> = AMU_REG_DATA_PTR + 0x01
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440">AMU_REG_DATA_PTR_CURRENT</a> = AMU_REG_DATA_PTR + 0x02
 , <br />
 &#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea9834e4fbd042b70d65a5076e25afb3f0">AMU_REG_DATA_PTR_SS_YAW</a> = AMU_REG_DATA_PTR + 0x03
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415">AMU_REG_DATA_PTR_SS_PITCH</a> = AMU_REG_DATA_PTR + 0x04
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791">AMU_REG_DATA_PTR_SWEEP_CONFIG</a> = AMU_REG_DATA_PTR + 0x05
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b">AMU_REG_DATA_PTR_SWEEP_META</a> = AMU_REG_DATA_PTR + 0x06
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415">AMU_REG_DATA_PTR_SS_PITCH</a> = AMU_REG_DATA_PTR + 0x04
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791">AMU_REG_DATA_PTR_SWEEP_CONFIG</a> = AMU_REG_DATA_PTR + 0x05
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b">AMU_REG_DATA_PTR_SWEEP_META</a> = AMU_REG_DATA_PTR + 0x06
 , <br />
 &#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479eafcd37367dedbf46868472027d8a984a8">AMU_REG_DATA_PTR_SUNSENSOR</a> = AMU_REG_DATA_PTR + 0x07
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233">AMU_REG_DATA_PTR_PRESSURE</a> = AMU_REG_DATA_PTR + 0x08
-, <a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e">AMU_REG_DATA_PTR_DATAPOINT</a> = AMU_REG_DATA_PTR + 0x09
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233">AMU_REG_DATA_PTR_PRESSURE</a> = AMU_REG_DATA_PTR + 0x08
+, <br />
+&#160;&#160;<a class="el" href="#a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e">AMU_REG_DATA_PTR_DATAPOINT</a> = AMU_REG_DATA_PTR + 0x09
 <br />
  }</td></tr>
 </table><table class="memberdecls">
@@ -396,41 +462,41 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a802226c7b038116733b82ab1e05de497" name="ade7088da76b8caba7fd5fa1f69a136a8a802226c7b038116733b82ab1e05de497"></a>AMU_REG_ADC_DATA_VOLTAGE&#160;</td><td class="fielddoc"><p>float - converted value of voltage measurement </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a802226c7b038116733b82ab1e05de497" name="ade7088da76b8caba7fd5fa1f69a136a8a802226c7b038116733b82ab1e05de497"></a>AMU_REG_ADC_DATA_VOLTAGE&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x00&#160;</td><td class="fielddoc"><p>float - converted value of voltage measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa" name="ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa"></a>AMU_REG_ADC_DATA_CURRENT&#160;</td><td class="fielddoc"><p>float - converted value of current measurement </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa" name="ade7088da76b8caba7fd5fa1f69a136a8a842e4e7a0f68a48b047085ffd17dafaa"></a>AMU_REG_ADC_DATA_CURRENT&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x04&#160;</td><td class="fielddoc"><p>float - converted value of current measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402" name="ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402"></a>AMU_REG_ADC_DATA_TSENSOR&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402" name="ade7088da76b8caba7fd5fa1f69a136a8a598824dc6d20880d4c792df0d8229402"></a>AMU_REG_ADC_DATA_TSENSOR&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x08&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c" name="ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c"></a>AMU_REG_ADC_DATA_TSENSORS&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c" name="ade7088da76b8caba7fd5fa1f69a136a8a6e89b030acc758ee14957bdac3170e5c"></a>AMU_REG_ADC_DATA_TSENSORS&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x08&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8aea07a9a311e652939e688269ff5d1fc5" name="ade7088da76b8caba7fd5fa1f69a136a8aea07a9a311e652939e688269ff5d1fc5"></a>AMU_REG_ADC_DATA_TSENSOR_0&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8aea07a9a311e652939e688269ff5d1fc5" name="ade7088da76b8caba7fd5fa1f69a136a8aea07a9a311e652939e688269ff5d1fc5"></a>AMU_REG_ADC_DATA_TSENSOR_0&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x08&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a" name="ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a"></a>AMU_REG_ADC_DATA_TSENSOR_1&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a" name="ade7088da76b8caba7fd5fa1f69a136a8a220325e976c3cab970c76e032895eb7a"></a>AMU_REG_ADC_DATA_TSENSOR_1&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x0C&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333" name="ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333"></a>AMU_REG_ADC_DATA_TSENSOR_2&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333" name="ade7088da76b8caba7fd5fa1f69a136a8a4bc0bb08bbd5eab12f17bb667a200333"></a>AMU_REG_ADC_DATA_TSENSOR_2&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x10&#160;</td><td class="fielddoc"><p>float - converted value of RTD temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6" name="ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6"></a>AMU_REG_ADC_DATA_BIAS&#160;</td><td class="fielddoc"><p>float - converted value of bias voltage measurement, generated by �Controller DAC </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6" name="ade7088da76b8caba7fd5fa1f69a136a8a3fbc7a7d6a1ed8aa77003223787528b6"></a>AMU_REG_ADC_DATA_BIAS&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x14&#160;</td><td class="fielddoc"><p>float - converted value of bias voltage measurement, generated by �Controller DAC </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a170e584acab8c56db6665d1ed0b64f46" name="ade7088da76b8caba7fd5fa1f69a136a8a170e584acab8c56db6665d1ed0b64f46"></a>AMU_REG_ADC_DATA_OFFSET&#160;</td><td class="fielddoc"><p>float - converted value of bias voltage measurement, generated by �Controller DAC </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a170e584acab8c56db6665d1ed0b64f46" name="ade7088da76b8caba7fd5fa1f69a136a8a170e584acab8c56db6665d1ed0b64f46"></a>AMU_REG_ADC_DATA_OFFSET&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x18&#160;</td><td class="fielddoc"><p>float - converted value of bias voltage measurement, generated by �Controller DAC </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b" name="ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b"></a>AMU_REG_ADC_DATA_TEMP&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC temperature sensor </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b" name="ade7088da76b8caba7fd5fa1f69a136a8a5b50d87a0f935d35825a1ce4d803338b"></a>AMU_REG_ADC_DATA_TEMP&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x1C&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC temperature sensor </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2" name="ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2"></a>AMU_REG_ADC_DATA_AVDD&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC AVDD voltage </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2" name="ade7088da76b8caba7fd5fa1f69a136a8ad49a89bba1eb1ab3c98df4702f1f0cb2"></a>AMU_REG_ADC_DATA_AVDD&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x20&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC AVDD voltage </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa" name="ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa"></a>AMU_REG_ADC_DATA_IOVDD&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC IOVDD voltage </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa" name="ade7088da76b8caba7fd5fa1f69a136a8ad33e721c9892bda989344b664b1b87fa"></a>AMU_REG_ADC_DATA_IOVDD&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x24&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC IOVDD voltage </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ae173a238664db64fc8da2a3e0d9c7c2c" name="ade7088da76b8caba7fd5fa1f69a136a8ae173a238664db64fc8da2a3e0d9c7c2c"></a>AMU_REG_ADC_DATA_ALDO&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC ALDO voltage </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8ae173a238664db64fc8da2a3e0d9c7c2c" name="ade7088da76b8caba7fd5fa1f69a136a8ae173a238664db64fc8da2a3e0d9c7c2c"></a>AMU_REG_ADC_DATA_ALDO&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x28&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC ALDO voltage </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed" name="ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed"></a>AMU_REG_ADC_DATA_DLDO&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC DLDO voltage </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed" name="ade7088da76b8caba7fd5fa1f69a136a8abe9926cd3f80815443e8c4d257e905ed"></a>AMU_REG_ADC_DATA_DLDO&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x2C&#160;</td><td class="fielddoc"><p>float - converted value of internal ADC DLDO voltage </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb" name="ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb"></a>AMU_REG_ADC_DATA_SS_TL&#160;</td><td class="fielddoc"><p>float - converted value of AIN0, typically used for quad photo diode sun-sensor measurement </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb" name="ade7088da76b8caba7fd5fa1f69a136a8a37713f45223b24b886edad2c54d6a4cb"></a>AMU_REG_ADC_DATA_SS_TL&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x30&#160;</td><td class="fielddoc"><p>float - converted value of AIN0, typically used for quad photo diode sun-sensor measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9" name="ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9"></a>AMU_REG_ADC_DATA_SS_BL&#160;</td><td class="fielddoc"><p>float - converted value of AIN1, typically used for quad photo diode sun-sensor measurement </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9" name="ade7088da76b8caba7fd5fa1f69a136a8a9fc04cb1a342a37a7ad669dbb0ad32b9"></a>AMU_REG_ADC_DATA_SS_BL&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x34&#160;</td><td class="fielddoc"><p>float - converted value of AIN1, typically used for quad photo diode sun-sensor measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a9bfa3f05bc87e1fb151623116346f1b6" name="ade7088da76b8caba7fd5fa1f69a136a8a9bfa3f05bc87e1fb151623116346f1b6"></a>AMU_REG_ADC_DATA_SS_BR&#160;</td><td class="fielddoc"><p>float - converted value of AIN2, typically used for quad photo diode sun-sensor measurement </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a9bfa3f05bc87e1fb151623116346f1b6" name="ade7088da76b8caba7fd5fa1f69a136a8a9bfa3f05bc87e1fb151623116346f1b6"></a>AMU_REG_ADC_DATA_SS_BR&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x38&#160;</td><td class="fielddoc"><p>float - converted value of AIN2, typically used for quad photo diode sun-sensor measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369" name="ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369"></a>AMU_REG_ADC_DATA_SS_TR&#160;</td><td class="fielddoc"><p>float - converted value of AIN14, typically used for quad photo diode sun-sensor measurement </p>
+<tr><td class="fieldname"><a id="ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369" name="ade7088da76b8caba7fd5fa1f69a136a8a0569a756379708509eea6a0b5893b369"></a>AMU_REG_ADC_DATA_SS_TR&#160;</td><td class="fieldinit">AMU_REG_ADC_DATA + 0x3C&#160;</td><td class="fielddoc"><p>float - converted value of AIN14, typically used for quad photo diode sun-sensor measurement </p>
 </td></tr>
 </table>
 
@@ -450,26 +516,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea937fc808df41bb9c102a96706a179a5e" name="a525af9b833212e0ba61732b0f0ce479ea937fc808df41bb9c102a96706a179a5e"></a>AMU_REG_DATA_PTR_COMMAND&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45" name="a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45"></a>AMU_REG_DATA_PTR_TIMESTAMP&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea937fc808df41bb9c102a96706a179a5e" name="a525af9b833212e0ba61732b0f0ce479ea937fc808df41bb9c102a96706a179a5e"></a>AMU_REG_DATA_PTR_COMMAND&#160;</td><td class="fieldinit">0x00&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45" name="a525af9b833212e0ba61732b0f0ce479eadfeabc6aa448c30ad0348d3301a7db45"></a>AMU_REG_DATA_PTR_TIMESTAMP&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x00&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e" name="a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e"></a>AMU_REG_DATA_PTR_VOLTAGE&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e" name="a525af9b833212e0ba61732b0f0ce479ea0589423bc49bdd738a6e2c42dfcd8e7e"></a>AMU_REG_DATA_PTR_VOLTAGE&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x01&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440" name="a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440"></a>AMU_REG_DATA_PTR_CURRENT&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440" name="a525af9b833212e0ba61732b0f0ce479ead34a9f217e95d6bd05eb8c9495580440"></a>AMU_REG_DATA_PTR_CURRENT&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x02&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea9834e4fbd042b70d65a5076e25afb3f0" name="a525af9b833212e0ba61732b0f0ce479ea9834e4fbd042b70d65a5076e25afb3f0"></a>AMU_REG_DATA_PTR_SS_YAW&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea9834e4fbd042b70d65a5076e25afb3f0" name="a525af9b833212e0ba61732b0f0ce479ea9834e4fbd042b70d65a5076e25afb3f0"></a>AMU_REG_DATA_PTR_SS_YAW&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x03&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415" name="a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415"></a>AMU_REG_DATA_PTR_SS_PITCH&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415" name="a525af9b833212e0ba61732b0f0ce479eafa8d61123abda26480b7c502144a7415"></a>AMU_REG_DATA_PTR_SS_PITCH&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x04&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791" name="a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791"></a>AMU_REG_DATA_PTR_SWEEP_CONFIG&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791" name="a525af9b833212e0ba61732b0f0ce479ea6d662fcd50a6a6970210160cc30bd791"></a>AMU_REG_DATA_PTR_SWEEP_CONFIG&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x05&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b" name="a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b"></a>AMU_REG_DATA_PTR_SWEEP_META&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b" name="a525af9b833212e0ba61732b0f0ce479eae2f46b06c45c5a360f0cc9b328c8454b"></a>AMU_REG_DATA_PTR_SWEEP_META&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x06&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eafcd37367dedbf46868472027d8a984a8" name="a525af9b833212e0ba61732b0f0ce479eafcd37367dedbf46868472027d8a984a8"></a>AMU_REG_DATA_PTR_SUNSENSOR&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479eafcd37367dedbf46868472027d8a984a8" name="a525af9b833212e0ba61732b0f0ce479eafcd37367dedbf46868472027d8a984a8"></a>AMU_REG_DATA_PTR_SUNSENSOR&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x07&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233" name="a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233"></a>AMU_REG_DATA_PTR_PRESSURE&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233" name="a525af9b833212e0ba61732b0f0ce479ea1980de05e406f8f626f60b747494d233"></a>AMU_REG_DATA_PTR_PRESSURE&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x08&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e" name="a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e"></a>AMU_REG_DATA_PTR_DATAPOINT&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
+<tr><td class="fieldname"><a id="a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e" name="a525af9b833212e0ba61732b0f0ce479ea4177dde6bbd768b87c4999771df0c47e"></a>AMU_REG_DATA_PTR_DATAPOINT&#160;</td><td class="fieldinit">AMU_REG_DATA_PTR + 0x09&#160;</td><td class="fielddoc"><p>Max determined by TWI data definition, partially memory dependent </p>
 </td></tr>
 </table>
 
@@ -489,21 +555,21 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba8acf712ec1ce4ddd317c99baa64c63c2" name="ac4b9301d520390c6dfa807d4fa9fc9eba8acf712ec1ce4ddd317c99baa64c63c2"></a>AMU_REG_DUT_JUNCTION&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4" name="ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4"></a>AMU_REG_DUT_COVERGLASS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6" name="ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6"></a>AMU_REG_DUT_INTERCONNECT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179" name="ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179"></a>AMU_REG_DUT_RESERVED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba85bc16c980a0535d7521d0d77d65dc0b" name="ac4b9301d520390c6dfa807d4fa9fc9eba85bc16c980a0535d7521d0d77d65dc0b"></a>AMU_REG_DUT_MANUFACTURER&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba8acf712ec1ce4ddd317c99baa64c63c2" name="ac4b9301d520390c6dfa807d4fa9fc9eba8acf712ec1ce4ddd317c99baa64c63c2"></a>AMU_REG_DUT_JUNCTION&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x00&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4" name="ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4"></a>AMU_REG_DUT_COVERGLASS&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x01&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6" name="ac4b9301d520390c6dfa807d4fa9fc9eba8b2e71f45aae53e62f1e79a585652bf6"></a>AMU_REG_DUT_INTERCONNECT&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x02&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179" name="ac4b9301d520390c6dfa807d4fa9fc9eba2a07584544d52404e00689bb7a534179"></a>AMU_REG_DUT_RESERVED&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x03&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba85bc16c980a0535d7521d0d77d65dc0b" name="ac4b9301d520390c6dfa807d4fa9fc9eba85bc16c980a0535d7521d0d77d65dc0b"></a>AMU_REG_DUT_MANUFACTURER&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x04&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7" name="ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7"></a>AMU_REG_DUT_MODEL&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7" name="ac4b9301d520390c6dfa807d4fa9fc9eba133be883a543c42e3c626a50a017f5c7"></a>AMU_REG_DUT_MODEL&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x14&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b" name="ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b"></a>AMU_REG_DUT_TECHNOLOGY&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b" name="ac4b9301d520390c6dfa807d4fa9fc9eba5c074aa7ff9f0b72620bec12cd64783b"></a>AMU_REG_DUT_TECHNOLOGY&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x24&#160;</td><td class="fielddoc"><p>16 byte array, null terminated c-string </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85" name="ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85"></a>AMU_REG_DUT_SERIAL_NUMBER&#160;</td><td class="fielddoc"><p>24 byte array, null terminated c-string </p>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85" name="ac4b9301d520390c6dfa807d4fa9fc9eba2fceb73253b06d4e463d4e66ba8b6a85"></a>AMU_REG_DUT_SERIAL_NUMBER&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x34&#160;</td><td class="fielddoc"><p>24 byte array, null terminated c-string </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba87bfaa9139eb2b90c6ca76d95de0530d" name="ac4b9301d520390c6dfa807d4fa9fc9eba87bfaa9139eb2b90c6ca76d95de0530d"></a>AMU_REG_DUT_ENERGY&#160;</td><td class="fielddoc"><p>float energy of irradaited particle </p>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9eba87bfaa9139eb2b90c6ca76d95de0530d" name="ac4b9301d520390c6dfa807d4fa9fc9eba87bfaa9139eb2b90c6ca76d95de0530d"></a>AMU_REG_DUT_ENERGY&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x4C&#160;</td><td class="fielddoc"><p>float energy of irradaited particle </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb" name="ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb"></a>AMU_REG_DUT_DOSE&#160;</td><td class="fielddoc"><p>float dose of irradiation, positive for proton, negative for electron </p>
+<tr><td class="fieldname"><a id="ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb" name="ac4b9301d520390c6dfa807d4fa9fc9ebaaa53a0e335b89110935a2a9e070debbb"></a>AMU_REG_DUT_DOSE&#160;</td><td class="fieldinit">AMU_REG_DUT + 0x50&#160;</td><td class="fielddoc"><p>float dose of irradiation, positive for proton, negative for electron </p>
 </td></tr>
 </table>
 
@@ -523,12 +589,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a171e4886d735e69c5a742ca4571ce4ce" name="adb06c7f1f76930ceeda8aa9eb0d62227a171e4886d735e69c5a742ca4571ce4ce"></a>AMU_REG_SUNSENSOR_TL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad" name="adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad"></a>AMU_REG_SUNSENSOR_BL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4" name="adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4"></a>AMU_REG_SUNSENSOR_BR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039" name="adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039"></a>AMU_REG_SUNSENSOR_TR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227af18d1bbcdd7650637d5895ac3ee62eaa" name="adb06c7f1f76930ceeda8aa9eb0d62227af18d1bbcdd7650637d5895ac3ee62eaa"></a>AMU_REG_SUNSENSOR_YAW&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711" name="adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711"></a>AMU_REG_SUNSENSOR_PITCH&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a171e4886d735e69c5a742ca4571ce4ce" name="adb06c7f1f76930ceeda8aa9eb0d62227a171e4886d735e69c5a742ca4571ce4ce"></a>AMU_REG_SUNSENSOR_TL&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x00&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad" name="adb06c7f1f76930ceeda8aa9eb0d62227addb82ab997d5e2480b1f771196d0d9ad"></a>AMU_REG_SUNSENSOR_BL&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x04&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4" name="adb06c7f1f76930ceeda8aa9eb0d62227a70ed556e6cb48decbf8bb154b2eeddd4"></a>AMU_REG_SUNSENSOR_BR&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x08&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039" name="adb06c7f1f76930ceeda8aa9eb0d62227a01c0267f9199dddf57d30c5d090c5039"></a>AMU_REG_SUNSENSOR_TR&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x0C&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227af18d1bbcdd7650637d5895ac3ee62eaa" name="adb06c7f1f76930ceeda8aa9eb0d62227af18d1bbcdd7650637d5895ac3ee62eaa"></a>AMU_REG_SUNSENSOR_YAW&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x10&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711" name="adb06c7f1f76930ceeda8aa9eb0d62227a1f3b3f2627c6e1bb234435bf773da711"></a>AMU_REG_SUNSENSOR_PITCH&#160;</td><td class="fieldinit">AMU_REG_SUNSENSOR + 0x14&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="amu__regs_8h_source.html#l00086">86</a> of file <a class="el" href="amu__regs_8h_source.html">amu_regs.h</a>.</p>
@@ -547,25 +613,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a" name="a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a"></a>AMU_REG_SWEEP_CONFIG_TYPE&#160;</td><td class="fielddoc"><p>uint8_t - IV_SWEEP_t (i.e. optimized, linear, user_defined etc. ) </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a" name="a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a"></a>AMU_REG_SWEEP_CONFIG_TYPE&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x00&#160;</td><td class="fielddoc"><p>uint8_t - IV_SWEEP_t (i.e. optimized, linear, user_defined etc. ) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84" name="a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84"></a>AMU_REG_SWEEP_CONFIG_NUM_POINTS&#160;</td><td class="fielddoc"><p>uint8_t - IV Sweep number of points </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84" name="a821c732c63253c6e1b7beedc13b020faa37d5644ee656c767cac6114bd0ecec84"></a>AMU_REG_SWEEP_CONFIG_NUM_POINTS&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x01&#160;</td><td class="fielddoc"><p>uint8_t - IV Sweep number of points </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b" name="a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b"></a>AMU_REG_SWEEP_CONFIG_DELAY&#160;</td><td class="fielddoc"><p>uint8_t - IV sweep delay between changing load points </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b" name="a821c732c63253c6e1b7beedc13b020faa3ae7dd0e1e40df9879f2aad4f177523b"></a>AMU_REG_SWEEP_CONFIG_DELAY&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x02&#160;</td><td class="fielddoc"><p>uint8_t - IV sweep delay between changing load points </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a" name="a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a"></a>AMU_REG_SWEEP_CONFIG_RATIO&#160;</td><td class="fielddoc"><p>uint8_t - IV Sweep number of points </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a" name="a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a"></a>AMU_REG_SWEEP_CONFIG_RATIO&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x03&#160;</td><td class="fielddoc"><p>uint8_t - IV Sweep number of points </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038" name="a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038"></a>AMU_REG_SWEEP_CONFIG_PWR_MODE&#160;</td><td class="fielddoc"><p>uint8_t - power mode, type PWR_MODE_t </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038" name="a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038"></a>AMU_REG_SWEEP_CONFIG_PWR_MODE&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x04&#160;</td><td class="fielddoc"><p>uint8_t - power mode, type PWR_MODE_t </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29" name="a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29"></a>AMU_REG_SWEEP_CONFIG_DAC_GAIN&#160;</td><td class="fielddoc"><p>uint8_t - gain setting of DAC during sweep </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29" name="a821c732c63253c6e1b7beedc13b020faa0aaace6abc8ef1837f578e002b3c7d29"></a>AMU_REG_SWEEP_CONFIG_DAC_GAIN&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x05&#160;</td><td class="fielddoc"><p>uint8_t - gain setting of DAC during sweep </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849" name="a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849"></a>AMU_REG_SWEEP_CONFIG_AVERAGES&#160;</td><td class="fielddoc"><p>uint8_t - number of averages to do (full sweep, current steps are assumed constant, voltages are averaged </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849" name="a821c732c63253c6e1b7beedc13b020faa3fb398b35072d98c7ab406ce6a5e2849"></a>AMU_REG_SWEEP_CONFIG_AVERAGES&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x06&#160;</td><td class="fielddoc"><p>uint8_t - number of averages to do (full sweep, current steps are assumed constant, voltages are averaged </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f" name="a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f"></a>AMU_REG_SWEEP_CONFIG_ADC_AVERAGES&#160;</td><td class="fielddoc"><p>uint8_t - number of ADC datapoint averages to do </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f" name="a821c732c63253c6e1b7beedc13b020faa1c1761f4a1c7667215bb00caffc46b3f"></a>AMU_REG_SWEEP_CONFIG_ADC_AVERAGES&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x07&#160;</td><td class="fielddoc"><p>uint8_t - number of ADC datapoint averages to do </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574" name="a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574"></a>AMU_REG_SWEEP_CONFIG_AM0&#160;</td><td class="fielddoc"><p>float - sun power (default 1366.1 W/m� based on ASTM E-490) </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574" name="a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574"></a>AMU_REG_SWEEP_CONFIG_AM0&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x08&#160;</td><td class="fielddoc"><p>float - sun power (default 1366.1 W/m� based on ASTM E-490) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad" name="a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad"></a>AMU_REG_SWEEP_CONFIG_AREA&#160;</td><td class="fielddoc"><p>float - cell area as defined by user (2x2 = 0.0004 m�) </p>
+<tr><td class="fieldname"><a id="a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad" name="a821c732c63253c6e1b7beedc13b020faa5355fd3e7bcf4a08d6de7b059246a5ad"></a>AMU_REG_SWEEP_CONFIG_AREA&#160;</td><td class="fieldinit">AMU_REG_SWEEP_CONFIG + 0x0C&#160;</td><td class="fielddoc"><p>float - cell area as defined by user (2x2 = 0.0004 m�) </p>
 </td></tr>
 </table>
 
@@ -585,29 +651,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a9cc851ab2feee3eef0813110ea7bc2ed" name="a6ecef4fa16abf881776d89e5af854ca8a9cc851ab2feee3eef0813110ea7bc2ed"></a>AMU_REG_SWEEP_META_VOC&#160;</td><td class="fielddoc"><p>float - converted Isc value of sweep </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a9cc851ab2feee3eef0813110ea7bc2ed" name="a6ecef4fa16abf881776d89e5af854ca8a9cc851ab2feee3eef0813110ea7bc2ed"></a>AMU_REG_SWEEP_META_VOC&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x00&#160;</td><td class="fielddoc"><p>float - converted Isc value of sweep </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2" name="a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2"></a>AMU_REG_SWEEP_META_ISC&#160;</td><td class="fielddoc"><p>float - converted Voc value of sweep </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2" name="a6ecef4fa16abf881776d89e5af854ca8a9ee77d852636b0ca29bfd7f1c30739b2"></a>AMU_REG_SWEEP_META_ISC&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x04&#160;</td><td class="fielddoc"><p>float - converted Voc value of sweep </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5" name="a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5"></a>AMU_REG_SWEEP_META_TSENSOR_START&#160;</td><td class="fielddoc"><p>float - converted Tsensor value at start of measurement </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5" name="a6ecef4fa16abf881776d89e5af854ca8ab40e1d3412c3dccec565bbb2d5b749c5"></a>AMU_REG_SWEEP_META_TSENSOR_START&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x08&#160;</td><td class="fielddoc"><p>float - converted Tsensor value at start of measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4" name="a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4"></a>AMU_REG_SWEEP_META_TSENSOR_END&#160;</td><td class="fielddoc"><p>float - converted Tsensor value at end of measurement </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4" name="a6ecef4fa16abf881776d89e5af854ca8af5ddbfdd71ebb416887aada8fef692a4"></a>AMU_REG_SWEEP_META_TSENSOR_END&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x0C&#160;</td><td class="fielddoc"><p>float - converted Tsensor value at end of measurement </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ad51ba3653b5a6d4ce4d983568d6f8f5c" name="a6ecef4fa16abf881776d89e5af854ca8ad51ba3653b5a6d4ce4d983568d6f8f5c"></a>AMU_REG_SWEEP_META_FF&#160;</td><td class="fielddoc"><p>float - calculated Efficiency based on sweep data </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ad51ba3653b5a6d4ce4d983568d6f8f5c" name="a6ecef4fa16abf881776d89e5af854ca8ad51ba3653b5a6d4ce4d983568d6f8f5c"></a>AMU_REG_SWEEP_META_FF&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x10&#160;</td><td class="fielddoc"><p>float - calculated Efficiency based on sweep data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a" name="a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a"></a>AMU_REG_SWEEP_META_EFF&#160;</td><td class="fielddoc"><p>float - calculated Fill Factor based on sweep data </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a" name="a6ecef4fa16abf881776d89e5af854ca8ae3ef2a0fdeed4d5fc42945013e23ba9a"></a>AMU_REG_SWEEP_META_EFF&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x14&#160;</td><td class="fielddoc"><p>float - calculated Fill Factor based on sweep data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa" name="a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa"></a>AMU_REG_SWEEP_META_VMAX&#160;</td><td class="fielddoc"><p>float - calculated Imax based on sweep data </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa" name="a6ecef4fa16abf881776d89e5af854ca8aecc64db2be68da84af6b842d85e6f6aa"></a>AMU_REG_SWEEP_META_VMAX&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x18&#160;</td><td class="fielddoc"><p>float - calculated Imax based on sweep data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661" name="a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661"></a>AMU_REG_SWEEP_META_IMAX&#160;</td><td class="fielddoc"><p>float - calculated Vmax based on sweep data </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661" name="a6ecef4fa16abf881776d89e5af854ca8a3cdbf4939998afb38f3e8f291f03a661"></a>AMU_REG_SWEEP_META_IMAX&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x1C&#160;</td><td class="fielddoc"><p>float - calculated Vmax based on sweep data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ab1793ebb6792deb765babed646418066" name="a6ecef4fa16abf881776d89e5af854ca8ab1793ebb6792deb765babed646418066"></a>AMU_REG_SWEEP_META_PMAX&#160;</td><td class="fielddoc"><p>float - calculated Pmax based on sweep data </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8ab1793ebb6792deb765babed646418066" name="a6ecef4fa16abf881776d89e5af854ca8ab1793ebb6792deb765babed646418066"></a>AMU_REG_SWEEP_META_PMAX&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x20&#160;</td><td class="fielddoc"><p>float - calculated Pmax based on sweep data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687" name="a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687"></a>AMU_REG_SWEEP_META_ADC&#160;</td><td class="fielddoc"><p>float - measured at time of sweep, for correcting ADC conversions </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687" name="a6ecef4fa16abf881776d89e5af854ca8a272502e238004104416356a4b0cda687"></a>AMU_REG_SWEEP_META_ADC&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x24&#160;</td><td class="fielddoc"><p>float - measured at time of sweep, for correcting ADC conversions </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a" name="a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a"></a>AMU_REG_SWEEP_META_TIMESTAMP&#160;</td><td class="fielddoc"><p>uint32_t - millisecond at start time of sweep, for correcting ADC conversions </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a" name="a6ecef4fa16abf881776d89e5af854ca8a23660c951a7da6042a65aa187dca5e6a"></a>AMU_REG_SWEEP_META_TIMESTAMP&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x28&#160;</td><td class="fielddoc"><p>uint32_t - millisecond at start time of sweep, for correcting ADC conversions </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11" name="a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11"></a>AMU_REG_SWEEP_META_CRC&#160;</td><td class="fielddoc"><p>uint32_t - calculated 32-bit CRC based on sweep IV data only </p>
+<tr><td class="fieldname"><a id="a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11" name="a6ecef4fa16abf881776d89e5af854ca8a04cab8dbd756f7add9897f438650aa11"></a>AMU_REG_SWEEP_META_CRC&#160;</td><td class="fieldinit">AMU_REG_SWEEP_META + 0x2C&#160;</td><td class="fielddoc"><p>uint32_t - calculated 32-bit CRC based on sweep IV data only </p>
 </td></tr>
 </table>
 
@@ -627,20 +693,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca46763fec2e67ca4ff3ab842dab942ad3" name="a49dfc79173d12624363746126721d4aca46763fec2e67ca4ff3ab842dab942ad3"></a>AMU_REG_SYSTEM_CMD&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5" name="a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5"></a>AMU_REG_SYSTEM_AMU_STATUS&#160;</td><td class="fielddoc"><p>uint8_t amu status byte enum </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca46763fec2e67ca4ff3ab842dab942ad3" name="a49dfc79173d12624363746126721d4aca46763fec2e67ca4ff3ab842dab942ad3"></a>AMU_REG_SYSTEM_CMD&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x00&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5" name="a49dfc79173d12624363746126721d4aca14302e3ba4dea732a5e95662f47b6ec5"></a>AMU_REG_SYSTEM_AMU_STATUS&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x01&#160;</td><td class="fielddoc"><p>uint8_t amu status byte enum </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661" name="a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661"></a>AMU_REG_SYSTEM_TWI_STATUS&#160;</td><td class="fielddoc"><p>uint8_t twi status byte enum </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661" name="a49dfc79173d12624363746126721d4aca7281f2179a809c34abf5e5285636f661"></a>AMU_REG_SYSTEM_TWI_STATUS&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x02&#160;</td><td class="fielddoc"><p>uint8_t twi status byte enum </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502" name="a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502"></a>AMU_REG_SYSTEM_HARDWARE_REVISION&#160;</td><td class="fielddoc"><p>uint8_t hardware revision enum </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502" name="a49dfc79173d12624363746126721d4acaf3cc8ff545618b43d4e7036bc7932502"></a>AMU_REG_SYSTEM_HARDWARE_REVISION&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x03&#160;</td><td class="fielddoc"><p>uint8_t hardware revision enum </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca5d1a35205018b6f206c2464e098f6da5" name="a49dfc79173d12624363746126721d4aca5d1a35205018b6f206c2464e098f6da5"></a>AMU_REG_SYSTEM_TSENSOR_TYPE&#160;</td><td class="fielddoc"><p>uint8_t type of temperature sensor (PT100, PT1000, NPT, AD590, etc.. </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca5d1a35205018b6f206c2464e098f6da5" name="a49dfc79173d12624363746126721d4aca5d1a35205018b6f206c2464e098f6da5"></a>AMU_REG_SYSTEM_TSENSOR_TYPE&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x04&#160;</td><td class="fielddoc"><p>uint8_t type of temperature sensor (PT100, PT1000, NPT, AD590, etc.. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de" name="a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de"></a>AMU_REG_SYSTEM_TSENSOR_NUM&#160;</td><td class="fielddoc"><p>uint8_t number of temperature sensors (1-3) </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de" name="a49dfc79173d12624363746126721d4aca4760f579fbb974ae51087a914b30a8de"></a>AMU_REG_SYSTEM_TSENSOR_NUM&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x05&#160;</td><td class="fielddoc"><p>uint8_t number of temperature sensors (1-3) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26" name="a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26"></a>AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS&#160;</td><td class="fielddoc"><p>uin16_t enabled ADC channels </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26" name="a49dfc79173d12624363746126721d4aca52b4706f0ed6e47045cbdbee94c50d26"></a>AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x06&#160;</td><td class="fielddoc"><p>uin16_t enabled ADC channels </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7" name="a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7"></a>AMU_REG_SYSTEM_STATUS_HRADC&#160;</td><td class="fielddoc"><p>uint32_t packed with HRADC ID and 3 error bytes from AD7124 </p>
+<tr><td class="fieldname"><a id="a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7" name="a49dfc79173d12624363746126721d4aca6eac3396c3783fd83427bc56906ed3a7"></a>AMU_REG_SYSTEM_STATUS_HRADC&#160;</td><td class="fieldinit">AMU_REG_SYSTEM + 0x08&#160;</td><td class="fielddoc"><p>uint32_t packed with HRADC ID and 3 error bytes from AD7124 </p>
 </td></tr>
 </table>
 
@@ -663,22 +729,22 @@ Functions</h2></td></tr>
 <p>TODO. </p>
 <p>TODO </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a9a4addf1a06e084d2a6dadba3b200254" name="a308036ed5bb66f037c9b47c0d14f5c79a9a4addf1a06e084d2a6dadba3b200254"></a>AMU_REG_CMD&#160;</td><td class="fielddoc"><p>1 byte register, new commands are placed here </p>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a9a4addf1a06e084d2a6dadba3b200254" name="a308036ed5bb66f037c9b47c0d14f5c79a9a4addf1a06e084d2a6dadba3b200254"></a>AMU_REG_CMD&#160;</td><td class="fieldinit">0x00&#160;</td><td class="fielddoc"><p>1 byte register, new commands are placed here </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8" name="a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8"></a>AMU_REG_SYSTEM&#160;</td><td class="fielddoc"><p>16 byte register </p>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8" name="a308036ed5bb66f037c9b47c0d14f5c79aeb62cd218ad0f2759c522981ed013fe8"></a>AMU_REG_SYSTEM&#160;</td><td class="fieldinit">0x00&#160;</td><td class="fielddoc"><p>16 byte register </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85" name="a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85"></a>AMU_REG_DUT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3" name="a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3"></a>AMU_REG_ADC_DATA&#160;</td><td class="fielddoc"><p>64 byte register containing all 16 HRADC channels or data in raw format </p>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85" name="a308036ed5bb66f037c9b47c0d14f5c79a152f7f92c1eac69be303a0503db14c85"></a>AMU_REG_DUT&#160;</td><td class="fieldinit">0x0C&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3" name="a308036ed5bb66f037c9b47c0d14f5c79a561f28bc99cfa87ade39338e5ce8cad3"></a>AMU_REG_ADC_DATA&#160;</td><td class="fieldinit">0x60&#160;</td><td class="fielddoc"><p>64 byte register containing all 16 HRADC channels or data in raw format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a6b364e6476aee0e527beb44d77b69ab8" name="a308036ed5bb66f037c9b47c0d14f5c79a6b364e6476aee0e527beb44d77b69ab8"></a>AMU_REG_SUNSENSOR&#160;</td><td class="fielddoc"><p>24 byte register (struct). First four bytes overlap with last four adc conversions for TL,BL,BR,TR photo-diodes </p>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a6b364e6476aee0e527beb44d77b69ab8" name="a308036ed5bb66f037c9b47c0d14f5c79a6b364e6476aee0e527beb44d77b69ab8"></a>AMU_REG_SUNSENSOR&#160;</td><td class="fieldinit">0x90&#160;</td><td class="fielddoc"><p>24 byte register (struct). First four bytes overlap with last four adc conversions for TL,BL,BR,TR photo-diodes </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6" name="a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6"></a>AMU_REG_SUNSENSOR_ANGLE&#160;</td><td class="fielddoc"><p>8 byte register with two floats, yaw and pitch </p>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6" name="a308036ed5bb66f037c9b47c0d14f5c79a8086e302949bfec586435db2803115c6"></a>AMU_REG_SUNSENSOR_ANGLE&#160;</td><td class="fieldinit">0xA0&#160;</td><td class="fielddoc"><p>8 byte register with two floats, yaw and pitch </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6" name="a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6"></a>AMU_REG_TIME&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849" name="a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849"></a>AMU_REG_SWEEP_CONFIG&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a7c718f50074efa1798cb3333a4d79e73" name="a308036ed5bb66f037c9b47c0d14f5c79a7c718f50074efa1798cb3333a4d79e73"></a>AMU_REG_SWEEP_META&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288" name="a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288"></a>AMU_REG_DATA_PTR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130" name="a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130"></a>AMU_REG_TRANSFER_PTR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6" name="a308036ed5bb66f037c9b47c0d14f5c79a272380945de49efc03e969d4c05febf6"></a>AMU_REG_TIME&#160;</td><td class="fieldinit">0xA8&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849" name="a308036ed5bb66f037c9b47c0d14f5c79ad6e1cfa503b3adc444c981453a1f9849"></a>AMU_REG_SWEEP_CONFIG&#160;</td><td class="fieldinit">0xB0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a7c718f50074efa1798cb3333a4d79e73" name="a308036ed5bb66f037c9b47c0d14f5c79a7c718f50074efa1798cb3333a4d79e73"></a>AMU_REG_SWEEP_META&#160;</td><td class="fieldinit">0xC0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288" name="a308036ed5bb66f037c9b47c0d14f5c79a792b2ab1f96a792d92bb19530a472288"></a>AMU_REG_DATA_PTR&#160;</td><td class="fieldinit">0xF0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130" name="a308036ed5bb66f037c9b47c0d14f5c79aa5958a17e9c4933f329501d243ba1130"></a>AMU_REG_TRANSFER_PTR&#160;</td><td class="fieldinit">0xFE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="amu__regs_8h_source.html#l00020">20</a> of file <a class="el" href="amu__regs_8h_source.html">amu_regs.h</a>.</p>
@@ -697,8 +763,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0" name="a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0"></a>AMU_REG_TIME_MILLIS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3" name="a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3"></a>AMU_REG_TIME_UTC&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0" name="a3ff8d41c240feeccb734d35124906802a95b2b5e2feb79256aedeccce30cd7ac0"></a>AMU_REG_TIME_MILLIS&#160;</td><td class="fieldinit">AMU_REG_TIME + 0x00&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3" name="a3ff8d41c240feeccb734d35124906802aaf559ed7466d90753fa26cf502e921d3"></a>AMU_REG_TIME_UTC&#160;</td><td class="fieldinit">AMU_REG_TIME + 0x04&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="amu__regs_8h_source.html#l00097">97</a> of file <a class="el" href="amu__regs_8h_source.html">amu_regs.h</a>.</p>

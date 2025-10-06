@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_20features_0',['Key Features',['../index.html#features_sec',1,'']]]
+  ['junction_20configuration_0',['Junction Configuration',['../group__scpi__dut__commands.html#autotoc_md47',1,'']]]
 ];

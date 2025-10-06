@@ -1,0 +1,158 @@
+/**
+ * @page scpi_sunsensor_reference SCPI SunSensor Commands Reference
+ * @ingroup scpi_aux_commands
+ * @brief Detailed SCPI sun sensor command reference
+ * 
+ * Sun sensor commands control the sun sensor measurement system for
+ * solar panel orientation and illumination monitoring.
+ * 
+ * ## Sun Sensor Control
+ * 
+ * ### SUNS:ENAble
+ * **Description:** Enables the sun sensor measurement system.
+ * 
+ * **Syntax:** `SUNS:ENAble`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_ENABLE
+ * 
+ * **Note:** Must be enabled before taking sun sensor measurements
+ * 
+ * **Example:**
+ * ```
+ * SUNS:ENAble
+ * ```
+ * 
+ * ---
+ * 
+ * ### SUNS:DISable
+ * **Description:** Disables the sun sensor measurement system.
+ * 
+ * **Syntax:** `SUNS:DISable`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_DISABLE
+ * 
+ * **Note:** Disabling conserves power when sun sensor not needed
+ * 
+ * **Example:**
+ * ```
+ * SUNS:DISable
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sun Sensor Measurements
+ * 
+ * ### SUNS:MEASure
+ * **Description:** Performs a sun sensor measurement and returns orientation data.
+ * 
+ * **Syntax:** `SUNS:MEASure?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Sun sensor measurement values (X, Y coordinates or angles)
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_MEASURE
+ * 
+ * **Note:** Returns relative sun position or panel orientation
+ * 
+ * **Example:**
+ * ```
+ * SUNS:MEASure?
+ * 12.34,-5.67
+ * ```
+ * 
+ * ---
+ * 
+ * ### SUNS:X
+ * **Description:** Returns the X-axis sun sensor measurement.
+ * 
+ * **Syntax:** `SUNS:X?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** X-axis measurement value
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_X
+ * 
+ * **Note:** X-axis represents horizontal sun position
+ * 
+ * **Example:**
+ * ```
+ * SUNS:X?
+ * 12.34
+ * ```
+ * 
+ * ---
+ * 
+ * ### SUNS:Y
+ * **Description:** Returns the Y-axis sun sensor measurement.
+ * 
+ * **Syntax:** `SUNS:Y?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Y-axis measurement value
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_Y
+ * 
+ * **Note:** Y-axis represents vertical sun position
+ * 
+ * **Example:**
+ * ```
+ * SUNS:Y?
+ * -5.67
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sun Sensor Calibration
+ * 
+ * ### SUNS:CALibrate
+ * **Description:** Calibrates the sun sensor measurement system.
+ * 
+ * **Syntax:** `SUNS:CALibrate`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_CALIBRATE
+ * 
+ * **Note:** Should be performed with known sun position
+ * 
+ * **Warning:** Requires stable illumination conditions
+ * 
+ * **Example:**
+ * ```
+ * SUNS:CALibrate
+ * ```
+ * 
+ * ---
+ * 
+ * ### SUNS:CALibrate:SAVe
+ * **Description:** Saves sun sensor calibration data to non-volatile memory.
+ * 
+ * **Syntax:** `SUNS:CALibrate:SAVe`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SUNSENSOR_CALIBRATE_SAVE
+ * 
+ * **Note:** Calibration persists across power cycles
+ * 
+ * **Example:**
+ * ```
+ * SUNS:CALibrate
+ * SUNS:CALibrate:SAVe
+ * ```
+ */

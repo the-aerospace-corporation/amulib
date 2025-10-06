@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: Heater Commands</title>
+<title>AMU Library: Interface Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -63,7 +64,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('group__scpi__heater__commands.html','',''); });
+$(function(){initNavTree('group__interface__commands.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -89,18 +90,27 @@ $(function(){initNavTree('group__scpi__heater__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Heater Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">Interface Commands </div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Temperature control commands.  
-</p>
-<p>Temperature control commands. </p>
-<p>These commands control the integrated heater:</p><ul>
-<li>Heater state control</li>
-<li>Temperature setpoint</li>
-<li>PID controller parameters </li>
+<p>Communication protocol commands for AMU hardware control.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-groups" class="groupheader"><a id="groups" name="groups"></a>
+Topics</h2></td></tr>
+<tr class="memitem:i2c_5Fcommands" id="r_i2c_5Fcommands"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c__commands.html">I2C Commands</a></td></tr>
+<tr class="memdesc:group__i2c__commands"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C protocol commands for direct hardware communication. <br /></td></tr>
+<tr class="memitem:scpi_5Fcommands" id="r_scpi_5Fcommands"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></td></tr>
+<tr class="memdesc:group__scpi__commands"><td class="mdescLeft">&#160;</td><td class="mdescRight">SCPI (Standard Commands for Programmable Instruments) interface commands. <br /></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<p>Communication protocol commands for AMU hardware control. </p>
+<p>The AMU library supports two primary communication interfaces:</p><ul>
+<li><b>I2C Commands</b>: Direct hardware communication using I2C protocol</li>
+<li><b>SCPI Commands</b>: Standard Commands for Programmable Instruments over USB</li>
 </ul>
+<p>Both interfaces provide access to the same underlying functionality with different communication methods and command formats. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

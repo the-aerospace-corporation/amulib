@@ -1,0 +1,131 @@
+/**
+ * @file scpi_commands.dox
+ * @brief SCPI Command Reference Documentation
+ * 
+ * This file contains detailed documentation for SCPI commands,
+ * organized by functional groups with cross-references to I2C equivalents.
+ */
+
+/**
+ * @page scpi_system_reference SCPI System Commands Reference
+ * @ingroup scpi_system_commands
+ * @brief Detailed SCPI system command reference
+ * 
+ * ## Communication Test
+ * 
+ * ### *TST?
+ * **Description:** Tests device communication without performing any operation or changing state.
+ * 
+ * **Syntax:** `*TST?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Status code (0 = success)
+ * 
+ * **I2C Equivalent:** CMD_SYSTEM_NO_CMD (0x0100)
+ * 
+ * **Example:**
+ * ```
+ * *TST?
+ * 0
+ * ```
+ * 
+ * ---
+ * 
+ * ## System Reset
+ * 
+ * ### *RST
+ * **Description:** Performs a complete software reset of the device, restoring all settings to factory defaults.
+ * 
+ * **Syntax:** `*RST`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (device resets)
+ * 
+ * **I2C Equivalent:** CMD_SYSTEM_RESET (0x0101)
+ * 
+ * **Warning:** All user configuration will be lost. Device will disconnect briefly during reset process.
+ * 
+ * **Example:**
+ * ```
+ * *RST
+ * ```
+ * 
+ * ---
+ * 
+ * ## Temperature Monitoring
+ * 
+ * ### SYSTem:TEMPerature?
+ * **Description:** Reads the built-in microcontroller temperature sensor for thermal monitoring.
+ * 
+ * **Syntax:** `SYSTem:TEMPerature?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Temperature in degrees Celsius (range: -40 to +85°C)
+ * 
+ * **I2C Equivalent:** CMD_SYSTEM_TEMPERATURE (0x0108)
+ * 
+ * **Accuracy:** ±3°C (factory calibrated at 25°C)
+ * 
+ * **Warning:** High temperatures may indicate thermal stress
+ * 
+ * **Example:**
+ * ```
+ * SYSTem:TEMPerature?
+ * 23.5
+ * ```
+ * 
+ * ---
+ * 
+ * ## I2C Configuration
+ * 
+ * ### SYSTem:TWI:ADDress
+ * **Description:** Sets or queries the device I2C slave address for TWI communication.
+ * 
+ * **Syntax:** 
+ * - Query: `SYSTem:TWI:ADDress?`
+ * - Set: `SYSTem:TWI:ADDress <address>`
+ * 
+ * **Parameters:** 
+ * - `address`: 7-bit I2C address (range: 0x08-0x77, excludes reserved addresses)
+ * 
+ * **Returns:** Current I2C address (7-bit, no R/W bit)
+ * 
+ * **I2C Equivalent:** CMD_SYSTEM_TWI_ADDRESS (0x0103)
+ * 
+ * **Warning:** Address 0x00-0x07 and 0x78-0x7F are reserved and will be rejected
+ * 
+ * **Note:** Address changes take effect immediately but are not saved to EEPROM
+ * 
+ * **Example:**
+ * ```
+ * SYSTem:TWI:ADDress 0x42
+ * SYSTem:TWI:ADDress?
+ * 66
+ * ```
+ * 
+ * ---
+ * 
+ * ## Firmware Information
+ * 
+ * ### SYSTem:FIRMware?
+ * **Description:** Returns the current firmware version string in semantic versioning format.
+ * 
+ * **Syntax:** `SYSTem:FIRMware?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Version string (format: "X.Y.Z", e.g., "2.1.0")
+ * 
+ * **I2C Equivalent:** CMD_SYSTEM_FIRMWARE (0x0106)
+ * 
+ * **Note:** Maximum string length: 16 characters
+ * 
+ * **Example:**
+ * ```
+ * SYSTem:FIRMware?
+ * 3.0.1
+ * ```
+ */

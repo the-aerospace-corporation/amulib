@@ -1,5 +1,5 @@
 /**
- * @mainpage AMU Library Documentation
+ * @mainpage AMU Library
  * 
  * @section intro_sec Introduction
  * 
@@ -63,10 +63,10 @@
  * 
  * @section documentation_sec Documentation Sections
  * 
- * - @ref scpi_commands "SCPI Command Reference" - Complete command documentation
- * - @ref api_reference "C++ API Reference" - Library function documentation
- * - @ref examples "Examples" - Code examples and tutorials
- * - @ref hardware "Hardware Reference" - AMU hardware specifications
+ * - @subpage api_reference "C++ API Reference" - Library function documentation
+ * - @subpage interface_commands "Interface Commands" - I2C and SCPI command reference
+ * - @subpage examples "Code Examples" - Code examples and tutorials  
+ * - @subpage hardware "Hardware Reference" - AMU hardware specifications
  * 
  * @section command_overview_sec SCPI Command Overview
  * 
@@ -140,6 +140,18 @@
  * 
  * All functions return appropriate error codes or use exceptions where
  * applicable. Check return values and handle errors appropriately.
+ */
+
+/**
+ * @page interface_commands Interface Commands
+ * @brief Communication protocol commands for AMU hardware control
+ * 
+ * The AMU library supports two primary communication interfaces:
+ * - **I2C Commands**: Direct hardware communication using I2C protocol
+ * - **SCPI Commands**: Standard Commands for Programmable Instruments over USB
+ * 
+ * Both interfaces provide access to the same underlying functionality with
+ * different communication methods and command formats.
  */
 
 /**

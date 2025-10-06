@@ -1,0 +1,97 @@
+/**
+ * @page scpi_adc_reference SCPI ADC Commands Reference
+ * @ingroup scpi_adc_commands
+ * @brief Detailed SCPI ADC command reference
+ * 
+ * ADC (Analog-to-Digital Converter) commands for calibration, configuration,
+ * and advanced ADC operations. These commands provide precise control over
+ * the measurement subsystem.
+ * 
+ * ## ADC Calibration
+ * 
+ * ### ADC:CALibrate
+ * **Description:** Performs or queries ADC calibration status.
+ * 
+ * **Syntax:** 
+ * - Query: `ADC:CALibrate?`
+ * - Execute: `ADC:CALibrate`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Calibration status or result
+ * 
+ * **I2C Equivalent:** CMD_ADC_CALIBRATE
+ * 
+ * **Note:** Calibration improves measurement accuracy
+ * 
+ * **Example:**
+ * ```
+ * ADC:CALibrate
+ * ADC:CALibrate?
+ * COMPLETE
+ * ```
+ * 
+ * ---
+ * 
+ * ### ADC:CALibrate:ALL:INTernal
+ * **Description:** Performs internal calibration of all ADC channels simultaneously.
+ * 
+ * **Syntax:** `ADC:CALibrate:ALL:INTernal`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_ADC_CALIBRATE_ALL_INTERNAL
+ * 
+ * **Warning:** This process may take several seconds to complete
+ * 
+ * **Example:**
+ * ```
+ * ADC:CALibrate:ALL:INTernal
+ * ```
+ * 
+ * ---
+ * 
+ * ## ADC Data Storage
+ * 
+ * ### ADC:SAVE:ALL:INTernal
+ * **Description:** Saves all internal ADC calibration data to non-volatile memory.
+ * 
+ * **Syntax:** `ADC:SAVE:ALL:INTernal`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_ADC_SAVE_ALL_INTERNAL
+ * 
+ * **Note:** Calibration data persists across power cycles after saving
+ * 
+ * **Example:**
+ * ```
+ * ADC:SAVE:ALL:INTernal
+ * ```
+ * 
+ * ---
+ * 
+ * ## Temperature Sensor Calibration
+ * 
+ * ### ADC:CALibrate:TSENSor
+ * **Description:** Performs calibration specific to temperature sensor channels.
+ * 
+ * **Syntax:** `ADC:CALibrate:TSENSor`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_ADC_CALIBRATE_TSENSOR
+ * 
+ * **Note:** Optimizes ADC settings for temperature measurement accuracy
+ * 
+ * **Example:**
+ * ```
+ * ADC:CALibrate:TSENSor
+ * ```
+ */

@@ -1,0 +1,185 @@
+/**
+ * @page scpi_heater_reference SCPI Heater Commands Reference
+ * @ingroup scpi_aux_commands
+ * @brief Detailed SCPI heater control command reference
+ * 
+ * Heater commands control thermal management systems for
+ * temperature regulation of the device under test and
+ * system components.
+ * 
+ * ## Heater Control
+ * 
+ * ### HEAT:ENAble
+ * **Description:** Enables the heater control system.
+ * 
+ * **Syntax:** `HEAT:ENAble`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_HEATER_ENABLE
+ * 
+ * **Note:** Must be enabled before heater operation
+ * 
+ * **Warning:** Monitor temperature to prevent overheating
+ * 
+ * **Example:**
+ * ```
+ * HEAT:ENAble
+ * ```
+ * 
+ * ---
+ * 
+ * ### HEAT:DISable
+ * **Description:** Disables the heater control system.
+ * 
+ * **Syntax:** `HEAT:DISable`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_HEATER_DISABLE
+ * 
+ * **Note:** Immediately stops all heating operations
+ * 
+ * **Example:**
+ * ```
+ * HEAT:DISable
+ * ```
+ * 
+ * ---
+ * 
+ * ## Heater Set Points
+ * 
+ * ### HEAT:SETPoint
+ * **Description:** Sets the target temperature for heater control.
+ * 
+ * **Syntax:** `HEAT:SETPoint <temperature>`
+ * 
+ * **Parameters:**
+ * - `<temperature>`: Target temperature in degrees Celsius
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_HEATER_SETPOINT
+ * 
+ * **Note:** Temperature is regulated to this set point
+ * 
+ * **Range:** Depends on heater specifications
+ * 
+ * **Example:**
+ * ```
+ * HEAT:SETPoint 25.0
+ * ```
+ * 
+ * ---
+ * 
+ * ### HEAT:SETPoint?
+ * **Description:** Queries the current heater temperature set point.
+ * 
+ * **Syntax:** `HEAT:SETPoint?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current temperature set point in degrees Celsius
+ * 
+ * **I2C Equivalent:** CMD_HEATER_SETPOINT (read operation)
+ * 
+ * **Example:**
+ * ```
+ * HEAT:SETPoint?
+ * 25.0
+ * ```
+ * 
+ * ---
+ * 
+ * ## Heater Power Control
+ * 
+ * ### HEAT:POWer
+ * **Description:** Sets the heater power output level.
+ * 
+ * **Syntax:** `HEAT:POWer <power>`
+ * 
+ * **Parameters:**
+ * - `<power>`: Power level (0-100% or absolute watts)
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_HEATER_POWER
+ * 
+ * **Note:** Manual power control overrides temperature regulation
+ * 
+ * **Warning:** Use caution with high power settings
+ * 
+ * **Example:**
+ * ```
+ * HEAT:POWer 50
+ * ```
+ * 
+ * ---
+ * 
+ * ### HEAT:POWer?
+ * **Description:** Queries the current heater power output level.
+ * 
+ * **Syntax:** `HEAT:POWer?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current power level
+ * 
+ * **I2C Equivalent:** CMD_HEATER_POWER (read operation)
+ * 
+ * **Example:**
+ * ```
+ * HEAT:POWer?
+ * 50
+ * ```
+ * 
+ * ---
+ * 
+ * ## Heater Status
+ * 
+ * ### HEAT:STATus
+ * **Description:** Returns the heater system status and current temperature.
+ * 
+ * **Syntax:** `HEAT:STATus?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Heater status (enabled/disabled, temperature, power)
+ * 
+ * **I2C Equivalent:** CMD_HEATER_STATUS
+ * 
+ * **Note:** Provides comprehensive heater system information
+ * 
+ * **Example:**
+ * ```
+ * HEAT:STATus?
+ * ENABLED,24.8,45
+ * ```
+ * 
+ * ---
+ * 
+ * ## Temperature Monitoring
+ * 
+ * ### HEAT:TEMPerature
+ * **Description:** Returns the current measured temperature.
+ * 
+ * **Syntax:** `HEAT:TEMPerature?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Current temperature in degrees Celsius
+ * 
+ * **I2C Equivalent:** CMD_HEATER_TEMPERATURE
+ * 
+ * **Note:** Real-time temperature measurement
+ * 
+ * **Example:**
+ * ```
+ * HEAT:TEMPerature?
+ * 24.8
+ * ```
+ */

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: Memory Commands</title>
+<title>AMU Library: SCPI Memory Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -89,83 +90,103 @@ $(function(){initNavTree('group__scpi__memory__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Memory Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">SCPI Memory Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>EEPROM and memory management commands.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:gaea1fcd584b422bc141a186c10a28f5ec" id="r_gaea1fcd584b422bc141a186c10a28f5ec"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaea1fcd584b422bc141a186c10a28f5ec">CMD_USB_EEPROM_t</a> { <br />
-&#160;&#160;<a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5ecab1355aadfce13329ea82d157603c220b">CMD_USB_EEPROM_ERASE_ALL</a> = 0x0200 + 0x10+ 0x00
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5ecaf2d71fe4ac6b9ef386f37593324b6a22">CMD_USB_EEPROM_ERASE_CONFIG</a> = 0x0200 + 0x10+ 0x01
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5eca66e51f0653327857b0dc983d45e48002">CMD_USB_EEPROM_OFFSET</a> = 0x0200 + 0x10+ 0x02
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5eca8e241e2c61f2842d5a4736be5c07f631">CMD_USB_EEPROM_GAIN</a> = 0x0200 + 0x10+ 0x03
-, <br />
-&#160;&#160;<a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5eca6a79682f236098315d8cd46b1a7b4b8a">CMD_USB_EEPROM_VOLTAGE_OFFSET</a> = 0x0200 + 0x10+ 0x04
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5eca8f594251f61df45bfaa7105dbf7dce1e">CMD_USB_EEPROM_CURRENT_OFFSET</a> = 0x0200 + 0x10+ 0x05
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5ecad2559df81b3fe9387b09401d23f003be">CMD_USB_EEPROM_VOLTAGE_GAIN</a> = 0x0200 + 0x10+ 0x06
-, <a class="el" href="#ggaea1fcd584b422bc141a186c10a28f5ecaaa3d4a75dc24776f5e6cf90f7256806f">CMD_USB_EEPROM_CURRENT_GAIN</a> = 0x0200 + 0x10+ 0x07
-<br />
- }</td></tr>
-<tr class="memdesc:gaea1fcd584b422bc141a186c10a28f5ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB-only EEPROM command identifiers.  <a href="#gaea1fcd584b422bc141a186c10a28f5ec">More...</a><br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+</p>
 <p>EEPROM and memory management commands. </p>
 <p>These commands manage non-volatile memory:</p><ul>
 <li>EEPROM erase operations</li>
 <li>Calibration data storage</li>
 <li>Configuration persistence </li>
 </ul>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="gaea1fcd584b422bc141a186c10a28f5ec" name="gaea1fcd584b422bc141a186c10a28f5ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaea1fcd584b422bc141a186c10a28f5ec">&#9670;&#160;</a></span>CMD_USB_EEPROM_t</h2>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#gaea1fcd584b422bc141a186c10a28f5ec">CMD_USB_EEPROM_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
-<p>USB-only EEPROM command identifiers. </p>
-<p>These commands provide direct EEPROM access for calibration data management. Only available via USB interface for security and data integrity. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5ecab1355aadfce13329ea82d157603c220b" name="ggaea1fcd584b422bc141a186c10a28f5ecab1355aadfce13329ea82d157603c220b"></a>CMD_USB_EEPROM_ERASE_ALL&#160;</td><td class="fielddoc"><p>Erase all EEPROM data @scpi_cmd MEMory:ERASE:ALL @description Erases all user data from EEPROM (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5ecaf2d71fe4ac6b9ef386f37593324b6a22" name="ggaea1fcd584b422bc141a186c10a28f5ecaf2d71fe4ac6b9ef386f37593324b6a22"></a>CMD_USB_EEPROM_ERASE_CONFIG&#160;</td><td class="fielddoc"><p>Erase configuration data @scpi_cmd MEMory:ERASE:CONFig @description Erases configuration data from EEPROM (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5eca66e51f0653327857b0dc983d45e48002" name="ggaea1fcd584b422bc141a186c10a28f5eca66e51f0653327857b0dc983d45e48002"></a>CMD_USB_EEPROM_OFFSET&#160;</td><td class="fielddoc"><p>ADC channel offset calibration data @scpi_cmd MEMory:ADC:CH#:OFFset[?] @description Sets or queries EEPROM-stored ADC channel offset calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5eca8e241e2c61f2842d5a4736be5c07f631" name="ggaea1fcd584b422bc141a186c10a28f5eca8e241e2c61f2842d5a4736be5c07f631"></a>CMD_USB_EEPROM_GAIN&#160;</td><td class="fielddoc"><p>ADC channel gain calibration data @scpi_cmd MEMory:ADC:CH#:GAIN[?] @description Sets or queries EEPROM-stored ADC channel gain calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5eca6a79682f236098315d8cd46b1a7b4b8a" name="ggaea1fcd584b422bc141a186c10a28f5eca6a79682f236098315d8cd46b1a7b4b8a"></a>CMD_USB_EEPROM_VOLTAGE_OFFSET&#160;</td><td class="fielddoc"><p>Voltage measurement offset calibration @scpi_cmd MEMory:VOLTage:OFFset#[?] @description Sets or queries EEPROM-stored voltage offset calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5eca8f594251f61df45bfaa7105dbf7dce1e" name="ggaea1fcd584b422bc141a186c10a28f5eca8f594251f61df45bfaa7105dbf7dce1e"></a>CMD_USB_EEPROM_CURRENT_OFFSET&#160;</td><td class="fielddoc"><p>Current measurement offset calibration @scpi_cmd MEMory:CURRent:OFFset#[?] @description Sets or queries EEPROM-stored current offset calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5ecad2559df81b3fe9387b09401d23f003be" name="ggaea1fcd584b422bc141a186c10a28f5ecad2559df81b3fe9387b09401d23f003be"></a>CMD_USB_EEPROM_VOLTAGE_GAIN&#160;</td><td class="fielddoc"><p>Voltage measurement gain calibration @scpi_cmd MEMory:VOLTage:GAIN#[?] @description Sets or queries EEPROM-stored voltage gain calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaea1fcd584b422bc141a186c10a28f5ecaaa3d4a75dc24776f5e6cf90f7256806f" name="ggaea1fcd584b422bc141a186c10a28f5ecaaa3d4a75dc24776f5e6cf90f7256806f"></a>CMD_USB_EEPROM_CURRENT_GAIN&#160;</td><td class="fielddoc"><p>Current measurement gain calibration @scpi_cmd MEMory:CURRent:GAIN#[?] @description Sets or queries EEPROM-stored current gain calibration (USB only) </p>
-<p>Root command for USB only commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l00835">835</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<h3 class="doxsection"><a id="scpi_memory_reference" name="scpi_memory_reference"></a>SCPI Memory Commands Reference</h3><div class="textblock">Memory commands control data storage, retrieval, and management operations for measurement data and system configuration.<h2 class="doxsection"><a class="anchor" id="autotoc_md106"></a>
+Memory Allocation</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md107"></a>
+MEM:ALLOcate</h3>
+<p><b>Description:</b> Allocates memory for data storage operations.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:ALLOcate</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_ALLOCATE</p>
+<p><b>Note:</b> Must be called before memory write operations</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:ALLOcate</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md109"></a>
+MEM:FREe</h3>
+<p><b>Description:</b> Frees allocated memory and clears data buffers.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:FREe</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_FREE</p>
+<p><b>Note:</b> Clears all stored measurement data</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:FREe</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md111"></a>
+Data Write Operations</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md112"></a>
+MEM:WRITe:ADC</h3>
+<p><b>Description:</b> Writes ADC measurement data to memory.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:WRITe:ADC</span></p>
+<p><b>Parameters:</b> None (uses current ADC readings)</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_WRITE_ADC</p>
+<p><b>Note:</b> Memory must be allocated before writing</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:ALLOcate</div>
+<div class="line">MEM:WRITe:ADC</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md114"></a>
+MEM:WRITe:SWEep</h3>
+<p><b>Description:</b> Writes sweep measurement data to memory.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:WRITe:SWEep</span></p>
+<p><b>Parameters:</b> None (uses last sweep data)</p>
+<p><b>Returns:</b> None (command execution status via error codes)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_WRITE_SWEEP</p>
+<p><b>Note:</b> Sweep must be completed before writing data</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">SWEEP:TRIGger</div>
+<div class="line">MEM:WRITe:SWEep</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md116"></a>
+Data Read Operations</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md117"></a>
+MEM:READ:ADC</h3>
+<p><b>Description:</b> Reads stored ADC measurement data from memory.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:READ:ADC?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Stored ADC measurement values (format depends on data)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_READ_ADC</p>
+<p><b>Note:</b> Returns most recently stored ADC data</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:READ:ADC?</div>
+<div class="line">1.234567,2.345678,3.456789</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md119"></a>
+MEM:READ:SWEep</h3>
+<p><b>Description:</b> Reads stored sweep measurement data from memory.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:READ:SWEep?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Stored sweep data (voltage and current arrays)</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_READ_SWEEP</p>
+<p><b>Note:</b> Returns complete I-V curve data</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:READ:SWEep?</div>
+<div class="line">0.0,0.0012;0.1,0.0011;0.2,0.0010;...</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md121"></a>
+Memory Status</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md122"></a>
+MEM:STATus</h3>
+<p><b>Description:</b> Returns memory allocation and usage status.</p>
+<p><b>Syntax:</b> <span class="tt">MEM:STATus?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Memory status information</p>
+<p><b>I2C Equivalent:</b> CMD_MEM_STATUS</p>
+<p><b>Note:</b> Useful for checking available memory space</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEM:STATus?</div>
+<div class="line">ALLOCATED,75%,USED</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

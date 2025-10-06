@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: Measurement Commands</title>
+<title>AMU Library: SCPI Measurement Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -26,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">AMU Library<span id="projectnumber">&#160;2.1</span>
+   <div id="projectname">AMU Library<span id="projectnumber">&#160;3.0</span>
    </div>
    <div id="projectbrief">C/C++ library for communicating with AMU (Aerospace Measurement Unit) devices</div>
   </td>
@@ -89,64 +90,12 @@ $(function(){initNavTree('group__scpi__measurement__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Measurement Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">SCPI Measurement Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Commands for data acquisition and measurement.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ga0cd923966b03472556fe0822ddf5b4e9" id="r_ga0cd923966b03472556fe0822ddf5b4e9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0cd923966b03472556fe0822ddf5b4e9">CMD_EXEC_t</a> { <br />
-&#160;&#160;<a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a940b1765d306b8478f5bec3903b1f669">CMD_EXEC_MEAS_ACTIVE_CHANNELS</a> = 0x0100 + 0x30+ 0x00
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a83479f2a10465ab7057374a2aa077164">CMD_EXEC_MEAS_CHANNEL</a> = 0x0100 + 0x30+ 0x01
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9adc969629e5ae40c071e54069b4308806">CMD_EXEC_MEAS_TSENSORS</a> = 0x0100 + 0x30+ 0x02
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a89cee6a8e467617d58846458917130f8">CMD_EXEC_MEAS_INTERNAL_VOLTAGES</a> = 0x0100 + 0x30+ 0x03
-, <br />
-&#160;&#160;<a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a9d13d8a9ee8f3689521937965a8577ff">CMD_EXEC_MEAS_SUN_SENSOR</a> = 0x0100 + 0x30+ 0x04
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9aacfaee62333ba3c3fc4e037801ca0303">CMD_EXEC_MEAS_PRESSURE_SENSOR</a> = 0x0100 + 0x30+ 0x05
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a37e9408d97cedbb3421d7f5497c31bc2">CMD_EXEC_ADC_CAL</a> = 0x0100 + 0x30+ 0x07
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a9cbc8e66f01915fd932d2db910baf45f">CMD_EXEC_ADC_CAL_ALL_INTERNAL</a> = 0x0100 + 0x30+ 0x08
-, <br />
-&#160;&#160;<a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a31620dd7fd2b936884b8c91da1266e8f">CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL</a> = 0x0100 + 0x30+ 0x09
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a327fb971a187d7a24efa2d91df668bb4">CMD_EXEC_DAC_CAL</a> = 0x0100 + 0x30+ 0x0A
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9af1afa88d97c987f4d860a6c747122382">CMD_EXEC_DAC_CAL_SAVE</a> = 0x0100 + 0x30+ 0x0B
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a386ad07d0e89a5ece5f8b3c18b8d7d24">CMD_EXEC_TSENSOR_CAL_25C</a> = 0x0100 + 0x30+ 0x0C
-, <br />
-&#160;&#160;<a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a2ce6aa213f58c8109f4d5f8497d08431">CMD_EXEC_TSENSOR_COEFF_SAVE</a> = 0x0100 + 0x30+ 0x0D
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9ae2485c59eab66ec969cf1cf9a55713ac">CMD_EXEC_SUNSENSOR_COEFF_SAVE</a> = 0x0100 + 0x30+ 0x0E
-, <a class="el" href="#gga0cd923966b03472556fe0822ddf5b4e9a581f781bc0557d5ed727b58ca04d91cf">CMD_EXEC_HEATER_PID_SAVE</a> = 0x0100 + 0x30+ 0x0F
-<br />
- }</td></tr>
-<tr class="memdesc:ga0cd923966b03472556fe0822ddf5b4e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execution and measurement command identifiers.  <a href="#ga0cd923966b03472556fe0822ddf5b4e9">More...</a><br /></td></tr>
-<tr class="memitem:gaa12656647d6a72b8d7e35b8005bff952" id="r_gaa12656647d6a72b8d7e35b8005bff952"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa12656647d6a72b8d7e35b8005bff952">CMD_MEAS_CH_t</a> { <br />
-&#160;&#160;<a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a7cc836ddf830760157ace93667df03ae">CMD_MEAS_CH_VOLTAGE</a> = 0x0100 + 0x70+ AMU_ADC_CH_VOLTAGE
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a9f42152dcebd642ed311bea86320f41a">CMD_MEAS_CH_CURRENT</a> = 0x0100 + 0x70+ AMU_ADC_CH_CURRENT
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952ae4d5e7b0c0673343aa66672ecd85cb2b">CMD_MEAS_CH_TSENSOR</a> = 0x0100 + 0x70+ AMU_ADC_CH_TSENSOR0
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a41a58a07dc8c51a6e567fc050172a826">CMD_MEAS_CH_TSENSOR_0</a> = 0x0100 + 0x70+ AMU_ADC_CH_TSENSOR0
-, <br />
-&#160;&#160;<a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952aeb7936a736c944f59de09a5514dfdb96">CMD_MEAS_CH_TSENSOR_1</a> = 0x0100 + 0x70+ AMU_ADC_CH_TSENSOR1
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952aebc619889aba326d0ab35d6f8e211da0">CMD_MEAS_CH_TSENSOR_2</a> = 0x0100 + 0x70+ AMU_ADC_CH_TSENSOR2
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a02148f651d3a0cfaf0963c91f0b63086">CMD_MEAS_CH_BIAS</a> = 0x0100 + 0x70+ AMU_ADC_CH_BIAS
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952ad0177d5171e5affd2be2354a4e2dc513">CMD_MEAS_CH_OFFSET</a> = 0x0100 + 0x70+ AMU_ADC_CH_OFFSET
-, <br />
-&#160;&#160;<a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952ac8d6edce17f4380127878a5b7595aa51">CMD_MEAS_CH_TEMP</a> = 0x0100 + 0x70+ AMU_ADC_CH_TEMP
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a1d10e49e7191d0adf337a7a577f82704">CMD_MEAS_CH_AVDD</a> = 0x0100 + 0x70+ AMU_ADC_CH_AVDD
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a2b4b91aa742e8bf2690fcc614b23fa40">CMD_MEAS_CH_IOVDD</a> = 0x0100 + 0x70+ AMU_ADC_CH_IOVDD
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a095d5447885beb867c01134ad34ae9ab">CMD_MEAS_CH_ALDO</a> = 0x0100 + 0x70+ AMU_ADC_CH_ALDO
-, <br />
-&#160;&#160;<a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952af8e3a1026ff7f8e0a4cd58162b8bf9e7">CMD_MEAS_CH_DLDO</a> = 0x0100 + 0x70+ AMU_ADC_CH_DLDO
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a642ef28df482d1e85a117fcfc583479f">CMD_MEAS_CH_SS_TL</a> = 0x0100 + 0x70+ AMU_ADC_CH_SS_TL
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a3d41d40e22e34d83e2fc80c715fbc970">CMD_MEAS_CH_SS_BL</a> = 0x0100 + 0x70+ AMU_ADC_CH_SS_BL
-, <a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a8ba907d092da44bcd94c5e549a729c62">CMD_MEAS_CH_SS_BR</a> = 0x0100 + 0x70+ AMU_ADC_CH_SS_BR
-, <br />
-&#160;&#160;<a class="el" href="#ggaa12656647d6a72b8d7e35b8005bff952a4850894ec71fc93b522d1c66c673bc74">CMD_MEAS_CH_SS_TR</a> = 0x0100 + 0x70+ AMU_ADC_CH_SS_TR
-<br />
- }</td></tr>
-<tr class="memdesc:gaa12656647d6a72b8d7e35b8005bff952"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement channel command identifiers.  <a href="#gaa12656647d6a72b8d7e35b8005bff952">More...</a><br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+</p>
 <p>Commands for data acquisition and measurement. </p>
 <p>These commands perform various measurements including:</p><ul>
 <li>Voltage and current measurements</li>
@@ -155,146 +104,91 @@ Enumerations</h2></td></tr>
 <li>Pressure sensor data</li>
 <li>Internal voltage monitoring </li>
 </ul>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga0cd923966b03472556fe0822ddf5b4e9" name="ga0cd923966b03472556fe0822ddf5b4e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0cd923966b03472556fe0822ddf5b4e9">&#9670;&#160;</a></span>CMD_EXEC_t</h2>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#ga0cd923966b03472556fe0822ddf5b4e9">CMD_EXEC_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
-<p>Execution and measurement command identifiers. </p>
-<p>These commands trigger measurements and calibration procedures. Most return measurement data or perform calibration operations. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a940b1765d306b8478f5bec3903b1f669" name="gga0cd923966b03472556fe0822ddf5b4e9a940b1765d306b8478f5bec3903b1f669"></a>CMD_EXEC_MEAS_ACTIVE_CHANNELS&#160;</td><td class="fielddoc"><p>Measure all active ADC channels @scpi_cmd MEASure:ADC:ACTive[:RAW]? @description Returns measurements from all currently active ADC channels. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a83479f2a10465ab7057374a2aa077164" name="gga0cd923966b03472556fe0822ddf5b4e9a83479f2a10465ab7057374a2aa077164"></a>CMD_EXEC_MEAS_CHANNEL&#160;</td><td class="fielddoc"><p>Measure specific ADC channel @scpi_cmd MEASure:ADC:CH#[:RAW]? @description Returns measurement from specified ADC channel (0-15) </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9adc969629e5ae40c071e54069b4308806" name="gga0cd923966b03472556fe0822ddf5b4e9adc969629e5ae40c071e54069b4308806"></a>CMD_EXEC_MEAS_TSENSORS&#160;</td><td class="fielddoc"><p>Measure all temperature sensors @scpi_cmd MEASure:ADC:TSENSORS[:RAW]? @description Returns temperature measurements from all configured sensors. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a89cee6a8e467617d58846458917130f8" name="gga0cd923966b03472556fe0822ddf5b4e9a89cee6a8e467617d58846458917130f8"></a>CMD_EXEC_MEAS_INTERNAL_VOLTAGES&#160;</td><td class="fielddoc"><p>Measure internal voltages @scpi_cmd MEASure:INTERNALvoltages? @description Returns internal supply voltage measurements (AVDD, IOVDD, etc.) </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a9d13d8a9ee8f3689521937965a8577ff" name="gga0cd923966b03472556fe0822ddf5b4e9a9d13d8a9ee8f3689521937965a8577ff"></a>CMD_EXEC_MEAS_SUN_SENSOR&#160;</td><td class="fielddoc"><p>Measure sun sensor angles @scpi_cmd MEASure:SUNSensor? @description Returns calculated sun sensor yaw and pitch angles. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9aacfaee62333ba3c3fc4e037801ca0303" name="gga0cd923966b03472556fe0822ddf5b4e9aacfaee62333ba3c3fc4e037801ca0303"></a>CMD_EXEC_MEAS_PRESSURE_SENSOR&#160;</td><td class="fielddoc"><p>Measure pressure sensor @scpi_cmd MEASure:PRESSure? @description Returns pressure sensor measurement data. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a37e9408d97cedbb3421d7f5497c31bc2" name="gga0cd923966b03472556fe0822ddf5b4e9a37e9408d97cedbb3421d7f5497c31bc2"></a>CMD_EXEC_ADC_CAL&#160;</td><td class="fielddoc"><p>Perform ADC calibration @scpi_cmd ADC:CALibrate[?] @description Initiates ADC calibration procedure and returns calibration value. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a9cbc8e66f01915fd932d2db910baf45f" name="gga0cd923966b03472556fe0822ddf5b4e9a9cbc8e66f01915fd932d2db910baf45f"></a>CMD_EXEC_ADC_CAL_ALL_INTERNAL&#160;</td><td class="fielddoc"><p>Calibrate all internal ADC references @scpi_cmd ADC:CALibrate:ALL:INTernal @description Performs calibration on all internal ADC reference channels. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a31620dd7fd2b936884b8c91da1266e8f" name="gga0cd923966b03472556fe0822ddf5b4e9a31620dd7fd2b936884b8c91da1266e8f"></a>CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL&#160;</td><td class="fielddoc"><p>Save all internal ADC calibrations @scpi_cmd ADC:SAVE:ALL:INTernal @description Saves all internal ADC calibration data to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a327fb971a187d7a24efa2d91df668bb4" name="gga0cd923966b03472556fe0822ddf5b4e9a327fb971a187d7a24efa2d91df668bb4"></a>CMD_EXEC_DAC_CAL&#160;</td><td class="fielddoc"><p>Perform DAC calibration @scpi_cmd DAC:CALibrate[?] @description Initiates DAC calibration procedure and returns calibration value. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9af1afa88d97c987f4d860a6c747122382" name="gga0cd923966b03472556fe0822ddf5b4e9af1afa88d97c987f4d860a6c747122382"></a>CMD_EXEC_DAC_CAL_SAVE&#160;</td><td class="fielddoc"><p>Save DAC calibration @scpi_cmd DAC:CALibrate:SAVe @description Saves DAC calibration data to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a386ad07d0e89a5ece5f8b3c18b8d7d24" name="gga0cd923966b03472556fe0822ddf5b4e9a386ad07d0e89a5ece5f8b3c18b8d7d24"></a>CMD_EXEC_TSENSOR_CAL_25C&#160;</td><td class="fielddoc"><p>Calibrate temperature sensor at 25°C @scpi_cmd ADC:CALibrate:TSENSor @description Performs temperature sensor calibration at 25°C reference. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a2ce6aa213f58c8109f4d5f8497d08431" name="gga0cd923966b03472556fe0822ddf5b4e9a2ce6aa213f58c8109f4d5f8497d08431"></a>CMD_EXEC_TSENSOR_COEFF_SAVE&#160;</td><td class="fielddoc"><p>Save temperature sensor coefficients @scpi_cmd DUT:TSENSor:FIT:SAVE (via CMD_EXEC_TSENSOR_COEFF_SAVE) @description Saves temperature sensor calibration coefficients to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9ae2485c59eab66ec969cf1cf9a55713ac" name="gga0cd923966b03472556fe0822ddf5b4e9ae2485c59eab66ec969cf1cf9a55713ac"></a>CMD_EXEC_SUNSENSOR_COEFF_SAVE&#160;</td><td class="fielddoc"><p>Save sun sensor coefficients @scpi_cmd SUNSensor:FIT:SAVE @description Saves sun sensor calibration coefficients to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga0cd923966b03472556fe0822ddf5b4e9a581f781bc0557d5ed727b58ca04d91cf" name="gga0cd923966b03472556fe0822ddf5b4e9a581f781bc0557d5ed727b58ca04d91cf"></a>CMD_EXEC_HEATER_PID_SAVE&#160;</td><td class="fielddoc"><p>Save heater PID parameters @scpi_cmd HEATer:PID:SAVE @description Saves heater PID controller parameters to EEPROM. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l00281">281</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-<a id="gaa12656647d6a72b8d7e35b8005bff952" name="gaa12656647d6a72b8d7e35b8005bff952"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa12656647d6a72b8d7e35b8005bff952">&#9670;&#160;</a></span>CMD_MEAS_CH_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#gaa12656647d6a72b8d7e35b8005bff952">CMD_MEAS_CH_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Measurement channel command identifiers. </p>
-<p>These commands perform measurements on specific ADC channels. Channel assignments are based on <a class="el" href="amu__types_8h.html#a57ab5b57979d0ca488947bb11c55965e">AMU_ADC_CH_t</a> definitions. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a7cc836ddf830760157ace93667df03ae" name="ggaa12656647d6a72b8d7e35b8005bff952a7cc836ddf830760157ace93667df03ae"></a>CMD_MEAS_CH_VOLTAGE&#160;</td><td class="fielddoc"><p>Measure voltage channel @scpi_cmd MEASure:ADC:VOLTage[:RAW]? @description Measures voltage on the dedicated voltage input channel. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a9f42152dcebd642ed311bea86320f41a" name="ggaa12656647d6a72b8d7e35b8005bff952a9f42152dcebd642ed311bea86320f41a"></a>CMD_MEAS_CH_CURRENT&#160;</td><td class="fielddoc"><p>Measure current channel @scpi_cmd MEASure:ADC:CURRent[:RAW]? @description Measures current on the dedicated current input channel. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952ae4d5e7b0c0673343aa66672ecd85cb2b" name="ggaa12656647d6a72b8d7e35b8005bff952ae4d5e7b0c0673343aa66672ecd85cb2b"></a>CMD_MEAS_CH_TSENSOR&#160;</td><td class="fielddoc"><p>Measure primary temperature sensor @scpi_cmd MEASure:ADC:TSENSor[:RAW]? @description Measures primary temperature sensor (same as TSENSOR0) </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a41a58a07dc8c51a6e567fc050172a826" name="ggaa12656647d6a72b8d7e35b8005bff952a41a58a07dc8c51a6e567fc050172a826"></a>CMD_MEAS_CH_TSENSOR_0&#160;</td><td class="fielddoc"><p>Measure temperature sensor 0 @scpi_cmd MEASure:ADC:TSENSOR0[:RAW]? @description Measures temperature sensor 0. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952aeb7936a736c944f59de09a5514dfdb96" name="ggaa12656647d6a72b8d7e35b8005bff952aeb7936a736c944f59de09a5514dfdb96"></a>CMD_MEAS_CH_TSENSOR_1&#160;</td><td class="fielddoc"><p>Measure temperature sensor 1 @scpi_cmd MEASure:ADC:TSENSOR1[:RAW]? @description Measures temperature sensor 1. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952aebc619889aba326d0ab35d6f8e211da0" name="ggaa12656647d6a72b8d7e35b8005bff952aebc619889aba326d0ab35d6f8e211da0"></a>CMD_MEAS_CH_TSENSOR_2&#160;</td><td class="fielddoc"><p>Measure temperature sensor 2 @scpi_cmd MEASure:ADC:TSENSOR2[:RAW]? @description Measures temperature sensor 2. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a02148f651d3a0cfaf0963c91f0b63086" name="ggaa12656647d6a72b8d7e35b8005bff952a02148f651d3a0cfaf0963c91f0b63086"></a>CMD_MEAS_CH_BIAS&#160;</td><td class="fielddoc"><p>Measure bias voltage @scpi_cmd MEASure:ADC:BIAS[:RAW]? @description Measures bias voltage reference. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952ad0177d5171e5affd2be2354a4e2dc513" name="ggaa12656647d6a72b8d7e35b8005bff952ad0177d5171e5affd2be2354a4e2dc513"></a>CMD_MEAS_CH_OFFSET&#160;</td><td class="fielddoc"><p>Measure offset reference @scpi_cmd MEASure:ADC:OFFset[:RAW]? @description Measures offset calibration reference. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952ac8d6edce17f4380127878a5b7595aa51" name="ggaa12656647d6a72b8d7e35b8005bff952ac8d6edce17f4380127878a5b7595aa51"></a>CMD_MEAS_CH_TEMP&#160;</td><td class="fielddoc"><p>Measure internal temperature @scpi_cmd MEASure:ADC:TEMP[:RAW]? @description Measures internal MCU temperature sensor. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a1d10e49e7191d0adf337a7a577f82704" name="ggaa12656647d6a72b8d7e35b8005bff952a1d10e49e7191d0adf337a7a577f82704"></a>CMD_MEAS_CH_AVDD&#160;</td><td class="fielddoc"><p>Measure analog supply voltage @scpi_cmd MEASure:ADC:AVDD[:RAW]? @description Measures analog supply voltage (AVDD) </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a2b4b91aa742e8bf2690fcc614b23fa40" name="ggaa12656647d6a72b8d7e35b8005bff952a2b4b91aa742e8bf2690fcc614b23fa40"></a>CMD_MEAS_CH_IOVDD&#160;</td><td class="fielddoc"><p>Measure I/O supply voltage @scpi_cmd MEASure:ADC:IOVDD[:RAW]? @description Measures I/O supply voltage (IOVDD) </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a095d5447885beb867c01134ad34ae9ab" name="ggaa12656647d6a72b8d7e35b8005bff952a095d5447885beb867c01134ad34ae9ab"></a>CMD_MEAS_CH_ALDO&#160;</td><td class="fielddoc"><p>Measure analog LDO voltage @scpi_cmd MEASure:ADC:ALDO[:RAW]? @description Measures analog LDO regulator output voltage. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952af8e3a1026ff7f8e0a4cd58162b8bf9e7" name="ggaa12656647d6a72b8d7e35b8005bff952af8e3a1026ff7f8e0a4cd58162b8bf9e7"></a>CMD_MEAS_CH_DLDO&#160;</td><td class="fielddoc"><p>Measure digital LDO voltage @scpi_cmd MEASure:ADC:DLDO[:RAW]? @description Measures digital LDO regulator output voltage. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a642ef28df482d1e85a117fcfc583479f" name="ggaa12656647d6a72b8d7e35b8005bff952a642ef28df482d1e85a117fcfc583479f"></a>CMD_MEAS_CH_SS_TL&#160;</td><td class="fielddoc"><p>Measure sun sensor top-left quadrant @scpi_cmd MEASure:ADC:SSTL[:RAW]? @description Measures sun sensor top-left quadrant photodiode. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a3d41d40e22e34d83e2fc80c715fbc970" name="ggaa12656647d6a72b8d7e35b8005bff952a3d41d40e22e34d83e2fc80c715fbc970"></a>CMD_MEAS_CH_SS_BL&#160;</td><td class="fielddoc"><p>Measure sun sensor bottom-left quadrant @scpi_cmd MEASure:ADC:SSBL[:RAW]? @description Measures sun sensor bottom-left quadrant photodiode. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a8ba907d092da44bcd94c5e549a729c62" name="ggaa12656647d6a72b8d7e35b8005bff952a8ba907d092da44bcd94c5e549a729c62"></a>CMD_MEAS_CH_SS_BR&#160;</td><td class="fielddoc"><p>Measure sun sensor bottom-right quadrant @scpi_cmd MEASure:ADC:SSBR[:RAW]? @description Measures sun sensor bottom-right quadrant photodiode. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggaa12656647d6a72b8d7e35b8005bff952a4850894ec71fc93b522d1c66c673bc74" name="ggaa12656647d6a72b8d7e35b8005bff952a4850894ec71fc93b522d1c66c673bc74"></a>CMD_MEAS_CH_SS_TR&#160;</td><td class="fielddoc"><p>Measure sun sensor top-right quadrant @scpi_cmd MEASure:ADC:SSTR[:RAW]? @description Measures sun sensor top-right quadrant photodiode. </p>
-<p>Root command for I2C/USB commands </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="amu__commands_8h_source.html#l00681">681</a> of file <a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<h3 class="doxsection"><a id="scpi_measurement_reference" name="scpi_measurement_reference"></a>SCPI Measurement Commands Reference</h3><div class="textblock">Measurement commands perform various data acquisition tasks including voltage/current measurements, temperature readings, sun sensor data, pressure readings, and internal voltage monitoring.<h2 class="doxsection"><a class="anchor" id="autotoc_md91"></a>
+ADC Measurements</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md92"></a>
+MEASure:ADC:ACTive</h3>
+<p><b>Description:</b> Measures the currently active ADC channel (raw or processed).</p>
+<p><b>Syntax:</b></p><ul>
+<li>Processed: <span class="tt">MEASure:ADC:ACTive?</span></li>
+<li>Raw: <span class="tt">MEASure:ADC:ACTive:RAW?</span></li>
+</ul>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> ADC reading (processed or raw counts)</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_CH_ACTIVE_RAW / CMD_MEAS_CH_ACTIVE</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:ADC:ACTive?</div>
+<div class="line">1.234567</div>
+<div class="line">MEASure:ADC:ACTive:RAW?</div>
+<div class="line">52341</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md94"></a>
+MEASure:ADC:CH</h3>
+<p><b>Description:</b> Measures a specific ADC channel (# = channel number).</p>
+<p><b>Syntax:</b></p><ul>
+<li>Processed: <span class="tt">MEASure:ADC:CH&lt;n&gt;?</span> (where n = 0-7)</li>
+<li>Raw: <span class="tt">MEASure:ADC:CH&lt;n&gt;:RAW?</span></li>
+</ul>
+<p><b>Parameters:</b></p><ul>
+<li><span class="tt">n</span>: Channel number (0-7)</li>
+</ul>
+<p><b>Returns:</b> ADC reading for specified channel</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_CH_0 through CMD_MEAS_CH_7</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:ADC:CH0?</div>
+<div class="line">2.567890</div>
+<div class="line">MEASure:ADC:CH3:RAW?</div>
+<div class="line">41256</div>
+</div><!-- fragment --><hr  />
+<h3 class="doxsection"><a class="anchor" id="autotoc_md96"></a>
+MEASure:ADC:TSENSORS</h3>
+<p><b>Description:</b> Measures all temperature sensors connected to ADC channels.</p>
+<p><b>Syntax:</b></p><ul>
+<li>Processed: <span class="tt">MEASure:ADC:TSENSORS?</span></li>
+<li>Raw: <span class="tt">MEASure:ADC:TSENSORS:RAW?</span></li>
+</ul>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Temperature sensor readings (comma-separated)</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_TSENSORS_RAW / CMD_MEAS_TSENSORS</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:ADC:TSENSORS?</div>
+<div class="line">25.3,26.1,24.8,25.5</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md98"></a>
+Internal Voltages</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md99"></a>
+MEASure:INTERNALvoltages</h3>
+<p><b>Description:</b> Measures internal system voltages for health monitoring.</p>
+<p><b>Syntax:</b> <span class="tt">MEASure:INTERNALvoltages?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Internal voltage readings</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_INT_VOLTAGES</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:INTERNALvoltages?</div>
+<div class="line">3.30,5.02,12.01,-12.03</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md101"></a>
+Sun Sensor</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md102"></a>
+MEASure:SUNSensor</h3>
+<p><b>Description:</b> Measures sun sensor data (quad photodiode array).</p>
+<p><b>Syntax:</b> <span class="tt">MEASure:SUNSensor?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Sun sensor measurements (X, Y angles and intensity)</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_SUN_SENSOR</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:SUNSensor?</div>
+<div class="line">15.2,-8.7,0.856</div>
+</div><!-- fragment --><hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md104"></a>
+Pressure Sensor</h2>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md105"></a>
+MEASure:PRESSure</h3>
+<p><b>Description:</b> Measures pressure sensor data.</p>
+<p><b>Syntax:</b> <span class="tt">MEASure:PRESSure?</span></p>
+<p><b>Parameters:</b> None</p>
+<p><b>Returns:</b> Pressure reading in appropriate units</p>
+<p><b>I2C Equivalent:</b> CMD_MEAS_PRESSURE</p>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">MEASure:PRESSure?</div>
+<div class="line">1013.25</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

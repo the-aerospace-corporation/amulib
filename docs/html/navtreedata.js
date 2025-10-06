@@ -25,12 +25,28 @@
 var NAVTREE =
 [
   [ "AMU Library", "index.html", [
-    [ "AMU Library Documentation", "index.html", "index" ],
+    [ "Introduction", "index.html#intro_sec", null ],
+    [ "Key Features", "index.html#features_sec", null ],
+    [ "Getting Started", "index.html#getting_started_sec", [
+      [ "Installation", "index.html#installation_subsec", null ],
+      [ "Basic Usage", "index.html#basic_usage_subsec", null ]
+    ] ],
+    [ "Documentation Sections", "index.html#documentation_sec", null ],
+    [ "SCPI Command Overview", "index.html#command_overview_sec", [
+      [ "System Commands", "index.html#system_commands_overview", null ],
+      [ "Measurement Commands", "index.html#measurement_commands_overview", null ],
+      [ "Calibration Commands", "index.html#calibration_commands_overview", null ],
+      [ "I-V Sweep Commands", "index.html#sweep_commands_overview", null ]
+    ] ],
+    [ "Compatibility", "index.html#compatibility_sec", null ],
+    [ "License", "index.html#license_sec", null ],
+    [ "Author", "index.html#author_sec", null ],
     [ "C++ API Reference", "api_reference.html", [
       [ "Main Classes", "api_reference.html#main_classes", null ],
       [ "Data Types", "api_reference.html#data_types", null ],
       [ "Error Handling", "api_reference.html#error_handling", null ]
     ] ],
+    [ "Interface Commands", "interface_commands.html", null ],
     [ "Code Examples", "examples.html", [
       [ "Basic Examples", "examples.html#basic_examples", null ],
       [ "Advanced Examples", "examples.html#advanced_examples", null ]
@@ -40,14 +56,6 @@ var NAVTREE =
       [ "Interface Specifications", "hardware.html#interfaces", [
         [ "I2C Interface", "hardware.html#i2c_interface", null ],
         [ "USB Interface", "hardware.html#usb_interface", null ]
-      ] ]
-    ] ],
-    [ "SCPI Command Reference", "scpi_command_reference.html", [
-      [ "Overview", "scpi_command_reference.html#scpi_overview", null ],
-      [ "Command Groups", "scpi_command_reference.html#scpi_command_groups", null ],
-      [ "Command Syntax", "scpi_command_reference.html#scpi_syntax", [
-        [ "Notation", "scpi_command_reference.html#scpi_syntax_notation", null ],
-        [ "Examples", "scpi_command_reference.html#scpi_syntax_examples", null ]
       ] ]
     ] ],
     [ "Topics", "topics.html", "topics" ],
@@ -77,12 +85,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "amu__commands_8h.html",
-"amu__types_8h.html#a367bb0ebbb54719f3f2726350bb7b14cad7450ba94abd24fcd7ec6004ed4eda49",
-"globals_eval_c.html",
-"ieee488_8h.html#aa653145233593ac46b0252d36057fb85",
-"parser_8h.html#a779d338b32f525c571a7a9eccf36f0bf",
-"structamu__device__t.html#a07a68f5a788085f4dd2e28787f7c9ced",
-"types_8h.html#ad79121098313db4610d1b7575f068a2aaf9067f52d841557e5e596d4ba8100e93"
+"amu__regs_8h.html#ac4b9301d520390c6dfa807d4fa9fc9eba788ec024b9f6cf27f5cd0e700ed7c8a4",
+"error_8h.html#a939741e566a5c7895e22bd598c1d5774",
+"group__scpi__sweep__commands.html",
+"parser_8c.html#ae6ad05585108b81dddcf6f1bb293402c",
+"struct__scpi__interface__t.html#aa7b9554298fcc771ac5322bd4301de88",
+"types_8h.html#ab33fee84b9e338a2bd47634f9092ac6eac8073927acdb789d303760f619389616"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

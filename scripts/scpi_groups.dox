@@ -1,27 +1,147 @@
 /**
- * @defgroup scpi_commands SCPI Commands
- * @brief All SCPI commands supported by the AMU
+ * @defgroup i2c_commands I2C Commands
+ * @brief I2C protocol commands for direct hardware communication
  * 
- * This module contains all SCPI commands organized by functional groups.
- * Each command includes its SCPI syntax, description, parameters, and usage examples.
+ * This section contains all I2C commands organized by functionality.
+ * Each command shows its hexadecimal I2C address and corresponding SCPI equivalent.
  */
 
 /**
- * @defgroup scpi_system_commands System Commands
- * @ingroup scpi_commands
- * @brief System-level commands for device control and configuration
+ * @defgroup i2c_system_commands I2C System Commands
+ * @ingroup i2c_commands
+ * @brief System-level I2C commands for device control and configuration
  * 
- * These commands control basic system functions including:
- * - Device identification and status
+ * These I2C commands control basic system functions including:
+ * - Device identification and status (`CMD_SYSTEM_*`)
  * - LED control
  * - Sleep mode
  * - Temperature monitoring
  * - I2C configuration
  * - Firmware information
+ * 
+ * Many of these commands have corresponding SCPI equivalents.
  */
 
 /**
- * @defgroup scpi_measurement_commands Measurement Commands
+ * @defgroup i2c_dut_commands I2C DUT Commands
+ * @ingroup i2c_commands
+ * @brief Device Under Test I2C commands for configuration and identification
+ * 
+ * These I2C commands configure DUT parameters including:
+ * - Junction type configuration (`CMD_DUT_*`)
+ * - Coverglass settings
+ * - Manufacturer information
+ * - Serial number tracking
+ * - Energy and dose parameters
+ * - Temperature sensor configuration
+ * 
+ * Each command shows its hex value (0x01xx) for I2C communication.
+ */
+
+/**
+ * @defgroup i2c_measurement_commands I2C Measurement Commands
+ * @ingroup i2c_commands
+ * @brief I2C commands for data acquisition and measurement operations
+ * 
+ * These I2C commands perform measurements including:
+ * - ADC channel measurements (`CMD_EXEC_*`, `CMD_MEAS_*`)
+ * - Temperature sensor readings
+ * - Internal voltage monitoring
+ * - Sun sensor data
+ * - Pressure sensor data
+ * 
+ * Commands include both execution (0x013x) and channel-specific (0x017x) ranges.
+ */
+
+/**
+ * @defgroup i2c_adc_commands I2C ADC Commands
+ * @ingroup i2c_commands
+ * @brief I2C Analog-to-Digital Converter control and calibration commands
+ * 
+ * These I2C commands control ADC operation including:
+ * - Channel configuration (`CMD_ADC_CH_*`)
+ * - PGA (Programmable Gain Amplifier) settings
+ * - Calibration procedures
+ * - Filter configuration
+ * - Sample rate control
+ * - Voltage/current specific calibration
+ * 
+ * Commands span ranges 0x016x (channel config), 0x021x-0x023x (USB ADC), 0x025x (USB sweep).
+ */
+
+/**
+ * @defgroup i2c_sweep_commands I2C Sweep Commands
+ * @ingroup i2c_commands
+ * @brief I2C current-voltage sweep measurement and control commands
+ * 
+ * These I2C commands control I-V sweep operations including:
+ * - Sweep configuration (`CMD_SWEEP_*`)
+ * - Trigger control
+ * - Data storage and retrieval
+ * - EEPROM access
+ * - Metadata management
+ * 
+ * Commands include both standard sweep (0x014x) and USB-specific (0x024x) ranges.
+ */
+
+/**
+ * @defgroup i2c_aux_commands I2C Auxiliary Commands
+ * @ingroup i2c_commands
+ * @brief I2C auxiliary subsystem control commands
+ * 
+ * These I2C commands control auxiliary subsystems including:
+ * - DAC output control (`CMD_AUX_DAC_*`)
+ * - Heater control (`CMD_AUX_HEATER_*`)
+ * - Sun sensor calibration (`CMD_AUX_SUNSENSOR_*`)
+ * - Voltage and current output settings
+ * - Temperature control and monitoring
+ * - Sensor calibration coefficients
+ * 
+ * All commands use the 0x015x range for auxiliary subsystem operations.
+ */
+
+/**
+ * @defgroup i2c_memory_commands I2C Memory Commands
+ * @ingroup i2c_commands
+ * @brief I2C EEPROM and memory management commands
+ * 
+ * These I2C commands provide memory access including:
+ * - EEPROM data management (`CMD_USB_EEPROM_*`)
+ * - Calibration data storage
+ * - Sweep data archival
+ * - Memory allocation/deallocation
+ * 
+ * USB-only commands in the 0x021x range for enhanced security.
+ */
+
+
+
+/**
+ * @defgroup scpi_commands SCPI Commands
+ * @brief SCPI (Standard Commands for Programmable Instruments) interface commands
+ * 
+ * This section contains all SCPI commands organized by functionality.
+ * Each command provides high-level instrument control and corresponds to underlying I2C operations.
+ */
+
+/**
+ * @defgroup scpi_system_commands SCPI System Commands
+ * @ingroup scpi_commands
+ * @brief System-level SCPI commands for device control and configuration
+ * 
+ * These SCPI commands control basic system functions including:
+ * - Device identification and status
+ * - LED control (`SYSTem:LED:*`)
+ * - Sleep mode (`SYSTem:SLEEP`)
+ * - Temperature monitoring (`SYSTem:TEMPerature?`)
+ * - I2C configuration (`SYSTem:TWI:*`)
+ * - Firmware information (`SYSTem:FIRMware?`)
+ * 
+ * Each command corresponds to an I2C enumerated type.
+ */
+
+/**
+ * @defgroup scpi_measurement_commands SCPI Measurement Commands
  * @ingroup scpi_commands
  * @brief Commands for data acquisition and measurement
  * 
@@ -34,7 +154,7 @@
  */
 
 /**
- * @defgroup scpi_dut_commands DUT Commands
+ * @defgroup scpi_dut_commands SCPI DUT Commands
  * @ingroup scpi_commands
  * @brief Device Under Test configuration commands
  * 
@@ -46,7 +166,7 @@
  */
 
 /**
- * @defgroup scpi_adc_commands ADC Commands
+ * @defgroup scpi_adc_commands SCPI ADC Commands
  * @ingroup scpi_commands
  * @brief Analog-to-Digital Converter control commands
  * 
@@ -59,7 +179,7 @@
  */
 
 /**
- * @defgroup scpi_sweep_commands Sweep Commands
+ * @defgroup scpi_sweep_commands SCPI Sweep Commands
  * @ingroup scpi_commands
  * @brief I-V sweep measurement commands
  * 
@@ -72,32 +192,14 @@
  */
 
 /**
- * @defgroup scpi_dac_commands DAC Commands
+ * @defgroup scpi_aux_commands SCPI Auxiliary Commands
  * @ingroup scpi_commands
- * @brief Digital-to-Analog Converter control commands
+ * @brief Auxiliary hardware control commands
  * 
- * These commands control DAC operation:
- * - Current and voltage output
- * - Calibration
- * - Raw value access
- * - Offset and gain correction
- */
-
-/**
- * @defgroup scpi_heater_commands Heater Commands
- * @ingroup scpi_commands
- * @brief Temperature control commands
- * 
- * These commands control the integrated heater:
- * - Heater state control
- * - Temperature setpoint
- * - PID controller parameters
- */
-
-/**
- * @defgroup scpi_sunsensor_commands Sun Sensor Commands
- * @ingroup scpi_commands
- * @brief Solar tracking and sun sensor commands
+ * These commands control auxiliary hardware functions:
+ * - DAC: Current and voltage output, calibration, raw value access, offset and gain correction
+ * - Heater: Temperature control, state management, PID controller parameters
+ * - Sun Sensor: Solar tracking and sun sensor management
  * 
  * These commands control sun sensor operation:
  * - Quadrant measurements
@@ -107,7 +209,7 @@
  */
 
 /**
- * @defgroup scpi_memory_commands Memory Commands
+ * @defgroup scpi_memory_commands SCPI Memory Commands
  * @ingroup scpi_commands
  * @brief EEPROM and memory management commands
  * 

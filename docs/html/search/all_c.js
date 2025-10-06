@@ -5,7 +5,7 @@ var searchData=
   ['lex_5fstate_2',['lex_state',['../struct__scpi__param__list__t.html#aa424bf7061237774459083a8c5af0550',1,'_scpi_param_list_t']]],
   ['lexer_2ec_3',['lexer.c',['../lexer_8c.html',1,'']]],
   ['lexer_5fprivate_2eh_4',['lexer_private.h',['../lexer__private_8h.html',1,'']]],
-  ['library_20documentation_5',['AMU Library Documentation',['../index.html',1,'']]],
+  ['library_5',['AMU Library',['../index.html',1,'']]],
   ['libscpi_2eh_6',['libscpi.h',['../libscpi_8h.html',1,'']]],
   ['license_7',['License',['../index.html#license_sec',1,'']]],
   ['line_5fending_5fcr_8',['LINE_ENDING_CR',['../config_8h.html#a17ab8a334bbaa17db4d8878785d12cd6',1,'config.h']]],

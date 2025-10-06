@@ -1,0 +1,136 @@
+/**
+ * @page scpi_sweep_reference SCPI Sweep Commands Reference
+ * @ingroup scpi_sweep_commands
+ * @brief Detailed SCPI sweep command reference
+ * 
+ * Sweep commands control I-V curve measurements and sweeping operations.
+ * These commands enable automated characterization of solar cells and
+ * other devices under test.
+ * 
+ * ## Sweep Control
+ * 
+ * ### SWEEP:ENAble
+ * **Description:** Enables the sweep measurement system.
+ * 
+ * **Syntax:** `SWEEP:ENAble`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_ENABLE
+ * 
+ * **Note:** Must be enabled before performing sweep measurements
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:ENAble
+ * ```
+ * 
+ * ---
+ * 
+ * ### SWEEP:DISable
+ * **Description:** Disables the sweep measurement system.
+ * 
+ * **Syntax:** `SWEEP:DISable`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_DISABLE
+ * 
+ * **Note:** Disabling stops any ongoing sweep operations
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:DISable
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sweep Execution
+ * 
+ * ### SWEEP:TRIGger
+ * **Description:** Triggers a complete I-V sweep measurement.
+ * 
+ * **Syntax:** `SWEEP:TRIGger`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (sweep data available via other commands)
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_TRIGGER
+ * 
+ * **Note:** Sweep must be enabled before triggering
+ * 
+ * **Warning:** Sweep duration depends on configuration settings
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:ENAble
+ * SWEEP:TRIGger
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sweep Measurements
+ * 
+ * ### SWEEP:TRIGger:ISC
+ * **Description:** Triggers a sweep and returns the short-circuit current (Isc).
+ * 
+ * **Syntax:** `SWEEP:TRIGger:ISC?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Short-circuit current in amperes
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_TRIGGER_ISC
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:TRIGger:ISC?
+ * 0.00234567
+ * ```
+ * 
+ * ---
+ * 
+ * ### SWEEP:TRIGger:VOC
+ * **Description:** Triggers a sweep and returns the open-circuit voltage (Voc).
+ * 
+ * **Syntax:** `SWEEP:TRIGger:VOC?`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** Open-circuit voltage in volts
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_TRIGGER_VOC
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:TRIGger:VOC?
+ * 0.567890
+ * ```
+ * 
+ * ---
+ * 
+ * ## Sweep Configuration
+ * 
+ * ### SWEEP:CONFig:SAVe
+ * **Description:** Saves current sweep configuration to non-volatile memory.
+ * 
+ * **Syntax:** `SWEEP:CONFig:SAVe`
+ * 
+ * **Parameters:** None
+ * 
+ * **Returns:** None (command execution status via error codes)
+ * 
+ * **I2C Equivalent:** CMD_SWEEP_CONFIG_SAVE
+ * 
+ * **Note:** Configuration persists across power cycles
+ * 
+ * **Example:**
+ * ```
+ * SWEEP:CONFig:SAVe
+ * ```
+ */
