@@ -6,8 +6,8 @@
  * @date	5/7/2019 3:56:47 PM
  */
 
-// #include "amu_config_internal.h"
-// #pragma message(AMU_CONFIG_MESSAGE)
+#include "amu_config_internal.h"
+#pragma message(AMULIBC_CONFIG_MESSAGE)
 
 #include "amu_device.h"
 #include "amu_types.h"

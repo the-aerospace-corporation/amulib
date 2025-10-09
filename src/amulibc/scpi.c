@@ -9,7 +9,7 @@
 #include "scpi.h"
 #include "amu_device.h"
 #include "amu_regs.h"
-// #include "amu_config.h"
+#include "amu_config_internal.h"
 
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
