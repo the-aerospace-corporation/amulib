@@ -14,6 +14,8 @@
 #include <string.h>
 #include <stddef.h>
 
+#include "amu_config_internal.h"
+
 #define AMU_ADDRESS_DEFAULT				0x0F
 #define AMU_NO_ADDRESS_MATCH			0xFF
 

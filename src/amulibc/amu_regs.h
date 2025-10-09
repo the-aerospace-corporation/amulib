@@ -11,6 +11,7 @@
 #define __AMU_REGS_H__
 
 #include "amu_types.h"
+#include "amu_config_internal.h"
 
 	/**
 	 * @brief TODO

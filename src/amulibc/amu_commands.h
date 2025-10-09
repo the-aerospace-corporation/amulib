@@ -28,6 +28,7 @@
 #define __AMU_COMMANDS_H__
 
 #include "amu_types.h"
+#include "amu_config_internal.h"
 
 #define CMD_RW_BIT		7
 #define CMD_READ		(1<<CMD_RW_BIT)

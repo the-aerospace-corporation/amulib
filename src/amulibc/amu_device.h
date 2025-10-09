@@ -11,6 +11,7 @@
 
 #include "amu_commands.h"
 #include "amu_types.h"
+#include "amu_config_internal.h"
 
 #define AMU_TWI_DEFAULT_ADDRESS			0x0F
 #define AMU_TWI_ALLCALL_ADDRESS			0x0A

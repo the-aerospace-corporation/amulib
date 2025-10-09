@@ -9,29 +9,14 @@
 #include "scpi.h"
 #include "amu_device.h"
 #include "amu_regs.h"
-#include "amu_config_internal.h"
 
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
 
 
 #ifdef __AMU_USE_SCPI__
-
-#ifndef SCPI_INPUT_BUFFER_LENGTH
-#define SCPI_INPUT_BUFFER_LENGTH 1024
-#endif
-
-#ifndef SCPI_ERROR_QUEUE_SIZE
-#define SCPI_ERROR_QUEUE_SIZE 16
-#endif
-
-#ifdef AMU_XMEGA
-#define SCPI_USE_PROGMEM
-#endif
-
-
-static char scpi_input_buffer[SCPI_INPUT_BUFFER_LENGTH];
-static scpi_error_t scpi_error_queue_data[SCPI_ERROR_QUEUE_SIZE];
+static char scpi_input_buffer[AMULIBC_SCPI_INPUT_BUFFER_LENGTH];
+static scpi_error_t scpi_error_queue_data[AMULIBC_SCPI_ERROR_QUEUE_SIZE];
 #endif
 
 static scpi_t scpi_context;
@@ -562,8 +547,8 @@ void amu_scpi_init(volatile amu_device_t* dev, const char* idn1, const char* idn
 		idn2,
 		idn3,
 		idn4,
-		scpi_input_buffer, SCPI_INPUT_BUFFER_LENGTH,
-		scpi_error_queue_data, SCPI_ERROR_QUEUE_SIZE);
+		scpi_input_buffer, AMULIBC_SCPI_INPUT_BUFFER_LENGTH,
+		scpi_error_queue_data, AMULIBC_SCPI_ERROR_QUEUE_SIZE);
 #endif
 }
 

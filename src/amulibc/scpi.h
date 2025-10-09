@@ -14,6 +14,23 @@
 
 #include "libscpi\libscpi.h"
 #include "amu_commands.h"
+#include "amu_config_internal.h"
+
+#ifdef __AMU_USE_SCPI__
+
+#ifndef AMULIBC_SCPI_INPUT_BUFFER_LENGTH
+#define AMULIBC_SCPI_INPUT_BUFFER_LENGTH 1024
+#endif
+
+#ifndef AMULIBC_SCPI_ERROR_QUEUE_SIZE
+#define AMULIBC_SCPI_ERROR_QUEUE_SIZE 16
+#endif
+
+#ifdef AMU_XMEGA
+#define SCPI_USE_PROGMEM
+#endif
+
+#endif
 
 
 #define SCPI_IDN_STRING_LENGTH			32
