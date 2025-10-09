@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: C:/Users/colin/source/repos/amulib/src/amulibc/libscpi/units.c Source File</title>
+<title>AMU Library: C:/Users/cjm28241/source/repos/amulib/src/amulibc/libscpi/units.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -426,7 +426,7 @@ $(function(){initNavTree('units_8c_source.html','',''); });
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    unitDef = <a class="code hl_function" href="units_8c.html#abfd09ce678c2a51ee6fd40d3739abc67">translateUnit</a>(context-&gt;units, unit + s, len - s);</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keywordflow">if</span> (unitDef == NULL) {</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        <a class="code hl_function" href="error_8c.html#a1b54a47beccbe84e4d0a99150ec8acf5">SCPI_ErrorPush</a>(context, <a class="code hl_enumvalue" href="error_8h.html#acdb5e60f62961e38134137bbe0fd8234aa650e3d5e150c5b174c78ee9f290818d">SCPI_ERROR_INVALID_SUFFIX</a>);</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        <a class="code hl_function" href="error_8c.html#a1b54a47beccbe84e4d0a99150ec8acf5">SCPI_ErrorPush</a>(context, <a class="code hl_enumvalue" href="error_8h.html#a07c2635d72596db2519bcd146e5b3e4daa650e3d5e150c5b174c78ee9f290818d">SCPI_ERROR_INVALID_SUFFIX</a>);</div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    }</div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
@@ -446,7 +446,7 @@ $(function(){initNavTree('units_8c_source.html','',''); });
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    int32_t tag;</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="keywordflow">if</span> (!value) {</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <a class="code hl_function" href="error_8c.html#a1b54a47beccbe84e4d0a99150ec8acf5">SCPI_ErrorPush</a>(context, <a class="code hl_enumvalue" href="error_8h.html#acdb5e60f62961e38134137bbe0fd8234a96fad441b9b17c69cd078d3e0a90617c">SCPI_ERROR_SYSTEM_ERROR</a>);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <a class="code hl_function" href="error_8c.html#a1b54a47beccbe84e4d0a99150ec8acf5">SCPI_ErrorPush</a>(context, <a class="code hl_enumvalue" href="error_8h.html#a07c2635d72596db2519bcd146e5b3e4da96fad441b9b17c69cd078d3e0a90617c">SCPI_ERROR_SYSTEM_ERROR</a>);</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    }</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
@@ -577,8 +577,8 @@ $(function(){initNavTree('units_8c_source.html','',''); });
 <div class="ttc" id="aconfig_8h_html_a8cd81b474742603182a3513b691d4052"><div class="ttname"><a href="config_8h.html#a8cd81b474742603182a3513b691d4052">SCPIDEFINE_strnlen</a></div><div class="ttdeci">#define SCPIDEFINE_strnlen(s, l)</div><div class="ttdef"><b>Definition</b> <a href="config_8h_source.html#l00175">config.h:175</a></div></div>
 <div class="ttc" id="aerror_8c_html_a1b54a47beccbe84e4d0a99150ec8acf5"><div class="ttname"><a href="error_8c.html#a1b54a47beccbe84e4d0a99150ec8acf5">SCPI_ErrorPush</a></div><div class="ttdeci">void SCPI_ErrorPush(scpi_t *context, int16_t err)</div><div class="ttdef"><b>Definition</b> <a href="error_8c_source.html#l00202">error.c:202</a></div></div>
 <div class="ttc" id="aerror_8h_html"><div class="ttname"><a href="error_8h.html">error.h</a></div></div>
-<div class="ttc" id="aerror_8h_html_acdb5e60f62961e38134137bbe0fd8234a96fad441b9b17c69cd078d3e0a90617c"><div class="ttname"><a href="error_8h.html#acdb5e60f62961e38134137bbe0fd8234a96fad441b9b17c69cd078d3e0a90617c">SCPI_ERROR_SYSTEM_ERROR</a></div><div class="ttdeci">@ SCPI_ERROR_SYSTEM_ERROR</div><div class="ttdef"><b>Definition</b> <a href="error_8h_source.html#l00193">error.h:193</a></div></div>
-<div class="ttc" id="aerror_8h_html_acdb5e60f62961e38134137bbe0fd8234aa650e3d5e150c5b174c78ee9f290818d"><div class="ttname"><a href="error_8h.html#acdb5e60f62961e38134137bbe0fd8234aa650e3d5e150c5b174c78ee9f290818d">SCPI_ERROR_INVALID_SUFFIX</a></div><div class="ttdeci">@ SCPI_ERROR_INVALID_SUFFIX</div><div class="ttdef"><b>Definition</b> <a href="error_8h_source.html#l00193">error.h:193</a></div></div>
+<div class="ttc" id="aerror_8h_html_a07c2635d72596db2519bcd146e5b3e4da96fad441b9b17c69cd078d3e0a90617c"><div class="ttname"><a href="error_8h.html#a07c2635d72596db2519bcd146e5b3e4da96fad441b9b17c69cd078d3e0a90617c">SCPI_ERROR_SYSTEM_ERROR</a></div><div class="ttdeci">@ SCPI_ERROR_SYSTEM_ERROR</div><div class="ttdef"><b>Definition</b> <a href="error_8h_source.html#l00193">error.h:193</a></div></div>
+<div class="ttc" id="aerror_8h_html_a07c2635d72596db2519bcd146e5b3e4daa650e3d5e150c5b174c78ee9f290818d"><div class="ttname"><a href="error_8h.html#a07c2635d72596db2519bcd146e5b3e4daa650e3d5e150c5b174c78ee9f290818d">SCPI_ERROR_INVALID_SUFFIX</a></div><div class="ttdeci">@ SCPI_ERROR_INVALID_SUFFIX</div><div class="ttdef"><b>Definition</b> <a href="error_8h_source.html#l00193">error.h:193</a></div></div>
 <div class="ttc" id="alexer_8c_html_a745d2058d723bdf8f63e0674dedb1064"><div class="ttname"><a href="lexer_8c.html#a745d2058d723bdf8f63e0674dedb1064">scpiLex_DecimalNumericProgramData</a></div><div class="ttdeci">int scpiLex_DecimalNumericProgramData(lex_state_t *state, scpi_token_t *token)</div><div class="ttdef"><b>Definition</b> <a href="lexer_8c_source.html#l00508">lexer.c:508</a></div></div>
 <div class="ttc" id="alexer_8c_html_aa4e0f8ed20da73daf41a792678d23b06"><div class="ttname"><a href="lexer_8c.html#aa4e0f8ed20da73daf41a792678d23b06">scpiLex_SuffixProgramData</a></div><div class="ttdeci">int scpiLex_SuffixProgramData(lex_state_t *state, scpi_token_t *token)</div><div class="ttdef"><b>Definition</b> <a href="lexer_8c_source.html#l00533">lexer.c:533</a></div></div>
 <div class="ttc" id="alexer_8c_html_ac83236b6e36c5a2ddc7aa0a1b715f19f"><div class="ttname"><a href="lexer_8c.html#ac83236b6e36c5a2ddc7aa0a1b715f19f">scpiLex_CharacterProgramData</a></div><div class="ttdeci">int scpiLex_CharacterProgramData(lex_state_t *state, scpi_token_t *token)</div><div class="ttdef"><b>Definition</b> <a href="lexer_8c_source.html#l00451">lexer.c:451</a></div></div>

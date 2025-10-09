@@ -14,6 +14,6 @@ var unionadc__channels__t =
     [ "ss_tl", "unionadc__channels__t.html#a3144d3b9c3f65a867abaf4f85082b4e4", null ],
     [ "ss_tr", "unionadc__channels__t.html#aa414859c5973103638caba1311c87c94", null ],
     [ "tsensors", "unionadc__channels__t.html#afb3b5d8a4637f4347fd9ea7465846422", null ],
-    [ "val", "unionadc__channels__t.html#ab1aca04b5fa9bd4cf20212a1836b2c38", null ],
+    [ "val", "unionadc__channels__t.html#a6581546211ff998fadd9b4ed09e9231b", null ],
     [ "voltage", "unionadc__channels__t.html#a75ce7cdc756c09baed91c73b5e9d7506", null ]
 ];

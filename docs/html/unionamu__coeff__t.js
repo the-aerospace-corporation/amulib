@@ -7,5 +7,5 @@ var unionamu__coeff__t =
     [ "f", "unionamu__coeff__t.html#a98d686959501ab8b1d05f32a11b6d9d0", null ],
     [ "i", "unionamu__coeff__t.html#ab3698bede0b51df36871153292ca6792", null ],
     [ "raw", "unionamu__coeff__t.html#a9f09c677228269a3bc28ba3b02de50e1", null ],
-    [ "val", "unionamu__coeff__t.html#a567cda5a815af2593aba73096baeb61b", null ]
+    [ "val", "unionamu__coeff__t.html#a668802bbe73f2a176f982ab4a323890a", null ]
 ];
