@@ -3,6 +3,8 @@ var scpi_8c =
     [ "SCPI_CMD_EXEC_QRY", "scpi_8c.html#abd89eab80c32ae866136d406cdde47a0", null ],
     [ "SCPI_CMD_RW", "scpi_8c.html#aa14af162e39082d3caa45d607f6b1109", null ],
     [ "SCPI_COMMAND", "group__scpi__adc__commands.html#ga0b37dd7a2003b3ed1b843aabc334dc31", null ],
+    [ "SCPI_ERROR_QUEUE_SIZE", "scpi_8c.html#ae75d934bc66feba83b6ba36afd102038", null ],
+    [ "SCPI_INPUT_BUFFER_LENGTH", "scpi_8c.html#a0105f3589ffb7f946ab8190849c21c6b", null ],
     [ "SCPI_Param_amu_coeff_t", "scpi_8c.html#a3202e11da3b3578d6095ebc099bcfced", null ],
     [ "SCPI_Param_amu_int_volt_t", "scpi_8c.html#af15795a172fd234aa1aeace5527e11b3", null ],
     [ "SCPI_Param_amu_meas_t", "scpi_8c.html#a773585ed1444f48b0c5551fc18948e87", null ],
@@ -60,7 +62,7 @@ var scpi_8c =
     [ "scpi_channel_list", "scpi_8c.html#a4e4d3b9088e4fd0430f4745d8d2c0946", null ],
     [ "scpi_context", "scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d", null ],
     [ "scpi_def_commands", "scpi_8c.html#ad22e419c57cb0abc89132e162c1a7944", null ],
-    [ "scpi_error_queue_data", "scpi_8c.html#aad1387150927c1482ab63b1fc99e2445", null ],
-    [ "scpi_input_buffer", "scpi_8c.html#a9bffe777e2512116c26b90271b5ffa79", null ],
+    [ "scpi_error_queue_data", "scpi_8c.html#a4f09f204c7304de15ba18ee145bcce54", null ],
+    [ "scpi_input_buffer", "scpi_8c.html#ab72fba3d9a3e67bfca8479b9f7e9f180", null ],
     [ "scpi_interface", "scpi_8c.html#a1169c4a1863fd98b478b89366c840f5d", null ]
 ];

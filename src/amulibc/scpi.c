@@ -14,7 +14,22 @@
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
 
+
 #ifdef __AMU_USE_SCPI__
+
+#ifndef SCPI_INPUT_BUFFER_LENGTH
+#define SCPI_INPUT_BUFFER_LENGTH 1024
+#endif
+
+#ifndef SCPI_ERROR_QUEUE_SIZE
+#define SCPI_ERROR_QUEUE_SIZE 16
+#endif
+
+#ifdef AMU_XMEGA
+#define SCPI_USE_PROGMEM
+#endif
+
+
 static char scpi_input_buffer[SCPI_INPUT_BUFFER_LENGTH];
 static scpi_error_t scpi_error_queue_data[SCPI_ERROR_QUEUE_SIZE];
 #endif

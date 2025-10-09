@@ -2177,7 +2177,7 @@ extern "C" {
  * @endcode
  */
         /**
- * @brief Calibrate temperature sensor at 25°C
+ * @brief Calibrate temperature sensor at 25ï¿½C
  * @ingroup scpi_adc_commands
  * 
  * **SCPI Command:** `ADC:CALibrate:TSENSor`
