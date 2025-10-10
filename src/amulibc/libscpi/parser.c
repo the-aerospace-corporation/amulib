@@ -263,6 +263,10 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
     if (context == NULL) {
         return FALSE;
     }
+    // Debug: Log when SCPI_Parse is called
+    char buffer[128];
+    snprintf(buffer, sizeof(buffer), "SCPI_Parse called with data='%.*s' len=%d\n", len, data, len);
+    writeData(context, buffer, strlen(buffer));
 
     state = &context->parser_state;
     context->output_count = 0;
@@ -296,6 +300,8 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
                 /* calculate length of errornouse header and trim \r\n */
                 size_t r2 = r;
                 while (r2 > 0 && (data[r2 - 1] == '\r' || data[r2 - 1] == '\n')) r2--;
+                // Debug: Command not found
+                
                 SCPI_ErrorPushEx(context, SCPI_ERROR_UNDEFINED_HEADER, data, r2);
                 result = FALSE;
             }

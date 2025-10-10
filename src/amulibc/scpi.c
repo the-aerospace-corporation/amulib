@@ -9,6 +9,7 @@
 #include "scpi.h"
 #include "amu_device.h"
 #include "amu_regs.h"
+#include "amu_config_internal.h"
 
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
@@ -446,7 +447,7 @@ static scpi_result_t SCPI_Write_Control(scpi_t* context, scpi_ctrl_name_t ctrl, 
 
 if (ctrl == 1) {
     
-#if defined(__arm__)
+#if defined(HAVE_SNPRINTF)
         snprintf(buffer, sizeof(buffer), "**SRQ: 0x%X", val);
         context->interface->write(context, buffer, sizeof(buffer));
 #else
@@ -457,9 +458,9 @@ if (ctrl == 1) {
 	}
 	else {
 		
-#if defined(__arm__)
+#if defined(HAVE_SNPRINTF)
         snprintf(buffer, sizeof(buffer), "**CTRL: 0x%X: 0x%X", ctrl, val);
-        
+		context->interface->write(context, buffer, sizeof(buffer));        
 #else
         context->interface->write(context, "**CTRL: 0x", 11);
 		context->interface->write(context, itoa(ctrl, buffer, 16), sizeof(buffer));
@@ -492,6 +493,15 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 
 #ifdef __AMU_USE_SCPI__
 
+#ifndef SCPI_COMMAND
+#ifdef SCPI_USE_PROGMEM
+	#define SCPI_COMMAND(P, C, T) static const char C ## _ ## T ## _pattern[] PROGMEM = P;
+#else
+	#define SCPI_COMMAND(P, C, T) static const char C ## _ ## T ## _pattern[] = P;
+#endif
+#endif
+
+
 #ifdef __AMU_LOW_MEMORY__
 	__AMU_DEFAULT_CMD_LIST__
 #else
@@ -501,32 +511,26 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 
 #undef SCPI_COMMAND
 
-#if defined(__AMU_USE_SCPI__)
-    #define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
-    #ifdef __AMU_SCPI_USE_PROGMEM__
-        static const scpi_command_t scpi_def_commands[] PROGMEM = {
-    #else
-        static const scpi_command_t scpi_def_commands[] = {
-    #endif
+#define SCPI_COMMAND(P, C, T) {C ## _ ## T ## _pattern, C, T},
+#ifdef __AMU_SCPI_USE_PROGMEM__
+	static const scpi_command_t scpi_def_commands[] PROGMEM = {
+#else
+	static const scpi_command_t scpi_def_commands[] = {
 #endif
 	
-#if defined(__AMU_USE_SCPI__)
-
-    #ifdef __AMU_LOW_MEMORY__
-        __AMU_DEFAULT_CMD_LIST__
-        SCPI_CMD_LIST_END
-    #else
-        __AMU_DEFAULT_CMD_LIST__
-        __AMU_EXTENDED_CMD_LIST__
-        SCPI_CMD_LIST_END
-    #endif
+#ifdef __AMU_LOW_MEMORY__
+	__AMU_DEFAULT_CMD_LIST__
+	SCPI_CMD_LIST_END
+#else
+	__AMU_DEFAULT_CMD_LIST__
+	__AMU_EXTENDED_CMD_LIST__
+	SCPI_CMD_LIST_END
+#endif
 };
+
 #endif
 
 #undef SCPI_COMMAND
-
-#endif
-
 
 void amu_scpi_init(volatile amu_device_t* dev, const char* idn1, const char* idn2, const char* idn3, const char* idn4) {
 
@@ -550,23 +554,28 @@ void amu_scpi_init(volatile amu_device_t* dev, const char* idn1, const char* idn
 		scpi_input_buffer, AMULIBC_SCPI_INPUT_BUFFER_LENGTH,
 		scpi_error_queue_data, AMULIBC_SCPI_ERROR_QUEUE_SIZE);
 #endif
+
 }
 
 void amu_scpi_update(const char incomingByte) {
+#ifdef __AMU_USE_SCPI__
 	SCPI_Input(&scpi_context, &incomingByte, 1);
+#endif
 }
 
 void amu_scpi_update_buffer(const char* buffer, size_t len) {
+#ifdef __AMU_USE_SCPI__
 	SCPI_Input(&scpi_context, buffer, len);
+#endif
 }
 
 void amu_scpi_add_aux_commands(const scpi_command_t* aux_cmd_list) {
+#ifdef __AMU_USE_SCPI__
 	scpi_context.aux_cmdlist = aux_cmd_list;
+#endif
 }
 
 void amu_scpi_list_commands(void) {
-
-#ifdef __AMU_USE_SCPI__
 
 	int32_t i;
 
@@ -594,23 +603,45 @@ void amu_scpi_list_commands(void) {
 		}
 	}
 
-	#else
+#else
 
 	char* cmd_pattern;
 
+	char message[] = "SCPI Commands:\n";
+	scpi_context.interface->write(&scpi_context, message, sizeof(message) - 1);
+
+	if( scpi_context.def_cmdlist == NULL ) {
+		scpi_context.interface->write(&scpi_context, "No commands defined", 19);
+		scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
+		return;
+	}
+
+	// Debug: Check first command
+	if( scpi_context.def_cmdlist[0].pattern == NULL ) {
+		scpi_context.interface->write(&scpi_context, "First command pattern is NULL", 29);
+		scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
+		return;
+	}
+	
 	for (i = 0; (cmd_pattern = (char*)scpi_context.def_cmdlist[i].pattern) != 0; i++) {
 		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 		scpi_context.interface->write(&scpi_context, ",", 1);
 	}
+	
+	// Debug: Show how many commands we found
+	char count_msg[50];
+	snprintf(count_msg, sizeof(count_msg), "\nFound %d commands\n", i);
+	scpi_context.interface->write(&scpi_context, count_msg, strlen(count_msg));
 
-	for (i = 0; (cmd_pattern = (char*)scpi_context.aux_cmdlist[i].pattern) != 0; i++) {
-		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
-		scpi_context.interface->write(&scpi_context, ",", 1);
+	if (scpi_context.aux_cmdlist != NULL) {
+		for (i = 0; (cmd_pattern = (char*)scpi_context.aux_cmdlist[i].pattern) != 0; i++) {
+			scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
+			scpi_context.interface->write(&scpi_context, ",", 1);
+		}
 	}
 
-	#endif
-
 #endif
+
 	scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 
 }

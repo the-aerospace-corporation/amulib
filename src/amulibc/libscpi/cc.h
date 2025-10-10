@@ -59,7 +59,7 @@ extern "C" {
 #endif
 
 #if _BSD_SOURCE || _XOPEN_SOURCE >= 500 || _ISOC99_SOURCE || _POSIX_C_SOURCE >= 200112L || C99
-    #define HAVE_SNPRINTF 0
+    #define HAVE_SNPRINTF 1
 #endif
 
 #if _POSIX_C_SOURCE >= 200112L
@@ -135,6 +135,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
     
 #ifndef HAVE_SNPRINTF
 #define HAVE_SNPRINTF           1
@@ -172,10 +173,30 @@ extern "C" {
 
 #if defined(__SAMD21E18A__)
 #include <stdlib.h>
+#include <stdbool.h>
 #define HAVE_DTOSTRE            0
 #define HAVE_STRTOF				1
 #define HAVE_STDBOOL			1
 #define HAVE_STRNLEN            1
+#endif
+
+#if defined(__ESP32__)
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <stdbool.h>
+#define HAVE_STRNLEN            1
+#define HAVE_STRDUP             1
+#define HAVE_STDBOOL			1
+#define HAVE_SNPRINTF           1
+#define HAVE_STRNCASECMP        1
+#define HAVE_ISNAN              1
+#define HAVE_ISFINITE           1
+#define HAVE_FINITE             1
+#define HAVE_SIGNBIT            1
+#define HAVE_STRTOF             1
+#define HAVE_STRTOLL            1
 #endif
 
 /* default values */

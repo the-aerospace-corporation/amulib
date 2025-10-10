@@ -95,7 +95,7 @@ extern "C" {
         #define SCPI_COMMAND(P, C, T) static const char C ## _ ## T ## _pattern[] = P;
     #endif
 
-        #define __AMU_DEFAULT_CMD_LIST__																							\
+        #define __AMU_DEFAULT_CMD_LIST__                \
         /**
  * @brief Clear status command - clears device status registers
  * @ingroup scpi_ieee488_commands
