@@ -1,5 +1,9 @@
 var NAVTREEINDEX2 =
 {
+"error_8h.html#a307b29eabc2b7bd9baf5284fa419719e":[14,0,1,0,0,4,4],
+"error_8h.html#a45dfabe0eec968c0ce571aea189fa617":[14,0,1,0,0,4,8],
+"error_8h.html#a6d13ba223d7b01428b6a541d567e5590":[14,0,1,0,0,4,2],
+"error_8h.html#a8a79fcd276eb42b73a9706236472587c":[14,0,1,0,0,4,9],
 "error_8h.html#a939741e566a5c7895e22bd598c1d5774":[14,0,1,0,0,4,5],
 "error_8h.html#a94d449280aecd9399fa81270b17e9d67":[14,0,1,0,0,4,6],
 "error_8h.html#a9d62b896a73364631cedc9e9309a5dff":[14,0,1,0,0,4,3],
@@ -237,7 +241,6 @@ var NAVTREEINDEX2 =
 "group__i2c__system__commands.html#gga4e8da8ed89c23de481c1c23b4156de55ae3c8eecae769ba9780dfbfa4e25ac447":[12,0,0,0,4],
 "group__i2c__system__commands.html#gga4e8da8ed89c23de481c1c23b4156de55afdb1c5fe49b634fdd1b13976ae68b27f":[12,0,0,0,11],
 "group__scpi__adc__commands.html":[12,1,3],
-"group__scpi__adc__commands.html#ga0b37dd7a2003b3ed1b843aabc334dc31":[12,1,3,1],
 "group__scpi__adc__commands.html#scpi_adc_reference":[12,1,3,0],
 "group__scpi__aux__commands.html":[12,1,5],
 "group__scpi__aux__commands.html#scpi_dac_reference":[12,1,5,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "group__scpi__commands.html":[12,1],
 "group__scpi__dut__commands.html":[12,1,2],
 "group__scpi__dut__commands.html#scpi_dut_reference":[12,1,2,0],
-"group__scpi__measurement__commands.html":[12,1,1],
-"group__scpi__measurement__commands.html#scpi_measurement_reference":[12,1,1,0],
-"group__scpi__memory__commands.html":[12,1,6],
-"group__scpi__memory__commands.html#scpi_memory_reference":[12,1,6,0]
+"group__scpi__measurement__commands.html":[12,1,1]
 };

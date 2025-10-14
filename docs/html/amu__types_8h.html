@@ -97,6 +97,7 @@ $(function(){initNavTree('amu__types_8h.html','',''); });
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="amu__config__internal_8h_source.html">amu_config_internal.h</a>&quot;</code><br />
 </div>
 <p><a href="amu__types_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -126,8 +127,8 @@ Macros</h2></td></tr>
 <tr class="memitem:ad926784fe35b9e1ae2f90dbf44569ab4" id="r_ad926784fe35b9e1ae2f90dbf44569ab4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>&#160;&#160;&#160;0xFF</td></tr>
 <tr class="memitem:ad138d7e506b11e2ed78f90a4ec3190d8" id="r_ad138d7e506b11e2ed78f90a4ec3190d8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad138d7e506b11e2ed78f90a4ec3190d8">AMU_THIS_DEVICE</a>&#160;&#160;&#160;0x00</td></tr>
 <tr class="memitem:a4afb978da540ed2b49ff42328c5fc500" id="r_a4afb978da540ed2b49ff42328c5fc500"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4afb978da540ed2b49ff42328c5fc500">AMU_NOTES_SIZE</a>&#160;&#160;&#160;128</td></tr>
-<tr class="memitem:a8a654490beecc58cc3f7b875cf8b25ff" id="r_a8a654490beecc58cc3f7b875cf8b25ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a>&#160;&#160;&#160;250</td></tr>
-<tr class="memitem:a98445e36ae97bff3b186d5ffa055c815" id="r_a98445e36ae97bff3b186d5ffa055c815"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98445e36ae97bff3b186d5ffa055c815">AMU_TRANSFER_REG_SIZE</a>&#160;&#160;&#160;(<a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a> * sizeof(float) * 2)</td></tr>
+<tr class="memitem:a8a654490beecc58cc3f7b875cf8b25ff" id="r_a8a654490beecc58cc3f7b875cf8b25ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a>&#160;&#160;&#160;40</td></tr>
+<tr class="memitem:a98445e36ae97bff3b186d5ffa055c815" id="r_a98445e36ae97bff3b186d5ffa055c815"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98445e36ae97bff3b186d5ffa055c815">AMU_TRANSFER_REG_SIZE</a>&#160;&#160;&#160;(<a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a> * <a class="el" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">sizeof</a>(float))</td></tr>
 <tr class="memitem:a3fb2982067966b9f06bf46271648cef9" id="r_a3fb2982067966b9f06bf46271648cef9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fb2982067966b9f06bf46271648cef9">AMU_DUT_MANUFACTURER_STR_LEN</a>&#160;&#160;&#160;16</td></tr>
 <tr class="memitem:a9fd0a3b1bb36851e60798f290a96e99f" id="r_a9fd0a3b1bb36851e60798f290a96e99f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fd0a3b1bb36851e60798f290a96e99f">AMU_DUT_MODEL_STR_LEN</a>&#160;&#160;&#160;16</td></tr>
 <tr class="memitem:aa540f6757939b922ed869706be9de4b2" id="r_aa540f6757939b922ed869706be9de4b2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa540f6757939b922ed869706be9de4b2">AMU_DUT_TECHNOLOGY_STR_LEN</a>&#160;&#160;&#160;16</td></tr>
@@ -338,7 +339,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00017">17</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00019">19</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +355,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00020">20</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00022">22</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +371,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00036">36</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00038">38</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -386,7 +387,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00037">37</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00039">39</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -402,7 +403,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00039">39</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00041">41</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -418,7 +419,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00038">38</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00040">40</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +435,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00018">18</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00020">20</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -450,7 +451,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00024">24</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00026">26</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -466,7 +467,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00022">22</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00024">24</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -477,12 +478,12 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define AMU_TRANSFER_REG_SIZE&#160;&#160;&#160;(<a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a> * sizeof(float) * 2)</td>
+          <td class="memname">#define AMU_TRANSFER_REG_SIZE&#160;&#160;&#160;(<a class="el" href="#a8a654490beecc58cc3f7b875cf8b25ff">IVSWEEP_MAX_POINTS</a> * <a class="el" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">sizeof</a>(float))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00033">33</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00030">30</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -493,12 +494,12 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define IVSWEEP_MAX_POINTS&#160;&#160;&#160;250</td>
+          <td class="memname">#define IVSWEEP_MAX_POINTS&#160;&#160;&#160;40</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00031">31</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00029">29</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -515,7 +516,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00062">62</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00064">64</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -531,7 +532,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00083">83</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00085">85</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -547,7 +548,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00108">108</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00110">110</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +564,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00349">349</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00351">351</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -579,7 +580,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00304">304</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00306">306</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -595,7 +596,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00307">307</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00309">309</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +612,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00312">312</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00314">314</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -627,7 +628,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00172">172</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00174">174</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +644,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00308">308</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00310">310</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -669,7 +670,7 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00297">297</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00299">299</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -685,7 +686,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00305">305</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00307">307</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +702,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00306">306</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00308">308</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -737,7 +738,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a34cc7b9e91d0eacde8cbe419902c3e1ea9b99110361d6b3d712f2724c04575c72" name="a34cc7b9e91d0eacde8cbe419902c3e1ea9b99110361d6b3d712f2724c04575c72"></a>AMU_ADC_CH_NUM&#160;</td><td class="fieldinit">16&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00042">42</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00044">44</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -764,7 +765,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a94e75d6200905426dabf637cc8e571f9aff7d8300da697990249814194ddb326c" name="a94e75d6200905426dabf637cc8e571f9aff7d8300da697990249814194ddb326c"></a>ADC_PGA_NUM&#160;</td><td class="fieldinit">8&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00064">64</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00066">66</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -786,7 +787,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a6037f42b6d6fe1fa9300a8a3cc755ff2ac7b12c47413b51c52eacddcda3d9b822" name="a6037f42b6d6fe1fa9300a8a3cc755ff2ac7b12c47413b51c52eacddcda3d9b822"></a>AMU_ADC_POWER_MODE_STANDBY&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00076">76</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00078">78</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -824,7 +825,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a367bb0ebbb54719f3f2726350bb7b14ca1e453e58a75f797c1c7b9ddf6dc7e3c9" name="a367bb0ebbb54719f3f2726350bb7b14ca1e453e58a75f797c1c7b9ddf6dc7e3c9"></a>AMU_CH_EN_ALL&#160;</td><td class="fieldinit">(0xFFFF)&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00085">85</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00087">87</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -852,7 +853,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a49f5cd5d81fd835e341a9e391ea6d050abab9558707b64d19b186d8dd9c62b30f" name="a49f5cd5d81fd835e341a9e391ea6d050abab9558707b64d19b186d8dd9c62b30f"></a>AMU_HARDWARE_REVISION_AMU_SP&#160;</td><td class="fieldinit">0x81&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00110">110</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00112">112</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -877,7 +878,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a7ef8543aa880eba5d322d47d7714a3d7aa4d76dd83d5044a25aca412571da43a1" name="a7ef8543aa880eba5d322d47d7714a3d7aa4d76dd83d5044a25aca412571da43a1"></a>AMU_LED_PATTERN_BLUE_FLASH&#160;</td><td class="fieldinit">6&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00130">130</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00132">132</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -899,7 +900,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a7af8bda1cfd51952a8c98ceaf2c9142baf0b41ddbfb2b4b96631d17e24599439a" name="a7af8bda1cfd51952a8c98ceaf2c9142baf0b41ddbfb2b4b96631d17e24599439a"></a>AMU_SLEEP_MODE_OFF&#160;</td><td class="fieldinit">3&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00147">147</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00149">149</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -921,7 +922,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a2bea52594814b3652859c3659f6e91f6a141b57a78a6e38f1252ec2dacd5876a5" name="a2bea52594814b3652859c3659f6e91f6a141b57a78a6e38f1252ec2dacd5876a5"></a>AMU_STATUS_MPPT&#160;</td><td class="fieldinit">0x08&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00140">140</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00142">142</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +943,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ac010281625333581d41d34ce102cf614ab1dddad853338e228dd04e5611b66bae" name="ac010281625333581d41d34ce102cf614ab1dddad853338e228dd04e5611b66bae"></a>AMU_TSENSOR_TYPE_AD590&#160;</td><td class="fieldinit">2&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00124">124</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="amu__types_8h_source.html#l00126">126</a> of file <a class="el" href="amu__types_8h_source.html">amu_types.h</a>.</p>
 
 </div>
 </div>

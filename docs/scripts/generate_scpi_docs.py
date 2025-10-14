@@ -1,291 +1,298 @@
 #!/usr/bin/env python3
 """
-SCPI Command Documentation Generator for AMU Library
+SCPI Documentation Generator for AMU Library
 
-This script parses the scpi.h file to extract SCPI command definitions
-and generates comprehensive Doxygen documentation linking SCPI commands
-to their command IDs and descriptions.
+This script reads SCPI command documentation from amu_commands.h and generates
+comprehensive documentation in various formats. The documentation is now embedded
+in the command enum definitions rather than the scpi.h macro definitions.
 
-Usage: python generate_scpi_docs.py
-
-Output: Updates scpi.h with Doxygen comments for each SCPI command
+Author: Assistant
+Date: 2024
 """
 
 import re
+import os
 import sys
+from dataclasses import dataclass
+from typing import List, Dict, Optional
 from pathlib import Path
-from typing import Dict, List, Tuple, NamedTuple
 
-class SCPICommand(NamedTuple):
-    """Represents a parsed SCPI command"""
-    scpi_string: str
-    handler_function: str
-    command_id: str
-    description: str = ""
-    group: str = ""
+@dataclass
+class SCPICommand:
+    """Represents a single SCPI command with documentation"""
+    enum_name: str
+    scpi_pattern: str
+    description: str
+    category: str
+    usage: str = ""
     parameters: str = ""
     returns: str = ""
+    
+    @property
+    def is_query(self) -> bool:
+        """Check if this is a query command"""
+        return '?' in self.scpi_pattern
+    
+    @property
+    def command_name(self) -> str:
+        """Get clean command name without optional brackets"""
+        return self.scpi_pattern.replace('[', '').replace(']', '').replace('?', '')
 
-def parse_scpi_commands(scpi_file_path: str) -> List[SCPICommand]:
-    """Parse SCPI_COMMAND macros from scpi.h file"""
-    commands = []
+class SCPIDocumentationGenerator:
+    """Main class for parsing and generating SCPI documentation"""
     
-    with open(scpi_file_path, 'r') as f:
-        content = f.read()
-    
-    # Pattern to match SCPI_COMMAND("pattern", handler, command_id)
-    pattern = r'SCPI_COMMAND\(\s*"([^"]+)"\s*,\s*([^,]+)\s*,\s*([^)]+)\s*\)'
-    
-    matches = re.findall(pattern, content, re.MULTILINE)
-    
-    for scpi_string, handler, cmd_id in matches:
-        cmd = SCPICommand(
-            scpi_string=scpi_string.strip(),
-            handler_function=handler.strip(),
-            command_id=cmd_id.strip(),
-            description=generate_description(scpi_string),
-            group=determine_group(scpi_string),
-            parameters=extract_parameters(scpi_string),
-            returns=determine_return_type(scpi_string, handler)
-        )
-        commands.append(cmd)
-    
-    return commands
-
-def generate_description(scpi_string: str) -> str:
-    """Generate a description based on the SCPI command string"""
-    descriptions = {
-        # Standard SCPI commands
-        "*CLS": "Clear status command - clears device status registers",
-        "*ESE?": "Query event status enable register",
-        "*ESR?": "Query event status register", 
-        "*IDN?": "Query device identification string",
-        "*OPC": "Operation complete command",
-        "*OPC?": "Query operation complete status",
-        "*RST": "Reset device to default state",
-        "*SRE": "Set service request enable register",
-        "*SRE?": "Query service request enable register",
-        "*STB?": "Query status byte register",
-        "*TST?": "Self-test query",
-        "*WAI": "Wait for all operations to complete",
+    def __init__(self, source_dir: str):
+        self.source_dir = Path(source_dir)
+        self.commands: List[SCPICommand] = []
         
-        # System commands
-        "SYSTem:ERRor[:NEXT]?": "Query next error in error queue",
-        "SYSTem:ERRor:COUNt?": "Query number of errors in error queue",
-        "SYSTem:VERSion?": "Query SCPI version",
-        "SYSTem:BOOTloader": "Enter bootloader mode for firmware update",
-        "SYSTem:FIRMware?": "Query firmware version string",
-        "SYSTem:HARDware?": "Query hardware revision number",
-        "SYSTem:SERial?": "Query device serial number",
-        "SYSTem:SLEEP": "Enter low-power sleep mode",
-        "SYSTem:STATus?": "Query system status flags",
-        "SYSTem:TEMPerature?": "Query internal temperature in Celsius",
-        "SYSTem:TIMEstamp[?]": "Set or query system timestamp",
-        "SYSTem:TIMEstamp:UTC[?]": "Set or query UTC timestamp",
-        "SYSTem:TWI:ADDress[?]": "Set or query I2C device address",
-        "SYSTem:TWI:NUMdevices?": "Query number of I2C devices detected",
-        "SYSTem:TWI:MODE[?]": "Set or query I2C operating mode",
-        "SYSTem:TWI:SCAN?": "Scan I2C bus and return device addresses",
-        "SYSTem:TWI:STATus?": "Query I2C interface status",
+    def parse_scpi_commands(self) -> None:
+        """Parse SCPI commands from amu_commands.h file where documentation is now stored"""
+        commands_file = self.source_dir / "src" / "amulibc" / "amu_commands.h"
         
-        # LED commands  
-        "SYSTem:LED:PAT": "Set LED pattern mode",
-        "SYSTem:LED:COLOR[?]": "Set or query LED RGB color values",
+        if not commands_file.exists():
+            print(f"Error: {commands_file} not found")
+            return
+            
+        content = commands_file.read_text()
         
-        # Measurement commands
-        "MEASure:ADC:ACTive[:RAW]?": "Measure all active ADC channels",
-        "MEASure:INTERNALvoltages?": "Measure internal supply voltages",
-        "MEASure:SUNSensor?": "Measure sun sensor angles",
-        "MEASure:PRESSure?": "Measure pressure sensor data",
+        # Parse documented enums with SCPI patterns
+        self._parse_command_enums(content)
+    
+    def _parse_command_enums(self, content: str) -> None:
+        """Parse SCPI command enums with embedded documentation"""
         
-        # ADC commands
-        "ADC:CALibrate[?]": "Perform or query ADC calibration",
-        "ADC:CALibrate:TSENSor": "Calibrate temperature sensor at 25°C",
-        "ADC:CALibrate:ALL:INTernal": "Calibrate all internal ADC channels",
-        "ADC:SAVE:ALL:INTernal": "Save all internal calibrations to EEPROM",
-        "ADC:CH:ACTIVE[?]": "Set or query active ADC channel mask",
+        # Pattern to match documented enum entries with SCPI patterns
+        # Looking for /** ... @scpi PATTERN ... */ followed by enum definition
+        pattern = r'/\*\*\s*(.*?)\*/\s*(\w+)\s*[,=]'
         
-        # Channel-specific commands (# = channel number)
-        "ADC:CH#[?]": "Set or query ADC channel register value",
-        "ADC:CH#:SETup[?]": "Set or query ADC channel setup configuration",
-        "ADC:CH#:FILTer[?]": "Set or query ADC channel filter settings",
-        "ADC:CH#:RATE[?]": "Set or query ADC channel sample rate",
-        "ADC:CH#:PGA[?]": "Set or query programmable gain amplifier setting",
-        "ADC:CH#:MAX?": "Query maximum input range for current PGA setting",
-        "ADC:CH#:SAVE": "Save channel configuration to EEPROM",
-        "ADC:CH#:OFFset[?]": "Set or query channel offset calibration coefficient",
-        "ADC:CH#:GAIN[?]": "Set or query channel gain calibration coefficient",
+        matches = re.finditer(pattern, content, re.DOTALL)
         
-        # Calibration commands
-        "ADC:CH#:CALibrate:INTernal": "Perform internal calibration for channel",
-        "ADC:CH#:CALibrate:ZERO": "Perform zero-scale calibration for channel",
-        "ADC:CH#:CALibrate:FULL": "Perform full-scale calibration for channel", 
-        "ADC:CH#:CALibrate:RESet": "Reset channel calibration to defaults",
-        "ADC:CH#:CALibrate:SAVe": "Save channel calibration to EEPROM",
-    }
+        for match in matches:
+            doc_comment = match.group(1)
+            enum_name = match.group(2)
+            
+            # Extract SCPI pattern from documentation
+            scpi_match = re.search(r'@scpi_cmd\s+(\S+)', doc_comment)
+            if not scpi_match:
+                continue
+                
+            scpi_pattern = scpi_match.group(1)
+            
+            # Extract other documentation fields
+            description = self._extract_doc_field(doc_comment, r'@description\s+(.*?)(?=@|$)')
+            if not description:
+                description = self._extract_doc_field(doc_comment, r'@brief\s+(.*?)(?=@|$)')
+            
+            category = self._extract_doc_field(doc_comment, r'@category\s+(.*?)(?=@|$)')
+            if not category:
+                category = self._determine_category_from_scpi(scpi_pattern)
+            
+            usage = self._extract_doc_field(doc_comment, r'@usage\s+(.*?)(?=@|$)')
+            parameters = self._extract_doc_field(doc_comment, r'@param\s+(.*?)(?=@|$)')
+            returns = self._extract_doc_field(doc_comment, r'@returns\s+(.*?)(?=@|$)')
+            
+            if not description:
+                # Try to extract from general description after @brief
+                desc_match = re.search(r'@brief\s+(.*?)(?:\n|$)', doc_comment)
+                if desc_match:
+                    description = desc_match.group(1).strip()
+                else:
+                    # Fallback to first line
+                    desc_match = re.search(r'\s*([^@\n]+)', doc_comment.strip())
+                    if desc_match:
+                        description = desc_match.group(1).strip()
+            
+            cmd = SCPICommand(
+                enum_name=enum_name,
+                scpi_pattern=scpi_pattern,
+                description=description or "No description available",
+                category=category or "Uncategorized",
+                usage=usage or "",
+                parameters=parameters or "",
+                returns=returns or ""
+            )
+            
+            self.commands.append(cmd)
     
-    # Try exact match first
-    if scpi_string in descriptions:
-        return descriptions[scpi_string]
+    def _extract_doc_field(self, doc_text: str, pattern: str) -> str:
+        """Extract a specific documentation field using regex"""
+        match = re.search(pattern, doc_text, re.DOTALL | re.IGNORECASE)
+        if match:
+            return match.group(1).strip().replace('\n', ' ').replace('*', '').strip()
+        return ""
     
-    # Try pattern matching for commands with variable parts
-    for pattern, desc in descriptions.items():
-        if pattern.replace('#', r'\d+').replace('[?]', r'(\?)?') in scpi_string:
-            return desc
+    def _determine_category_from_scpi(self, scpi_pattern: str) -> str:
+        """Determine category based on SCPI command pattern"""
+        if scpi_pattern.startswith('*'):
+            return "IEEE 488.2 Common Commands"
+        elif scpi_pattern.startswith('STAT'):
+            return "Status Commands"  
+        elif scpi_pattern.startswith('SYST'):
+            return "System Commands"
+        elif scpi_pattern.startswith('DUT'):
+            return "Device Under Test Commands"
+        elif scpi_pattern.startswith('MEAS'):
+            return "Measurement Commands"
+        elif scpi_pattern.startswith('ADC'):
+            return "ADC Commands"
+        elif scpi_pattern.startswith('SWEEP'):
+            return "Sweep Commands"
+        elif scpi_pattern.startswith('HEAT'):
+            return "Heater Commands"
+        elif scpi_pattern.startswith('DAC'):
+            return "DAC Commands"
+        elif scpi_pattern.startswith('MEM'):
+            return "Memory Commands"
+        elif scpi_pattern.startswith('SUNS'):
+            return "Sun Sensor Commands"
+        else:
+            return "Other Commands"
     
-    # Generate generic description based on command structure
-    if scpi_string.endswith('?'):
-        return f"Query {scpi_string[:-1].lower()} value"
-    else:
-        return f"Set {scpi_string.lower()} value"
-
-def determine_group(scpi_string: str) -> str:
-    """Determine the Doxygen group for a command based on its prefix"""
-    if scpi_string.startswith('*'):
-        return "scpi_ieee488_commands"
-    elif scpi_string.startswith('STATus'):
-        return "scpi_status_commands"
-    elif scpi_string.startswith('SYSTem'):
-        return "scpi_system_commands"
-    elif scpi_string.startswith('MEASure'):
-        return "scpi_measurement_commands"
-    elif scpi_string.startswith('DUT'):
-        return "scpi_dut_commands"
-    elif scpi_string.startswith('ADC'):
-        return "scpi_adc_commands"
-    elif scpi_string.startswith('SWEEP'):
-        return "scpi_sweep_commands"
-    elif scpi_string.startswith('DAC'):
-        return "scpi_dac_commands"
-    elif scpi_string.startswith('HEATer'):
-        return "scpi_heater_commands"
-    elif scpi_string.startswith('SUNSensor'):
-        return "scpi_sunsensor_commands"
-    elif scpi_string.startswith('MEMory'):
-        return "scpi_memory_commands"
-    else:
-        return "scpi_commands"
-
-def extract_parameters(scpi_string: str) -> str:
-    """Extract parameter information from SCPI command"""
-    if '[?]' in scpi_string:
-        return "Optional query parameter"
-    elif '?' in scpi_string:
-        return "Query only - no parameters"
-    elif '#' in scpi_string:
-        return "Channel number (0-15)"
-    else:
-        return "Command parameters vary by function"
-
-def determine_return_type(scpi_string: str, handler: str) -> str:
-    """Determine return type based on command characteristics"""
-    if not scpi_string.endswith('?'):
-        return "Command acknowledgment"
-    
-    if 'float' in handler.lower():
-        return "Floating-point value"
-    elif 'uint8' in handler.lower():
-        return "8-bit unsigned integer"
-    elif 'uint16' in handler.lower():
-        return "16-bit unsigned integer"
-    elif 'uint32' in handler.lower():
-        return "32-bit unsigned integer"
-    elif 'str' in handler.lower() or 'query_str' in handler.lower():
-        return "String value"
-    else:
-        return "Numeric value"
-
-def generate_doxygen_comment(cmd: SCPICommand) -> str:
-    """Generate Doxygen comment block for a SCPI command"""
-    comment = f"""/**
- * @brief {cmd.description}
- * @ingroup {cmd.group}
- * 
- * **SCPI Command:** `{cmd.scpi_string}`
- * 
- * **Handler:** {cmd.handler_function}  
- * **Command ID:** {cmd.command_id}
- * 
- * @param {cmd.parameters}
- * @return {cmd.returns}
- * 
- * @par Example:
- * @code
- * // Send command
- * send_scpi_command("{cmd.scpi_string}");
- * @endcode
- */"""
-    return comment
-
-def update_scpi_file_with_docs(scpi_file_path: str, commands: List[SCPICommand]) -> None:
-    """Update the scpi.h file with Doxygen documentation"""
-    with open(scpi_file_path, 'r') as f:
-        content = f.read()
-    
-    # For each command, add documentation before the SCPI_COMMAND line
-    for cmd in commands:
-        pattern = f'SCPI_COMMAND\\(\\s*"{re.escape(cmd.scpi_string)}"\\s*,\\s*{re.escape(cmd.handler_function)}\\s*,\\s*{re.escape(cmd.command_id)}\\s*\\)'
-        
-        # Check if documentation already exists
-        doc_pattern = f'/\\*\\*[^*]*\\*/\\s*SCPI_COMMAND\\(\\s*"{re.escape(cmd.scpi_string)}"'
-        if re.search(doc_pattern, content, re.DOTALL):
-            continue  # Skip if already documented
-        
-        replacement = generate_doxygen_comment(cmd) + '\n        ' + f'SCPI_COMMAND("{cmd.scpi_string}", {cmd.handler_function}, {cmd.command_id})'
-        
-        content = re.sub(pattern, replacement, content)
-    
-    # Write updated content back to file
-    with open(scpi_file_path, 'w') as f:
-        f.write(content)
-
-def main():
-    """Main function to generate SCPI documentation"""
-    script_dir = Path(__file__).parent
-    scpi_file = script_dir.parent / "src" / "amulibc" / "scpi.h"
-    
-    if not scpi_file.exists():
-        print(f"Error: Could not find scpi.h at {scpi_file}")
-        return 1
-    
-    print("Parsing SCPI commands...")
-    commands = parse_scpi_commands(str(scpi_file))
-    print(f"Found {len(commands)} SCPI commands")
-    
-    print("Generating documentation...")
-    update_scpi_file_with_docs(str(scpi_file), commands)
-    
-    print("Generating command summary...")
-    generate_command_summary(commands, script_dir / "scpi_command_summary.md")
-    
-    print("Documentation generation complete!")
-    return 0
-
-def generate_command_summary(commands: List[SCPICommand], output_file: Path) -> None:
-    """Generate a markdown summary of all commands"""
-    with open(output_file, 'w') as f:
-        f.write("# AMU SCPI Command Reference\n\n")
-        f.write("This document provides a complete reference for all SCPI commands supported by the AMU.\n\n")
+    def generate_markdown_documentation(self) -> str:
+        """Generate markdown documentation for all SCPI commands"""
+        doc = []
+        doc.append("# SCPI Command Reference")
+        doc.append("")
+        doc.append("This document provides a comprehensive reference for all SCPI commands supported by the AMU library.")
+        doc.append("Documentation is extracted from the command enum definitions in `amu_commands.h`.")
+        doc.append("")
         
         # Group commands by category
-        groups = {}
-        for cmd in commands:
-            if cmd.group not in groups:
-                groups[cmd.group] = []
-            groups[cmd.group].append(cmd)
+        categories = self._group_commands_by_category()
         
-        for group_name, group_commands in sorted(groups.items()):
-            group_title = group_name.replace('scpi_', '').replace('_', ' ').title()
-            f.write(f"## {group_title}\n\n")
+        for category, cmds in categories.items():
+            doc.append(f"## {category}")
+            doc.append("")
             
-            for cmd in sorted(group_commands, key=lambda x: x.scpi_string):
-                f.write(f"### `{cmd.scpi_string}`\n\n")
-                f.write(f"{cmd.description}\n\n")
-                f.write(f"- **Handler:** {cmd.handler_function}\n")
-                f.write(f"- **Command ID:** {cmd.command_id}\n")
-                f.write(f"- **Parameters:** {cmd.parameters}\n")
-                f.write(f"- **Returns:** {cmd.returns}\n\n")
-                f.write("---\n\n")
+            for cmd in cmds:
+                doc.append(f"### `{cmd.scpi_pattern}`")
+                doc.append("")
+                doc.append(f"**Description:** {cmd.description}")
+                doc.append("")
+                doc.append(f"**Enum:** `{cmd.enum_name}`")
+                doc.append("")
+                doc.append(f"**Type:** {'Query' if cmd.is_query else 'Set/Get'}")
+                doc.append("")
+                
+                if cmd.usage:
+                    doc.append(f"**Usage:** {cmd.usage}")
+                    doc.append("")
+                
+                if cmd.parameters:
+                    doc.append(f"**Parameters:** {cmd.parameters}")
+                    doc.append("")
+                
+                if cmd.returns:
+                    doc.append(f"**Returns:** {cmd.returns}")
+                    doc.append("")
+                
+                doc.append("---")
+                doc.append("")
+        
+        return "\n".join(doc)
+    
+    def _group_commands_by_category(self) -> Dict[str, List[SCPICommand]]:
+        """Group commands by their documented category"""
+        categories = {}
+        
+        for cmd in self.commands:
+            category = cmd.category
+            
+            if category not in categories:
+                categories[category] = []
+            categories[category].append(cmd)
+        
+        # Sort commands within each category
+        for category in categories:
+            categories[category].sort(key=lambda x: x.scpi_pattern)
+        
+        return categories
+    
+    def generate_doxygen_groups(self) -> str:
+        """Generate Doxygen group definitions based on documented categories"""
+        doc = []
+        doc.append("/**")
+        doc.append(" * @file scpi_groups.dox")
+        doc.append(" * @brief SCPI Command Group Definitions")
+        doc.append(" * @details This file defines Doxygen groups for SCPI commands")
+        doc.append(" *          based on documentation in amu_commands.h")
+        doc.append(" */")
+        doc.append("")
+        
+        categories = self._group_commands_by_category()
+        
+        for category, cmds in categories.items():
+            # Create a Doxygen group name
+            group_name = category.lower().replace(" ", "_").replace(".", "").replace("/", "_")
+            
+            doc.append(f"/**")
+            doc.append(f" * @defgroup scpi_{group_name} {category}")
+            doc.append(f" * @brief {category} for AMU Library")
+            doc.append(f" * @{{")
+            doc.append(f" */")
+            doc.append("")
+            
+            for cmd in cmds:
+                doc.append(f"/**")
+                doc.append(f" * @brief {cmd.scpi_pattern}: {cmd.description}")
+                doc.append(f" * @details Enum: {cmd.enum_name}")
+                if cmd.usage:
+                    doc.append(f" * Usage: {cmd.usage}")
+                doc.append(f" */")
+                doc.append("")
+            
+            doc.append(f"/** @}} */")
+            doc.append("")
+        
+        return "\n".join(doc)
+
+def main():
+    """Main entry point"""
+    if len(sys.argv) != 2:
+        print("Usage: python generate_scpi_docs.py <source_directory>")
+        print("Example: python generate_scpi_docs.py /path/to/amulib")
+        sys.exit(1)
+    
+    source_dir = sys.argv[1]
+    
+    if not os.path.exists(source_dir):
+        print(f"Error: Source directory '{source_dir}' does not exist")
+        sys.exit(1)
+    
+    generator = SCPIDocumentationGenerator(source_dir)
+    
+    print("Parsing SCPI commands from amu_commands.h...")
+    generator.parse_scpi_commands()
+    
+    if not generator.commands:
+        print("Warning: No documented SCPI commands found")
+        print("Make sure amu_commands.h contains enum entries with @scpi documentation")
+        return
+    
+    print(f"Found {len(generator.commands)} documented SCPI commands")
+    
+    # Generate markdown documentation
+    print("Generating markdown documentation...")
+    markdown_doc = generator.generate_markdown_documentation()
+    
+    # Write to file
+    output_dir = Path(source_dir) / "docs"
+    output_dir.mkdir(exist_ok=True)
+    
+    markdown_file = output_dir / "scpi_commands.md"
+    markdown_file.write_text(markdown_doc)
+    print(f"Markdown documentation written to: {markdown_file}")
+    
+    # Generate Doxygen groups
+    print("Generating Doxygen groups...")
+    doxygen_groups = generator.generate_doxygen_groups()
+    
+    groups_file = output_dir / "scpi_groups.dox"
+    groups_file.write_text(doxygen_groups)
+    print(f"Doxygen groups written to: {groups_file}")
+    
+    print("Documentation generation complete!")
+    print(f"Categories found: {list(generator._group_commands_by_category().keys())}")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

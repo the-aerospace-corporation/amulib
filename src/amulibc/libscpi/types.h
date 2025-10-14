@@ -42,9 +42,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "config.h"
-#ifdef AMU_XMEGA
-#include <avr/pgmspace.h>
-#endif
+
 
 #if HAVE_STDBOOL
 #include <stdbool.h>

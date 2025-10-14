@@ -17,8 +17,8 @@ var amu__device_8c =
     [ "amu_scan_for_devices", "amu__device_8c.html#ab3e4f8296ad6add065b84f4fe0126778", null ],
     [ "amu_dev_initialized", "amu__device_8c.html#a7fa96302dbe6bbf031fb973acd1fe4b6", null ],
     [ "amu_device", "amu__device_8c.html#a002d666f32256637d0309eefafd5c531", null ],
-    [ "amu_device_addresses", "amu__device_8c.html#a604a53fc4aa00db624e44a7f690cb9fd", null ],
+    [ "amu_device_addresses", "amu__device_8c.html#ab3a908c4dc978674358b7a7d050fce1f", null ],
     [ "amu_num_devices", "amu__device_8c.html#a4c91feb7fefa2f8ed2f4f6846f01aa92", null ],
-    [ "amu_transfer_reg", "amu__device_8c.html#a98c2a3bcc66048661728168b573cc781", null ],
+    [ "amu_transfer_reg", "amu__device_8c.html#aa1bc78e5002778c7090732e3e7e24bfb", null ],
     [ "transfer_reg_data_len", "amu__device_8c.html#afe74e9f3c087abfc7a0a714dfa734ef4", null ]
 ];

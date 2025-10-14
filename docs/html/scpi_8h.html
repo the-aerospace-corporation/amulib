@@ -103,11 +103,8 @@ $(function(){initNavTree('scpi_8h.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:af3c4eaf538691be6d3245ddbcc417e22" id="r_af3c4eaf538691be6d3245ddbcc417e22"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3c4eaf538691be6d3245ddbcc417e22">SCPI_IDN_STRING_LENGTH</a>&#160;&#160;&#160;32</td></tr>
-<tr class="memitem:ae6df5b5ae402b79209b5506903f44fba" id="r_ae6df5b5ae402b79209b5506903f44fba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6df5b5ae402b79209b5506903f44fba">SCPI_IDN_DEVICETYPE_STR</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memitem:a15a7f414f3bc0c0d20f29003e595f014" id="r_a15a7f414f3bc0c0d20f29003e595f014"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15a7f414f3bc0c0d20f29003e595f014">SCPI_IDN_MANUFACTURER_STR</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memitem:a2f11e2128eed6d0ee63e999848640efb" id="r_a2f11e2128eed6d0ee63e999848640efb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f11e2128eed6d0ee63e999848640efb">SCPI_IDN_SERIALNUM_STR</a>&#160;&#160;&#160;2</td></tr>
-<tr class="memitem:a08af25c622e604eaa1d007d70e13e61e" id="r_a08af25c622e604eaa1d007d70e13e61e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08af25c622e604eaa1d007d70e13e61e">SCPI_IDN_FIRMWARE_STR</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:aac35822a8dc957b4707e01894343bec5" id="r_aac35822a8dc957b4707e01894343bec5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac35822a8dc957b4707e01894343bec5">AMULIBC_SCPI_INPUT_BUFFER_LENGTH</a>&#160;&#160;&#160;1024</td></tr>
+<tr class="memitem:ae1f124c897a11bacd810cb664ffcae39" id="r_ae1f124c897a11bacd810cb664ffcae39"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1f124c897a11bacd810cb664ffcae39">AMULIBC_SCPI_ERROR_QUEUE_SIZE</a>&#160;&#160;&#160;16</td></tr>
 <tr class="memitem:a5ad1b5f28c1461d47dbef5ce0a7c9ac7" id="r_a5ad1b5f28c1461d47dbef5ce0a7c9ac7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ad1b5f28c1461d47dbef5ce0a7c9ac7">SCPI_CMD_RW_PROTOTYPE</a>(TYPE)</td></tr>
 <tr class="memitem:ae3a23a1c5ae4d2debdc6afc156dca838" id="r_ae3a23a1c5ae4d2debdc6afc156dca838"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3a23a1c5ae4d2debdc6afc156dca838">SCPI_CMD_EXEC_QRY_PROTOTYPE</a>(TYPE)</td></tr>
 <tr class="memitem:a0b37dd7a2003b3ed1b843aabc334dc31" id="r_a0b37dd7a2003b3ed1b843aabc334dc31"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b37dd7a2003b3ed1b843aabc334dc31">SCPI_COMMAND</a>(P,  C,  T)</td></tr>
@@ -153,7 +150,11 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SCPI library include file. </p>
 <p>TODO.</p>
+<p>SCPI Command Interface for AMU Library.</p>
 <dl class="section date"><dt>Date</dt><dd>Thu Nov 15 10:58:45 UTC 2012</dd></dl>
+<p>This file defines the SCPI (Standard Commands for Programmable Instruments) command interface for the AMU (Aerospace Measurement Unit) library.</p>
+<dl class="section author"><dt>Author</dt><dd>CJM28241 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>5/28/2018 7:13:29 PM</dd></dl>
 <p>TODO: explain what the commands are for</p>
 <dl class="section author"><dt>Author</dt><dd>CJM28241 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>5/28/2018 7:13:29 PM </dd></dl>
@@ -171,9 +172,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"></div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00081">81</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00092">92</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
 
 </div>
 </div>
@@ -188,8 +188,41 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"></div>
-</div><!-- fragment -->
+
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00236">236</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+
+</div>
+</div>
+<a id="ae1f124c897a11bacd810cb664ffcae39" name="ae1f124c897a11bacd810cb664ffcae39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1f124c897a11bacd810cb664ffcae39">&#9670;&#160;</a></span>AMULIBC_SCPI_ERROR_QUEUE_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AMULIBC_SCPI_ERROR_QUEUE_SIZE&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00027">27</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+
+</div>
+</div>
+<a id="aac35822a8dc957b4707e01894343bec5" name="aac35822a8dc957b4707e01894343bec5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac35822a8dc957b4707e01894343bec5">&#9670;&#160;</a></span>AMULIBC_SCPI_INPUT_BUFFER_LENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AMULIBC_SCPI_INPUT_BUFFER_LENGTH&#160;&#160;&#160;1024</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00023">23</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+
 </div>
 </div>
 <a id="ae3a23a1c5ae4d2debdc6afc156dca838" name="ae3a23a1c5ae4d2debdc6afc156dca838"></a>
@@ -207,9 +240,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code hl_typedef" href="types_8h.html#acea77432d14494687d1c06f70f0f096e">scpi_result_t</a> scpi_cmd_exec_qry_##TYPE(scpi_t *context);</div>
-<div class="ttc" id="atypes_8h_html_acea77432d14494687d1c06f70f0f096e"><div class="ttname"><a href="types_8h.html#acea77432d14494687d1c06f70f0f096e">scpi_result_t</a></div><div class="ttdeci">enum _scpi_result_t scpi_result_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00115">types.h:115</a></div></div>
+<div class="ttc" id="atypes_8h_html_acea77432d14494687d1c06f70f0f096e"><div class="ttname"><a href="types_8h.html#acea77432d14494687d1c06f70f0f096e">scpi_result_t</a></div><div class="ttdeci">enum _scpi_result_t scpi_result_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00113">types.h:113</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00052">52</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00063">63</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
 
 </div>
 </div>
@@ -229,7 +262,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code hl_typedef" href="types_8h.html#acea77432d14494687d1c06f70f0f096e">scpi_result_t</a> scpi_cmd_rw_##TYPE(scpi_t *context);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00038">38</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00049">49</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
 
 </div>
 </div>
@@ -258,87 +291,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> C ## _ ## T ## _pattern[] = P;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00078">78</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
-
-</div>
-</div>
-<a id="ae6df5b5ae402b79209b5506903f44fba" name="ae6df5b5ae402b79209b5506903f44fba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6df5b5ae402b79209b5506903f44fba">&#9670;&#160;</a></span>SCPI_IDN_DEVICETYPE_STR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_IDN_DEVICETYPE_STR&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00021">21</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
-
-</div>
-</div>
-<a id="a08af25c622e604eaa1d007d70e13e61e" name="a08af25c622e604eaa1d007d70e13e61e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08af25c622e604eaa1d007d70e13e61e">&#9670;&#160;</a></span>SCPI_IDN_FIRMWARE_STR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_IDN_FIRMWARE_STR&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00024">24</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
-
-</div>
-</div>
-<a id="a15a7f414f3bc0c0d20f29003e595f014" name="a15a7f414f3bc0c0d20f29003e595f014"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15a7f414f3bc0c0d20f29003e595f014">&#9670;&#160;</a></span>SCPI_IDN_MANUFACTURER_STR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_IDN_MANUFACTURER_STR&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00022">22</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
-
-</div>
-</div>
-<a id="a2f11e2128eed6d0ee63e999848640efb" name="a2f11e2128eed6d0ee63e999848640efb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f11e2128eed6d0ee63e999848640efb">&#9670;&#160;</a></span>SCPI_IDN_SERIALNUM_STR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_IDN_SERIALNUM_STR&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00023">23</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
-
-</div>
-</div>
-<a id="af3c4eaf538691be6d3245ddbcc417e22" name="af3c4eaf538691be6d3245ddbcc417e22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3c4eaf538691be6d3245ddbcc417e22">&#9670;&#160;</a></span>SCPI_IDN_STRING_LENGTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_IDN_STRING_LENGTH&#160;&#160;&#160;32</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00019">19</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8h_source.html#l00089">89</a> of file <a class="el" href="scpi_8h_source.html">scpi.h</a>.</p>
 
 </div>
 </div>
@@ -358,7 +311,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00284">284</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00270">270</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -377,7 +330,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00336">336</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00322">322</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -397,7 +350,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00297">297</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00283">283</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -416,7 +369,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00362">362</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00348">348</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -437,7 +390,7 @@ Functions</h2></td></tr>
 <p>&lt; Root command for I2C/USB commands</p>
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00376">376</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00362">362</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -456,7 +409,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00430">430</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00416">416</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -475,7 +428,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00635">635</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00651">651</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -494,7 +447,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00180">180</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00166">166</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -513,7 +466,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00245">245</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00231">231</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -532,7 +485,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00270">270</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00256">256</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -551,7 +504,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00229">229</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00215">215</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -569,8 +522,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00578">578</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -608,8 +559,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00546">546</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
-
 </div>
 </div>
 <a id="adcdf8e16839498bbe7fc9131248a0d15" name="adcdf8e16839498bbe7fc9131248a0d15"></a>
@@ -627,8 +576,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00582">582</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
-
 </div>
 </div>
 <a id="a56cb8aa24e479f4c9130f820a563d191" name="a56cb8aa24e479f4c9130f820a563d191"></a>
@@ -645,8 +592,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00570">570</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -669,8 +614,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00574">574</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
-
 </div>
 </div>
 <a id="aa813edecdd9452f66b6b7075f58cf4dd" name="aa813edecdd9452f66b6b7075f58cf4dd"></a>
@@ -689,7 +632,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00159">159</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00145">145</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -709,7 +652,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00157">157</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00143">143</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -729,7 +672,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00158">158</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00144">144</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -749,7 +692,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00156">156</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00142">142</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -768,7 +711,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00163">163</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00149">149</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -788,7 +731,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00115">115</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00101">101</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -808,7 +751,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00119">119</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00105">105</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -828,7 +771,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00120">120</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00106">106</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -848,7 +791,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00116">116</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00102">102</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -868,7 +811,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00114">114</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00100">100</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -888,7 +831,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00113">113</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00099">99</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -908,7 +851,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00112">112</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00098">98</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -928,7 +871,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00118">118</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00104">104</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -948,7 +891,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00117">117</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00103">103</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -968,7 +911,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00110">110</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00096">96</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -988,7 +931,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00111">111</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00097">97</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +951,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; Root command for I2C/USB commands</p>
 
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00109">109</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00095">95</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
 
 </div>
 </div>

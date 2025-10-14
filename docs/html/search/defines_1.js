@@ -34,5 +34,8 @@ var searchData=
   ['amu_5ftwi_5fallcall_5faddress_31',['AMU_TWI_ALLCALL_ADDRESS',['../amu__device_8h.html#af106400734c1a5361f0bba7b53d38eb8',1,'amu_device.h']]],
   ['amu_5ftwi_5fdefault_5faddress_32',['AMU_TWI_DEFAULT_ADDRESS',['../amu__device_8h.html#a324d45d2b9976aba89bd207ba54ee7e0',1,'amu_device.h']]],
   ['amu_5ftwi_5ftransfer_5fread_33',['AMU_TWI_TRANSFER_READ',['../amu__device_8h.html#a999fccfe17004368d778c5ae1173c91c',1,'amu_device.h']]],
-  ['amu_5ftwi_5ftransfer_5fwrite_34',['AMU_TWI_TRANSFER_WRITE',['../amu__device_8h.html#ac0a33f2fd583eb41e4f7a50dcf6d021a',1,'amu_device.h']]]
+  ['amu_5ftwi_5ftransfer_5fwrite_34',['AMU_TWI_TRANSFER_WRITE',['../amu__device_8h.html#ac0a33f2fd583eb41e4f7a50dcf6d021a',1,'amu_device.h']]],
+  ['amulibc_5fconfig_5fmessage_35',['AMULIBC_CONFIG_MESSAGE',['../amu__config__internal_8h.html#a3c7b1674eebeeb4aad1ea6628b8771f7',1,'amu_config_internal.h']]],
+  ['amulibc_5fscpi_5ferror_5fqueue_5fsize_36',['AMULIBC_SCPI_ERROR_QUEUE_SIZE',['../scpi_8h.html#ae1f124c897a11bacd810cb664ffcae39',1,'AMULIBC_SCPI_ERROR_QUEUE_SIZE:&#160;scpi.h'],['../scpi__corrupted__backup_8h.html#ae1f124c897a11bacd810cb664ffcae39',1,'AMULIBC_SCPI_ERROR_QUEUE_SIZE:&#160;scpi_corrupted_backup.h']]],
+  ['amulibc_5fscpi_5finput_5fbuffer_5flength_37',['AMULIBC_SCPI_INPUT_BUFFER_LENGTH',['../scpi_8h.html#aac35822a8dc957b4707e01894343bec5',1,'AMULIBC_SCPI_INPUT_BUFFER_LENGTH:&#160;scpi.h'],['../scpi__corrupted__backup_8h.html#aac35822a8dc957b4707e01894343bec5',1,'AMULIBC_SCPI_INPUT_BUFFER_LENGTH:&#160;scpi_corrupted_backup.h']]]
 ];

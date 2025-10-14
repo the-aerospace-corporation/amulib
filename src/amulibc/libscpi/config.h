@@ -42,7 +42,6 @@ extern "C" {
 #endif
 
 #include "cc.h"
-#include "../amu_config_internal.h"
 
 #define		SCPI_MAX_CMD_PATTERN_SIZE		32
 

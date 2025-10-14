@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: SCPI Memory Commands</title>
+<title>AMU Library: Memory Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,13 +90,34 @@ $(function(){initNavTree('group__scpi__memory__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">SCPI Memory Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">Memory Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>EEPROM and memory management commands.  
+<p>SYSTem:BOOTloader: Enters bootloader mode for firmware updates (USB only)  
 </p>
-<p>EEPROM and memory management commands. </p>
+<p>SYSTem:BOOTloader: Enters bootloader mode for firmware updates (USB only) </p>
+<p>EEPROM and memory management commands.</p>
+<p>Enum: CMD_USB_SYSTEM_ENTER_BOOTLOADER</p>
+<p>SYSTem:CONFig:CURRent:GAIN[?]: Sets or queries current measurement amplifier gain (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_CONFIG_CURR_GAIN</p>
+<p>SYSTem:CONFig:CURRent:Rsense[?]: Sets or queries current sense resistor value in ohms (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_CONFIG_CURR_RSENSE</p>
+<p>SYSTem:CONFig:SAVE: Saves current system configuration to EEPROM (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_CONFIG_SAVE</p>
+<p>SYSTem:CONFig:VOLTage:R1[?]: Sets or queries voltage divider R1 resistor value in ohms (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_CONFIG_VOLT_R1</p>
+<p>SYSTem:CONFig:VOLTage:R2[?]: Sets or queries voltage divider R2 resistor value in ohms (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_CONFIG_VOLT_R2</p>
+<p>SYSTem:DEBug#?: Sets or queries debug values for development (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_DEBUG</p>
+<p>SYSTem:SCPI:LIST?: Returns list of all supported SCPI commands (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_LIST_SCPI_COMMANDS</p>
+<p>SYSTem:TWI:MODE[?]: Sets or queries I2C operating mode (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_TWI_MODE</p>
+<p>SYSTem:TWI:SCAN?: Scans I2C bus and returns list of device addresses (USB only)</p>
+<p>Enum: CMD_USB_SYSTEM_TWI_SCAN</p>
+<p>Memory Commands for AMU Library</p>
 <p>These commands manage non-volatile memory:</p><ul>
 <li>EEPROM erase operations</li>
 <li>Calibration data storage</li>

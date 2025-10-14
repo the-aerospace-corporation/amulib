@@ -263,10 +263,6 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
     if (context == NULL) {
         return FALSE;
     }
-    // Debug: Log when SCPI_Parse is called
-    char buffer[128];
-    snprintf(buffer, sizeof(buffer), "SCPI_Parse called with data='%.*s' len=%d\n", len, data, len);
-    writeData(context, buffer, strlen(buffer));
 
     state = &context->parser_state;
     context->output_count = 0;

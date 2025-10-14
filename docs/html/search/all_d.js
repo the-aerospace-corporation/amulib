@@ -25,7 +25,7 @@ var searchData=
   ['mem_3awrite_3asweep_22',['MEM:WRITe:SWEep',['../group__scpi__memory__commands.html#autotoc_md114',1,'']]],
   ['member_5fsize_23',['MEMBER_SIZE',['../amu__regs_8c.html#a4411361b7b39fe77832ce053152480e7',1,'amu_regs.c']]],
   ['memory_20allocation_24',['Memory Allocation',['../group__scpi__memory__commands.html#autotoc_md106',1,'']]],
-  ['memory_20commands_25',['Memory Commands',['../group__i2c__memory__commands.html',1,'I2C Memory Commands'],['../group__scpi__memory__commands.html',1,'SCPI Memory Commands']]],
+  ['memory_20commands_25',['Memory Commands',['../group__i2c__memory__commands.html',1,'I2C Memory Commands'],['../group__scpi__memory__commands.html',1,'Memory Commands']]],
   ['memory_20commands_20reference_26',['SCPI Memory Commands Reference',['../group__scpi__memory__commands.html',1,'']]],
   ['memory_20status_27',['Memory Status',['../group__scpi__memory__commands.html#autotoc_md121',1,'']]],
   ['message_5ftermination_5ft_28',['message_termination_t',['../types_8h.html#a6e5cbd1f9d825a270c0e01cd660e0fad',1,'types.h']]],

@@ -36,6 +36,8 @@
 #ifndef __SCPI_CC_H_
 #define __SCPI_CC_H_
 
+#include "../amu_config_internal.h"
+
 #ifdef	__cplusplus
 extern "C" {
 #endif

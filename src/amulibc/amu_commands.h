@@ -103,7 +103,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `*TST?`
 	 */
-	CMD_SYSTEM_NO_CMD =						0x00,
+	CMD_SYSTEM_NO_CMD =						CMD_SYSTEM_OFFSET + 0x00,
 	
 	/** @brief Performs complete software reset
 	 *  @details Performs a complete software reset of the device, restoring all settings 
@@ -113,7 +113,7 @@ typedef enum {
 	 *  @warning All user configuration will be lost
 	 *  @note Device will disconnect briefly during reset process
 	 */
-	CMD_SYSTEM_RESET =						0x01,
+	CMD_SYSTEM_RESET =						CMD_SYSTEM_OFFSET + 0x01,
 	
 	/** @brief Returns microcontroller fuse configuration
 	 *  @details Returns the microcontroller fuse configuration as a 32-bit hexadecimal value.
@@ -123,7 +123,7 @@ typedef enum {
 	 *  `SYSTem:XMEGA:FUSES?`
 	 *  @note Read-only command for diagnostic purposes
 	 */
-	CMD_SYSTEM_XMEGA_FUSES =				0x02,
+	CMD_SYSTEM_XMEGA_FUSES =				CMD_SYSTEM_OFFSET + 0x02,
 	
 	/** @brief Sets or queries I2C slave address
 	 *  @details Sets or queries the device I2C slave address for TWI communication.
@@ -134,7 +134,7 @@ typedef enum {
 	 *  `SYSTem:TWI:ADDress[?]`
 	 *  @warning Address 0x00-0x07 and 0x78-0x7F are reserved and will be rejected
 	 */
-	CMD_SYSTEM_TWI_ADDRESS =				0x03,
+	CMD_SYSTEM_TWI_ADDRESS =				CMD_SYSTEM_OFFSET + 0x03,
 	
 	/** @brief Scans I2C bus for devices
 	 *  @details Performs an I2C bus scan and returns the number of responding devices.
@@ -144,7 +144,7 @@ typedef enum {
 	 *  `SYSTem:TWI:NUMdevices?`
 	 *  @note Scan may take up to 2 seconds to complete
 	 */
-	CMD_SYSTEM_TWI_NUM_DEVICES =			0x04,
+	CMD_SYSTEM_TWI_NUM_DEVICES =			CMD_SYSTEM_OFFSET + 0x04,
 	
 	/** @brief Returns I2C interface status
 	 *  @details Returns comprehensive I2C interface status including error conditions,
@@ -154,7 +154,7 @@ typedef enum {
 	 *  `SYSTem:TWI:STATus?`
 	 *  @note Status bits are cleared after reading
 	 */
-	CMD_SYSTEM_TWI_STATUS =					0x05,
+	CMD_SYSTEM_TWI_STATUS =					CMD_SYSTEM_OFFSET + 0x05,
 	
 	/** @brief Returns firmware version string
 	 *  @details Returns the current firmware version string in semantic versioning format.
@@ -164,7 +164,7 @@ typedef enum {
 	 *  `SYSTem:FIRMware?`
 	 *  @note Maximum string length: 16 characters
 	 */
-	CMD_SYSTEM_FIRMWARE =					0x06,
+	CMD_SYSTEM_FIRMWARE =					CMD_SYSTEM_OFFSET + 0x06,
 	
 	/** @brief Returns unique device serial number
 	 *  @details Returns the factory-programmed unique serial number for device identification
@@ -174,7 +174,7 @@ typedef enum {
 	 *  `SYSTem:SERial?`
 	 *  @note Serial numbers are globally unique across all devices
 	 */
-	CMD_SYSTEM_SERIAL_NUM =					0x07,
+	CMD_SYSTEM_SERIAL_NUM =					CMD_SYSTEM_OFFSET + 0x07,
 	
 	/** @brief Internal MCU temperature sensor
 	 *  @details Reads the built-in microcontroller temperature sensor for thermal monitoring.
@@ -186,7 +186,7 @@ typedef enum {
 	 *  @note Sensor is factory calibrated at 25°C
 	 *  @warning High temperatures may indicate thermal stress
 	 */
-	CMD_SYSTEM_TEMPERATURE =				0x08,
+	CMD_SYSTEM_TEMPERATURE =				CMD_SYSTEM_OFFSET + 0x08,
 	
 	/** @brief Sets or queries system timestamp
 	 *  @details Sets or queries the system timestamp representing seconds since device boot.
@@ -197,7 +197,7 @@ typedef enum {
 	 *  `SYSTem:TIMEstamp[?]`
 	 *  @note Timestamp is reset to 0 on power cycle or reset
 	 */
-	CMD_SYSTEM_TIME =						0x09,
+	CMD_SYSTEM_TIME =						CMD_SYSTEM_OFFSET + 0x09,
 	
 	/** @brief Sets or queries UTC timestamp
 	 *  @details Sets or queries absolute UTC timestamp in Unix epoch format (seconds since Jan 1, 1970).
@@ -208,7 +208,7 @@ typedef enum {
 	 *  `SYSTem:TIMEstamp:UTC[?]`
 	 *  @note Time is not maintained across power cycles without external RTC
 	 */
-	CMD_SYSTEM_UTC_TIME =					0x0A,
+	CMD_SYSTEM_UTC_TIME =					CMD_SYSTEM_OFFSET + 0x0A,
 	
 	/** @brief Sets or queries status LED color
 	 *  @details Sets or queries the status LED RGB color values for visual feedback.
@@ -221,7 +221,7 @@ typedef enum {
 	 *  `SYSTem:LED:COLOR[?]`
 	 *  @note LED brightness is automatically adjusted for optimal visibility
 	 */
-	CMD_SYSTEM_LED_COLOR =					0x0B,
+	CMD_SYSTEM_LED_COLOR =					CMD_SYSTEM_OFFSET + 0x0B,
 	
 	/** @brief Returns microcontroller signature bytes
 	 *  @details Returns the microcontroller's unique signature bytes for device identification
@@ -231,7 +231,7 @@ typedef enum {
 	 *  `SYSTem:XMEGA:SIGnature?`
 	 *  @note Signature is factory-programmed and cannot be modified
 	 */
-	CMD_SYSTEM_XMEGA_USER_SIGNATURES =		0x0C,
+	CMD_SYSTEM_XMEGA_USER_SIGNATURES =		CMD_SYSTEM_OFFSET + 0x0C,
 	
 	/** @brief Enters low-power sleep mode
 	 *  @details Puts the device into low-power sleep mode to conserve energy.
@@ -241,7 +241,7 @@ typedef enum {
 	 *  @note Current measurements will be suspended during sleep
 	 *  @warning USB communication may be interrupted briefly
 	 */
-	CMD_SYSTEM_SLEEP =						0x0F,
+	CMD_SYSTEM_SLEEP =						CMD_SYSTEM_OFFSET + 0x0F,
 } CMD_SYSTEM_t;
 #undef CMD_SYSTEM_OFFSET
 
@@ -262,7 +262,7 @@ typedef enum {
 	 *  `DUT:JUNCtion[?]`
 	 *  @note Junction type affects measurement range and calibration coefficients
 	 */
-	CMD_DUT_JUNCTION =						0x20,
+	CMD_DUT_JUNCTION =						CMD_DUT_OFFSET + 0x00,
 	
 	/** @brief Sets or queries DUT coverglass type
 	 *  @details Sets or queries the DUT coverglass type for optical correction factors.
@@ -273,7 +273,7 @@ typedef enum {
 	 *  `DUT:COVERglass[?]`
 	 *  @note Affects optical calibration and measurement corrections
 	 */
-	CMD_DUT_COVERGLASS =					0x21,
+	CMD_DUT_COVERGLASS =					CMD_DUT_OFFSET + 0x01,
 	
 	/** @brief Sets or queries DUT interconnect type
 	 *  @details Sets or queries the DUT interconnect type for resistance compensation.
@@ -284,14 +284,14 @@ typedef enum {
 	 *  `DUT:INTERconnect[?]`
 	 *  @note Affects series resistance compensation in measurements
 	 */
-	CMD_DUT_INTERCONNECT =					0x22,
+	CMD_DUT_INTERCONNECT =					CMD_DUT_OFFSET + 0x02,
 	
 	/** @brief Reserved for future expansion
 	 *  @details Reserved command ID for future DUT configuration features.
 	 *           Currently not implemented - will return error if accessed.
 	 *  @warning Do not use - reserved for future firmware versions
 	 */
-	CMD_DUT_RESERVED =						0x23,
+	CMD_DUT_RESERVED =						CMD_DUT_OFFSET + 0x03,
 	
 	/** @brief Sets or queries DUT manufacturer name
 	 *  @details Sets or queries the DUT manufacturer name string for documentation
@@ -302,7 +302,7 @@ typedef enum {
 	 *  `DUT:MANufacturer[?]`
 	 *  @note Used in automated test report generation
 	 */
-	CMD_DUT_MANUFACTURER =					0x24,
+	CMD_DUT_MANUFACTURER =					CMD_DUT_OFFSET + 0x04,
 	
 	/** @brief Sets or queries DUT model/part number
 	 *  @details Sets or queries the DUT model/part number string for device identification.
@@ -313,7 +313,7 @@ typedef enum {
 	 *  `DUT:MODel[?]`
 	 *  @note Essential for test data traceability and analysis
 	 */
-	CMD_DUT_MODEL =							0x25,
+	CMD_DUT_MODEL =							CMD_DUT_OFFSET + 0x05,
 	
 	/** @brief Sets or queries DUT semiconductor technology
 	 *  @details Sets or queries the DUT semiconductor technology description for
@@ -324,7 +324,7 @@ typedef enum {
 	 *  `DUT:TECHnology[?]`
 	 *  @note Affects default measurement parameters and analysis algorithms
 	 */
-	CMD_DUT_TECHNOLOGY =					0x26,
+	CMD_DUT_TECHNOLOGY =					CMD_DUT_OFFSET + 0x06,
 	
 	/** @brief Sets or queries DUT serial number
 	 *  @details Sets or queries the DUT serial number for individual device tracking
@@ -335,7 +335,7 @@ typedef enum {
 	 *  `DUT:SERialnumber[?]`
 	 *  @note Critical for individual device performance tracking
 	 */
-	CMD_DUT_SERIAL_NUMBER =					0x27,
+	CMD_DUT_SERIAL_NUMBER =					CMD_DUT_OFFSET + 0x07,
 	
 	/** @brief Sets or queries DUT radiation energy exposure
 	 *  @details Sets or queries the total radiation energy exposure accumulated by the DUT.
@@ -346,7 +346,7 @@ typedef enum {
 	 *  `DUT:ENERGY[?]`
 	 *  @note Essential for radiation effects analysis and modeling
 	 */
-	CMD_DUT_ENERGY =						0x28,
+	CMD_DUT_ENERGY =						CMD_DUT_OFFSET + 0x08,
 	
 	/** @brief Sets or queries DUT ionizing radiation dose
 	 *  @details Sets or queries the total ionizing radiation dose accumulated by the DUT.
@@ -357,7 +357,7 @@ typedef enum {
 	 *  `DUT:DOSE[?]`
 	 *  @note Used for TID degradation analysis and lifetime predictions
 	 */
-	CMD_DUT_DOSE =							0x29,
+	CMD_DUT_DOSE =							CMD_DUT_OFFSET + 0x09,
 	
 	/** @brief Sets or queries DUT documentation notes
 	 *  @details Sets or queries free-form text notes about the DUT for documentation
@@ -368,7 +368,7 @@ typedef enum {
 	 *  `DUT:NOTEs[?]`
 	 *  @note Supports basic markdown formatting for rich documentation
 	 */
-	CMD_DUT_NOTES =							0x2B,
+	CMD_DUT_NOTES =							CMD_DUT_OFFSET + 0x0B,
 	
 	/** @brief Sets or queries DUT temperature sensor type
 	 *  @details Sets or queries the type of temperature sensor attached to the DUT
@@ -379,7 +379,7 @@ typedef enum {
 	 *  `DUT:TSENSor:TYPE[?]`
 	 *  @note Sensor type determines calibration coefficients and measurement range
 	 */
-	CMD_DUT_TSENSOR_TYPE =					0x2D,
+	CMD_DUT_TSENSOR_TYPE =					CMD_DUT_OFFSET + 0x0D,
 	
 	/** @brief Sets or queries number of DUT temperature sensors
 	 *  @details Sets or queries the number of temperature sensors connected to the DUT
@@ -390,7 +390,7 @@ typedef enum {
 	 *  `DUT:TSENSor:NUMber[?]`
 	 *  @note Maximum 4 sensors supported per DUT
 	 */
-	CMD_DUT_TSENSOR_NUMBER =				0x2E,
+	CMD_DUT_TSENSOR_NUMBER =				CMD_DUT_OFFSET + 0x0E,
 	
 	/** @brief Sets or queries temperature sensor calibration coefficients
 	 *  @details Sets or queries the temperature sensor calibration polynomial coefficients
@@ -401,7 +401,7 @@ typedef enum {
 	 *  `DUT:TSENSor:FIT[?]`
 	 *  @note Coefficients must be determined through calibration procedure
 	 */
-	CMD_DUT_TSENSOR_FIT =					0x2F,
+	CMD_DUT_TSENSOR_FIT =					CMD_DUT_OFFSET + 0x0F,
 } CMD_DUT_t;
 #undef CMD_DUT_OFFSET
 
@@ -419,7 +419,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:ACTive[:RAW]?`
 	 */
-	CMD_EXEC_MEAS_ACTIVE_CHANNELS =			0x30,
+	CMD_EXEC_MEAS_ACTIVE_CHANNELS =			CMD_EXEC_OFFSET + 0x00,
 	
 	/** @brief Measures specified ADC channel
 	 *  @details Returns measurement from specified ADC channel (0-15)
@@ -428,7 +428,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:CH#[:RAW]?`
 	 */
-	CMD_EXEC_MEAS_CHANNEL =					0x31,
+	CMD_EXEC_MEAS_CHANNEL =					CMD_EXEC_OFFSET + 0x01,
 	
 	/** @brief Measures all configured temperature sensors
 	 *  @details Returns temperature measurements from all configured sensors
@@ -436,7 +436,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TSENSORS[:RAW]?`
 	 */
-	CMD_EXEC_MEAS_TSENSORS =				0x32,
+	CMD_EXEC_MEAS_TSENSORS =				CMD_EXEC_OFFSET + 0x02,
 	
 	/** @brief Measures internal supply voltages
 	 *  @details Returns internal supply voltage measurements (AVDD, IOVDD, etc.)
@@ -444,7 +444,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:INTERNALvoltages?`
 	 */
-	CMD_EXEC_MEAS_INTERNAL_VOLTAGES =		0x33,
+	CMD_EXEC_MEAS_INTERNAL_VOLTAGES =		CMD_EXEC_OFFSET + 0x03,
 	
 	/** @brief Calculates sun sensor angles
 	 *  @details Returns calculated sun sensor yaw and pitch angles
@@ -452,7 +452,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:SUNSensor?`
 	 */
-	CMD_EXEC_MEAS_SUN_SENSOR =				0x34,
+	CMD_EXEC_MEAS_SUN_SENSOR =				CMD_EXEC_OFFSET + 0x04,
 	
 	/** @brief Measures pressure sensor
 	 *  @details Returns pressure sensor measurement data
@@ -460,7 +460,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:PRESSure?`
 	 */
-	CMD_EXEC_MEAS_PRESSURE_SENSOR =			0x35,
+	CMD_EXEC_MEAS_PRESSURE_SENSOR =			CMD_EXEC_OFFSET + 0x05,
 	
 	/** @brief Initiates ADC calibration procedure
 	 *  @details Initiates ADC calibration procedure and returns calibration value
@@ -468,21 +468,21 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CALibrate[?]`
 	 */
-	CMD_EXEC_ADC_CAL =						0x37,
+	CMD_EXEC_ADC_CAL =						CMD_EXEC_OFFSET + 0x07,
 	
 	/** @brief Calibrates all internal ADC references
 	 *  @details Performs calibration on all internal ADC reference channels
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CALibrate:ALL:INTernal`
 	 */
-	CMD_EXEC_ADC_CAL_ALL_INTERNAL =			0x38,
+	CMD_EXEC_ADC_CAL_ALL_INTERNAL =			CMD_EXEC_OFFSET + 0x08,
 	
 	/** @brief Saves internal ADC calibration data
 	 *  @details Saves all internal ADC calibration data to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `ADC:SAVE:ALL:INTernal`
 	 */
-	CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL =	0x39,
+	CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL =	CMD_EXEC_OFFSET + 0x09,
 	
 	/** @brief Initiates DAC calibration procedure
 	 *  @details Initiates DAC calibration procedure and returns calibration value
@@ -490,42 +490,42 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:CALibrate[?]`
 	 */
-	CMD_EXEC_DAC_CAL =						0x3A,
+	CMD_EXEC_DAC_CAL =						CMD_EXEC_OFFSET + 0x0A,
 	
 	/** @brief Saves DAC calibration data
 	 *  @details Saves DAC calibration data to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `DAC:CALibrate:SAVe`
 	 */
-	CMD_EXEC_DAC_CAL_SAVE =					0x3B,
+	CMD_EXEC_DAC_CAL_SAVE =					CMD_EXEC_OFFSET + 0x0B,
 	
 	/** @brief Calibrates temperature sensor at 25°C
 	 *  @details Performs temperature sensor calibration at 25°C reference
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CALibrate:TSENSor`
 	 */
-	CMD_EXEC_TSENSOR_CAL_25C =				0x3C,
+	CMD_EXEC_TSENSOR_CAL_25C =				CMD_EXEC_OFFSET + 0x0C,
 	
 	/** @brief Saves temperature sensor calibration coefficients
 	 *  @details Saves temperature sensor calibration coefficients to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `DUT:TSENSor:FIT:SAVE`
 	 */
-	CMD_EXEC_TSENSOR_COEFF_SAVE =			0x3D,
+	CMD_EXEC_TSENSOR_COEFF_SAVE =			CMD_EXEC_OFFSET + 0x0D,
 	
 	/** @brief Saves sun sensor calibration coefficients
 	 *  @details Saves sun sensor calibration coefficients to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:FIT:SAVE`
 	 */
-	CMD_EXEC_SUNSENSOR_COEFF_SAVE =			0x3E,
+	CMD_EXEC_SUNSENSOR_COEFF_SAVE =			CMD_EXEC_OFFSET + 0x0E,
 	
 	/** @brief Saves heater PID controller parameters
 	 *  @details Saves heater PID controller parameters to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `HEATer:PID:SAVE`
 	 */
-	CMD_EXEC_HEATER_PID_SAVE  =				0x3F,
+	CMD_EXEC_HEATER_PID_SAVE  =				CMD_EXEC_OFFSET + 0x0F,
 } CMD_EXEC_t;
 #undef CMD_EXEC_OFFSET
 
@@ -542,21 +542,21 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:DISable`
 	 */
-	CMD_SWEEP_DISABLE =						0x40,
+	CMD_SWEEP_DISABLE =						CMD_SWEEP_OFFSET + 0x00,
 	
 	/** @brief Enables sweep functionality
 	 *  @details Enables sweep functionality for I-V measurements
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:ENAble`
 	 */
-	CMD_SWEEP_ENABLE =						0x41,
+	CMD_SWEEP_ENABLE =						CMD_SWEEP_OFFSET + 0x01,
 	
 	/** @brief Initiates complete I-V sweep measurement
 	 *  @details Initiates a complete I-V sweep measurement
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:TRIGger`
 	 */
-	CMD_SWEEP_TRIG_SWEEP =					0x42,
+	CMD_SWEEP_TRIG_SWEEP =					CMD_SWEEP_OFFSET + 0x02,
 	
 	/** @brief Measures short-circuit current
 	 *  @details Measures and returns short-circuit current value
@@ -564,7 +564,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:TRIGger:ISC?`
 	 */
-	CMD_SWEEP_TRIG_ISC =					0x43,
+	CMD_SWEEP_TRIG_ISC =					CMD_SWEEP_OFFSET + 0x03,
 	
 	/** @brief Measures open-circuit voltage
 	 *  @details Measures and returns open-circuit voltage value
@@ -572,21 +572,21 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:TRIGger:VOC?`
 	 */
-	CMD_SWEEP_TRIG_VOC =					0x44,
+	CMD_SWEEP_TRIG_VOC =					CMD_SWEEP_OFFSET + 0x04,
 	
 	/** @brief Saves sweep configuration
 	 *  @details Saves current sweep configuration to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:CONFig:SAVe`
 	 */
-	CMD_SWEEP_CONFIG_SAVE =					0x45,
+	CMD_SWEEP_CONFIG_SAVE =					CMD_SWEEP_OFFSET + 0x05,
 	
 	/** @brief Saves sweep data to EEPROM
 	 *  @details Saves sweep measurement data to EEPROM
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:EEPROM:SAVE`
 	 */
-	CMD_SWEEP_IV_SAVE_TO_EEPROM =			0x46,
+	CMD_SWEEP_IV_SAVE_TO_EEPROM =			CMD_SWEEP_OFFSET + 0x06,
 	
 	/** @brief Loads sweep data from EEPROM
 	 *  @details Loads previously saved sweep data from EEPROM
@@ -594,35 +594,35 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:EEPROM:LOAD`
 	 */
-	CMD_SWEEP_IV_LOAD_FROM_EEPROM =			0x47,
+	CMD_SWEEP_IV_LOAD_FROM_EEPROM =			CMD_SWEEP_OFFSET + 0x07,
 	
 	/** @brief Encrypts sweep data using AES
 	 *  @details Encrypts sweep data using AES encryption
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:AES:ENCode`
 	 */
-	CMD_SWEEP_AES_ENCODE =					0x48,
+	CMD_SWEEP_AES_ENCODE =					CMD_SWEEP_OFFSET + 0x08,
 	
 	/** @brief Decrypts AES-encrypted sweep data
 	 *  @details Decrypts AES-encrypted sweep data
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:AES:DECode`
 	 */
-	CMD_SWEEP_AES_DECODE =					0x49,
+	CMD_SWEEP_AES_DECODE =					CMD_SWEEP_OFFSET + 0x09,
 	
 	/** @brief Saves single voltage/current data point
 	 *  @details Saves a single voltage/current data point
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:DATApoint:SAVE`
 	 */
-	CMD_SWEEP_DATAPOINT_SAVE =				0x4A,
+	CMD_SWEEP_DATAPOINT_SAVE =				CMD_SWEEP_OFFSET + 0x0A,
 	
 	/** @brief Initializes sweep trigger system
 	 *  @details Initializes the sweep trigger system
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:TRIGger:INITialize`
 	 */
-	CMD_SWEEP_TRIG_INIT =					0x4B,
+	CMD_SWEEP_TRIG_INIT =					CMD_SWEEP_OFFSET + 0x0B,
 	
 	/** @brief Loads single voltage/current data point
 	 *  @details Loads a single voltage/current data point
@@ -630,7 +630,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SWEEP:DATApoint:LOAD`
 	 */
-	CMD_SWEEP_DATAPOINT_LOAD =				0x4C,
+	CMD_SWEEP_DATAPOINT_LOAD =				CMD_SWEEP_OFFSET + 0x0C,
 } CMD_SWEEP_t;
 #undef CMD_SWEEP_OFFSET
 
@@ -649,7 +649,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:STATE[?]`
 	 */
-	CMD_AUX_DAC_STATE =						0x50,
+	CMD_AUX_DAC_STATE =						CMD_AUX_OFFSET + 0x00,
 	
 	/** @brief Sets or queries DAC current output
 	 *  @details Sets or queries DAC current output in amperes
@@ -658,7 +658,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:CURRent[?]`
 	 */
-	CMD_AUX_DAC_CURRENT =					0x51,
+	CMD_AUX_DAC_CURRENT =					CMD_AUX_OFFSET + 0x01,
 	
 	/** @brief Sets or queries DAC current output (raw)
 	 *  @details Sets or queries DAC current output as raw 16-bit value
@@ -667,7 +667,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:CURRent:RAW[?]`
 	 */
-	CMD_AUX_DAC_CURRENT_RAW =				0x52,
+	CMD_AUX_DAC_CURRENT_RAW =				CMD_AUX_OFFSET + 0x02,
 	
 	/** @brief Sets or queries DAC voltage output
 	 *  @details Sets or queries DAC voltage output in volts
@@ -676,7 +676,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:VOLTage[?]`
 	 */
-	CMD_AUX_DAC_VOLTAGE =					0x53,
+	CMD_AUX_DAC_VOLTAGE =					CMD_AUX_OFFSET + 0x03,
 	
 	/** @brief Sets or queries DAC voltage output (raw)
 	 *  @details Sets or queries DAC voltage output as raw 16-bit value
@@ -685,7 +685,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:VOLTage:RAW[?]`
 	 */
-	CMD_AUX_DAC_VOLTAGE_RAW =				0x54,
+	CMD_AUX_DAC_VOLTAGE_RAW =				CMD_AUX_OFFSET + 0x04,
 	
 	/** @brief Sets or queries DAC offset calibration
 	 *  @details Sets or queries DAC offset calibration value
@@ -694,7 +694,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:OFFset[?]`
 	 */
-	CMD_AUX_DAC_OFFSET =					0x55,
+	CMD_AUX_DAC_OFFSET =					CMD_AUX_OFFSET + 0x05,
 	
 	/** @brief Sets or queries DAC offset correction coefficient
 	 *  @details Sets or queries DAC offset correction coefficient
@@ -703,7 +703,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:OFFset:CORRection[?]`
 	 */
-	CMD_AUX_DAC_OFFSET_CORRECTION =			0x56,
+	CMD_AUX_DAC_OFFSET_CORRECTION =			CMD_AUX_OFFSET + 0x06,
 	
 	/** @brief Sets or queries DAC gain correction coefficient
 	 *  @details Sets or queries DAC gain correction coefficient
@@ -712,7 +712,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `DAC:GAIN:CORRection[?]`
 	 */
-	CMD_AUX_DAC_GAIN_CORRECTION =			0x57,
+	CMD_AUX_DAC_GAIN_CORRECTION =			CMD_AUX_OFFSET + 0x07,
 	
 	/** @brief Sets or queries heater enable state
 	 *  @details Sets or queries heater enable state (0=off, 1=on)
@@ -721,7 +721,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `HEATer:STATE[?]`
 	 */
-	CMD_AUX_HEATER_STATE =					0x58,
+	CMD_AUX_HEATER_STATE =					CMD_AUX_OFFSET + 0x08,
 	
 	/** @brief Sets or queries heater temperature setpoint
 	 *  @details Sets or queries heater temperature setpoint in Celsius
@@ -730,7 +730,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `HEATer:SETpoint[?]`
 	 */
-	CMD_AUX_HEATER_SETPOINT =				0x59,
+	CMD_AUX_HEATER_SETPOINT =				CMD_AUX_OFFSET + 0x09,
 	
 	/** @brief Sets or queries heater PID controller coefficients
 	 *  @details Sets or queries heater PID controller coefficients (Kp, Ki, Kd)
@@ -739,7 +739,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `HEATer:PID[?]`
 	 */
-	CMD_AUX_HEATER_PID =					0x5A,
+	CMD_AUX_HEATER_PID =					CMD_AUX_OFFSET + 0x0A,
 	
 	/** @brief Sets or queries sun sensor yaw calibration coefficients
 	 *  @details Sets or queries sun sensor yaw angle calibration polynomial coefficients
@@ -748,7 +748,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:FIT:YAW[?]`
 	 */
-	CMD_AUX_SUNSENSOR_FIT_YAW_COEFF =		0x5B,
+	CMD_AUX_SUNSENSOR_FIT_YAW_COEFF =		CMD_AUX_OFFSET + 0x0B,
 	
 	/** @brief Sets or queries sun sensor pitch calibration coefficients
 	 *  @details Sets or queries sun sensor pitch angle calibration polynomial coefficients
@@ -757,7 +757,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:FIT:PITCH[?]`
 	 */
-	CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF =		0x5C,
+	CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF =		CMD_AUX_OFFSET + 0x0C,
 	
 	/** @brief Sets or queries sun sensor horizontal reference
 	 *  @details Sets or queries sun sensor horizontal reference calibration value
@@ -766,7 +766,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:HVAL[?]`
 	 */
-	CMD_AUX_SUNSENSOR_HVAL =				0x5D,
+	CMD_AUX_SUNSENSOR_HVAL =				CMD_AUX_OFFSET + 0x0D,
 	
 	/** @brief Sets or queries sun sensor radial reference
 	 *  @details Sets or queries sun sensor radial reference calibration value
@@ -775,7 +775,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:RVAL[?]`
 	 */
-	CMD_AUX_SUNSENSOR_RVAL =				0x5E,
+	CMD_AUX_SUNSENSOR_RVAL =				CMD_AUX_OFFSET + 0x0E,
 	
 	/** @brief Sets or queries sun sensor detection threshold
 	 *  @details Sets or queries sun sensor detection threshold value
@@ -784,7 +784,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `SUNSensor:THRESHold[?]`
 	 */
-	CMD_AUX_SUNSENSOR_THRESHOLD =			0x5F,	
+	CMD_AUX_SUNSENSOR_THRESHOLD =			CMD_AUX_OFFSET + 0x0F,	
 } CMD_AUX_t;
 #undef CMD_AUX_OFFSET
 
@@ -804,7 +804,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#[?]`
 	 */
-	CMD_ADC_CH_REG =						0x60,
+	CMD_ADC_CH_REG =						CMD_ADC_CH_OFFSET + 0x00,
 	
 	/** @brief Sets or queries ADC channel setup
 	 *  @details Sets or queries ADC channel setup register (input selection, etc.)
@@ -814,7 +814,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:SETup[?]`
 	 */
-	CMD_ADC_CH_SETUP =						0x61,
+	CMD_ADC_CH_SETUP =						CMD_ADC_CH_OFFSET + 0x01,
 	
 	/** @brief Sets or queries ADC channel filter
 	 *  @details Sets or queries ADC channel digital filter settings
@@ -824,7 +824,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:FILTer[?]`
 	 */
-	CMD_ADC_CH_FILTER =						0x62,
+	CMD_ADC_CH_FILTER =						CMD_ADC_CH_OFFSET + 0x02,
 	
 	/** @brief Sets or queries ADC channel sample rate
 	 *  @details Sets or queries ADC channel sample rate in Hz
@@ -834,7 +834,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:RATE[?]`
 	 */
-	CMD_ADC_CH_RATE =						0x63,
+	CMD_ADC_CH_RATE =						CMD_ADC_CH_OFFSET + 0x03,
 	
 	/** @brief Sets or queries ADC channel PGA setting
 	 *  @details Sets or queries programmable gain amplifier setting (1, 2, 4, 8, 16, 32, 64, 128)
@@ -844,7 +844,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:PGA[?]`
 	 */
-	CMD_ADC_CH_PGA =						0x64,
+	CMD_ADC_CH_PGA =						CMD_ADC_CH_OFFSET + 0x04,
 	
 	/** @brief Queries maximum input range for current PGA
 	 *  @details Queries maximum input range for current PGA setting
@@ -853,7 +853,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:MAX?`
 	 */
-	CMD_ADC_CH_PGA_MAX =					0x65,
+	CMD_ADC_CH_PGA_MAX =					CMD_ADC_CH_OFFSET + 0x05,
 	
 	/** @brief Queries maximum voltage range for PGA
 	 *  @details Queries maximum voltage range for specified PGA setting
@@ -862,7 +862,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:VOLTage:MAX:PGA#?`
 	 */
-	CMD_ADC_CH_PGA_VMAX =					0x66,
+	CMD_ADC_CH_PGA_VMAX =					CMD_ADC_CH_OFFSET + 0x06,
 	
 	/** @brief Queries maximum current range for PGA
 	 *  @details Queries maximum current range for specified PGA setting
@@ -871,7 +871,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CURRent:MAX:PGA#?`
 	 */
-	CMD_ADC_CH_PGA_IMAX =					0x67,
+	CMD_ADC_CH_PGA_IMAX =					CMD_ADC_CH_OFFSET + 0x07,
 	
 	/** @brief Saves ADC channel configuration
 	 *  @details Saves current channel configuration to EEPROM
@@ -879,7 +879,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:SAVE`
 	 */
-	CMD_ADC_CH_SAVE =						0x68,
+	CMD_ADC_CH_SAVE =						CMD_ADC_CH_OFFSET + 0x08,
 	
 	/** @brief Sets or queries ADC channel offset coefficient
 	 *  @details Sets or queries ADC channel offset calibration coefficient
@@ -889,7 +889,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:OFFset[?]`
 	 */
-	CMD_ADC_CH_OFFSET_COEFF =				0x69,
+	CMD_ADC_CH_OFFSET_COEFF =				CMD_ADC_CH_OFFSET + 0x09,
 	
 	/** @brief Sets or queries ADC channel gain coefficient
 	 *  @details Sets or queries ADC channel gain calibration coefficient
@@ -899,7 +899,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:GAIN[?]`
 	 */
-	CMD_ADC_CH_GAIN_COEFF =					0x6A,
+	CMD_ADC_CH_GAIN_COEFF =					CMD_ADC_CH_OFFSET + 0x0A,
 	
 	/** @brief Performs internal ADC channel calibration
 	 *  @details Performs internal calibration for the specified channel
@@ -907,7 +907,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:CALibrate:INTernal`
 	 */
-	CMD_ADC_CH_CAL_INTERNAL =				0x6B,
+	CMD_ADC_CH_CAL_INTERNAL =				CMD_ADC_CH_OFFSET + 0x0B,
 	
 	/** @brief Performs zero-scale ADC calibration
 	 *  @details Performs zero-scale calibration for the specified channel
@@ -915,7 +915,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:CALibrate:ZERO`
 	 */
-	CMD_ADC_CH_CAL_ZERO_SCALE =				0x6C,
+	CMD_ADC_CH_CAL_ZERO_SCALE =				CMD_ADC_CH_OFFSET + 0x0C,
 	
 	/** @brief Performs full-scale ADC calibration
 	 *  @details Performs full-scale calibration for the specified channel
@@ -923,7 +923,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:CALibrate:FULL`
 	 */
-	CMD_ADC_CH_CAL_FULL_SCALE =				0x6D,
+	CMD_ADC_CH_CAL_FULL_SCALE =				CMD_ADC_CH_OFFSET + 0x0D,
 	
 	/** @brief Resets ADC channel calibration
 	 *  @details Resets channel calibration to factory defaults
@@ -931,7 +931,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:CALibrate:RESet`
 	 */
-	CMD_ADC_CH_CAL_RESET =					0x6E,
+	CMD_ADC_CH_CAL_RESET =					CMD_ADC_CH_OFFSET + 0x0E,
 	
 	/** @brief Saves ADC channel calibration
 	 *  @details Saves channel calibration coefficients to EEPROM
@@ -939,7 +939,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:CALibrate:SAVe`
 	 */
-	CMD_ADC_CH_CAL_SAVE =					0x6F,
+	CMD_ADC_CH_CAL_SAVE =					CMD_ADC_CH_OFFSET + 0x0F,
 } CMD_ADC_CH_t;
 #undef CMD_ADC_CH_OFFSET
 
@@ -957,7 +957,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:VOLTage[:RAW]?`
 	 */
-	CMD_MEAS_CH_VOLTAGE =					0x70,
+	CMD_MEAS_CH_VOLTAGE =					CMD_MEAS_CH_CMD_OFFSET + 0x00,
 	
 	/** @brief Measures dedicated current channel
 	 *  @details Measures current on the dedicated current input channel
@@ -965,7 +965,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:CURRent[:RAW]?`
 	 */
-	CMD_MEAS_CH_CURRENT =					0x71,
+	CMD_MEAS_CH_CURRENT =					CMD_MEAS_CH_CMD_OFFSET + 0x01,
 	
 	/** @brief Measures primary temperature sensor
 	 *  @details Measures primary temperature sensor (same as TSENSOR0)
@@ -973,7 +973,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TSENSor[:RAW]?`
 	 */
-	CMD_MEAS_CH_TSENSOR =					0x72,
+	CMD_MEAS_CH_TSENSOR =					CMD_MEAS_CH_CMD_OFFSET + 0x02,
 	
 	/** @brief Measures temperature sensor 0
 	 *  @details Measures temperature sensor 0
@@ -981,7 +981,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TSENSOR0[:RAW]?`
 	 */
-	CMD_MEAS_CH_TSENSOR_0 =					0x72,
+	CMD_MEAS_CH_TSENSOR_0 =					CMD_MEAS_CH_CMD_OFFSET + 0x02,
 	
 	/** @brief Measures temperature sensor 1
 	 *  @details Measures temperature sensor 1
@@ -989,7 +989,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TSENSOR1[:RAW]?`
 	 */
-	CMD_MEAS_CH_TSENSOR_1 =					0x73,
+	CMD_MEAS_CH_TSENSOR_1 =					CMD_MEAS_CH_CMD_OFFSET + 0x03,
 	
 	/** @brief Measures temperature sensor 2
 	 *  @details Measures temperature sensor 2
@@ -997,7 +997,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TSENSOR2[:RAW]?`
 	 */
-	CMD_MEAS_CH_TSENSOR_2 =					0x74,
+	CMD_MEAS_CH_TSENSOR_2 =					CMD_MEAS_CH_CMD_OFFSET + 0x04,
 	
 	/** @brief Measures bias voltage reference
 	 *  @details Measures bias voltage reference
@@ -1005,7 +1005,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:BIAS[:RAW]?`
 	 */
-	CMD_MEAS_CH_BIAS =						0x75,
+	CMD_MEAS_CH_BIAS =						CMD_MEAS_CH_CMD_OFFSET + 0x05,
 	
 	/** @brief Measures offset calibration reference
 	 *  @details Measures offset calibration reference
@@ -1013,7 +1013,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:OFFset[:RAW]?`
 	 */
-	CMD_MEAS_CH_OFFSET =					0x76,
+	CMD_MEAS_CH_OFFSET =					CMD_MEAS_CH_CMD_OFFSET + 0x06,
 	
 	/** @brief Measures internal MCU temperature
 	 *  @details Measures internal MCU temperature sensor
@@ -1021,7 +1021,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:TEMP[:RAW]?`
 	 */
-	CMD_MEAS_CH_TEMP =						0x77,
+	CMD_MEAS_CH_TEMP =						CMD_MEAS_CH_CMD_OFFSET + 0x07,
 	
 	/** @brief Measures analog supply voltage
 	 *  @details Measures analog supply voltage (AVDD)
@@ -1029,7 +1029,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:AVDD[:RAW]?`
 	 */
-	CMD_MEAS_CH_AVDD =						0x78,
+	CMD_MEAS_CH_AVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x08,
 	
 	/** @brief Measures I/O supply voltage
 	 *  @details Measures I/O supply voltage (IOVDD)
@@ -1037,7 +1037,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:IOVDD[:RAW]?`
 	 */
-	CMD_MEAS_CH_IOVDD =						0x79,
+	CMD_MEAS_CH_IOVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x09,
 	
 	/** @brief Measures analog LDO output voltage
 	 *  @details Measures analog LDO regulator output voltage
@@ -1045,7 +1045,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:ALDO[:RAW]?`
 	 */
-	CMD_MEAS_CH_ALDO =						0x7A,
+	CMD_MEAS_CH_ALDO =						CMD_MEAS_CH_CMD_OFFSET + 0x0A,
 	
 	/** @brief Measures digital LDO output voltage
 	 *  @details Measures digital LDO regulator output voltage
@@ -1053,7 +1053,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:DLDO[:RAW]?`
 	 */
-	CMD_MEAS_CH_DLDO =						0x7B,
+	CMD_MEAS_CH_DLDO =						CMD_MEAS_CH_CMD_OFFSET + 0x0B,
 	
 	/** @brief Measures sun sensor top-left quadrant
 	 *  @details Measures sun sensor top-left quadrant photodiode
@@ -1061,7 +1061,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:SSTL[:RAW]?`
 	 */
-	CMD_MEAS_CH_SS_TL =						0x7C,
+	CMD_MEAS_CH_SS_TL =						CMD_MEAS_CH_CMD_OFFSET + 0x0C,
 	
 	/** @brief Measures sun sensor bottom-left quadrant
 	 *  @details Measures sun sensor bottom-left quadrant photodiode
@@ -1069,7 +1069,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:SSBL[:RAW]?`
 	 */
-	CMD_MEAS_CH_SS_BL=						0x7D,
+	CMD_MEAS_CH_SS_BL=						CMD_MEAS_CH_CMD_OFFSET + 0x0D,
 	
 	/** @brief Measures sun sensor bottom-right quadrant
 	 *  @details Measures sun sensor bottom-right quadrant photodiode
@@ -1077,7 +1077,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:SSBR[:RAW]?`
 	 */
-	CMD_MEAS_CH_SS_BR =						0x7E,
+	CMD_MEAS_CH_SS_BR =						CMD_MEAS_CH_CMD_OFFSET + 0x0E,
 	
 	/** @brief Measures sun sensor top-right quadrant
 	 *  @details Measures sun sensor top-right quadrant photodiode
@@ -1085,7 +1085,7 @@ typedef enum {
 	 *  @par SCPI Equivalent:
 	 *  `MEASure:ADC:SSTR[:RAW]?`
 	 */
-	CMD_MEAS_CH_SS_TR =						0x7F,
+	CMD_MEAS_CH_SS_TR =						CMD_MEAS_CH_CMD_OFFSET + 0x0F,
 } CMD_MEAS_CH_t;
 #undef CMD_MEAS_CH_CMD_OFFSET
 
@@ -1101,31 +1101,31 @@ typedef enum {
 	 *  @scpi_cmd SYSTem:BOOTloader
 	 *  @description Enters bootloader mode for firmware updates (USB only)
 	 */
-	CMD_USB_SYSTEM_ENTER_BOOTLOADER =		0x0200,
+	CMD_USB_SYSTEM_ENTER_BOOTLOADER =		CMD_USB_SYSTEM_OFFSET + 0x00,
 	
 	/** @brief List available SCPI commands
 	 *  @scpi_cmd SYSTem:SCPI:LIST?
 	 *  @description Returns list of all supported SCPI commands (USB only)
 	 */
-	CMD_USB_SYSTEM_LIST_SCPI_COMMANDS =		0x0201,
+	CMD_USB_SYSTEM_LIST_SCPI_COMMANDS =		CMD_USB_SYSTEM_OFFSET + 0x01,
 	
 	/** @brief Scan I2C bus for devices
 	 *  @scpi_cmd SYSTem:TWI:SCAN?
 	 *  @description Scans I2C bus and returns list of device addresses (USB only)
 	 */
-	CMD_USB_SYSTEM_TWI_SCAN =				0x0202,
+	CMD_USB_SYSTEM_TWI_SCAN =				CMD_USB_SYSTEM_OFFSET + 0x02,
 	
 	/** @brief I2C mode configuration
 	 *  @scpi_cmd SYSTem:TWI:MODE[?]
 	 *  @description Sets or queries I2C operating mode (USB only)
 	 */
-	CMD_USB_SYSTEM_TWI_MODE =				0x0203,
+	CMD_USB_SYSTEM_TWI_MODE =				CMD_USB_SYSTEM_OFFSET + 0x03,
 	
 	/** @brief Debug value access
 	 *  @scpi_cmd SYSTem:DEBug#?
 	 *  @description Sets or queries debug values for development (USB only)
 	 */
-	CMD_USB_SYSTEM_DEBUG =					0x0204
+	CMD_USB_SYSTEM_DEBUG =					CMD_USB_SYSTEM_OFFSET + 0x04
 } CMD_USB_SYSTEM_t;
 #undef CMD_USB_SYSTEM_OFFSET
 
@@ -1141,49 +1141,49 @@ typedef enum {
 	 *  @scpi_cmd MEMory:ERASE:ALL
 	 *  @description Erases all user data from EEPROM (USB only)
 	 */
-	CMD_USB_EEPROM_ERASE_ALL =				0x0210,
+	CMD_USB_EEPROM_ERASE_ALL =				CMD_USB_EEPROM_CMD_OFFSET + 0x00,
 	
 	/** @brief Erase configuration data
 	 *  @scpi_cmd MEMory:ERASE:CONFig
 	 *  @description Erases configuration data from EEPROM (USB only)
 	 */
-	CMD_USB_EEPROM_ERASE_CONFIG =			0x0211,
+	CMD_USB_EEPROM_ERASE_CONFIG =			CMD_USB_EEPROM_CMD_OFFSET + 0x01,
 	
 	/** @brief ADC channel offset calibration data
 	 *  @scpi_cmd MEMory:ADC:CH#:OFFset[?]
 	 *  @description Sets or queries EEPROM-stored ADC channel offset calibration (USB only)
 	 */
-	CMD_USB_EEPROM_OFFSET =					0x0212,
+	CMD_USB_EEPROM_OFFSET =					CMD_USB_EEPROM_CMD_OFFSET + 0x02,
 	
 	/** @brief ADC channel gain calibration data
 	 *  @scpi_cmd MEMory:ADC:CH#:GAIN[?]
 	 *  @description Sets or queries EEPROM-stored ADC channel gain calibration (USB only)
 	 */
-	CMD_USB_EEPROM_GAIN =					0x0213,
+	CMD_USB_EEPROM_GAIN =					CMD_USB_EEPROM_CMD_OFFSET + 0x03,
 	
 	/** @brief Voltage measurement offset calibration
 	 *  @scpi_cmd MEMory:VOLTage:OFFset#[?]
 	 *  @description Sets or queries EEPROM-stored voltage offset calibration (USB only)
 	 */
-	CMD_USB_EEPROM_VOLTAGE_OFFSET =			0x0214,
+	CMD_USB_EEPROM_VOLTAGE_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x04,
 	
 	/** @brief Current measurement offset calibration
 	 *  @scpi_cmd MEMory:CURRent:OFFset#[?]
 	 *  @description Sets or queries EEPROM-stored current offset calibration (USB only)
 	 */
-	CMD_USB_EEPROM_CURRENT_OFFSET =			0x0215,
+	CMD_USB_EEPROM_CURRENT_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x05,
 	
 	/** @brief Voltage measurement gain calibration
 	 *  @scpi_cmd MEMory:VOLTage:GAIN#[?]
 	 *  @description Sets or queries EEPROM-stored voltage gain calibration (USB only)
 	 */
-	CMD_USB_EEPROM_VOLTAGE_GAIN =			0x0216,
+	CMD_USB_EEPROM_VOLTAGE_GAIN =			CMD_USB_EEPROM_CMD_OFFSET + 0x06,
 	
 	/** @brief Current measurement gain calibration
 	 *  @scpi_cmd MEMory:CURRent:GAIN#[?]
 	 *  @description Sets or queries EEPROM-stored current gain calibration (USB only)
 	 */
-	CMD_USB_EEPROM_CURRENT_GAIN =			0x0217,
+	CMD_USB_EEPROM_CURRENT_GAIN =			CMD_USB_EEPROM_CMD_OFFSET + 0x07,
 } CMD_USB_EEPROM_t;
 #undef CMD_USB_EEPROM_CMD_OFFSET
 
@@ -1198,49 +1198,49 @@ typedef enum {
 	 *  @scpi_cmd ADC:VOLTage:CALibrate:ZERO
 	 *  @description Performs zero-scale calibration for voltage channel (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_CAL_ZERO =		0x0220,
+	CMD_USB_ADC_VOLTAGE_CAL_ZERO =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x00,
 	
 	/** @brief Voltage channel full-scale calibration
 	 *  @scpi_cmd ADC:VOLTage:CALibrate:FULL
 	 *  @description Performs full-scale calibration for voltage channel (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_CAL_FULL =		0x0221,
+	CMD_USB_ADC_VOLTAGE_CAL_FULL =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x01,
 	
 	/** @brief Reset voltage channel calibration
 	 *  @scpi_cmd ADC:VOLTage:CALibrate:RESet
 	 *  @description Resets voltage channel calibration to defaults (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_CAL_RESET =		0x0222,
+	CMD_USB_ADC_VOLTAGE_CAL_RESET =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x02,
 	
 	/** @brief Save voltage channel calibration
 	 *  @scpi_cmd ADC:VOLTage:CALibrate:SAVe
 	 *  @description Saves voltage channel calibration to EEPROM (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_CAL_SAVE =		0x0223,
+	CMD_USB_ADC_VOLTAGE_CAL_SAVE =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x03,
 	
 	/** @brief Voltage channel PGA setting
 	 *  @scpi_cmd ADC:VOLTage:PGA[?]
 	 *  @description Sets or queries voltage channel PGA setting (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_PGA =			0x0224,
+	CMD_USB_ADC_VOLTAGE_PGA =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x04,
 	
 	/** @brief Voltage channel maximum range
 	 *  @scpi_cmd ADC:VOLTage:MAX?
 	 *  @description Queries voltage channel maximum input range (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_MAX =			0x0225,
+	CMD_USB_ADC_VOLTAGE_MAX =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x05,
 	
 	/** @brief Voltage channel offset coefficient
 	 *  @scpi_cmd ADC:VOLTage:OFFset[?]
 	 *  @description Sets or queries voltage channel offset coefficient (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_OFFSET =		0x0226,
+	CMD_USB_ADC_VOLTAGE_OFFSET =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x06,
 	
 	/** @brief Voltage channel gain coefficient
 	 *  @scpi_cmd ADC:VOLTage:GAIN[?]
 	 *  @description Sets or queries voltage channel gain coefficient (USB only)
 	 */
-	CMD_USB_ADC_VOLTAGE_GAIN =			0x0227,
+	CMD_USB_ADC_VOLTAGE_GAIN =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x07,
 } CMD_USB_ADC_VOLTAGE_t;
 #undef CMD_USB_ADC_VOLTAGE_CMD_OFFSET
 
@@ -1256,49 +1256,49 @@ typedef enum {
 	 *  @scpi_cmd ADC:CURRent:CALibrate:ZERO
 	 *  @description Performs zero-scale calibration for current channel (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_CAL_ZERO =		0x0230,
+	CMD_USB_ADC_CURRENT_CAL_ZERO =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x00,
 	
 	/** @brief Current channel full-scale calibration
 	 *  @scpi_cmd ADC:CURRent:CALibrate:FULL
 	 *  @description Performs full-scale calibration for current channel (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_CAL_FULL =		0x0231,
+	CMD_USB_ADC_CURRENT_CAL_FULL =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x01,
 	
 	/** @brief Reset current channel calibration
 	 *  @scpi_cmd ADC:CURRent:CALibrate:RESet
 	 *  @description Resets current channel calibration to defaults (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_CAL_RESET =		0x0232,
+	CMD_USB_ADC_CURRENT_CAL_RESET =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x02,
 	
 	/** @brief Save current channel calibration
 	 *  @scpi_cmd ADC:CURRent:CALibrate:SAVe
 	 *  @description Saves current channel calibration to EEPROM (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_CAL_SAVE =		0x0233,
+	CMD_USB_ADC_CURRENT_CAL_SAVE =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x03,
 	
 	/** @brief Current channel PGA setting
 	 *  @scpi_cmd ADC:CURRent:PGA[?]
 	 *  @description Sets or queries current channel PGA setting (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_PGA =			0x0234,
+	CMD_USB_ADC_CURRENT_PGA =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x04,
 	
 	/** @brief Current channel maximum range
 	 *  @scpi_cmd ADC:CURRent:MAX?
 	 *  @description Queries current channel maximum input range (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_MAX =			0x0235,
+	CMD_USB_ADC_CURRENT_MAX =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x05,
 	
 	/** @brief Current channel offset coefficient
 	 *  @scpi_cmd ADC:CURRent:OFFset[?]
 	 *  @description Sets or queries current channel offset coefficient (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_OFFSET =		0x0236,
+	CMD_USB_ADC_CURRENT_OFFSET =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x06,
 	
 	/** @brief Current channel gain coefficient
 	 *  @scpi_cmd ADC:CURRent:GAIN[?]
 	 *  @description Sets or queries current channel gain coefficient (USB only)
 	 */
-	CMD_USB_ADC_CURRENT_GAIN =			0x0237,
+	CMD_USB_ADC_CURRENT_GAIN =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x07,
 } CMD_USB_ADC_CURRENT_t;
 #undef CMD_USB_ADC_CURRENT_CMD_OFFSET
 
@@ -1312,7 +1312,7 @@ typedef enum {
 	 *  @scpi_cmd SWEEP:TRIGger:USB
 	 *  @description Triggers I-V sweep with USB-specific parameters (USB only)
 	 */
-	CMD_USB_SWEEP_TRIGGER =					0x0240,
+	CMD_USB_SWEEP_TRIGGER =					CMD_USB_SWEEP_OFFSET + 0x00,
 } CMD_USB_SWEEP_t;
 #undef CMD_USB_SWEEP_OFFSET
 
@@ -1327,31 +1327,31 @@ typedef enum {
 	 *  @scpi_cmd SYSTem:CONFig:CURRent:GAIN[?]
 	 *  @description Sets or queries current measurement amplifier gain (USB only)
 	 */
-	CMD_USB_SYSTEM_CONFIG_CURR_GAIN =		0x0250,
+	CMD_USB_SYSTEM_CONFIG_CURR_GAIN =		CMD_USB_SYSTEM_CONFIG_OFFSET + 0x00,
 	
 	/** @brief Current measurement sense resistor value
 	 *  @scpi_cmd SYSTem:CONFig:CURRent:Rsense[?]
 	 *  @description Sets or queries current sense resistor value in ohms (USB only)
 	 */
-	CMD_USB_SYSTEM_CONFIG_CURR_RSENSE =		0x0251,
+	CMD_USB_SYSTEM_CONFIG_CURR_RSENSE =		CMD_USB_SYSTEM_CONFIG_OFFSET + 0x01,
 	
 	/** @brief Voltage divider R1 resistor value
 	 *  @scpi_cmd SYSTem:CONFig:VOLTage:R1[?]
 	 *  @description Sets or queries voltage divider R1 resistor value in ohms (USB only)
 	 */
-	CMD_USB_SYSTEM_CONFIG_VOLT_R1 =			0x0252,
+	CMD_USB_SYSTEM_CONFIG_VOLT_R1 =			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x02,
 	
 	/** @brief Voltage divider R2 resistor value
 	 *  @scpi_cmd SYSTem:CONFig:VOLTage:R2[?]
 	 *  @description Sets or queries voltage divider R2 resistor value in ohms (USB only)
 	 */
-	CMD_USB_SYSTEM_CONFIG_VOLT_R2 =			0x0253,
+	CMD_USB_SYSTEM_CONFIG_VOLT_R2 =			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x03,
 	
 	/** @brief Save system configuration
 	 *  @scpi_cmd SYSTem:CONFig:SAVE
 	 *  @description Saves current system configuration to EEPROM (USB only)
 	 */
-	CMD_USB_SYSTEM_CONFIG_SAVE = 			0x0257,
+	CMD_USB_SYSTEM_CONFIG_SAVE = 			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x07,
 } CMD_USB_SYSTEM_CONFIG_t;
 #undef CMD_USB_SYSTEM_CONFIG_OFFSET
 

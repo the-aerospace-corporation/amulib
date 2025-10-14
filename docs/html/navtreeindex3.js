@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"group__scpi__measurement__commands.html#scpi_measurement_reference":[12,1,1,0],
+"group__scpi__memory__commands.html":[12,1,6],
+"group__scpi__memory__commands.html#scpi_memory_reference":[12,1,6,0],
 "group__scpi__sweep__commands.html":[12,1,4],
 "group__scpi__sweep__commands.html#scpi_sweep_reference":[12,1,4,0],
 "group__scpi__system__commands.html":[12,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "parser_8c.html#ad19797da3213a0499b0bd917400fc43e":[14,0,1,0,0,16,60],
 "parser_8c.html#ad68ae865e3871baa3cff0f432ae413bf":[14,0,1,0,0,16,79],
 "parser_8c.html#ada822479f3f32f73f2e2c1b5ad976a08":[14,0,1,0,0,16,54],
-"parser_8c.html#add93fe0ad7cd78116b79287a96d8fa1d":[14,0,1,0,0,16,67],
-"parser_8c.html#ae1a8c947e3b9906cdf6caedb5e9f3dc6":[14,0,1,0,0,16,31],
-"parser_8c.html#ae229e0fcc97722b3d8137eb047cc7ad1":[14,0,1,0,0,16,39],
-"parser_8c.html#ae3a8edbf1c9b8f71fc7744a94e47eeb7":[14,0,1,0,0,16,46]
+"parser_8c.html#add93fe0ad7cd78116b79287a96d8fa1d":[14,0,1,0,0,16,67]
 };

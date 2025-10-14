@@ -372,8 +372,8 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 		if (context->query) {
 			if (SCPI_CmdTag(context) >= CMD_I2C_USB) {
 				switch (SCPI_CmdTag(context)) {
-				case CMD_SYSTEM_FIRMWARE:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), SCPI_IDN_STRING_LENGTH, true);									break;
-				case CMD_SYSTEM_SERIAL_NUM:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), SCPI_IDN_STRING_LENGTH, true);									break;
+				case CMD_SYSTEM_FIRMWARE:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), AMU_FIRMWARE_STR_LEN, true);										break;
+				case CMD_SYSTEM_SERIAL_NUM:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), AMU_SERIALNUM_STR_LEN, true);									break;
 				case CMD_DUT_MANUFACTURER:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.manufacturer), true);			break;
 				case CMD_DUT_MODEL:					_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.model), true);				break;
 				case CMD_DUT_TECHNOLOGY:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.technology), true);			break;
@@ -397,8 +397,8 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 		else {
 			if (SCPI_CmdTag(context) >= CMD_I2C_USB) {
 				switch (SCPI_CmdTag(context)) {
-				case CMD_SYSTEM_FIRMWARE:		_amu_route_command(*device, (SCPI_CmdTag(context)), SCPI_IDN_STRING_LENGTH, false);													break;
-				case CMD_SYSTEM_SERIAL_NUM:		_amu_route_command(*device, (SCPI_CmdTag(context)), SCPI_IDN_STRING_LENGTH, false);													break;
+				case CMD_SYSTEM_FIRMWARE:		_amu_route_command(*device, (SCPI_CmdTag(context)), AMU_FIRMWARE_STR_LEN, false);													break;
+				case CMD_SYSTEM_SERIAL_NUM:		_amu_route_command(*device, (SCPI_CmdTag(context)), AMU_SERIALNUM_STR_LEN, false);													break;
 				case CMD_DUT_MANUFACTURER:		_amu_route_command(*device, (SCPI_CmdTag(context)), sizeof(scpi_amu_dev->amu_regs->dut.manufacturer), false);						break;
 				case CMD_DUT_MODEL:				_amu_route_command(*device, (SCPI_CmdTag(context)), sizeof(scpi_amu_dev->amu_regs->dut.model), false);								break;
 				case CMD_DUT_TECHNOLOGY:		_amu_route_command(*device, (SCPI_CmdTag(context)), sizeof(scpi_amu_dev->amu_regs->dut.technology), false);							break;
@@ -610,28 +610,24 @@ void amu_scpi_list_commands(void) {
 	char message[] = "SCPI Commands:\n";
 	scpi_context.interface->write(&scpi_context, message, sizeof(message) - 1);
 
-	if( scpi_context.def_cmdlist == NULL ) {
-		scpi_context.interface->write(&scpi_context, "No commands defined", 19);
-		scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
-		return;
-	}
+	// if( scpi_context.def_cmdlist == NULL ) {
+	// 	scpi_context.interface->write(&scpi_context, "No commands defined", 19);
+	// 	scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
+	// 	return;
+	// }
 
-	// Debug: Check first command
-	if( scpi_context.def_cmdlist[0].pattern == NULL ) {
-		scpi_context.interface->write(&scpi_context, "First command pattern is NULL", 29);
-		scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
-		return;
-	}
+	// // Debug: Check first command
+	// if( scpi_context.def_cmdlist[0].pattern == NULL ) {
+	// 	scpi_context.interface->write(&scpi_context, "First command pattern is NULL", 29);
+	// 	scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
+	// 	return;
+	// }
 	
 	for (i = 0; (cmd_pattern = (char*)scpi_context.def_cmdlist[i].pattern) != 0; i++) {
 		scpi_context.interface->write(&scpi_context, cmd_pattern, strlen(cmd_pattern));
 		scpi_context.interface->write(&scpi_context, ",", 1);
 	}
 	
-	// Debug: Show how many commands we found
-	char count_msg[50];
-	snprintf(count_msg, sizeof(count_msg), "\nFound %d commands\n", i);
-	scpi_context.interface->write(&scpi_context, count_msg, strlen(count_msg));
 
 	if (scpi_context.aux_cmdlist != NULL) {
 		for (i = 0; (cmd_pattern = (char*)scpi_context.aux_cmdlist[i].pattern) != 0; i++) {

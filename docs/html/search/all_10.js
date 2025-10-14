@@ -13,7 +13,7 @@ var searchData=
   ['pattern_10',['pattern',['../struct__scpi__command__t.html#a2e1a21fe587a0f59fb0a50501894bbfd',1,'_scpi_command_t']]],
   ['patternseparatorpos_11',['patternSeparatorPos',['../utils_8c.html#a679517d4e9cc5e2f9b2ee9b45d2313f7',1,'utils.c']]],
   ['patternseparatorshortpos_12',['patternSeparatorShortPos',['../utils_8c.html#aeecb12d55ebb114bc41487655caf9fed',1,'utils.c']]],
-  ['pitch_13',['pitch',['../structivsweep__packet__t.html#a73fcd15ebaaa3301c7a225235cd935c1',1,'ivsweep_packet_t::pitch'],['../structss__angle__t.html#a9b25c5144dc094d6e114e2271ce2bb5b',1,'ss_angle_t::pitch']]],
+  ['pitch_13',['pitch',['../structss__angle__t.html#a9b25c5144dc094d6e114e2271ce2bb5b',1,'ss_angle_t']]],
   ['pmax_14',['pmax',['../structivsweep__meta__t.html#a8a8e398290f596768a00d5a2a9379c2d',1,'ivsweep_meta_t']]],
   ['points_15',['Heater Set Points',['../group__scpi__aux__commands.html#autotoc_md76',1,'']]],
   ['pos_16',['pos',['../struct__lex__state__t.html#a0215a5b481799f880b0aab9e424e4a55',1,'_lex_state_t']]],

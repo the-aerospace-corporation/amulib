@@ -96,7 +96,8 @@ $(function(){initNavTree('amu__device_8c.html','',''); });
 
 <p>TODO.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="amu__device_8h_source.html">amu_device.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="amu__config__internal_8h_source.html">amu_config_internal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="amu__device_8h_source.html">amu_device.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="amu__types_8h_source.html">amu_types.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="amu__regs_8h_source.html">amu_regs.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="amu__commands_8h_source.html">amu_commands.h</a>&quot;</code><br />
@@ -136,8 +137,8 @@ Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a7fa96302dbe6bbf031fb973acd1fe4b6" id="r_a7fa96302dbe6bbf031fb973acd1fe4b6"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fa96302dbe6bbf031fb973acd1fe4b6">amu_dev_initialized</a> = 0</td></tr>
-<tr class="memitem:a604a53fc4aa00db624e44a7f690cb9fd" id="r_a604a53fc4aa00db624e44a7f690cb9fd"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a604a53fc4aa00db624e44a7f690cb9fd">amu_device_addresses</a> [63]</td></tr>
-<tr class="memitem:a98c2a3bcc66048661728168b573cc781" id="r_a98c2a3bcc66048661728168b573cc781"><td class="memItemLeft" align="right" valign="top">static volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98c2a3bcc66048661728168b573cc781">amu_transfer_reg</a> [(250 *sizeof(float) *2)]</td></tr>
+<tr class="memitem:ab3a908c4dc978674358b7a7d050fce1f" id="r_ab3a908c4dc978674358b7a7d050fce1f"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3a908c4dc978674358b7a7d050fce1f">amu_device_addresses</a> [16]</td></tr>
+<tr class="memitem:aa1bc78e5002778c7090732e3e7e24bfb" id="r_aa1bc78e5002778c7090732e3e7e24bfb"><td class="memItemLeft" align="right" valign="top">static volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1bc78e5002778c7090732e3e7e24bfb">amu_transfer_reg</a> [(40 *<a class="el" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">sizeof</a>(float))]</td></tr>
 <tr class="memitem:afe74e9f3c087abfc7a0a714dfa734ef4" id="r_afe74e9f3c087abfc7a0a714dfa734ef4"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe74e9f3c087abfc7a0a714dfa734ef4">transfer_reg_data_len</a> = 0</td></tr>
 <tr class="memitem:a4c91feb7fefa2f8ed2f4f6846f01aa92" id="r_a4c91feb7fefa2f8ed2f4f6846f01aa92"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c91feb7fefa2f8ed2f4f6846f01aa92">amu_num_devices</a> = 0</td></tr>
 <tr class="memitem:a002d666f32256637d0309eefafd5c531" id="r_a002d666f32256637d0309eefafd5c531"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="structamu__device__t.html">amu_device_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a002d666f32256637d0309eefafd5c531">amu_device</a></td></tr>
@@ -670,7 +671,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    .transfer_reg = <a class="code hl_variable" href="#a98c2a3bcc66048661728168b573cc781">amu_transfer_reg</a>,</div>
+<div class="line">    .transfer_reg = <a class="code hl_variable" href="#aa1bc78e5002778c7090732e3e7e24bfb">amu_transfer_reg</a>,</div>
 <div class="line">    .sweep_data = NULL,</div>
 <div class="line">    .amu_regs = NULL,</div>
 <div class="line"> </div>
@@ -681,14 +682,14 @@ Variables</h2></td></tr>
 <div class="line">    .millis = NULL,</div>
 <div class="line">    .process_cmd = NULL,</div>
 <div class="line">}</div>
-<div class="ttc" id="aamu__device_8c_html_a98c2a3bcc66048661728168b573cc781"><div class="ttname"><a href="#a98c2a3bcc66048661728168b573cc781">amu_transfer_reg</a></div><div class="ttdeci">static volatile uint8_t amu_transfer_reg[(250 *sizeof(float) *2)]</div><div class="ttdef"><b>Definition</b> <a href="amu__device_8c_source.html#l00023">amu_device.c:23</a></div></div>
+<div class="ttc" id="aamu__device_8c_html_aa1bc78e5002778c7090732e3e7e24bfb"><div class="ttname"><a href="#aa1bc78e5002778c7090732e3e7e24bfb">amu_transfer_reg</a></div><div class="ttdeci">static volatile uint8_t amu_transfer_reg[(40 *sizeof(float))]</div><div class="ttdef"><b>Definition</b> <a href="amu__device_8c_source.html#l00023">amu_device.c:23</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="amu__device_8c_source.html#l00040">40</a> of file <a class="el" href="amu__device_8c_source.html">amu_device.c</a>.</p>
 
 </div>
 </div>
-<a id="a604a53fc4aa00db624e44a7f690cb9fd" name="a604a53fc4aa00db624e44a7f690cb9fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a604a53fc4aa00db624e44a7f690cb9fd">&#9670;&#160;</a></span>amu_device_addresses</h2>
+<a id="ab3a908c4dc978674358b7a7d050fce1f" name="ab3a908c4dc978674358b7a7d050fce1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3a908c4dc978674358b7a7d050fce1f">&#9670;&#160;</a></span>amu_device_addresses</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -697,7 +698,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t amu_device_addresses[63]</td>
+          <td class="memname">uint8_t amu_device_addresses[16]</td>
         </tr>
       </table>
   </td>
@@ -735,8 +736,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a98c2a3bcc66048661728168b573cc781" name="a98c2a3bcc66048661728168b573cc781"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c2a3bcc66048661728168b573cc781">&#9670;&#160;</a></span>amu_transfer_reg</h2>
+<a id="aa1bc78e5002778c7090732e3e7e24bfb" name="aa1bc78e5002778c7090732e3e7e24bfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1bc78e5002778c7090732e3e7e24bfb">&#9670;&#160;</a></span>amu_transfer_reg</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -745,7 +746,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">volatile uint8_t amu_transfer_reg[(250 *sizeof(float) *2)]</td>
+          <td class="memname">volatile uint8_t amu_transfer_reg[(40 *<a class="el" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">sizeof</a>(float))]</td>
         </tr>
       </table>
   </td>

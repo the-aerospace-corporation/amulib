@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: SCPI ADC Commands</title>
+<title>AMU Library: ADC Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,20 +90,30 @@ $(function(){initNavTree('group__scpi__adc__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">SCPI ADC Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">ADC Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Analog-to-Digital Converter control commands.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ga0b37dd7a2003b3ed1b843aabc334dc31" id="r_ga0b37dd7a2003b3ed1b843aabc334dc31"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0b37dd7a2003b3ed1b843aabc334dc31">SCPI_COMMAND</a>(P,  C,  T)</td></tr>
-<tr class="memdesc:ga0b37dd7a2003b3ed1b843aabc334dc31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear status command - clears device status registers * * * &lt;&gt; :&lt;/&gt; &lt;&gt;*&lt;/&gt; * * &lt;&gt;:&lt;/&gt; * &lt;&gt; :&lt;/&gt; 0 * * @ * @ * * @ : * @ * // * ("*"); * .  <br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<p>Analog-to-Digital Converter control commands. </p>
+<p>MEMory:ADC:CH#:GAIN[?]: Sets or queries EEPROM-stored ADC channel gain calibration (USB only)  
+</p>
+<p>MEMory:ADC:CH#:GAIN[?]: Sets or queries EEPROM-stored ADC channel gain calibration (USB only) </p>
+<p>Analog-to-Digital Converter control commands.</p>
+<p>Enum: CMD_USB_EEPROM_GAIN</p>
+<p>MEMory:ADC:CH#:OFFset[?]: Sets or queries EEPROM-stored ADC channel offset calibration (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_OFFSET</p>
+<p>MEMory:CURRent:GAIN#[?]: Sets or queries EEPROM-stored current gain calibration (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_CURRENT_GAIN</p>
+<p>MEMory:CURRent:OFFset#[?]: Sets or queries EEPROM-stored current offset calibration (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_CURRENT_OFFSET</p>
+<p>MEMory:ERASE:ALL: Erases all user data from EEPROM (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_ERASE_ALL</p>
+<p>MEMory:ERASE:CONFig: Erases configuration data from EEPROM (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_ERASE_CONFIG</p>
+<p>MEMory:VOLTage:GAIN#[?]: Sets or queries EEPROM-stored voltage gain calibration (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_VOLTAGE_GAIN</p>
+<p>MEMory:VOLTage:OFFset#[?]: Sets or queries EEPROM-stored voltage offset calibration (USB only)</p>
+<p>Enum: CMD_USB_EEPROM_VOLTAGE_OFFSET</p>
+<p>ADC Commands for AMU Library</p>
 <p>These commands control ADC operation:</p><ul>
 <li>Channel configuration</li>
 <li>PGA (Programmable Gain Amplifier) settings</li>
@@ -163,43 +173,7 @@ ADC:CALibrate:TSENSor</h3>
 <p><b>I2C Equivalent:</b> CMD_ADC_CALIBRATE_TSENSOR</p>
 <p><b>Note:</b> Optimizes ADC settings for temperature measurement accuracy</p>
 <p><b>Example:</b> </p><div class="fragment"><div class="line">ADC:CALibrate:TSENSor</div>
-</div><!-- fragment --> </div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="ga0b37dd7a2003b3ed1b843aabc334dc31" name="ga0b37dd7a2003b3ed1b843aabc334dc31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0b37dd7a2003b3ed1b843aabc334dc31">&#9670;&#160;</a></span>SCPI_COMMAND</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SCPI_COMMAND</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>P</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>C</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>T</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">{C ## _ ## T ## _pattern, C, T},</div>
-</div><!-- fragment -->
-<p>Clear status command - clears device status registers * * * &lt;&gt; :&lt;/&gt; &lt;&gt;*&lt;/&gt; * * &lt;&gt;:&lt;/&gt; * &lt;&gt; :&lt;/&gt; 0 * * @ * @ * * @ : * @ * // * ("*"); * . </p>
-<ul>
-<li></li>
-<li>Set adc:voltage:calibrate:zero value * * * &lt;&gt; :&lt;/&gt; &lt;&gt;:::&lt;/&gt; * * &lt;&gt;:&lt;/&gt; * &lt;&gt; :&lt;/&gt; * * @ * @ * * @ : * @ * // * (":::"); * @ </li>
-</ul>
-
-<p class="definition">Definition at line <a class="el" href="scpi_8c_source.html#l00520">520</a> of file <a class="el" href="scpi_8c_source.html">scpi.c</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

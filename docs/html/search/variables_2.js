@@ -12,5 +12,5 @@ var searchData=
   ['count_9',['count',['../struct__scpi__error__info__heap__t.html#af672784ef7782e5ced0dbf7ad1955d6c',1,'_scpi_error_info_heap_t::count'],['../struct__scpi__fifo__t.html#affef66148b21f57e6e4014629a88616c',1,'_scpi_fifo_t::count']]],
   ['coverglass_10',['coverglass',['../structamu__dut__t.html#a3342cce378642f8be6ad6b247c03f31b',1,'amu_dut_t']]],
   ['crc_11',['crc',['../structivsweep__meta__t.html#ab649df41a75e65b4f7fb2e4a9db64a7f',1,'ivsweep_meta_t']]],
-  ['current_12',['current',['../structivsweep__datapoint__t.html#a80855b9c89761e5c7080a605e7a72f5f',1,'ivsweep_datapoint_t::current'],['../structivsweep__packet__t.html#a6dea5d461afbc7ff68ef764275893707',1,'ivsweep_packet_t::current'],['../unionadc__channels__t.html#a895f9d542da8ec9fa846004e947040f0',1,'adc_channels_t::current']]]
+  ['current_12',['current',['../structivsweep__datapoint__t.html#a80855b9c89761e5c7080a605e7a72f5f',1,'ivsweep_datapoint_t::current'],['../structivsweep__packet__t.html#af4da6efe0f3401eaf1b5fd0141ead314',1,'ivsweep_packet_t::current'],['../unionadc__channels__t.html#a895f9d542da8ec9fa846004e947040f0',1,'adc_channels_t::current']]]
 ];

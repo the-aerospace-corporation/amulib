@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: SCPI Sweep Commands</title>
+<title>AMU Library: Sweep Commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,13 +90,46 @@ $(function(){initNavTree('group__scpi__sweep__commands.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">SCPI Sweep Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
+  <div class="headertitle"><div class="title">Sweep Commands <div class="ingroups"><a class="el" href="group__scpi__commands.html">SCPI Commands</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>I-V sweep measurement commands.  
+<p>ADC:CURRent:CALibrate:FULL: Performs full-scale calibration for current channel (USB only)  
 </p>
-<p>I-V sweep measurement commands. </p>
+<p>ADC:CURRent:CALibrate:FULL: Performs full-scale calibration for current channel (USB only) </p>
+<p>I-V sweep measurement commands.</p>
+<p>Enum: CMD_USB_ADC_CURRENT_CAL_FULL</p>
+<p>ADC:CURRent:CALibrate:RESet: Resets current channel calibration to defaults (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_CAL_RESET</p>
+<p>ADC:CURRent:CALibrate:SAVe: Saves current channel calibration to EEPROM (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_CAL_SAVE</p>
+<p>ADC:CURRent:CALibrate:ZERO: Performs zero-scale calibration for current channel (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_CAL_ZERO</p>
+<p>ADC:CURRent:GAIN[?]: Sets or queries current channel gain coefficient (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_GAIN</p>
+<p>ADC:CURRent:MAX?: Queries current channel maximum input range (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_MAX</p>
+<p>ADC:CURRent:OFFset[?]: Sets or queries current channel offset coefficient (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_OFFSET</p>
+<p>ADC:CURRent:PGA[?]: Sets or queries current channel PGA setting (USB only)</p>
+<p>Enum: CMD_USB_ADC_CURRENT_PGA</p>
+<p>ADC:VOLTage:CALibrate:FULL: Performs full-scale calibration for voltage channel (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_CAL_FULL</p>
+<p>ADC:VOLTage:CALibrate:RESet: Resets voltage channel calibration to defaults (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_CAL_RESET</p>
+<p>ADC:VOLTage:CALibrate:SAVe: Saves voltage channel calibration to EEPROM (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_CAL_SAVE</p>
+<p>ADC:VOLTage:CALibrate:ZERO: Performs zero-scale calibration for voltage channel (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_CAL_ZERO</p>
+<p>ADC:VOLTage:GAIN[?]: Sets or queries voltage channel gain coefficient (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_GAIN</p>
+<p>ADC:VOLTage:MAX?: Queries voltage channel maximum input range (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_MAX</p>
+<p>ADC:VOLTage:OFFset[?]: Sets or queries voltage channel offset coefficient (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_OFFSET</p>
+<p>ADC:VOLTage:PGA[?]: Sets or queries voltage channel PGA setting (USB only)</p>
+<p>Enum: CMD_USB_ADC_VOLTAGE_PGA</p>
+<p>Sweep Commands for AMU Library</p>
 <p>These commands control current-voltage sweep operations:</p><ul>
 <li>Sweep configuration</li>
 <li>Trigger control</li>

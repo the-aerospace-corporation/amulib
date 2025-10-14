@@ -1,0 +1,213 @@
+/**
+ * @file scpi_groups.dox
+ * @brief SCPI Command Group Definitions
+ * @details This file defines Doxygen groups for SCPI commands
+ *          based on documentation in amu_commands.h
+ */
+
+/**
+ * @defgroup scpi_system_commands System Commands
+ * @brief System Commands for AMU Library
+ * @{
+ */
+
+/**
+ * @brief SYSTem:BOOTloader: Enters bootloader mode for firmware updates (USB only)
+ * @details Enum: CMD_USB_SYSTEM_ENTER_BOOTLOADER
+ */
+
+/**
+ * @brief SYSTem:CONFig:CURRent:GAIN[?]: Sets or queries current measurement amplifier gain (USB only)
+ * @details Enum: CMD_USB_SYSTEM_CONFIG_CURR_GAIN
+ */
+
+/**
+ * @brief SYSTem:CONFig:CURRent:Rsense[?]: Sets or queries current sense resistor value in ohms (USB only)
+ * @details Enum: CMD_USB_SYSTEM_CONFIG_CURR_RSENSE
+ */
+
+/**
+ * @brief SYSTem:CONFig:SAVE: Saves current system configuration to EEPROM (USB only)
+ * @details Enum: CMD_USB_SYSTEM_CONFIG_SAVE
+ */
+
+/**
+ * @brief SYSTem:CONFig:VOLTage:R1[?]: Sets or queries voltage divider R1 resistor value in ohms (USB only)
+ * @details Enum: CMD_USB_SYSTEM_CONFIG_VOLT_R1
+ */
+
+/**
+ * @brief SYSTem:CONFig:VOLTage:R2[?]: Sets or queries voltage divider R2 resistor value in ohms (USB only)
+ * @details Enum: CMD_USB_SYSTEM_CONFIG_VOLT_R2
+ */
+
+/**
+ * @brief SYSTem:DEBug#?: Sets or queries debug values for development (USB only)
+ * @details Enum: CMD_USB_SYSTEM_DEBUG
+ */
+
+/**
+ * @brief SYSTem:SCPI:LIST?: Returns list of all supported SCPI commands (USB only)
+ * @details Enum: CMD_USB_SYSTEM_LIST_SCPI_COMMANDS
+ */
+
+/**
+ * @brief SYSTem:TWI:MODE[?]: Sets or queries I2C operating mode (USB only)
+ * @details Enum: CMD_USB_SYSTEM_TWI_MODE
+ */
+
+/**
+ * @brief SYSTem:TWI:SCAN?: Scans I2C bus and returns list of device addresses (USB only)
+ * @details Enum: CMD_USB_SYSTEM_TWI_SCAN
+ */
+
+/** @} */
+
+/**
+ * @defgroup scpi_memory_commands Memory Commands
+ * @brief Memory Commands for AMU Library
+ * @{
+ */
+
+/**
+ * @brief MEMory:ADC:CH#:GAIN[?]: Sets or queries EEPROM-stored ADC channel gain calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_GAIN
+ */
+
+/**
+ * @brief MEMory:ADC:CH#:OFFset[?]: Sets or queries EEPROM-stored ADC channel offset calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_OFFSET
+ */
+
+/**
+ * @brief MEMory:CURRent:GAIN#[?]: Sets or queries EEPROM-stored current gain calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_CURRENT_GAIN
+ */
+
+/**
+ * @brief MEMory:CURRent:OFFset#[?]: Sets or queries EEPROM-stored current offset calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_CURRENT_OFFSET
+ */
+
+/**
+ * @brief MEMory:ERASE:ALL: Erases all user data from EEPROM (USB only)
+ * @details Enum: CMD_USB_EEPROM_ERASE_ALL
+ */
+
+/**
+ * @brief MEMory:ERASE:CONFig: Erases configuration data from EEPROM (USB only)
+ * @details Enum: CMD_USB_EEPROM_ERASE_CONFIG
+ */
+
+/**
+ * @brief MEMory:VOLTage:GAIN#[?]: Sets or queries EEPROM-stored voltage gain calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_VOLTAGE_GAIN
+ */
+
+/**
+ * @brief MEMory:VOLTage:OFFset#[?]: Sets or queries EEPROM-stored voltage offset calibration (USB only)
+ * @details Enum: CMD_USB_EEPROM_VOLTAGE_OFFSET
+ */
+
+/** @} */
+
+/**
+ * @defgroup scpi_adc_commands ADC Commands
+ * @brief ADC Commands for AMU Library
+ * @{
+ */
+
+/**
+ * @brief ADC:CURRent:CALibrate:FULL: Performs full-scale calibration for current channel (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_CAL_FULL
+ */
+
+/**
+ * @brief ADC:CURRent:CALibrate:RESet: Resets current channel calibration to defaults (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_CAL_RESET
+ */
+
+/**
+ * @brief ADC:CURRent:CALibrate:SAVe: Saves current channel calibration to EEPROM (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_CAL_SAVE
+ */
+
+/**
+ * @brief ADC:CURRent:CALibrate:ZERO: Performs zero-scale calibration for current channel (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_CAL_ZERO
+ */
+
+/**
+ * @brief ADC:CURRent:GAIN[?]: Sets or queries current channel gain coefficient (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_GAIN
+ */
+
+/**
+ * @brief ADC:CURRent:MAX?: Queries current channel maximum input range (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_MAX
+ */
+
+/**
+ * @brief ADC:CURRent:OFFset[?]: Sets or queries current channel offset coefficient (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_OFFSET
+ */
+
+/**
+ * @brief ADC:CURRent:PGA[?]: Sets or queries current channel PGA setting (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_PGA
+ */
+
+/**
+ * @brief ADC:VOLTage:CALibrate:FULL: Performs full-scale calibration for voltage channel (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_CAL_FULL
+ */
+
+/**
+ * @brief ADC:VOLTage:CALibrate:RESet: Resets voltage channel calibration to defaults (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_CAL_RESET
+ */
+
+/**
+ * @brief ADC:VOLTage:CALibrate:SAVe: Saves voltage channel calibration to EEPROM (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_CAL_SAVE
+ */
+
+/**
+ * @brief ADC:VOLTage:CALibrate:ZERO: Performs zero-scale calibration for voltage channel (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_CAL_ZERO
+ */
+
+/**
+ * @brief ADC:VOLTage:GAIN[?]: Sets or queries voltage channel gain coefficient (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_GAIN
+ */
+
+/**
+ * @brief ADC:VOLTage:MAX?: Queries voltage channel maximum input range (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_MAX
+ */
+
+/**
+ * @brief ADC:VOLTage:OFFset[?]: Sets or queries voltage channel offset coefficient (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_OFFSET
+ */
+
+/**
+ * @brief ADC:VOLTage:PGA[?]: Sets or queries voltage channel PGA setting (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_PGA
+ */
+
+/** @} */
+
+/**
+ * @defgroup scpi_sweep_commands Sweep Commands
+ * @brief Sweep Commands for AMU Library
+ * @{
+ */
+
+/**
+ * @brief SWEEP:TRIGger:USB: Triggers I-V sweep with USB-specific parameters (USB only)
+ * @details Enum: CMD_USB_SWEEP_TRIGGER
+ */
+
+/** @} */
