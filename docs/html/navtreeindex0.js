@@ -14,6 +14,7 @@ var NAVTREEINDEX0 =
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a0d919f0fd8f11ea73179cd281c610f9c":[14,0,1,0,1,30,4],
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a1e9df89a172fca4ca178b67c2c72344b":[14,0,1,0,1,30,1],
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a1f229136e2e6c9e0a8309cb82b1e110a":[14,0,1,0,1,30,7],
+"amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a30c30d7a515c99db49472547bfb9c83c":[14,0,1,0,1,30,8],
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a3e276c4191b6d888e204e1fc1d9c0c81":[14,0,1,0,1,30,0],
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296ab9488833b627cf62a527792f1e8933d5":[14,0,1,0,1,30,5],
 "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296ad3e51d8fa359b382cc39388c2faa782e":[14,0,1,0,1,30,6],
@@ -33,6 +34,7 @@ var NAVTREEINDEX0 =
 "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42ea858382e8da41a8840f84dd2ed4574435":[14,0,1,0,1,29,4],
 "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42ea87c7e1a7f6bce2c4ab2b6b7fe2a6512c":[14,0,1,0,1,29,7],
 "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eae7be5d6d9348be767a5a8eb812ed9c02":[14,0,1,0,1,29,6],
+"amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eaeac59652a221ec0e65c581f8e71da9bd":[14,0,1,0,1,29,8],
 "amu__commands_8h.html#a488c4ec49a8fd2b02afd1d61f2035cd2":[14,0,1,0,1,4],
 "amu__commands_8h.html#a50e87dc20f3de8be8f3ae7ecfcdc5574":[14,0,1,0,1,18],
 "amu__commands_8h.html#a530bbfbd4a914e3515d7304bd83f6cb1":[14,0,1,0,1,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faaa6268d381964d9b1b270baf05e1e8038":[14,0,1,0,6,12,4],
 "amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faaa6c0378e996b423c24bc3c2b289b6574":[14,0,1,0,6,12,8],
 "amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a":[14,0,1,0,6,12,3],
-"amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a":[14,0,1,0,6,12,0],
-"amu__regs_8h.html#abef8cf2ab221162c231a4e22d8f797c0":[14,0,1,0,6,18],
-"amu__regs_8h.html#ac4b9301d520390c6dfa807d4fa9fc9eb":[14,0,1,0,6,10]
+"amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faae0f8f06d15ce9281e8a6cdaa1cabe44a":[14,0,1,0,6,12,0]
 };

@@ -1241,6 +1241,12 @@ typedef enum {
 	 *  @description Sets or queries voltage channel gain coefficient (USB only)
 	 */
 	CMD_USB_ADC_VOLTAGE_GAIN =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x07,
+
+	/** @brief Voltage channel PGA maximum setting for given PGA setting
+	 *  @scpi_cmd ADC:VOLTage:MAX:PGA[#]?
+	 *  @description Queries voltage channel PGA maximum setting for given PGA setting (USB only)
+	 */
+	CMD_USB_ADC_VOLTAGE_MAX_PGA = 		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x08,
 } CMD_USB_ADC_VOLTAGE_t;
 #undef CMD_USB_ADC_VOLTAGE_CMD_OFFSET
 
@@ -1299,6 +1305,12 @@ typedef enum {
 	 *  @description Sets or queries current channel gain coefficient (USB only)
 	 */
 	CMD_USB_ADC_CURRENT_GAIN =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x07,
+
+	/** @brief Current channel PGA maximum setting for given PGA setting
+	 *  @scpi_cmd ADC:CURRent:MAX:PGA[#]?
+	 *  @description Queries current channel PGA maximum setting for given PGA setting (USB only)
+	 */
+	CMD_USB_ADC_CURRENT_MAX_PGA = 		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x08,
 } CMD_USB_ADC_CURRENT_t;
 #undef CMD_USB_ADC_CURRENT_CMD_OFFSET
 

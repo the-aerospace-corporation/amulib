@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"error_8h.html":[14,0,1,0,0,4],
+"error_8h.html#a1b54a47beccbe84e4d0a99150ec8acf5":[14,0,1,0,0,4,7],
 "error_8h.html#a307b29eabc2b7bd9baf5284fa419719e":[14,0,1,0,0,4,4],
 "error_8h.html#a45dfabe0eec968c0ce571aea189fa617":[14,0,1,0,0,4,8],
 "error_8h.html#a6d13ba223d7b01428b6a541d567e5590":[14,0,1,0,0,4,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "group__scpi__aux__commands.html#scpi_heater_reference":[12,1,5,1],
 "group__scpi__aux__commands.html#scpi_sunsensor_reference":[12,1,5,2],
 "group__scpi__commands.html":[12,1],
-"group__scpi__dut__commands.html":[12,1,2],
-"group__scpi__dut__commands.html#scpi_dut_reference":[12,1,2,0],
-"group__scpi__measurement__commands.html":[12,1,1]
+"group__scpi__dut__commands.html":[12,1,2]
 };

@@ -9,6 +9,5 @@ var dir_8d4eae6c48ac37397aa326ec06fcc2e3 =
     [ "amu_regs.h", "amu__regs_8h.html", "amu__regs_8h" ],
     [ "amu_types.h", "amu__types_8h.html", "amu__types_8h" ],
     [ "scpi.c", "scpi_8c.html", "scpi_8c" ],
-    [ "scpi.h", "scpi_8h.html", "scpi_8h" ],
-    [ "scpi_corrupted_backup.h", "scpi__corrupted__backup_8h.html", "scpi__corrupted__backup_8h" ]
+    [ "scpi.h", "scpi_8h.html", "scpi_8h" ]
 ];

@@ -239,6 +239,16 @@ Documentation is extracted from the command enum definitions in `amu_commands.h`
 
 ---
 
+### `ADC:CURRent:MAX:PGA[#]?`
+
+**Description:** Queries current channel PGA maximum setting for given PGA setting (USB only)
+
+**Enum:** `CMD_USB_ADC_CURRENT_MAX_PGA`
+
+**Type:** Query
+
+---
+
 ### `ADC:CURRent:MAX?`
 
 **Description:** Queries current channel maximum input range (USB only)
@@ -314,6 +324,16 @@ Documentation is extracted from the command enum definitions in `amu_commands.h`
 **Description:** Sets or queries voltage channel gain coefficient (USB only)
 
 **Enum:** `CMD_USB_ADC_VOLTAGE_GAIN`
+
+**Type:** Query
+
+---
+
+### `ADC:VOLTage:MAX:PGA[#]?`
+
+**Description:** Queries voltage channel PGA maximum setting for given PGA setting (USB only)
+
+**Enum:** `CMD_USB_ADC_VOLTAGE_MAX_PGA`
 
 **Type:** Query
 

@@ -751,84 +751,80 @@ $(function(){initNavTree('scpi_8c_source.html','',''); });
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>        <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, <span class="stringliteral">&quot;,&quot;</span>, 1);</div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>    }</div>
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    </div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    <span class="comment">// Debug: Show how many commands we found</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    <span class="comment">// char count_msg[50];</span></div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    <span class="comment">// snprintf(count_msg, sizeof(count_msg), &quot;\nFound %d commands\n&quot;, i);</span></div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    <span class="comment">// scpi_context.interface-&gt;write(&amp;scpi_context, count_msg, strlen(count_msg));</span></div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.aux_cmdlist != NULL) {</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>        <span class="keywordflow">for</span> (i = 0; (cmd_pattern = (<span class="keywordtype">char</span>*)<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.aux_cmdlist[i].pattern) != 0; i++) {</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>            <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, cmd_pattern, strlen(cmd_pattern));</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>            <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, <span class="stringliteral">&quot;,&quot;</span>, 1);</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        }</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    }</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span> </div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.aux_cmdlist != NULL) {</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>        <span class="keywordflow">for</span> (i = 0; (cmd_pattern = (<span class="keywordtype">char</span>*)<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.aux_cmdlist[i].pattern) != 0; i++) {</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>            <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, cmd_pattern, strlen(cmd_pattern));</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>            <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, <span class="stringliteral">&quot;,&quot;</span>, 1);</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>        }</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>    }</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> </div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span> </div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno"><a class="line" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">  641</a></span>    <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, <a class="code hl_define" href="config_8h.html#a890ac5c4115c058882213e6def77159e">SCPI_LINE_ENDING</a>, <span class="keyword">sizeof</span>(<a class="code hl_define" href="config_8h.html#a890ac5c4115c058882213e6def77159e">SCPI_LINE_ENDING</a>));</div>
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> </div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>}</div>
 <div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span> </div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno"><a class="line" href="scpi_8c.html#aea0457026b67ee0a0007c07752a2ef05">  645</a></span>    <a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>.interface-&gt;write(&amp;<a class="code hl_variable" href="scpi_8c.html#ac6f639c26fd1c7e210c2da424cfe628d">scpi_context</a>, <a class="code hl_define" href="config_8h.html#a890ac5c4115c058882213e6def77159e">SCPI_LINE_ENDING</a>, <span class="keyword">sizeof</span>(<a class="code hl_define" href="config_8h.html#a890ac5c4115c058882213e6def77159e">SCPI_LINE_ENDING</a>));</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>}</div>
+<div class="foldopen" id="foldopen00647" data-start="{" data-end="}">
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno"><a class="line" href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">  647</a></span>int16_t <a class="code hl_function" href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">_scpi_get_channelList</a>(scpi_t* context) {</div>
 <div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span> </div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> </div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
-<div class="foldopen" id="foldopen00651" data-start="{" data-end="}">
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno"><a class="line" href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">  651</a></span>int16_t <a class="code hl_function" href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">_scpi_get_channelList</a>(scpi_t* context) {</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <a class="code hl_typedef" href="types_8h.html#afc7b711cc713be72691cecfad805cadb">scpi_parameter_t</a> channel_list_param;</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>    uint8_t scpi_list_iterator = 0;</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    <span class="comment">//Checks for any parameter</span></div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="parser_8c.html#a7022ca77f03e05288b0400d9afa62cb0">SCPI_Parameter</a>(context, &amp;channel_list_param, <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)) {</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>        <a class="code hl_typedef" href="types_8h.html#a2d1ccbbe530a01f259d5463775a9bb7e">scpi_bool_t</a> is_range;</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>        <span class="keywordtype">size_t</span> dimensions;</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span> </div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        <span class="comment">/* the next statement is valid usage and it gets only real number of dimensions for the first item (index 0) */</span></div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="expression_8c.html#a0ff64693eba38a1ddb7b8ba1cbb531a8">SCPI_ExprChannelListEntry</a>(context, &amp;channel_list_param, 0, &amp;is_range, NULL, NULL, 0, &amp;dimensions)) {</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            <span class="keywordtype">size_t</span> param_idx = 0;           <span class="comment">/* index for channel list */</span></div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>            int8_t direction = 1; <span class="comment">/* direction of counter for rows, +/-1 */</span></div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            int32_t address_start = 0;</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>            int32_t address_end = 0;</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>            <span class="keywordflow">while</span> (<a class="code hl_enumvalue" href="expression_8h.html#a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090">SCPI_EXPR_OK</a> == <a class="code hl_function" href="expression_8c.html#a0ff64693eba38a1ddb7b8ba1cbb531a8">SCPI_ExprChannelListEntry</a>(context, &amp;channel_list_param, param_idx, &amp;is_range, &amp;address_start, &amp;address_end, 1, &amp;dimensions)) {</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span> </div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>                <span class="keywordflow">if</span> ((dimensions != 1) | (address_start &gt; 63)) {</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>                    <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                }</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span> </div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>                <span class="keywordflow">if</span> (is_range) {</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span> </div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>                    <span class="keywordflow">if</span> (address_end &gt; 63) {</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                        <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>                        <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>                    }</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span> </div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>                    <span class="keywordflow">for</span> ((address_start &gt; address_end) ? (direction = -1) : (direction = 1); address_start != address_end; address_start += direction)</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = address_start;</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> </div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    <a class="code hl_typedef" href="types_8h.html#afc7b711cc713be72691cecfad805cadb">scpi_parameter_t</a> channel_list_param;</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>    uint8_t scpi_list_iterator = 0;</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>    <span class="comment">//Checks for any parameter</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="parser_8c.html#a7022ca77f03e05288b0400d9afa62cb0">SCPI_Parameter</a>(context, &amp;channel_list_param, <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)) {</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        <a class="code hl_typedef" href="types_8h.html#a2d1ccbbe530a01f259d5463775a9bb7e">scpi_bool_t</a> is_range;</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        <span class="keywordtype">size_t</span> dimensions;</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>        <span class="comment">/* the next statement is valid usage and it gets only real number of dimensions for the first item (index 0) */</span></div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="expression_8c.html#a0ff64693eba38a1ddb7b8ba1cbb531a8">SCPI_ExprChannelListEntry</a>(context, &amp;channel_list_param, 0, &amp;is_range, NULL, NULL, 0, &amp;dimensions)) {</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>            <span class="keywordtype">size_t</span> param_idx = 0;           <span class="comment">/* index for channel list */</span></div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>            int8_t direction = 1; <span class="comment">/* direction of counter for rows, +/-1 */</span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>            int32_t address_start = 0;</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>            int32_t address_end = 0;</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span> </div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            <span class="keywordflow">while</span> (<a class="code hl_enumvalue" href="expression_8h.html#a810fa104d42ef99e96cf10bf47e57b5aa375bb77d91eb56cc174a76e85e4dd090">SCPI_EXPR_OK</a> == <a class="code hl_function" href="expression_8c.html#a0ff64693eba38a1ddb7b8ba1cbb531a8">SCPI_ExprChannelListEntry</a>(context, &amp;channel_list_param, param_idx, &amp;is_range, &amp;address_start, &amp;address_end, 1, &amp;dimensions)) {</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span> </div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                <span class="keywordflow">if</span> ((dimensions != 1) | (address_start &gt; 63)) {</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>                    <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>                }</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span> </div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>                <span class="keywordflow">if</span> (is_range) {</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span> </div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                    <span class="keywordflow">if</span> (address_end &gt; 63) {</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>                        <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>                        <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>                    }</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                    <span class="keywordflow">for</span> ((address_start &gt; address_end) ? (direction = -1) : (direction = 1); address_start != address_end; address_start += direction)</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = address_start;</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span> </div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = address_start;</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> </div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>                }</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>                <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = address_start;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span> </div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>                }</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>                <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>                    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = address_start;</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>                }</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span> </div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>                <span class="comment">/* increase index */</span></div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>                param_idx++;</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>            }</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        }</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>    }</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>    <span class="keywordflow">else</span> {  <span class="comment">//No parameter list</span></div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = 0;</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>    }</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span> </div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>}</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>                }</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>                <span class="comment">/* increase index */</span></div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>                param_idx++;</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>            }</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>        }</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    }</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>    <span class="keywordflow">else</span> {  <span class="comment">//No parameter list</span></div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator++] = 0;</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>    }</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span> </div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>    <a class="code hl_variable" href="scpi_8c.html#a5621183adafe47a5b76f094dfa349136">scpi_channel_list</a>[scpi_list_iterator] = <a class="code hl_define" href="amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4">AMU_DEVICE_END_LIST</a>;</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span> </div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="types_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>}</div>
 </div>
 <div class="ttc" id="aamu__commands_8h_html_a3d7e984de76d6ac601b4612ed95769ba"><div class="ttname"><a href="amu__commands_8h.html#a3d7e984de76d6ac601b4612ed95769ba">CMD_I2C_USB</a></div><div class="ttdeci">#define CMD_I2C_USB</div><div class="ttdoc">TODO.</div><div class="ttdef"><b>Definition</b> <a href="amu__commands_8h_source.html#l00046">amu_commands.h:46</a></div></div>
 <div class="ttc" id="aamu__commands_8h_html_a9c953a6c538020e644127ee080608021"><div class="ttname"><a href="amu__commands_8h.html#a9c953a6c538020e644127ee080608021">CMD_READ</a></div><div class="ttdeci">#define CMD_READ</div><div class="ttdef"><b>Definition</b> <a href="amu__commands_8h_source.html#l00034">amu_commands.h:34</a></div></div>
@@ -912,7 +908,7 @@ $(function(){initNavTree('scpi_8c_source.html','',''); });
 <div class="ttc" id="ascpi_8c_html_aa14af162e39082d3caa45d607f6b1109"><div class="ttname"><a href="scpi_8c.html#aa14af162e39082d3caa45d607f6b1109">SCPI_CMD_RW</a></div><div class="ttdeci">#define SCPI_CMD_RW(TYPE)</div><div class="ttdef"><b>Definition</b> <a href="#l00052">scpi.c:52</a></div></div>
 <div class="ttc" id="ascpi_8c_html_aaeea13fc601c605718a0c40416130247"><div class="ttname"><a href="scpi_8c.html#aaeea13fc601c605718a0c40416130247">SCPI_Reset</a></div><div class="ttdeci">static scpi_result_t SCPI_Reset(scpi_t *context)</div><div class="ttdef"><b>Definition</b> <a href="#l00476">scpi.c:476</a></div></div>
 <div class="ttc" id="ascpi_8c_html_ab05d6653eb0f2a1e30bfb8db22c4c3b4"><div class="ttname"><a href="scpi_8c.html#ab05d6653eb0f2a1e30bfb8db22c4c3b4">notes_ptr</a></div><div class="ttdeci">amu_notes_t * notes_ptr</div><div class="ttdef"><b>Definition</b> <a href="#l00049">scpi.c:49</a></div></div>
-<div class="ttc" id="ascpi_8c_html_ab68d633bef15056b921c0bdc7da68093"><div class="ttname"><a href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">_scpi_get_channelList</a></div><div class="ttdeci">int16_t _scpi_get_channelList(scpi_t *context)</div><div class="ttdef"><b>Definition</b> <a href="#l00651">scpi.c:651</a></div></div>
+<div class="ttc" id="ascpi_8c_html_ab68d633bef15056b921c0bdc7da68093"><div class="ttname"><a href="scpi_8c.html#ab68d633bef15056b921c0bdc7da68093">_scpi_get_channelList</a></div><div class="ttdeci">int16_t _scpi_get_channelList(scpi_t *context)</div><div class="ttdef"><b>Definition</b> <a href="#l00647">scpi.c:647</a></div></div>
 <div class="ttc" id="ascpi_8c_html_ab72fba3d9a3e67bfca8479b9f7e9f180"><div class="ttname"><a href="scpi_8c.html#ab72fba3d9a3e67bfca8479b9f7e9f180">scpi_input_buffer</a></div><div class="ttdeci">static char scpi_input_buffer[1024]</div><div class="ttdef"><b>Definition</b> <a href="#l00019">scpi.c:19</a></div></div>
 <div class="ttc" id="ascpi_8c_html_abb79702a07817025926057457d59c5b3"><div class="ttname"><a href="scpi_8c.html#abb79702a07817025926057457d59c5b3">SCPI_Write</a></div><div class="ttdeci">static size_t SCPI_Write(scpi_t *context, const char *data, size_t len)</div><div class="ttdef"><b>Definition</b> <a href="#l00439">scpi.c:439</a></div></div>
 <div class="ttc" id="ascpi_8c_html_abc26016bcdc3dc96122d98a1c5b0abab"><div class="ttname"><a href="scpi_8c.html#abc26016bcdc3dc96122d98a1c5b0abab">SCPI_Flush</a></div><div class="ttdeci">static scpi_result_t SCPI_Flush(scpi_t *context)</div><div class="ttdef"><b>Definition</b> <a href="#l00482">scpi.c:482</a></div></div>

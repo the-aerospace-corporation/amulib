@@ -143,6 +143,11 @@
  */
 
 /**
+ * @brief ADC:CURRent:MAX:PGA[#]?: Queries current channel PGA maximum setting for given PGA setting (USB only)
+ * @details Enum: CMD_USB_ADC_CURRENT_MAX_PGA
+ */
+
+/**
  * @brief ADC:CURRent:MAX?: Queries current channel maximum input range (USB only)
  * @details Enum: CMD_USB_ADC_CURRENT_MAX
  */
@@ -180,6 +185,11 @@
 /**
  * @brief ADC:VOLTage:GAIN[?]: Sets or queries voltage channel gain coefficient (USB only)
  * @details Enum: CMD_USB_ADC_VOLTAGE_GAIN
+ */
+
+/**
+ * @brief ADC:VOLTage:MAX:PGA[#]?: Queries voltage channel PGA maximum setting for given PGA setting (USB only)
+ * @details Enum: CMD_USB_ADC_VOLTAGE_MAX_PGA
  */
 
 /**
