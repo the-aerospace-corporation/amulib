@@ -885,7 +885,7 @@ typedef enum {
 	 *  @details Sets or queries ADC channel offset calibration coefficient
 	 *  @param channel Channel number (0-15)
 	 *  @param coefficient Offset calibration coefficient
-	 *  @return Current offset calibration coefficient
+	 *  @return Current offset calibration coefficient (int32_t format)
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:OFFset[?]`
 	 */
@@ -895,7 +895,7 @@ typedef enum {
 	 *  @details Sets or queries ADC channel gain calibration coefficient
 	 *  @param channel Channel number (0-15)
 	 *  @param coefficient Gain calibration coefficient
-	 *  @return Current gain calibration coefficient
+	 *  @return Current gain calibration coefficient (uint32_t format)
 	 *  @par SCPI Equivalent:
 	 *  `ADC:CH#:GAIN[?]`
 	 */
@@ -1233,12 +1233,14 @@ typedef enum {
 	/** @brief Voltage channel offset coefficient
 	 *  @scpi_cmd ADC:VOLTage:OFFset[?]
 	 *  @description Sets or queries voltage channel offset coefficient (USB only)
+	 *  @return Voltage offset calibration coefficient (int32_t format)
 	 */
 	CMD_USB_ADC_VOLTAGE_OFFSET =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x06,
 	
 	/** @brief Voltage channel gain coefficient
 	 *  @scpi_cmd ADC:VOLTage:GAIN[?]
 	 *  @description Sets or queries voltage channel gain coefficient (USB only)
+	 *  @return Voltage gain calibration coefficient (uint32_t format)
 	 */
 	CMD_USB_ADC_VOLTAGE_GAIN =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x07,
 
@@ -1247,6 +1249,12 @@ typedef enum {
 	 *  @description Queries voltage channel PGA maximum setting for given PGA setting (USB only)
 	 */
 	CMD_USB_ADC_VOLTAGE_MAX_PGA = 		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x08,
+
+	/** @brief Voltage channel save pga settings
+	 *  @scpi_cmd ADC:VOLTage:PGA:SAVE
+	 *  @description Saves voltage channel PGA settings to EEPROM (USB only)
+	 */
+	CMD_USB_ADC_VOLTAGE_PGA_SAVE =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x09,
 } CMD_USB_ADC_VOLTAGE_t;
 #undef CMD_USB_ADC_VOLTAGE_CMD_OFFSET
 
@@ -1297,12 +1305,14 @@ typedef enum {
 	/** @brief Current channel offset coefficient
 	 *  @scpi_cmd ADC:CURRent:OFFset[?]
 	 *  @description Sets or queries current channel offset coefficient (USB only)
+	 *  @return Current offset calibration coefficient (int32_t format)
 	 */
 	CMD_USB_ADC_CURRENT_OFFSET =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x06,
 	
 	/** @brief Current channel gain coefficient
 	 *  @scpi_cmd ADC:CURRent:GAIN[?]
 	 *  @description Sets or queries current channel gain coefficient (USB only)
+	 *  @return Current gain calibration coefficient (uint32_t format)
 	 */
 	CMD_USB_ADC_CURRENT_GAIN =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x07,
 
@@ -1311,6 +1321,12 @@ typedef enum {
 	 *  @description Queries current channel PGA maximum setting for given PGA setting (USB only)
 	 */
 	CMD_USB_ADC_CURRENT_MAX_PGA = 		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x08,
+
+	/** @brief Current channel save pga settings
+	 *  @scpi_cmd ADC:CURRent:PGA:SAVE
+	 *  @description Saves current channel PGA settings to EEPROM (USB only)
+	 */
+	CMD_USB_ADC_CURRENT_PGA_SAVE =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x09,
 } CMD_USB_ADC_CURRENT_t;
 #undef CMD_USB_ADC_CURRENT_CMD_OFFSET
 

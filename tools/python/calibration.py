@@ -57,7 +57,11 @@ def info(file=None):
     filePrintln(file, "AMU-SERIAL: " + serial)
     filePrintln(file, "CONFIG: " + config)
 
-    filePrintln(file, "DAC-CORR: " + amu.query("DAC:GAIN:CORR?"))
+    filePrintln(file, "DAC-GAIN-CORR: " + amu.query("DAC:GAIN:CORR?"))
+    filePrintln(file, "DAC-OFFSET-CORR: " + amu.query("DAC:OFF:CORR?"))
+
+    filePrintln(file, "ADC VOLTAGE PGA: " + amu.query("ADC:VOLT:PGA?") + " (Max: " + amu.query("ADC:VOLT:MAX?") + " V)")
+    filePrintln(file, "ADC CURRENT PGA: " + amu.query("ADC:CURR:PGA?") + " (Max: " + amu.query("ADC:CURR:MAX?") + " A)")
 
 def getIVCoefficients():
 

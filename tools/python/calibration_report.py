@@ -73,7 +73,33 @@ class CalibrationReport:
             # If conversion fails, return original value
             return str(value)
     
-    def __init__(self):
+    @staticmethod
+    def get_sweep_type_name(type_value):
+        """Convert sweep type number to descriptive name"""
+        sweep_types = {
+            0: "Linear (Voc to Isc)",
+            1: "Logarithmic-Linear (Voc to Isc)",
+            2: "User-Defined Algorithm 0",
+            3: "User-Defined Algorithm 1", 
+            4: "User-Defined Algorithm 2",
+            5: "User-Defined Algorithm 3",
+            6: "User-Defined Algorithm 4",
+            7: "User-Defined Algorithm 5",
+            8: "Sun Sensor Only",
+            9: "Sun Sensor + Temperature",
+            10: "Noise IV Test",
+            11: "Noise Voltage Test",
+            12: "Noise Current Test",
+            13: "EEPROM Simulation"
+        }
+        
+        try:
+            type_num = int(type_value)
+            return sweep_types.get(type_num, f"Unknown Type ({type_num})")
+        except (ValueError, TypeError):
+            return f"Invalid Type ({type_value})"
+    
+    def __init__(self, property_tag=None):
         self.device_info = {}
         self.voltage_coefficients = {}
         self.current_coefficients = {}
@@ -82,6 +108,7 @@ class CalibrationReport:
         self.dac_coefficients = {}
         self.dac_accuracy_data = {}
         self.timestamp = datetime.now()
+        self.property_tag = property_tag
         
     def collect_device_info(self):
         """Collect all device information"""
@@ -109,6 +136,10 @@ class CalibrationReport:
                 'i2c_address': amu.query("SYST:TWI:ADD?"),
                 'temperature': amu.query("SYST:TEMP?"),
                 'sweep_config': amu.query("SWEEP:CONFIG?"),
+                'voltage_pga': amu.query("ADC:VOLT:PGA?"),
+                'voltage_max': amu.query("ADC:VOLT:MAX?"),
+                'current_pga': amu.query("ADC:CURR:PGA?"),
+                'current_max': amu.query("ADC:CURR:MAX?"),
                 'dut_notes': amu.query("DUT:NOTES?"),
                 'dut_manufacturer': amu.query("DUT:MAN?"),
                 'dut_model': amu.query("DUT:MOD?"),
@@ -119,6 +150,36 @@ class CalibrationReport:
                 'dut_energy': amu.query("DUT:ENERGY?"),
                 'dut_dose': amu.query("DUT:DOSE?")
             }
+            
+            # Collect source meter calibration reference information
+            try:
+                # Get source meter identification
+                source_meter_idn = instruments.source_meter.query("*IDN?").strip()
+                # Parse IDN response: Manufacturer,Model,SerialNumber,FirmwareVersion
+                idn_parts = source_meter_idn.split(',')
+                if len(idn_parts) >= 3:
+                    source_meter_model = idn_parts[1].strip()
+                    source_meter_serial = idn_parts[2].strip()
+                else:
+                    source_meter_model = "Unknown"
+                    source_meter_serial = "Unknown"
+                
+                # Build calibration reference string
+                calibration_ref = f"{source_meter_model} S/N:{source_meter_serial}"
+                if self.property_tag:
+                    calibration_ref += f" (Property Tag: {self.property_tag})"
+                
+                self.device_info['calibration_reference'] = calibration_ref
+                self.device_info['source_meter_model'] = source_meter_model
+                self.device_info['source_meter_serial'] = source_meter_serial
+                
+            except Exception as source_meter_error:
+                print(f"Error collecting source meter info: {source_meter_error}")
+                calibration_ref = "Source meter information unavailable"
+                if self.property_tag:
+                    calibration_ref += f" (Property Tag: {self.property_tag})"
+                self.device_info['calibration_reference'] = calibration_ref
+                
         except Exception as e:
             print(f"Error collecting device info: {e}")
     
@@ -373,6 +434,8 @@ class CalibrationReport:
                 'final_gain_correction': final_gain_corr,
                 'final_offset_correction': final_offset_corr
             }
+
+            amu.send("DAC:CAL:SAVE") # save cal value to eeprom
             
             # Collect accuracy data
             self.collect_dac_accuracy_data(steps)
@@ -420,7 +483,7 @@ class CalibrationReport:
                     'delta_ppm': delta_ppm
                 })
             
-            avg_delta = np.mean([d['delta'] for d in accuracy_data])
+            avg_delta = np.mean([abs(d['delta']) for d in accuracy_data])
             
             self.dac_accuracy_data = {
                 'vmax': vmax,
@@ -562,6 +625,7 @@ class CalibrationReport:
             <p><strong>Generated:</strong> {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}</p>
             <p><strong>Device:</strong> {self.device_info.get('hardware_name', 'Unknown')}</p>
             <p><strong>Serial Number:</strong> {self.device_info.get('amu_serial', 'Unknown')}</p>
+            <p><strong>Calibration Reference:</strong> {self.device_info.get('calibration_reference', 'Unknown')}</p>
         </div>
         
         <div class="section">
@@ -573,6 +637,65 @@ class CalibrationReport:
                 <tr><td><strong>I2C Address</strong></td><td>{self.format_register_value(str(self.device_info.get('i2c_address', 'Unknown')).strip(), digits=2)}</td></tr>
                 <tr><td><strong>Temperature</strong></td><td>{self.device_info.get('temperature', 'Unknown')} °C</td></tr>
                 <tr><td><strong>Notes</strong></td><td>{self.device_info.get('dut_notes', 'Unknown')}</td></tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>AMU Configuration</h2>
+            <table class="table">
+        """
+        
+        # Parse SWEEP:CONFIG? response and add to table
+        try:
+            sweep_config_raw = self.device_info.get('sweep_config', '')
+            if sweep_config_raw:
+                # Parse the comma-separated values from SWEEP:CONFIG?
+                # Expected format: type,numPoints,delay,ratio,power,dac_gain,sweep_averages,adc_averages,am0,area
+                config_values = sweep_config_raw.strip().split(',')
+                
+                if len(config_values) >= 10:
+                    html_content += f"""
+                <tr><td><strong>Sweep Type</strong></td><td>{self.get_sweep_type_name(config_values[0])}</td></tr>
+                <tr><td><strong>Number of Points</strong></td><td>{config_values[1]}</td></tr>
+                <tr><td><strong>Delay (ms)</strong></td><td>{config_values[2]}</td></tr>
+                <tr><td><strong>Ratio</strong></td><td>{config_values[3]}</td></tr>
+                <tr><td><strong>Power Setting</strong></td><td>{config_values[4]}</td></tr>
+                <tr><td><strong>DAC Gain</strong></td><td>{config_values[5]}</td></tr>
+                <tr><td><strong>Sweep Averages</strong></td><td>{config_values[6]}</td></tr>
+                <tr><td><strong>ADC Averages</strong></td><td>{config_values[7]}</td></tr>
+                <tr><td><strong>AM0 (A/m²)</strong></td><td>{float(config_values[8]):.6f}</td></tr>
+                <tr><td><strong>Area (cm²)</strong></td><td>{float(config_values[9]):.4f}</td></tr>
+                    """
+                else:
+                    html_content += f"""
+                <tr><td><strong>Raw Configuration</strong></td><td>{sweep_config_raw}</td></tr>
+                    """
+            else:
+                html_content += f"""
+                <tr><td><strong>Configuration</strong></td><td>Not available</td></tr>
+                """
+        except Exception as e:
+            html_content += f"""
+                <tr><td><strong>Configuration Error</strong></td><td>Could not parse: {str(e)}</td></tr>
+                """
+        
+        # Add PGA settings
+        try:
+            voltage_pga = self.device_info.get('voltage_pga', 'Unknown')
+            voltage_max = self.device_info.get('voltage_max', 'Unknown')
+            current_pga = self.device_info.get('current_pga', 'Unknown')
+            current_max = self.device_info.get('current_max', 'Unknown')
+            
+            html_content += f"""
+                <tr><td><strong>Voltage PGA Setting</strong></td><td>PGA {voltage_pga} (Max: {float(voltage_max):.4f} V)</td></tr>
+                <tr><td><strong>Current PGA Setting</strong></td><td>PGA {current_pga} (Max: {float(current_max):.6f} A)</td></tr>
+                """
+        except Exception as e:
+            html_content += f"""
+                <tr><td><strong>PGA Settings Error</strong></td><td>Could not parse: {str(e)}</td></tr>
+                """
+        
+        html_content += """
             </table>
         </div>
         """
@@ -596,13 +719,24 @@ class CalibrationReport:
                 <table class="table">
                     <tr><th>PGA</th><th>Vmax</th><th>Offset Register</th><th>Gain Register</th><th>Avg Error (µV)</th></tr>
             """
+            # Get current active voltage PGA setting
+            active_voltage_pga = self.device_info.get('voltage_pga', None)
+            try:
+                active_voltage_pga = int(active_voltage_pga) if active_voltage_pga else None
+            except (ValueError, TypeError):
+                active_voltage_pga = None
+            
             for pga in sorted(self.voltage_coefficients.keys()):
                 coeff = self.voltage_coefficients[pga]
                 accuracy = self.voltage_accuracy_data.get(pga, {})
                 # avg_ppm = accuracy.get('avg_error_ppm', 0)
                 avg_delta_uV = accuracy.get('avg_delta_uV', 0)
+                
+                # Make row bold if this is the active PGA setting
+                row_style = 'style="font-weight: bold;"' if pga == active_voltage_pga else ''
+                
                 html_content += f"""
-                    <tr>
+                    <tr {row_style}>
                         <td>{pga}</td>
                         <td>{coeff['vmax']:.4f}</td>
                         <td>{self.format_register_value(coeff['final_offset'])}</td>
@@ -619,13 +753,24 @@ class CalibrationReport:
                 <table class="table">
                     <tr><th>PGA</th><th>Imax</th><th>Offset Register</th><th>Gain Register</th><th>Avg Error (µA)</th></tr>
             """
+            # Get current active current PGA setting
+            active_current_pga = self.device_info.get('current_pga', None)
+            try:
+                active_current_pga = int(active_current_pga) if active_current_pga else None
+            except (ValueError, TypeError):
+                active_current_pga = None
+            
             for pga in sorted(self.current_coefficients.keys()):
                 coeff = self.current_coefficients[pga]
                 accuracy = self.current_accuracy_data.get(pga, {})
                 # avg_ppm = accuracy.get('avg_error_ppm', 0)
                 avg_delta_uA = accuracy.get('avg_delta_uA', 0)
+                
+                # Make row bold if this is the active PGA setting
+                row_style = 'style="font-weight: bold;"' if pga == active_current_pga else ''
+                
                 html_content += f"""
-                    <tr>
+                    <tr {row_style}>
                         <td>{pga}</td>
                         <td>{coeff['imax']:.6f}</td>
                         <td>{self.format_register_value(coeff['final_offset'])}</td>
@@ -643,7 +788,7 @@ class CalibrationReport:
                     <tr><td><strong>Vmax</strong></td><td>{self.dac_coefficients.get('vmax', 'Unknown'):.4f}</td></tr>
                     <tr><td><strong>Gain Correction</strong></td><td>{self.dac_coefficients.get('final_gain_correction', 'Unknown')}</td></tr>
                     <tr><td><strong>Offset Correction</strong></td><td>{self.dac_coefficients.get('final_offset_correction', 'Unknown')}</td></tr>
-                    <tr><td><strong>Average Error (µV)</strong></td><td>{self.dac_accuracy_data.get('avg_error_uV', 0):.2f}</td></tr>
+                    <tr><td><strong>Average Error (µV)</strong></td><td>{self.dac_accuracy_data.get('avg_delta_uV', 0):.2f}</td></tr>
                 </table>
             </div>
             """
@@ -726,6 +871,7 @@ class CalibrationReport:
                 ['Hardware', self.device_info.get('hardware_name', 'Unknown')],
                 ['Firmware', self.device_info.get('firmware', 'Unknown')],
                 ['AMU Serial', self.device_info.get('amu_serial', 'Unknown')],
+                ['Calibration Reference', self.device_info.get('calibration_reference', 'Unknown')],
                 ['I2C Address', self.format_register_value(str(self.device_info.get('i2c_address', 'Unknown')).strip(), digits=2)],
                 ['Temperature', f"{self.device_info.get('temperature', 'Unknown')} °C"],
             ]
@@ -743,6 +889,66 @@ class CalibrationReport:
             ]))
             
             story.append(device_table)
+            story.append(Spacer(1, 30))
+            
+            # Add AMU Configuration table
+            story.append(Paragraph("<b>AMU Configuration</b>", styles['Heading2']))
+            
+            # Parse SWEEP:CONFIG? response for PDF
+            config_data = [['Parameter', 'Value']]
+            
+            try:
+                sweep_config_raw = self.device_info.get('sweep_config', '')
+                if sweep_config_raw:
+                    config_values = sweep_config_raw.strip().split(',')
+                    
+                    if len(config_values) >= 10:
+                        config_data.extend([
+                            ['Sweep Type', self.get_sweep_type_name(config_values[0])],
+                            ['Number of Points', config_values[1]],
+                            ['Delay (ms)', config_values[2]],
+                            ['Ratio', config_values[3]],
+                            ['Power Setting', config_values[4]],
+                            ['DAC Gain', config_values[5]],
+                            ['Sweep Averages', config_values[6]],
+                            ['ADC Averages', config_values[7]],
+                            ['AM0 (A/m²)', f"{float(config_values[8]):.6f}"],
+                            ['Area (cm²)', f"{float(config_values[9]):.4f}"]
+                        ])
+                    else:
+                        config_data.append(['Raw Configuration', sweep_config_raw])
+                else:
+                    config_data.append(['Configuration', 'Not available'])
+            except Exception as e:
+                config_data.append(['Configuration Error', f"Could not parse: {str(e)}"])
+            
+            # Add PGA settings to PDF
+            try:
+                voltage_pga = self.device_info.get('voltage_pga', 'Unknown')
+                voltage_max = self.device_info.get('voltage_max', 'Unknown')
+                current_pga = self.device_info.get('current_pga', 'Unknown')
+                current_max = self.device_info.get('current_max', 'Unknown')
+                
+                config_data.extend([
+                    ['Voltage PGA Setting', f"PGA {voltage_pga} (Max: {float(voltage_max):.4f} V)"],
+                    ['Current PGA Setting', f"PGA {current_pga} (Max: {float(current_max):.6f} A)"]
+                ])
+            except Exception as e:
+                config_data.append(['PGA Settings Error', f"Could not parse: {str(e)}"])
+            
+            config_table = Table(config_data)
+            config_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 14),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ]))
+            
+            story.append(config_table)
             story.append(Spacer(1, 30))
             
             # Export plots as images and add to PDF
@@ -771,6 +977,15 @@ class CalibrationReport:
                 story.append(Paragraph("<b>Voltage Calibration Coefficients</b>", styles['Heading2']))
                 voltage_data = [['PGA', 'Vmax', 'Offset Register', 'Gain Register', 'Avg Error (µV)']]
                 
+                # Get current active voltage PGA setting
+                active_voltage_pga = self.device_info.get('voltage_pga', None)
+                try:
+                    active_voltage_pga = int(active_voltage_pga) if active_voltage_pga else None
+                except (ValueError, TypeError):
+                    active_voltage_pga = None
+                
+                active_voltage_row = None  # Track which row is active for styling
+                
                 for pga in sorted(self.voltage_coefficients.keys()):
                     coeff = self.voltage_coefficients[pga]
                     accuracy = self.voltage_accuracy_data.get(pga, {})
@@ -782,9 +997,13 @@ class CalibrationReport:
                         self.format_register_value(coeff['final_gain']),
                         f"{avg_delta_uV:.2f}"
                     ])
+                    
+                    # Track the active row index (add 1 for header row)
+                    if pga == active_voltage_pga:
+                        active_voltage_row = len(voltage_data) - 1
                 
                 voltage_table = Table(voltage_data)
-                voltage_table.setStyle(TableStyle([
+                voltage_table_style = [
                     ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                     ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                     ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -793,7 +1012,14 @@ class CalibrationReport:
                     ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
                     ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                     ('GRID', (0, 0), (-1, -1), 1, colors.black)
-                ]))
+                ]
+                
+                # Add bold formatting for active voltage PGA row
+                if active_voltage_row is not None:
+                    voltage_table_style.append(('FONTNAME', (0, active_voltage_row), (-1, active_voltage_row), 'Helvetica-Bold'))
+                    voltage_table_style.append(('FONTSIZE', (0, active_voltage_row), (-1, active_voltage_row), 12))
+                
+                voltage_table.setStyle(TableStyle(voltage_table_style))
                 
                 story.append(voltage_table)
                 story.append(Spacer(1, 20))
@@ -802,6 +1028,15 @@ class CalibrationReport:
             if self.current_coefficients:
                 story.append(Paragraph("<b>Current Calibration Coefficients</b>", styles['Heading2']))
                 current_data = [['PGA', 'Imax', 'Offset Register', 'Gain Register', 'Avg Error (µA)']]
+                
+                # Get current active current PGA setting
+                active_current_pga = self.device_info.get('current_pga', None)
+                try:
+                    active_current_pga = int(active_current_pga) if active_current_pga else None
+                except (ValueError, TypeError):
+                    active_current_pga = None
+                
+                active_current_row = None  # Track which row is active for styling
 
                 for pga in sorted(self.current_coefficients.keys()):
                     coeff = self.current_coefficients[pga]
@@ -814,9 +1049,13 @@ class CalibrationReport:
                         self.format_register_value(coeff['final_gain']),
                         f"{avg_delta_uA:.2f}"
                     ])
+                    
+                    # Track the active row index (add 1 for header row)
+                    if pga == active_current_pga:
+                        active_current_row = len(current_data) - 1
                 
                 current_table = Table(current_data)
-                current_table.setStyle(TableStyle([
+                current_table_style = [
                     ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                     ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                     ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -825,7 +1064,14 @@ class CalibrationReport:
                     ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
                     ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                     ('GRID', (0, 0), (-1, -1), 1, colors.black)
-                ]))
+                ]
+                
+                # Add bold formatting for active current PGA row
+                if active_current_row is not None:
+                    current_table_style.append(('FONTNAME', (0, active_current_row), (-1, active_current_row), 'Helvetica-Bold'))
+                    current_table_style.append(('FONTSIZE', (0, active_current_row), (-1, active_current_row), 12))
+                
+                current_table.setStyle(TableStyle(current_table_style))
                 
                 story.append(current_table)
                 story.append(Spacer(1, 20))
@@ -866,6 +1112,13 @@ class CalibrationReport:
         # Also generate PDF if available
         pdf_filename = self.generate_pdf_report(html_filename)
         
+        # Turn off source meter output after calibration is complete
+        try:
+            instruments.source_meter.write("OUTP OFF")
+            print("Source meter output turned off.")
+        except Exception as e:
+            print(f"Warning: Could not turn off source meter output: {e}")
+        
         print("Calibration report complete!")
         return html_filename, pdf_filename
 
@@ -882,6 +1135,8 @@ def main():
                        help='Output filename for HTML report')
     parser.add_argument('--pdf', action='store_true',
                        help='Generate PDF report (requires weasyprint or wkhtmltopdf)')
+    parser.add_argument('--property_tag', type=str,
+                       help='Property tag for calibration reference (e.g., AET206)')
     args = parser.parse_args()
     
     # Initialize AMU connection
@@ -901,7 +1156,7 @@ def main():
     print("AMU connected with firmware version", firmware)
     
     # Create calibration report
-    report = CalibrationReport()
+    report = CalibrationReport(property_tag=args.property_tag)
     
     try:
         html_filename, pdf_filename = report.run_full_calibration_report(steps=args.steps)

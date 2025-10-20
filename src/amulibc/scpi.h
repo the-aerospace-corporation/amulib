@@ -40,7 +40,7 @@ extern "C" {
 
 	void amu_scpi_init(volatile amu_device_t *dev, const char * idn1, const char * idn2, const char * idn3, const char * idn4);
 	void amu_scpi_update(const char incomingByte);
-       void amu_scpi_update_buffer(const char* buffer, size_t len);
+    void amu_scpi_update_buffer(const char* buffer, size_t len);
 	void amu_scpi_list_commands(void);
 	void amu_scpi_add_aux_commands(const scpi_command_t* aux_cmd_list);
 	scpi_result_t scpi_cmd_execute(scpi_t *context);
@@ -50,7 +50,7 @@ extern "C" {
 	SCPI_CMD_RW_PROTOTYPE(uint8_t)
 	SCPI_CMD_RW_PROTOTYPE(uint16_t)
 	SCPI_CMD_RW_PROTOTYPE(uint32_t)
-       SCPI_CMD_RW_PROTOTYPE(int32_t)
+    SCPI_CMD_RW_PROTOTYPE(int32_t)
 	SCPI_CMD_RW_PROTOTYPE(float)
 	SCPI_CMD_RW_PROTOTYPE(amu_pid_t)
 	SCPI_CMD_RW_PROTOTYPE(amu_coeff_t)
@@ -166,7 +166,7 @@ extern "C" {
         SCPI_COMMAND("ADC:CH#:MAX?",					scpi_cmd_rw_float,					CMD_ADC_CH_PGA_MAX					)	\
         SCPI_COMMAND("ADC:CH#:SAVE",					scpi_cmd_execute,					CMD_ADC_CH_SAVE						)	\
         SCPI_COMMAND("ADC:CH#:OFFset[?]",				scpi_cmd_rw_int32_t,				CMD_ADC_CH_OFFSET_COEFF				)	\
-        SCPI_COMMAND("ADC:CH#:GAIN[?]",					scpi_cmd_rw_int32_t,				CMD_ADC_CH_GAIN_COEFF				)	\
+        SCPI_COMMAND("ADC:CH#:GAIN[?]",					scpi_cmd_rw_uint32_t,				CMD_ADC_CH_GAIN_COEFF				)	\
         SCPI_COMMAND("ADC:CH#:CALibrate:INTernal",		scpi_cmd_execute,					CMD_ADC_CH_CAL_INTERNAL				)	\
         SCPI_COMMAND("ADC:CH#:CALibrate:ZERO"	,		scpi_cmd_execute,					CMD_ADC_CH_CAL_ZERO_SCALE			)	\
         SCPI_COMMAND("ADC:CH#:CALibrate:FULL",			scpi_cmd_execute,					CMD_ADC_CH_CAL_FULL_SCALE			)	\
@@ -241,8 +241,9 @@ extern "C" {
         SCPI_COMMAND("ADC:VOLTage:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_VOLTAGE_PGA				)	\
         SCPI_COMMAND("ADC:VOLTage:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX				)	\
         SCPI_COMMAND("ADC:VOLTage:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX_PGA         )	\
-        SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)	\
+        SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_int32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)   \
         SCPI_COMMAND("ADC:VOLTage:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_GAIN			)	\
+        SCPI_COMMAND("ADC:VOLTage:PGA:SAVE",			scpi_cmd_execute,					CMD_USB_ADC_VOLTAGE_PGA_SAVE		)	\
                                                                                                                                     \
         SCPI_COMMAND("ADC:CURRent:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_ZERO		)	\
         SCPI_COMMAND("ADC:CURRent:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_FULL		)	\
@@ -251,8 +252,9 @@ extern "C" {
         SCPI_COMMAND("ADC:CURRent:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_CURRENT_PGA				)	\
         SCPI_COMMAND("ADC:CURRent:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX				)	\
         SCPI_COMMAND("ADC:CURRent:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX_PGA         )	\
-        SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
+        SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_int32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
         SCPI_COMMAND("ADC:CURRent:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_GAIN			)	\
+        SCPI_COMMAND("ADC:CURRent:PGA:SAVE",			scpi_cmd_execute,					CMD_USB_ADC_CURRENT_PGA_SAVE		)	\
                                                                                                                                     \
         SCPI_COMMAND("SWEEP:META:VOC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VOC				)	\
         SCPI_COMMAND("SWEEP:META:ISC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ISC				)	\
