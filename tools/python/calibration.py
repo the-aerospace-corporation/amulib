@@ -6,11 +6,10 @@ from datetime import datetime
 from amu import amu as AMU
 import numpy as np
 import teleplot as teleplot
-import winsound
 from instruments import CalibrationInstruments
 
 
-source_meter_visa = 'USB0::0x0957::0x8D18::MY51140506::INSTR'
+source_meter_visa = 'USB0::0x0957::0x8D18::MY51140506::0::INSTR'
 # volt_meter_visa = 'GPIB0::1::INSTR'
 # current_meter_visa = 'GPIB0::2::INSTR'
 
@@ -25,7 +24,7 @@ def filePrintln(file, text=""):
         file.write(text + "\n")
     print(text)
 
-def info():
+def info(file=None):
 
     hardwareVersion = int(amu.query("SYST:HARD?"))
 
@@ -44,21 +43,21 @@ def info():
     if hardwareVersion == 0x32:    print("AMU-ESP32 - 3.2")
     if hardwareVersion == 0x33:    print("AMU-ESP32 - 3.3")
 
-    print("NOTES:", notes)
-    print("MANUFACTURER", amu.query("DUT:MAN?"))
-    print("MODEL", amu.query("DUT:MOD?"))
-    print("TECH", amu.query("DUT:TECH?"))
-    print("SERIAL", amu.query("DUT:SER?"))
-    print("COVERGALSS", amu.query("DUT:COVER?"))
-    print("JUNCTION", amu.query("DUT:JUNC?"))
-    print("ENERGY", amu.query("DUT:ENERGY?"))
-    print("DOSE", amu.query("DUT:DOSE?"))
-    
-    print("ADDRESS:", address)
-    print("AMU-SERIAL:", serial)
-    print("CONFIG:", config)
-    
-    print("DAC-CORR", amu.query("DAC:GAIN:CORR?"))
+    filePrintln(file, "NOTES: " + notes)
+    filePrintln(file, "MANUFACTURER: " + amu.query("DUT:MAN?"))
+    filePrintln(file, "MODEL: " + amu.query("DUT:MOD?"))
+    filePrintln(file, "TECH: " + amu.query("DUT:TECH?"))
+    filePrintln(file, "SERIAL: " + amu.query("DUT:SER?"))
+    filePrintln(file, "COVERGLASS: " + amu.query("DUT:COVER?"))
+    filePrintln(file, "JUNCTION: " + amu.query("DUT:JUNC?"))
+    filePrintln(file, "ENERGY: " + amu.query("DUT:ENERGY?"))
+    filePrintln(file, "DOSE: " + amu.query("DUT:DOSE?"))
+
+    filePrintln(file, "ADDRESS: " + address)
+    filePrintln(file, "AMU-SERIAL: " + serial)
+    filePrintln(file, "CONFIG: " + config)
+
+    filePrintln(file, "DAC-CORR: " + amu.query("DAC:GAIN:CORR?"))
 
 def getIVCoefficients():
 
@@ -81,82 +80,33 @@ def getIVCoefficients():
 
     return coeff_str
 
-def getOffsetCoefficients():
-    
-    coeff_str = "\n***OFFSET Coefficients***\n"
 
-    coeff_str += "CH\tDec\tHEX\n"
+# def getCoefficients():
 
-    for i in range(16):
-        coeff = int(amu.query("ADC:CH" + str(i) + ":OFF?"))
-        coeff_str += str(i) + "\t"
-        coeff_str += str(coeff) + "\t"
-        coeff_str += hex(coeff) + "\t"
-        coeff_str += '\n'
+#     offset = []
+#     gain = []
+#     filter = []
+#     yaw = []
+#     pitch = []
 
-    return coeff_str
+#     print("CH#", "OFFSET", "\tGAIN", sep='\t')
+#     for i in range(16):
 
-def getGainCoefficients():
-    
-    coeff_str = "\n***GAIN Coefficients***\n"
+#         offset.append(int(amu.query("ADC:CH" + str(i) + ":OFF?")))
+#         gain.append(int(amu.query("ADC:CH" + str(i) + ":GAIN?")))
 
-    coeff_str += "CH\tDec\tHEX\n"
+#         print("CH"+str(i), offset[i], gain[i], sep='\t')
 
-    for i in range(16):
-        coeff = int(amu.query("ADC:CH" + str(i) + ":GAIN?"))
-        coeff_str += str(i) + "\t"
-        coeff_str += str(coeff) + "\t"
-        coeff_str += hex(coeff) + "\t"
-        coeff_str += '\n'
+#     yaw.append(amu.query("SS:FIT:YAW?"))
+#     pitch.append(amu.query("SS:FIT:PITCH?"))
 
-    return coeff_str
-
-def printADCRegs(file=None):
-
-    filePrintln(file, "CH\tOFFSET\tOFF(HEX)\tGAIN\tGAIN(HEX)")
-
-    for i in range(16):
-        offset = int(amu.query("ADC:CH" + str(i) + ":OFF?"))
-        gain = int(amu.query("ADC:CH" + str(i) + ":GAIN?"))
-
-        filePrintln(file, "{0}\t{1}\t{2}\t{3}\t{4}".format(i, offset, hex(offset), gain, hex(gain)))
-
-def resetDefaultCoefficients():
-
-    for i in range(8):
-        amu.send("ADC:CH" + str(i) + ":CAL:RESET", True)
-
-
-def getCoefficients():
-
-    offset = []
-    gain = []
-    filter = []
-    yaw = []
-    pitch = []
-
-    print("CH#", "OFFSET", "\tGAIN", sep='\t')
-    for i in range(16):
-
-        offset.append(int(amu.query("ADC:CH" + str(i) + ":OFF?")))
-        gain.append(int(amu.query("ADC:CH" + str(i) + ":GAIN?")))
-
-        print("CH"+str(i), offset[i], gain[i], sep='\t')
-
-    yaw.append(amu.query("SS:FIT:YAW?"))
-    pitch.append(amu.query("SS:FIT:PITCH?"))
-
-    print("YAW", yaw, sep='\t')
-    print("PITCH", pitch, sep='\t')
+#     print("YAW", yaw, sep='\t')
+#     print("PITCH", pitch, sep='\t')
 
     
 def calibrateVoltage(pga = 0, steps = 10, save=False, printResult=False, file = None):
 
-    filePrintln(file, "\n*** VOLTAGE CALIBRATION ***\n")
-
-
-    amu.send("ADC:VOLT:CAL:RESET")
-    time.sleep(0.5)
+    filePrintln(file, "\n*** VOLTAGE CALIBRATION - PGA " + str(pga) + " ***\n")
 
     amu.query("SWEEP:TRIG:VOC?")      # make sure open circuit voltage condition is in place
     time.sleep(0.5)
@@ -252,15 +202,16 @@ def checkVoltageCal(steps=10, file=None):
     filePrintln(file, "Average Delta (µV)\t{:.04f}".format(np.mean(delta)*1000000))
     filePrintln(file, "Average Error\t{:.04f}%\t{:.02f}ppm".format(np.mean(percent), np.mean(percent) * 10000))
         
-def calibrateCurrent(steps = 10, save=False, printResult=False, file=None):
+def calibrateCurrent(pga = 0, steps = 10, save=False, printResult=False, file=None):
 
-    filePrintln(file, "\n*** CURRENT CALIBRATION ***\n")
-
-    amu.send("ADC:CURR:CAL:RESET")
-    time.sleep(0.25)
+    filePrintln(file, "\n*** CURRENT CALIBRATION - PGA " + str(pga) + " ***\n")
 
     amu.query("SWEEP:TRIG:ISC?")      # make sure short circuit condition is in place
+    time.sleep(0.50)
+
+    amu.send("ADC:CURR:PGA " + str(pga))   # set current pga
     time.sleep(0.25)
+
     imax = float(amu.query("ADC:CURR:MAX?"))
 
     instruments.set_current_mode(imax, res='MIN')
@@ -284,11 +235,10 @@ def calibrateCurrent(steps = 10, save=False, printResult=False, file=None):
 
     # Set source meter to full scale voltage from vmax, adjust until meter reads <10uV
     instruments.set_current_with_feedback(imax*0.98, max_error=imax*.00001)
-    # setCurrent(imax)
     time.sleep(0.5)
     instruments.measure_current()
 
-    filePrintln(None, "\nCurrent Set to " + str(imax) + " Amps")
+    filePrintln(None, "\nCurrent Set to " + str(imax*0.98) + " Amps")
     filePrintln(file, "ADC:CURR:OFF?\t" + amu.query("ADC:CURR:OFF?"))
     filePrintln(file, "ADC:CURR:GAIN?\t" + amu.query("ADC:CURR:GAIN?"))
 
@@ -332,7 +282,7 @@ def checkCurrentCal(steps=10, file=None):
     for i in range(steps + 1):
         current_setpoint = istart - (step * i)
         instruments.set_current(current_setpoint)
-        time.sleep(0.1)
+        time.sleep(0.5)
         meterCurrent = instruments.measure_current()
         amuCurrent = float(amu.query("MEAS:ADC:CURR?"))
 
@@ -348,54 +298,27 @@ def checkCurrentCal(steps=10, file=None):
     filePrintln(file, "Average Delta (µA)\t{:.04f}".format(np.mean(delta)*1000000))
     filePrintln(file, "Average Error\t{:.04f}%\t\t{:.02f}ppm".format(np.mean(percent), np.mean(percent) * 10000))
 
-def calibrateAllInternal(file=None):
-
-    filePrintln(None, "\n*** INTERNAL ADC CALIBRATIONS ***\n")
-
-    # Internal calibrations
-    amu.setCommTimeout(5)
-    amu.send("ADC:CH2:CAL:INT")
-    print("RTD...")
-    time.sleep(4)
-    amu.send("ADC:CH5:CAL:INT")
-    print("BIAS...")
-    time.sleep(4)
-    amu.send("ADC:CH6:CAL:INT")
-    print("OFFSET...")
-    time.sleep(4)
-    amu.send("ADC:CH7:CAL:INT")
-    print("TEMPERATURE...")
-    time.sleep(4)
-    amu.send("ADC:CH12:CAL:INT")
-    print("QUAD PHOTODIODE...")
-    time.sleep(4)
-    amu.setCommTimeout(3)
-
-    # record temperature of internal adc temperature sensor
-    amu.send("ADC:CAL")         
-    filePrintln(file, "\nADC:CAL - " + str(amu.query("ADC:CAL?")) + "°C")
-    filePrintln(file, "MEAS:ADC:TSENS - " + str(amu.query("MEAS:ADC:TSENS?")) + "°C")
-
-    amu.send("ADC:SAVE:ALL:INTernal")   # save internal calibrations
-    filePrintln(file, "Internal Calibrations Saved")
 
 def calibrateDAC(save=False, file=None):
 
     filePrintln(file, "\n*** DAC CALIBRATION ***\n")
 
-    amu.query("SWEEP:TRIG:VOC? (@4:1)")      # make sure open circuit voltage condition is in place
+    amu.query("SWEEP:TRIG:VOC?")        # make sure open circuit voltage condition is in place
 
-    vmax = float(amu.query("ADC:CH0:MAX?"))
+    amu.send("ADC:VOLT:PGA 0")          # set voltage pga to max scale
 
-    filePrintln(file, "Setting source meter to " + str(vmax + 1) + " Volts\n")
+    vmax = float(amu.query("ADC:VOLT:MAX?"))
 
-    instruments.set_voltage_mode(vmax + 1)
-    instruments.set_voltage(vmax + 1)
+    filePrintln(file, "Setting source meter to " + str(vmax) + " Volts\n")
 
-    time.sleep(2.5)
+    instruments.set_voltage_mode(vmax)
+    instruments.set_voltage(vmax)
+
+    time.sleep(2.0)
     # if device is AMU2.# or greater
-    amu.send("DAC:CAL", error_check = False)                 # run calibration
-    time.sleep(6)
+    dac_coeff = amu.query("DAC:CAL?")                 # run calibration
+    time.sleep(2)
+    filePrintln(file, "DAC:CAL Response: " + dac_coeff)
 
     if(save==True):
         amu.send("DAC:CAL:SAVE")            # save cal value to eeprom
@@ -408,12 +331,12 @@ def calibrateDAC(save=False, file=None):
 
 def checkDACCal(steps=10, file=None):
 
-    vmax = float(amu.query("ADC:CH0:MAX?"))
+    vmax = float(amu.query("ADC:VOLT:MAX?"))
 
-    instruments.set_current_meter(0.1, res=1e-2)
+    # instruments.set_current_meter(0.1, res=1e-2)
     instruments.set_voltage_mode(vmax + 1, current_limit = 0.005, res=1e-2)
 
-    vstart = vmax * 0.98
+    vstart = vmax * 0.95
 
     instruments.set_voltage(vstart)
 
@@ -425,13 +348,12 @@ def checkDACCal(steps=10, file=None):
     
     step = vstart / steps
 
-    for i in range(steps + 1):
+    for i in range(steps):
         voltage_setpoint = vstart - (step * i)
         #setVoltage(voltage_setpoint)
         amu.send("DAC:VOLTAGE " + str(voltage_setpoint))
         time.sleep(1)
         instruments.measure_voltage()
-        instruments.measure_current()
         amuVoltage = float(amu.query("MEAS:ADC:VOLT?"))
         dacVoltage = float(amu.query("DAC:VOLT?"))
         delta.append(amuVoltage - dacVoltage)
@@ -449,62 +371,56 @@ def saveStuff():
     amu.send("ADC:CH0:CAL:SAVE")
     amu.send("ADC:CH1:CAL:SAVE")
 
-def fullCalibration(steps):
+def fullCalibration(steps, propertyTag = None):
 
 
     amu.query("SWEEP:TRIG:VOC?")
     time.sleep(1)
     
-
     filename = amu.query("SYST:SER?") + ".cal"
 
     print("../cal/" + filename)
 
-    file = open("../cal/" + filename, 'w')
+    # file = open("../cal/" + filename, 'w')
+    file = None
 
     filePrintln(file, "AMU Serial Number:\t" + amu.query("SYST:SER?"))
-    filePrintln(file, "Device I²C Address:\t" + amu.query("SYST:TWI:ADD?"))
+    filePrintln(file, "AMU I²C Address:\t" + amu.query("SYST:TWI:ADD?"))
+    filePrintln(file, "AMU Temperature:\t" + amu.query("SYST:TEMP?") + " °C")
     filePrintln(file, "Device Manufacturer:\t" + amu.query("DUT:MAN?"))
     filePrintln(file, "Device Model:\t" + amu.query("DUT:MOD?"))
     filePrintln(file, "Device Serial Number:\t" + amu.query("DUT:SER?"))
     filePrintln(file, "Device Notes:\t" + amu.query("DUT:NOTES?"))
 
+    if propertyTag != None:
+        filePrintln(file, "\nProperty Tag:\t" + str(propertyTag) + "\n")
+
     filePrintln(file, "\nCalibration Started on " +  datetime.now().strftime("%m/%d/%Y") + " at " + datetime.now().strftime("%H:%M:%S"))
 
-    # Internal calibrations
-    calibrateAllInternal(file)
-    
-    calibrateVoltage(steps=steps, save=True, file=file)
+    # ADC Calibrations for each PGA setting
+    for pga in range(8):
 
-    checkVoltageCal(steps=10, file=file)
+        calibrateVoltage(pga=pga, steps=steps, save=True, file=file)
 
-    calibrateCurrent(steps=steps, save=True, file=file)
+        checkVoltageCal(steps=10, file=file)
 
-    checkCurrentCal(steps=10, file=file)
+        calibrateCurrent(pga=pga, steps=steps, save=True, file=file)
 
-    calibrateDAC(save=True, file=file)
+        checkCurrentCal(steps=10, file=file)
+
+    # DAC Calibration
+    calibrateDAC(save=False, file=file)
 
     checkDACCal(file=file)
 
     filePrintln(file, "Calibration Ended on " +  datetime.now().strftime("%m/%d/%Y") + " at " + datetime.now().strftime("%H:%M:%S"))
 
-    filePrintln(file, "\n*** AD7173-8 REGS ***\n")
-    printADCRegs(file)
+    filePrintln(file, "\n*** ADS131M08 REGS ***\n")
+    # printADCRegs(file)
+    filePrintln(file, getIVCoefficients())
 
-    file.close()
-
-
-def bell():
-    winsound.Beep(440, 200)
-    #time.sleep(0.1)
-    winsound.Beep(880, 200)
-    #time.sleep(0.1)
-    winsound.Beep(1760, 200)
-    #time.sleep(0.1)
-    winsound.Beep(880, 200)
-    #time.sleep(0.1)
-    winsound.Beep(440, 200)
-
+    if(file is not None):
+        file.close()
 
 
 def main():
@@ -592,23 +508,23 @@ def main():
             calibrateDAC()
         elif user_input == 'coeff':         
             print(getIVCoefficients())
-        elif user_input == 'v0': calibrateVoltage(0, printResult=True)
-        elif user_input == 'v1': calibrateVoltage(1, printResult=True)
-        elif user_input == 'v2': calibrateVoltage(2, printResult=True)
-        elif user_input == 'v3': calibrateVoltage(3, printResult=True)
-        elif user_input == 'v4': calibrateVoltage(4, printResult=True)
-        elif user_input == 'v5': calibrateVoltage(5, printResult=True)
-        elif user_input == 'v6': calibrateVoltage(6, printResult=True)
-        elif user_input == 'v7': calibrateVoltage(7, printResult=True)
+        elif user_input == 'v0': calibrateVoltage(pga = 0, printResult=True)
+        elif user_input == 'v1': calibrateVoltage(pga = 1, printResult=True)
+        elif user_input == 'v2': calibrateVoltage(pga = 2, printResult=True)
+        elif user_input == 'v3': calibrateVoltage(pga = 3, printResult=True)
+        elif user_input == 'v4': calibrateVoltage(pga = 4, printResult=True)
+        elif user_input == 'v5': calibrateVoltage(pga = 5, printResult=True)
+        elif user_input == 'v6': calibrateVoltage(pga = 6, printResult=True)
+        elif user_input == 'v7': calibrateVoltage(pga = 7, printResult=True)
 
-        elif user_input == 'i0': calibrateCurrent(0, printResult=True)
-        elif user_input == 'i1': calibrateCurrent(1, printResult=True)
-        elif user_input == 'i2': calibrateCurrent(2, printResult=True)
-        elif user_input == 'i3': calibrateCurrent(3, printResult=True)
-        elif user_input == 'i4': calibrateCurrent(4, printResult=True)
-        elif user_input == 'i5': calibrateCurrent(5, printResult=True)
-        elif user_input == 'i6': calibrateCurrent(6, printResult=True)
-        elif user_input == 'i7': calibrateCurrent(7, printResult=True)
+        elif user_input == 'i0': calibrateCurrent(pga = 0, printResult=True)
+        elif user_input == 'i1': calibrateCurrent(pga = 1, printResult=True)
+        elif user_input == 'i2': calibrateCurrent(pga = 2, printResult=True)
+        elif user_input == 'i3': calibrateCurrent(pga = 3, printResult=True)
+        elif user_input == 'i4': calibrateCurrent(pga = 4, printResult=True)
+        elif user_input == 'i5': calibrateCurrent(pga = 5, printResult=True)
+        elif user_input == 'i6': calibrateCurrent(pga = 6, printResult=True)
+        elif user_input == 'i7': calibrateCurrent(pga = 7, printResult=True)
 
         elif user_input == 'dcheck': checkDACCal()
         elif user_input == 'icheck': checkCurrentCal(steps=10)

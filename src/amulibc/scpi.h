@@ -241,8 +241,8 @@ extern "C" {
         SCPI_COMMAND("ADC:VOLTage:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_VOLTAGE_PGA				)	\
         SCPI_COMMAND("ADC:VOLTage:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX				)	\
         SCPI_COMMAND("ADC:VOLTage:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_USB_ADC_VOLTAGE_MAX_PGA         )	\
-        SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_int32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)	\
-        SCPI_COMMAND("ADC:VOLTage:GAIN[?]",				scpi_cmd_rw_int32_t,				CMD_USB_ADC_VOLTAGE_GAIN			)	\
+        SCPI_COMMAND("ADC:VOLTage:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_OFFSET			)	\
+        SCPI_COMMAND("ADC:VOLTage:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_VOLTAGE_GAIN			)	\
                                                                                                                                     \
         SCPI_COMMAND("ADC:CURRent:CALibrate:ZERO",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_ZERO		)	\
         SCPI_COMMAND("ADC:CURRent:CALibrate:FULL",		scpi_cmd_execute,					CMD_USB_ADC_CURRENT_CAL_FULL		)	\
@@ -251,8 +251,8 @@ extern "C" {
         SCPI_COMMAND("ADC:CURRent:PGA[?]",				scpi_cmd_rw_uint8_t,				CMD_USB_ADC_CURRENT_PGA				)	\
         SCPI_COMMAND("ADC:CURRent:MAX?",				scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX				)	\
         SCPI_COMMAND("ADC:CURRent:MAX:PGA#?",			scpi_cmd_rw_float,					CMD_USB_ADC_CURRENT_MAX_PGA         )	\
-        SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_int32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
-        SCPI_COMMAND("ADC:CURRent:GAIN[?]",				scpi_cmd_rw_int32_t,				CMD_USB_ADC_CURRENT_GAIN			)	\
+        SCPI_COMMAND("ADC:CURRent:OFFset[?]",			scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_OFFSET			)	\
+        SCPI_COMMAND("ADC:CURRent:GAIN[?]",				scpi_cmd_rw_uint32_t,				CMD_USB_ADC_CURRENT_GAIN			)	\
                                                                                                                                     \
         SCPI_COMMAND("SWEEP:META:VOC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_VOC				)	\
         SCPI_COMMAND("SWEEP:META:ISC?",					scpi_cmd_rw_float,					AMU_REG_SWEEP_META_ISC				)	\

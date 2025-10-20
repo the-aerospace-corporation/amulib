@@ -3,6 +3,28 @@ import time
 
 rm = pyvisa.ResourceManager()
 
+
+def list_visa_resources():
+    """
+    List all available PyVISA resources.
+    
+    Returns:
+        list: A list of VISA resource strings for all available instruments
+    """
+    try:
+        resources = rm.list_resources()
+        if resources:
+            print("Available VISA Resources:")
+            for i, resource in enumerate(resources, 1):
+                print(f"  {i}. {resource}")
+        else:
+            print("No VISA resources found.")
+        return list(resources)
+    except Exception as e:
+        print(f"Error listing VISA resources: {e}")
+        return []
+
+
 class instrument:
 
     visa_id = None
@@ -113,7 +135,8 @@ class CalibrationInstruments:
         # Configure source meter for voltage mode
         self.source_meter.write(":SOUR:FUNC:MODE VOLT")                      # set source mode to voltage output
         self.source_meter.write(":SENS:CURR:PROT " + str(current_limit))     # set current protection to current_limit
-        self.source_meter.write(":SOUR:VOLT 0.00")                           # set output voltage to voltage
+        self.source_meter.write(":SOUR:VOLT:RANG:AUTO ON")                   # set voltage range to auto
+        self.source_meter.write(":SOUR:VOLT 0.000")                          # set output voltage to 0V
         self.source_meter.write(":OUTP ON")                                  # enable output
 
     def set_current_mode(self, imax, res="MIN", voltage_limit=2.500):
@@ -137,10 +160,11 @@ class CalibrationInstruments:
             self.current_meter.write("CONF:CURR:DC " + range_max + "," + str(res))
 
         # Configure source meter for current mode
-        self.source_meter.write(":SOUR:FUNC:MODE CURR")                      # set source mode to current output
-        self.source_meter.write(":SENS:VOLT:PROT " + str(voltage_limit))     # set voltage protection to voltage_limit
-        self.source_meter.write(":SOUR:CURR 0.000")                          # set output current to current
-        self.source_meter.write(":OUTP ON")                                  # enable output
+        self.source_meter.write(":SOUR:FUNC:MODE CURR")                         # set source mode to current output
+        self.source_meter.write(":SENS:VOLT:PROT " + str(voltage_limit))        # set voltage protection to voltage_limit
+        self.source_meter.write(":SOUR:CURR:RANG:AUTO ON")                      # set current range to auto
+        self.source_meter.write(":SOUR:CURR 0.000")                             # set output current to 0A
+        self.source_meter.write(":OUTP ON")                                     # enable output
 
     def set_voltage(self, voltage):
         """
@@ -268,3 +292,100 @@ class CalibrationInstruments:
             else:
                 retries = retries - 1
                 iterator += 1
+# Example usage
+if __name__ == "__main__":
+    print("=== PyVISA Instrument Control Examples ===\n")
+    
+    # Example 1: List available VISA resources
+    print("1. Listing available VISA resources:")
+    available_resources = list_visa_resources()
+    print()
+    
+    if not available_resources:
+        print("No instruments found. Make sure instruments are connected and drivers are installed.")
+        exit()
+    
+    # Example 2: Connect to a single instrument
+    print("2. Connecting to a single instrument:")
+    try:
+        # Use the first available resource as an example
+        print(f"Connecting to: {available_resources[0]}")
+        my_instrument = instrument(available_resources[0])
+        
+        # Query instrument identification
+        idn = my_instrument.query("*IDN?")
+        print(f"Instrument ID: {idn.strip()}")
+        
+        # Close the connection
+        my_instrument.close()
+        print("Single instrument connection closed.\n")
+        
+    except Exception as e:
+        print(f"Error connecting to single instrument: {e}\n")
+    
+    # Example 3: Calibration setup (requires source meter)
+    print("3. Calibration instruments setup example:")
+    try:
+        # Note: Modify these VISA addresses to match your actual instruments
+        source_meter_visa = available_resources[0]  # Use first available as source meter
+        
+        # Optional: If you have multiple instruments, specify them here
+        volt_meter_visa = available_resources[1] if len(available_resources) > 1 else None
+        current_meter_visa = available_resources[2] if len(available_resources) > 2 else None
+        
+        print(f"Source meter: {source_meter_visa}")
+        if volt_meter_visa:
+            print(f"Voltage meter: {volt_meter_visa}")
+        if current_meter_visa:
+            print(f"Current meter: {current_meter_visa}")
+        
+        # Initialize calibration instruments
+        cal_instruments = CalibrationInstruments(
+            source_meter_visa=source_meter_visa,
+            volt_meter_visa=volt_meter_visa,
+            current_meter_visa=current_meter_visa
+        )
+        
+        # Example voltage mode operation
+        print("\nSetting up voltage mode (1V max, 50mA current limit):")
+        cal_instruments.set_voltage_mode(vmax=1.0, current_limit=0.050)
+        
+        # Set a voltage and measure
+        print("Setting voltage to 0.5V:")
+        cal_instruments.set_voltage(0.5)
+        time.sleep(0.5)  # Allow settling time
+        
+        measured_voltage = cal_instruments.measure_voltage()
+        measured_current = cal_instruments.measure_current()
+        print(f"Measured voltage: {measured_voltage:.6f} V")
+        print(f"Measured current: {measured_current:.6f} A")
+        
+        # Example current mode operation
+        print("\nSetting up current mode (10mA max, 2.5V voltage limit):")
+        cal_instruments.set_current_mode(imax=0.01, voltage_limit=2.5)
+        
+        # Set a current and measure
+        print("Setting current to 1mA:")
+        cal_instruments.set_current(0.001)
+        time.sleep(0.5)  # Allow settling time
+        
+        measured_voltage = cal_instruments.measure_voltage()
+        measured_current = cal_instruments.measure_current()
+        print(f"Measured voltage: {measured_voltage:.6f} V")
+        print(f"Measured current: {measured_current:.6f} A")
+        
+        # Clean up
+        cal_instruments.close_instruments()
+        print("Calibration instruments closed safely.")
+        
+    except Exception as e:
+        print(f"Error in calibration setup: {e}")
+        print("This example requires at least one compatible source meter instrument.")
+    
+    print("\n=== Examples completed ===")
+    print("\nTo use this module in your own code:")
+    print("1. Import the module: from instruments import *")
+    print("2. List resources: resources = list_visa_resources()")
+    print("3. Connect to instrument: my_instr = instrument(resources[0])")
+    print("4. Or use calibration setup: cal = CalibrationInstruments(visa_address)")
+    print("\nRemember to call close() or close_instruments() when done!")
