@@ -607,8 +607,8 @@ void amu_scpi_list_commands(void) {
 
 	char* cmd_pattern;
 
-	char message[] = "SCPI Commands:\n";
-	scpi_context.interface->write(&scpi_context, message, sizeof(message) - 1);
+	// char message[] = "SCPI Commands:\n";
+	// scpi_context.interface->write(&scpi_context, message, sizeof(message) - 1);
 
 	// if( scpi_context.def_cmdlist == NULL ) {
 	// 	scpi_context.interface->write(&scpi_context, "No commands defined", 19);

@@ -14,5 +14,4 @@
 
 #define __AMU_USE_SCPI__
 
-
 #endif /* AMULIBC_CONFIG_H_ */

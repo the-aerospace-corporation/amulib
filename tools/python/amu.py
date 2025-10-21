@@ -60,7 +60,7 @@ class amu:
                                 elif hardwareVersion == 0x33:    
                                     print("AMU-ESP32 - 3.3 Communication started on " + self.serial_dev.name)
                                 else:
-                                    print(f"AMU device found on {self.serial_dev.name} (Hardware version: 0x{hardwareVersion:02X})")
+                                    print(f"AMU device found on {self.serial_dev.name} (Hardware version: {hardwareVersion:02X})")
                             else:
                                 print(f"AMU device found on {self.serial_dev.name} (Hardware response: {hardware_response})")
                         else:
@@ -128,7 +128,7 @@ class amu:
                 if port.vid == 0x303A and port.pid == 0x1001:
                     
 
-                    self.serial_dev = serial.Serial(port.device, 115200, timeout=3)
+                    self.serial_dev = serial.Serial(port.device, 115200, timeout=5)
 
                     if self.serial_dev.isOpen():
                         self.available = True
@@ -145,19 +145,7 @@ class amu:
                             hardware_response = self.query("SYST:HARD?")
                             # Handle potential echo or formatting issues
                             if hardware_response and hardware_response.strip():
-                                # Try to extract numeric value
-                                import re
-                                numeric_match = re.search(r'(\d+)', hardware_response)
-                                if numeric_match:
-                                    hardwareVersion = int(numeric_match.group(1), 16)  # Assuming hex format
-                                    if hardwareVersion == 0x32:    
-                                        print("AMU-ESP32 - 3.2 Communication started on " + self.serial_dev.name)
-                                    elif hardwareVersion == 0x33:    
-                                        print("AMU-ESP32 - 3.3 Communication started on " + self.serial_dev.name)
-                                    else:
-                                        print(f"AMU device found on {self.serial_dev.name} (Hardware version: 0x{hardwareVersion:02X})")
-                                else:
-                                    print(f"AMU device found on {self.serial_dev.name} (Hardware response: {hardware_response})")
+                                print(f"AMU device found on {self.serial_dev.name} (Hardware response: 0x{int(hardware_response):02X})")
                             else:
                                 print(f"AMU device found on {self.serial_dev.name} (Empty hardware response)")
                         except Exception as hw_error:
@@ -180,6 +168,7 @@ class amu:
         
         if amu_port == None:
             print("No AMU serial devices found.")
+
 
         #self.serial_dev = serial.Serial(serialPort, 115200, timeout=2)
 
@@ -248,7 +237,11 @@ class amu:
         while attempts < max_attempts:
             try:
                 error_response = self.query("SYST:ERR?")
-                if error_response == "0,\"No error":
+                # Check for various forms of "No error" response
+                if (error_response == "0,\"No error" or 
+                    error_response == "0,No error" or 
+                    error_response == "0" or
+                    error_response.startswith("0,") and "No error" in error_response):
                     break
                 elif error_response:
                     print(f"Clearing startup message: {error_response}")
@@ -269,22 +262,34 @@ class amu:
 
     
     def query(self, command):
+        # Clear any existing data in the buffer before sending command
+        self.serial_dev.reset_input_buffer()
+        
         self.__write__(command)
         
         # Small delay to let device start processing the command
-        time.sleep(0.05)  # 5ms delay before reading response
+        time.sleep(0.02)  # Increased to 20ms for better reliability
         
         # Read the first response (readline() has built-in timeout)
-        response = self.serial_dev.readline().decode("utf-8").strip().strip('\"')
+        response = self.serial_dev.readline().decode("utf-8", errors='ignore').strip()
         
-        # If the response contains the command (echo), try to extract the actual response
-        if command.replace('?', '') in response:
-            # Look for a pattern like "COMMAND? (@1)" and try reading another line
-            if '(@' in response:
-                response = self.serial_dev.readline().decode("utf-8").strip().strip('\"')
-            # If response equals command exactly, read next line
-            elif response == command:
-                response = self.serial_dev.readline().decode("utf-8").strip().strip('\"')
+        # Remove surrounding quotes if present
+        if response.startswith('"') and response.endswith('"'):
+            response = response[1:-1]
+        
+        # Handle echo or command repetition in response
+        if response.startswith(command):
+            # If response starts with the command, it might be echo - try reading next line
+            next_response = self.serial_dev.readline().decode("utf-8", errors='ignore').strip()
+            if next_response and not next_response.startswith(command):
+                response = next_response
+                # Remove quotes from the actual response
+                if response.startswith('"') and response.endswith('"'):
+                    response = response[1:-1]
+        
+        # Remove any leading control characters or prompt symbols
+        import re
+        response = re.sub(r'^[^\w\d\-\.\+]*', '', response)
         
         return response
     

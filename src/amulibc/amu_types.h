@@ -121,6 +121,7 @@ typedef enum amu_hardware_revision_enum_t {
 	
 	AMU_HARDWARE_REVISION_AMU_SP_DEV = 0x80,
 	AMU_HARDWARE_REVISION_AMU_SP = 0x81,
+	AMU_HARDWARE_REVISION_AMU_ESP32_DEV = 0x82,
 } amu_hardware_revision_t;
 
 typedef enum amu_tsensor_type_enum_t {

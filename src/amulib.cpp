@@ -352,7 +352,7 @@ T * AMU::query(CMD_t command, T *data, size_t len) {
 	int8_t result = amu_dev_query_command(address, command, 0, len);
 	if (result < 0) {
 		if (AMU::errorPrintFncPtr) {
-			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);
+			AMU::errorPrintFncPtr("Query command %d failed with error: %d\n", command, result);
 		}
 		return data; // Return original pointer
 	}

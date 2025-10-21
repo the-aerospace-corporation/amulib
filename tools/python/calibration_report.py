@@ -125,7 +125,8 @@ class CalibrationReport:
                 0x30: "AMU-128X - 3.0",
                 0x31: "AMU-ESP32 - 3.1",
                 0x32: "AMU-ESP32 - 3.2",
-                0x33: "AMU-ESP32 - 3.3"
+                0x33: "AMU-ESP32 - 3.3",
+                0x82: "AMU-ESP32 - Dev"
             }
             
             self.device_info = {

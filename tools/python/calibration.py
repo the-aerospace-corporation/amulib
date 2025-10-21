@@ -42,6 +42,7 @@ def info(file=None):
     if hardwareVersion == 0x31:    print("AMU-ESP32 - 3.1")
     if hardwareVersion == 0x32:    print("AMU-ESP32 - 3.2")
     if hardwareVersion == 0x33:    print("AMU-ESP32 - 3.3")
+    if hardwareVersion == 0x82:    print("AMU-ESP32 - Dev")
 
     filePrintln(file, "NOTES: " + notes)
     filePrintln(file, "MANUFACTURER: " + amu.query("DUT:MAN?"))
