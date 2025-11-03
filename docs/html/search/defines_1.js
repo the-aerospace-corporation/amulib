@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['add_5fchar_0',['ADD_CHAR',['../utils_8c.html#aebc657839a438de1ce96751a581febac',1,'ADD_CHAR:&#160;utils.c'],['../utils_8c.html#aebc657839a438de1ce96751a581febac',1,'ADD_CHAR:&#160;utils.c']]],
+  ['add_5fchar_0',['add_char',['../utils_8c.html#aebc657839a438de1ce96751a581febac',1,'ADD_CHAR:&#160;utils.c'],['../utils_8c.html#aebc657839a438de1ce96751a581febac',1,'ADD_CHAR:&#160;utils.c']]],
   ['amu_5faddress_5fdefault_1',['AMU_ADDRESS_DEFAULT',['../amu__types_8h.html#a918083d656dbe579f4219921791e2bb3',1,'amu_types.h']]],
   ['amu_5fdevice_5fdefault_5fstr_2',['AMU_DEVICE_DEFAULT_STR',['../amu__device_8h.html#a843879cec68b73ebf548d93dc36b86d4',1,'amu_device.h']]],
   ['amu_5fdevice_5fend_5flist_3',['AMU_DEVICE_END_LIST',['../amu__types_8h.html#ad926784fe35b9e1ae2f90dbf44569ab4',1,'amu_types.h']]],

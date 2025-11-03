@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['uint32tostrbasesign_0',['UInt32ToStrBaseSign',['../utils_8c.html#af7b301a5b62087a48fd9954430448d7b',1,'UInt32ToStrBaseSign(uint32_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c'],['../utils__private_8h.html#af7b301a5b62087a48fd9954430448d7b',1,'UInt32ToStrBaseSign(uint32_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c']]],
-  ['uint64tostrbasesign_1',['UInt64ToStrBaseSign',['../utils_8c.html#a4abe4e23b65391f7fb6289580b56528e',1,'UInt64ToStrBaseSign(uint64_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c'],['../utils__private_8h.html#a4abe4e23b65391f7fb6289580b56528e',1,'UInt64ToStrBaseSign(uint64_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c']]],
+  ['uint32tostrbasesign_0',['uint32tostrbasesign',['../utils__private_8h.html#af7b301a5b62087a48fd9954430448d7b',1,'UInt32ToStrBaseSign(uint32_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c'],['../utils_8c.html#af7b301a5b62087a48fd9954430448d7b',1,'UInt32ToStrBaseSign(uint32_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c']]],
+  ['uint64tostrbasesign_1',['uint64tostrbasesign',['../utils__private_8h.html#a4abe4e23b65391f7fb6289580b56528e',1,'UInt64ToStrBaseSign(uint64_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c'],['../utils_8c.html#a4abe4e23b65391f7fb6289580b56528e',1,'UInt64ToStrBaseSign(uint64_t val, char *str, size_t len, int8_t base, scpi_bool_t sign):&#160;utils.c']]],
   ['unit_2',['unit',['../struct__scpi__unit__def__t.html#a59bce529cc5f6b96fa4aee3a6a0f7b93',1,'_scpi_unit_def_t::unit'],['../struct__scpi__number__parameter__t.html#a16e96f3c2109e916b569b2dc8d1cf7f9',1,'_scpi_number_parameter_t::unit']]],
   ['units_3',['units',['../struct__scpi__t.html#a708e4cd650b6fed2dda64ccd2ae68a03',1,'_scpi_t']]],
   ['units_2ec_4',['units.c',['../units_8c.html',1,'']]],
   ['units_2eh_5',['units.h',['../units_8h.html',1,'']]],
   ['usage_6',['Basic Usage',['../index.html#basic_usage_subsec',1,'']]],
-  ['usb_20interface_7',['USB Interface',['../hardware.html#usb_interface',1,'']]],
+  ['usb_20interface_20br_7',['USB Interface  &lt;br&gt;',['../hardware.html#usb_interface',1,'']]],
   ['use_5fcommand_5ftags_8',['USE_COMMAND_TAGS',['../config_8h.html#aecc0ec9740fdc2e651372db12ebb0b61',1,'config.h']]],
   ['use_5fcustom_5fdtostr_9',['USE_CUSTOM_DTOSTR',['../config_8h.html#a9226976797e075d227d56fea7d5b4467',1,'config.h']]],
   ['use_5fdeprecated_5ffunctions_10',['USE_DEPRECATED_FUNCTIONS',['../config_8h.html#a84399eb031a1fb7b2785839a40f00c48',1,'config.h']]],

@@ -6,7 +6,7 @@ var searchData=
   ['scpi_5fcmd_5flist_5fend_3',['SCPI_CMD_LIST_END',['../types_8h.html#a72fd7ae59c12facd700028ffb0c888ca',1,'types.h']]],
   ['scpi_5fcmd_5frw_4',['SCPI_CMD_RW',['../scpi_8c.html#aa14af162e39082d3caa45d607f6b1109',1,'scpi.c']]],
   ['scpi_5fcmd_5frw_5fprototype_5',['SCPI_CMD_RW_PROTOTYPE',['../scpi_8h.html#a5ad1b5f28c1461d47dbef5ce0a7c9ac7',1,'scpi.h']]],
-  ['scpi_5fcommand_6',['SCPI_COMMAND',['../scpi_8c.html#a0b37dd7a2003b3ed1b843aabc334dc31',1,'SCPI_COMMAND:&#160;scpi.c'],['../scpi_8h.html#a0b37dd7a2003b3ed1b843aabc334dc31',1,'SCPI_COMMAND:&#160;scpi.h']]],
+  ['scpi_5fcommand_6',['scpi_command',['../scpi_8c.html#a0b37dd7a2003b3ed1b843aabc334dc31',1,'SCPI_COMMAND:&#160;scpi.c'],['../scpi_8h.html#a0b37dd7a2003b3ed1b843aabc334dc31',1,'SCPI_COMMAND:&#160;scpi.h']]],
   ['scpi_5fdtostre_5falways_5fsign_7',['SCPI_DTOSTRE_ALWAYS_SIGN',['../utils__private_8h.html#ab53f4307fdbd510395c060abe551e7ad',1,'utils_private.h']]],
   ['scpi_5fdtostre_5fbuffer_5fsize_8',['SCPI_DTOSTRE_BUFFER_SIZE',['../utils_8c.html#a6692ae04e81245083cc5ed3769ecc2c0',1,'utils.c']]],
   ['scpi_5fdtostre_5fplus_5fsign_9',['SCPI_DTOSTRE_PLUS_SIGN',['../utils__private_8h.html#a52cc2e1db93bdca1e8ab01f9ce892418',1,'utils_private.h']]],
