@@ -140,10 +140,7 @@ Each example includes its own `platformio.ini` configuration and can be built in
 ### Measurements
 - `measureVoltage()` - Read voltage measurement
 - `measureCurrent()` - Read current measurement
-- `measureTSensor()` - Read primary temperature sensor
-- `measureTSensor0()` - Read temperature sensor 0
-- `measureTSensor1()` - Read temperature sensor 1
-- `measureTSensor2()` - Read temperature sensor 2
+- `measureTSensor()` - Read RTD temperature sensor
 
 ### Device Control
 - `setActiveChannels(uint16_t channels)` - Set active measurement channels
