@@ -47,6 +47,52 @@ lib_deps =
 #include <Wire.h>
 #include <amulib.h>
 
+// I2C transfer function for Arduino Wire library
+int amu_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
+    uint8_t packetNum = 0;
+    
+    if (read) {
+        if (len > 0) {
+            wire->beginTransmission(address);
+            wire->write(reg);
+            wire->endTransmission();
+            while (len > BUFFER_LENGTH) {
+                wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, (uint8_t)0);
+                if (wire->available()) {
+                    wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
+                    packetNum++;
+                    len -= BUFFER_LENGTH;
+                }
+            }
+            wire->requestFrom(address, (uint8_t)len);
+            if (wire->available())
+                wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
+        }
+        else {
+            wire->beginTransmission(address);
+            return wire->endTransmission();
+        }
+    }
+    else {
+        wire->beginTransmission(address);
+        wire->write(reg);
+        while (len > BUFFER_LENGTH) {
+            wire->write(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
+            len -= BUFFER_LENGTH;
+            packetNum++;
+        }
+        wire->write(&data[packetNum * BUFFER_LENGTH], len);
+        wire->endTransmission();
+    }
+    
+    return 0;
+}
+
+// Wrapper function for the AMU library
+int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
+    return (int8_t)amu_wire_transfer(&Wire, address, reg, data, len, read);
+}
+
 AMU amu;
 
 void setup() {
@@ -54,8 +100,8 @@ void setup() {
     Wire.begin();
     Wire.setClock(400000);
     
-    // Initialize AMU device at I2C address 0x0B
-    amu.begin(0x0B);
+    // Initialize AMU device at I2C address 0x0B with transfer function
+    amu.begin(0x0B, twi_transfer);
     
     // Wait for device to be ready
     if (amu.waitUntilReady(5000) == 0) {
@@ -96,8 +142,7 @@ Each example includes its own `platformio.ini` configuration and can be built in
 ## API Reference
 
 ### Initialization
-- `begin(uint8_t twiAddress)` - Initialize AMU with I2C address
-- `begin(uint8_t twiAddress, amu_transfer_fptr_t i2c_transfer_func)` - Initialize with custom I2C transfer function
+- `begin(uint8_t twiAddress, amu_transfer_fptr_t i2c_transfer_func)` - Initialize with I2C address and custom I2C transfer function (required for Arduino/PlatformIO projects)
 - `waitUntilReady(uint32_t timeout)` - Wait for device to be ready
 
 ### Measurements
