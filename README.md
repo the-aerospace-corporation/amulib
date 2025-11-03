@@ -50,17 +50,25 @@ lib_deps =
 // Custom I2C transfer function for AMU communication
 int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
     if (read) {
-        Wire.beginTransmission(address);
-        Wire.write(reg);
-        Wire.endTransmission();
-        Wire.requestFrom(address, (uint8_t)len);
-        if (Wire.available()) {
-            Wire.readBytes(data, len);
+        if (len > 0) {
+            Wire.beginTransmission(address);
+            Wire.write(reg);
+            Wire.endTransmission();
+            Wire.requestFrom(address, (uint8_t)len);
+            if (Wire.available()) {
+                Wire.readBytes(data, len);
+            }
+        } else {
+            // Device scanning - just check if device responds
+            Wire.beginTransmission(address);
+            return Wire.endTransmission();
         }
     } else {
         Wire.beginTransmission(address);
         Wire.write(reg);
-        Wire.write(data, len);
+        if (len > 0) {
+            Wire.write(data, len);
+        }
         Wire.endTransmission();
     }
     return 0;
