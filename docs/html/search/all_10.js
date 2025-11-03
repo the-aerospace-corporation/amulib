@@ -29,5 +29,5 @@ var searchData=
   ['produceresultarraybinary_26',['produceResultArrayBinary',['../parser_8c.html#a5a65c4f56bb3d0f10740b8afa7659d4c',1,'parser.c']]],
   ['programdata_27',['programData',['../struct__scpi__parser__state__t.html#ae76cb9d6c95bd5610b1432c25a3dc25b',1,'_scpi_parser_state_t']]],
   ['programheader_28',['programHeader',['../struct__scpi__parser__state__t.html#a9eaedab0ec75719f98c4c3b5152b12e3',1,'_scpi_parser_state_t']]],
-  ['ptr_29',['ptr',['../struct__scpi__token__t.html#a43752f5a7e95617b968096570eee4f13',1,'_scpi_token_t::ptr'],['../struct__scpi__data__parameter__t.html#a9b4a6b4f465177089fbd9ae82e5603de',1,'_scpi_data_parameter_t::ptr']]]
+  ['ptr_29',['ptr',['../struct__scpi__data__parameter__t.html#a9b4a6b4f465177089fbd9ae82e5603de',1,'_scpi_data_parameter_t::ptr'],['../struct__scpi__token__t.html#a43752f5a7e95617b968096570eee4f13',1,'_scpi_token_t::ptr']]]
 ];

@@ -55,7 +55,7 @@ var NAVTREE =
       [ "Electrical Specifications", "hardware.html#electrical_specs", null ],
       [ "Interface Specifications", "hardware.html#interfaces", [
         [ "I2C Interface", "hardware.html#i2c_interface", null ],
-        [ "USB Interface", "hardware.html#usb_interface", null ]
+        [ "USB Interface  <br>", "hardware.html#usb_interface", null ]
       ] ]
     ] ],
     [ "Topics", "topics.html", "topics" ],
@@ -85,14 +85,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "amu__commands_8h.html",
-"amu__regs_8h.html#abef8cf2ab221162c231a4e22d8f797c0",
-"error_8h.html",
-"group__scpi__dut__commands.html#scpi_dut_reference",
-"parser_8c.html#ada822479f3f32f73f2e2c1b5ad976a08",
-"struct__scpi__interface__t.html#acce228c284ededac2a633b338da71cb9",
-"types_8h.html#ab33fee84b9e338a2bd47634f9092ac6eaf0af5d08d8583365b64462daa110a14b"
+"amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020faad8eaee4693b126c17c1a74e2f2606d5a",
+"error_8c.html#aba366b29b9cc1f7aebe1330ac9e81414",
+"group__scpi__aux__commands.html#scpi_sunsensor_reference",
+"parser_8c.html#ad04036c5b294f701a204545df6348e04",
+"struct__scpi__interface__t.html#a1570ac9158036a6c06d5c29ea3101859",
+"types_8h.html#ab33fee84b9e338a2bd47634f9092ac6eac8073927acdb789d303760f619389616"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
-var LISTOFALLMEMBERS = 'List of all members';
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
