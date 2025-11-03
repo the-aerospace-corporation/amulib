@@ -48,25 +48,17 @@ lib_deps =
 #include <amulib.h>
 
 // I2C transfer function for Arduino Wire library
+// Note: For production use with large data transfers, see the examples folder
+// for a more robust implementation that handles Wire buffer limitations.
 int amu_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
-    uint8_t packetNum = 0;
-    
     if (read) {
         if (len > 0) {
             wire->beginTransmission(address);
             wire->write(reg);
             wire->endTransmission();
-            while (len > BUFFER_LENGTH) {
-                wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, (uint8_t)0);
-                if (wire->available()) {
-                    wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-                    packetNum++;
-                    len -= BUFFER_LENGTH;
-                }
-            }
             wire->requestFrom(address, (uint8_t)len);
             if (wire->available())
-                wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
+                wire->readBytes(data, len);
         }
         else {
             wire->beginTransmission(address);
@@ -76,15 +68,9 @@ int amu_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data
     else {
         wire->beginTransmission(address);
         wire->write(reg);
-        while (len > BUFFER_LENGTH) {
-            wire->write(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-            len -= BUFFER_LENGTH;
-            packetNum++;
-        }
-        wire->write(&data[packetNum * BUFFER_LENGTH], len);
+        wire->write(data, len);
         wire->endTransmission();
     }
-    
     return 0;
 }
 
