@@ -115,7 +115,7 @@ void setup() {
 
     amu_dev->process_cmd = &amu_process_comands;
 
-	amu_dev_setDeviceTypeStr("AMU-ESP32-DEV");
+	  amu_dev_setDeviceTypeStr("AMU-DEV");
 
     amu_dev->amu_regs->hardware_revision = AMU_HARDWARE_REVISION_AMU_ESP32_DEV;
 

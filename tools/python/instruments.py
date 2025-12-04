@@ -121,21 +121,26 @@ class CalibrationInstruments:
             res (str): Resolution setting for voltage meter
             current_limit (float): Current protection limit
         """
+
+        range_max = ".01"
+        if vmax > .01:
+            range_max = ".1"
+        if vmax > .1:
+            range_max = "1"
+        if vmax > 1:
+            range_max = "10"
+        if vmax > 10:
+            range_max = "100"
+
         # Configure voltage meter range if available
         if self.voltage_meter is not None:
-            range_max = ".1"
-            if vmax > .1:
-                range_max = "1"
-            if vmax > 1:
-                range_max = "10"
-            if vmax > 10:
-                range_max = "100"
             self.voltage_meter.write("CONF:VOLT:DC " + range_max + "," + str(res))
 
         # Configure source meter for voltage mode
         self.source_meter.write(":SOUR:FUNC:MODE VOLT")                      # set source mode to voltage output
         self.source_meter.write(":SENS:CURR:PROT " + str(current_limit))     # set current protection to current_limit
-        self.source_meter.write(":SOUR:VOLT:RANG:AUTO ON")                   # set voltage range to auto
+        self.source_meter.write(":SOUR:VOLT:RANG:AUTO OFF")                  # set voltage range to manual
+        self.source_meter.write(":SOUR:VOLT:RANG " + str(range_max))         # set voltage range upper limit
         self.source_meter.write(":SOUR:VOLT 0.000")                          # set output voltage to 0V
         self.source_meter.write(":OUTP ON")                                  # enable output
 
@@ -148,21 +153,24 @@ class CalibrationInstruments:
             res (str): Resolution setting for current meter
             voltage_limit (float): Voltage protection limit
         """
+        
+        range_max = ".01"
+        if imax > .01:
+            range_max = ".1"
+        if imax > .1:
+            range_max = "1"
+        if imax > 1:
+            range_max = "3"
+
         # Configure current meter range if available
         if self.current_meter is not None:
-            range_max = ".01"
-            if imax > .01:
-                range_max = ".1"
-            if imax > .1:
-                range_max = "1"
-            if imax > 1:
-                range_max = "3"
             self.current_meter.write("CONF:CURR:DC " + range_max + "," + str(res))
 
         # Configure source meter for current mode
         self.source_meter.write(":SOUR:FUNC:MODE CURR")                         # set source mode to current output
         self.source_meter.write(":SENS:VOLT:PROT " + str(voltage_limit))        # set voltage protection to voltage_limit
-        self.source_meter.write(":SOUR:CURR:RANG:AUTO ON")                      # set current range to auto
+        self.source_meter.write(":SOUR:CURR:RANG:AUTO OFF")                     # set current range to manual
+        self.source_meter.write(":SOUR:CURR:RANG " + str(range_max))            # set current range upper limit
         self.source_meter.write(":SOUR:CURR 0.000")                             # set output current to 0A
         self.source_meter.write(":OUTP ON")                                     # enable output
 
@@ -219,7 +227,7 @@ class CalibrationInstruments:
             retries (int): Maximum number of retry attempts
         """
         if self.voltage_meter is None:
-            print("Warning: No voltage meter connected. Using source meter without feedback.")
+            # print("Warning: No voltage meter connected. Using source meter without feedback.")
             self.set_voltage(value)
             return
 
@@ -261,7 +269,7 @@ class CalibrationInstruments:
             retries (int): Maximum number of retry attempts
         """
         if self.current_meter is None:
-            print("Warning: No current meter connected. Using source meter without feedback.")
+            # print("Warning: No current meter connected. Using source meter without feedback.")
             self.set_current(value)
             return
 

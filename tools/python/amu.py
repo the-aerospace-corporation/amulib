@@ -8,16 +8,20 @@ class amu:
 
     serial_dev = None
     available = False
+    channel = None
 
 
-    def __init__(self, com_port=None):
+    def __init__(self, com_port=None, channel=None):
         """
         Initialize AMU connection
         
         Args:
             com_port (str, optional): Specific COM port to connect to (e.g., 'COM4').
                                     If None, will auto-detect AMU device.
+            channel (int, optional): Channel number for passthrough communication (1-based).
+                                    If provided, commands will use @n SCPI address format.
         """
+        self.channel = channel
         self.connect(com_port)
 
     
@@ -259,13 +263,70 @@ class amu:
             self.serial_dev.close()
             self.available = False
             print("Disonnecting AMU on " + self.serial_dev.name)
+    
+    def validate_channel(self):
+        """
+        Validate that the specified channel exists by checking SYST:TWI:SCAN?
+        Returns True if valid, False otherwise.
+        """
+        if self.channel is None:
+            return True  # No channel specified, always valid
+        
+        try:
+            scan_response = self.query("SYST:TWI:SCAN?")
+            # Parse the response - first number is the count of devices
+            parts = scan_response.split(',')
+            if len(parts) > 0:
+                device_count = int(parts[0])
+                if self.channel > (device_count-1):
+                    print(f"Error: Channel {self.channel} exceeds available devices ({device_count})")
+                    return False
+                elif self.channel < 1:
+                    print(f"Error: Channel must be >= 1, got {self.channel}")
+                    return False
+                print(f"Channel {self.channel} validated (found {device_count} devices)")
+                return True
+            else:
+                print("Error: Unable to parse SYST:TWI:SCAN? response")
+                return False
+        except Exception as e:
+            print(f"Error validating channel: {e}")
+            return False
+    
+    def _format_command(self, command):
+        """
+        Format command with channel address if channel is specified.
+        SCPI channel format:
+        - Queries: MEAS:ADC:VOLT? @2
+        - Commands: SWEEP:TRIG: @2
+        - Commands with data: SYST:TIME:UTC 1541536, @2
+        
+        Args:
+            command (str): Original SCPI command
+            
+        Returns:
+            str: Formatted command with @n address if channel is set
+        """
+        if self.channel is None:
+            return command
+        
+        # For query commands (ending with ?), insert space and @n before the ?
+        if command.endswith('?'):
+            return command + f" (@{self.channel})"
+        else:
+            # For set commands, append comma, space, and @n at the end
+            return command + f", (@{self.channel})"
+    
 
     
     def query(self, command):
         # Clear any existing data in the buffer before sending command
         self.serial_dev.reset_input_buffer()
         
-        self.__write__(command)
+        # Format command with channel if specified
+        formatted_command = self._format_command(command)
+        
+        self.__write__(formatted_command)
         
         # Small delay to let device start processing the command
         time.sleep(0.02)  # Increased to 20ms for better reliability
@@ -294,7 +355,10 @@ class amu:
         return response
     
     def send(self, command, error_check=False):
-        self.__write__(command)
+        # Format command with channel if specified
+        formatted_command = self._format_command(command)
+        
+        self.__write__(formatted_command)
 
         if( command == "*CLS" ):
             self.serial_dev.read_all()
@@ -305,7 +369,7 @@ class amu:
             while(error != "0,\"No error"):
                 error = self.query("SYST:ERR?")
                 if(error != "0,\"No error"):
-                    print("AMU COMMAND \"" + command + "\" error: ", error)
+                    print("AMU COMMAND \"" + formatted_command + "\" error: ", error)
                 return error
             else:
                 return 0
