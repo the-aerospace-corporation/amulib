@@ -1,31 +1,4 @@
 var searchData=
 [
-  ['dac_20calibration_0',['DAC Calibration',['../group__scpi__aux__commands.html#autotoc_md38',1,'']]],
-  ['dac_20commands_20reference_1',['SCPI DAC Commands Reference',['../group__scpi__aux__commands.html',1,'']]],
-  ['dac_20control_2',['DAC Control',['../group__scpi__aux__commands.html#autotoc_md24',1,'']]],
-  ['dac_20output_20setting_3',['DAC Output Setting',['../group__scpi__aux__commands.html#autotoc_md29',1,'']]],
-  ['dac_20reference_4',['DAC Reference',['../group__scpi__aux__commands.html#autotoc_md43',1,'']]],
-  ['dac_3acalibrate_5',['DAC:CALibrate',['../group__scpi__aux__commands.html#autotoc_md39',1,'']]],
-  ['dac_3acalibrate_3asave_6',['DAC:CALibrate:SAVe',['../group__scpi__aux__commands.html#autotoc_md41',1,'']]],
-  ['dac_3adisable_7',['DAC:DISable',['../group__scpi__aux__commands.html#autotoc_md27',1,'']]],
-  ['dac_3aenable_8',['DAC:ENAble',['../group__scpi__aux__commands.html#autotoc_md25',1,'']]],
-  ['dac_3araw_9',['DAC:RAW',['../group__scpi__aux__commands.html#autotoc_md34',1,'DAC:RAW'],['../group__scpi__aux__commands.html#autotoc_md36',1,'DAC:RAW?']]],
-  ['dac_3areference_10',['DAC:REFerence',['../group__scpi__aux__commands.html#autotoc_md44',1,'DAC:REFerence'],['../group__scpi__aux__commands.html#autotoc_md46',1,'DAC:REFerence?']]],
-  ['dac_3avoltage_11',['DAC:VOLTage',['../group__scpi__aux__commands.html#autotoc_md30',1,'DAC:VOLTage'],['../group__scpi__aux__commands.html#autotoc_md32',1,'DAC:VOLTage?']]],
-  ['data_20read_20operations_12',['Data Read Operations',['../group__scpi__memory__commands.html#autotoc_md116',1,'']]],
-  ['data_20storage_13',['ADC Data Storage',['../group__scpi__adc__commands.html#autotoc_md5',1,'']]],
-  ['data_20types_14',['Data Types',['../api_reference.html#data_types',1,'']]],
-  ['data_20write_20operations_15',['Data Write Operations',['../group__scpi__memory__commands.html#autotoc_md111',1,'']]],
-  ['documentation_20sections_16',['Documentation Sections',['../index.html#documentation_sec',1,'']]],
-  ['dose_20tracking_17',['Dose Tracking',['../group__scpi__dut__commands.html#autotoc_md59',1,'']]],
-  ['dut_20commands_20reference_18',['SCPI DUT Commands Reference',['../group__scpi__dut__commands.html',1,'']]],
-  ['dut_3acoverglass_19',['DUT:COVERglass',['../group__scpi__dut__commands.html#autotoc_md51',1,'']]],
-  ['dut_3adose_20',['DUT:DOSE',['../group__scpi__dut__commands.html#autotoc_md60',1,'']]],
-  ['dut_3aenergy_21',['DUT:ENERGY',['../group__scpi__dut__commands.html#autotoc_md57',1,'']]],
-  ['dut_3ajunction_22',['DUT:JUNCtion',['../group__scpi__dut__commands.html#autotoc_md48',1,'']]],
-  ['dut_3anotes_23',['DUT:NOTEs',['../group__scpi__dut__commands.html#autotoc_md63',1,'']]],
-  ['dut_3aserialnumber_24',['DUT:SERialnumber',['../group__scpi__dut__commands.html#autotoc_md54',1,'']]],
-  ['dut_3atsensor_3afit_25',['DUT:TSENSor:FIT',['../group__scpi__dut__commands.html#autotoc_md70',1,'']]],
-  ['dut_3atsensor_3anumber_26',['DUT:TSENSor:NUMber',['../group__scpi__dut__commands.html#autotoc_md68',1,'']]],
-  ['dut_3atsensor_3atype_27',['DUT:TSENSor:TYPE',['../group__scpi__dut__commands.html#autotoc_md66',1,'']]]
+  ['examples_0',['Code Examples',['../examples.html',1,'index']]]
 ];

@@ -165,7 +165,8 @@ var amu__commands_8h =
       [ "CMD_USB_ADC_CURRENT_MAX", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42ea219308a1a08bf799ad208ac5341836db", null ],
       [ "CMD_USB_ADC_CURRENT_OFFSET", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eae7be5d6d9348be767a5a8eb812ed9c02", null ],
       [ "CMD_USB_ADC_CURRENT_GAIN", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42ea87c7e1a7f6bce2c4ab2b6b7fe2a6512c", null ],
-      [ "CMD_USB_ADC_CURRENT_MAX_PGA", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eaeac59652a221ec0e65c581f8e71da9bd", null ]
+      [ "CMD_USB_ADC_CURRENT_MAX_PGA", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eaeac59652a221ec0e65c581f8e71da9bd", null ],
+      [ "CMD_USB_ADC_CURRENT_PGA_SAVE", "amu__commands_8h.html#a3db2dea58ba6364956750c0e5000e42eaba5ba89931efed8b4d245fa313af73b8", null ]
     ] ],
     [ "CMD_USB_ADC_VOLTAGE_t", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296", [
       [ "CMD_USB_ADC_VOLTAGE_CAL_ZERO", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a3e276c4191b6d888e204e1fc1d9c0c81", null ],
@@ -176,7 +177,8 @@ var amu__commands_8h =
       [ "CMD_USB_ADC_VOLTAGE_MAX", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296ab9488833b627cf62a527792f1e8933d5", null ],
       [ "CMD_USB_ADC_VOLTAGE_OFFSET", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296ad3e51d8fa359b382cc39388c2faa782e", null ],
       [ "CMD_USB_ADC_VOLTAGE_GAIN", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a1f229136e2e6c9e0a8309cb82b1e110a", null ],
-      [ "CMD_USB_ADC_VOLTAGE_MAX_PGA", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a30c30d7a515c99db49472547bfb9c83c", null ]
+      [ "CMD_USB_ADC_VOLTAGE_MAX_PGA", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a30c30d7a515c99db49472547bfb9c83c", null ],
+      [ "CMD_USB_ADC_VOLTAGE_PGA_SAVE", "amu__commands_8h.html#a1b1f6f89052173b66bc346344e040296a37203991cfef2e2aaaa215e0207177bd", null ]
     ] ],
     [ "CMD_USB_EEPROM_t", "amu__commands_8h.html#aea1fcd584b422bc141a186c10a28f5ec", [
       [ "CMD_USB_EEPROM_ERASE_ALL", "amu__commands_8h.html#aea1fcd584b422bc141a186c10a28f5ecab1355aadfce13329ea82d157603c220b", null ],

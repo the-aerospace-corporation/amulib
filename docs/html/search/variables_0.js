@@ -10,7 +10,7 @@ var searchData=
   ['aldo_7',['aldo',['../unionadc__channels__t.html#ab3f4e17669d089cb91251c8915bd94cd',1,'adc_channels_t::aldo'],['../structamu__int__volt__t.html#ac77d1fc1be2464e8b948b51ada0753e8',1,'amu_int_volt_t::aldo']]],
   ['am0_8',['am0',['../structivsweep__config__t.html#a7ebf7e00206a7205f6a1550f4dd00e2d',1,'ivsweep_config_t']]],
   ['amu_5fdev_5finitialized_9',['amu_dev_initialized',['../amu__device_8c.html#a7fa96302dbe6bbf031fb973acd1fe4b6',1,'amu_device.c']]],
-  ['amu_5fdevice_10',['amu_device',['../amu__device_8c.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c'],['../amu__device_8h.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c']]],
+  ['amu_5fdevice_10',['amu_device',['../amu__device_8h.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c'],['../amu__device_8c.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c']]],
   ['amu_5fdevice_5faddresses_11',['amu_device_addresses',['../amu__device_8c.html#ab3a908c4dc978674358b7a7d050fce1f',1,'amu_device.c']]],
   ['amu_5fnum_5fdevices_12',['amu_num_devices',['../amu__device_8c.html#a4c91feb7fefa2f8ed2f4f6846f01aa92',1,'amu_device.c']]],
   ['amu_5fregs_13',['amu_regs',['../structamu__device__t.html#a9e5a07bd6d26b03a401f0d17b739520b',1,'amu_device_t']]],
@@ -21,5 +21,5 @@ var searchData=
   ['arbitrary_5freminding_18',['arbitrary_reminding',['../struct__scpi__t.html#a1872c7d9d9a1d4b19fc3ca13feeb61d3',1,'_scpi_t']]],
   ['area_19',['area',['../structivsweep__config__t.html#a4e5b1ecbe4a447d369013cb31e5fbfe3',1,'ivsweep_config_t']]],
   ['aux_5fcmdlist_20',['aux_cmdlist',['../struct__scpi__t.html#aad217ee38df10f8307f9b3c1e921af89',1,'_scpi_t']]],
-  ['avdd_21',['avdd',['../unionadc__channels__t.html#a90f477aa8c88c294bb4b7baefd50c2b8',1,'adc_channels_t::avdd'],['../structamu__int__volt__t.html#a5a0d4de8fbbcbc82a8d68e5ec1036ba7',1,'amu_int_volt_t::avdd']]]
+  ['avdd_21',['avdd',['../structamu__int__volt__t.html#a5a0d4de8fbbcbc82a8d68e5ec1036ba7',1,'amu_int_volt_t::avdd'],['../unionadc__channels__t.html#a90f477aa8c88c294bb4b7baefd50c2b8',1,'adc_channels_t::avdd']]]
 ];

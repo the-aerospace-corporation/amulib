@@ -1,14 +1,4 @@
 var searchData=
 [
-  ['i_20v_20sweep_20commands_0',['I-V Sweep Commands',['../index.html#sweep_commands_overview',1,'']]],
-  ['i2c_20configuration_1',['I2C Configuration',['../group__scpi__system__commands.html#autotoc_md19',1,'']]],
-  ['i2c_20interface_2',['I2C Interface',['../hardware.html#i2c_interface',1,'']]],
-  ['information_3',['Firmware Information',['../group__scpi__system__commands.html#autotoc_md22',1,'']]],
-  ['installation_4',['Installation',['../index.html#installation_subsec',1,'']]],
-  ['interface_5',['Interface',['../hardware.html#i2c_interface',1,'I2C Interface'],['../hardware.html#usb_interface',1,'USB Interface']]],
-  ['interface_20commands_6',['Interface Commands',['../interface_commands.html',1,'index']]],
-  ['interface_20specifications_7',['Interface Specifications',['../hardware.html#interfaces',1,'']]],
-  ['interfaces_8',['Supported Interfaces',['../amu__commands_8h.html#cmd_interfaces',1,'']]],
-  ['internal_20voltages_9',['Internal Voltages',['../group__scpi__measurement__commands.html#autotoc_md98',1,'']]],
-  ['introduction_10',['Introduction',['../index.html#intro_sec',1,'']]]
+  ['reference_0',['reference',['../api_reference.html',1,'C++ API Reference'],['../hardware.html',1,'Hardware Reference'],['../group__scpi__adc__commands.html',1,'SCPI ADC Commands Reference'],['../group__scpi__aux__commands.html',1,'SCPI DAC Commands Reference'],['../group__scpi__dut__commands.html',1,'SCPI DUT Commands Reference'],['../group__scpi__aux__commands.html',1,'SCPI Heater Commands Reference'],['../group__scpi__measurement__commands.html',1,'SCPI Measurement Commands Reference'],['../group__scpi__memory__commands.html',1,'SCPI Memory Commands Reference'],['../group__scpi__aux__commands.html',1,'SCPI SunSensor Commands Reference'],['../group__scpi__sweep__commands.html',1,'SCPI Sweep Commands Reference'],['../group__scpi__system__commands.html',1,'SCPI System Commands Reference']]]
 ];

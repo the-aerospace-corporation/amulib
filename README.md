@@ -47,6 +47,33 @@ lib_deps =
 #include <Wire.h>
 #include <amulib.h>
 
+// Custom I2C transfer function for AMU communication
+int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
+    if (read) {
+        if (len > 0) {
+            Wire.beginTransmission(address);
+            Wire.write(reg);
+            Wire.endTransmission();
+            Wire.requestFrom(address, (uint8_t)len);
+            if (Wire.available()) {
+                Wire.readBytes(data, len);
+            }
+        } else {
+            // Device scanning - just check if device responds
+            Wire.beginTransmission(address);
+            return Wire.endTransmission();
+        }
+    } else {
+        Wire.beginTransmission(address);
+        Wire.write(reg);
+        if (len > 0) {
+            Wire.write(data, len);
+        }
+        Wire.endTransmission();
+    }
+    return 0;
+}
+
 AMU amu;
 
 void setup() {
@@ -54,30 +81,40 @@ void setup() {
     Wire.begin();
     Wire.setClock(400000);
     
-    // Initialize AMU device at I2C address 0x0B
-    amu.begin(0x0B);
+    while (!Serial);
     
-    // Wait for device to be ready
-    if (amu.waitUntilReady(5000) == 0) {
+    // Scan for AMU device (default address is 0x0B)
+    uint8_t address = 0x0B;
+    if (twi_transfer(address, 0, NULL, 0, 1) == 0) {
+        Serial.println("AMU found! Initializing...");
+        
+        // Initialize AMU with custom transfer function
+        amu.begin(address, twi_transfer);
+        
+        // Set LED pattern to indicate device is ready
+        amu.setLEDmode(AMU_LED_PATTERN_GREEN_FLASH);
+        
         Serial.println("AMU device ready!");
+    } else {
+        Serial.println("No AMU device found.");
     }
 }
 
 void loop() {
-    // Read voltage
-    float voltage = amu.measureVoltage();
+    // Trigger a Voc measurement
+    amu.triggerVoc();
+    
+    // Wait for measurement to complete
+    amu.waitUntilReady(250);
+    
+    // Read measurement data
+    amu_meas_t measurement = amu.readMeasurement();
+    
     Serial.print("Voltage: ");
-    Serial.println(voltage);
-    
-    // Read current
-    float current = amu.measureCurrent();
-    Serial.print("Current: ");
-    Serial.println(current);
-    
-    // Read temperature
-    float temp = amu.measureTSensor();
-    Serial.print("Temperature: ");
-    Serial.println(temp);
+    Serial.print(measurement.measurement, 6);
+    Serial.print(" V\tTemperature: ");
+    Serial.print(measurement.temperature, 2);
+    Serial.println(" °C");
     
     delay(1000);
 }
@@ -103,10 +140,7 @@ Each example includes its own `platformio.ini` configuration and can be built in
 ### Measurements
 - `measureVoltage()` - Read voltage measurement
 - `measureCurrent()` - Read current measurement
-- `measureTSensor()` - Read primary temperature sensor
-- `measureTSensor0()` - Read temperature sensor 0
-- `measureTSensor1()` - Read temperature sensor 1
-- `measureTSensor2()` - Read temperature sensor 2
+- `measureTSensor()` - Read RTD temperature sensor
 
 ### Device Control
 - `setActiveChannels(uint16_t channels)` - Set active measurement channels

@@ -107,7 +107,8 @@ var amu__types_8h =
       [ "AMU_HARDWARE_REVISION_AMU_3_2", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050abe279f407b001e0555b60435e174d6e9", null ],
       [ "AMU_HARDWARE_REVISION_AMU_3_3", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050a197d942aaaa5eff25f3d02c51e665f05", null ],
       [ "AMU_HARDWARE_REVISION_AMU_SP_DEV", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050a7e22e98fe2e27cb42659d5144c682422", null ],
-      [ "AMU_HARDWARE_REVISION_AMU_SP", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050abab9558707b64d19b186d8dd9c62b30f", null ]
+      [ "AMU_HARDWARE_REVISION_AMU_SP", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050abab9558707b64d19b186d8dd9c62b30f", null ],
+      [ "AMU_HARDWARE_REVISION_AMU_ESP32_DEV", "amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050a35f8ef29adb0a33c73a09b0e58d93228", null ]
     ] ],
     [ "amu_led_pattern_t", "amu__types_8h.html#a7ef8543aa880eba5d322d47d7714a3d7", [
       [ "AMU_LED_PATTERN_OFF", "amu__types_8h.html#a7ef8543aa880eba5d322d47d7714a3d7a7da03a44195e0b6bd4ea58c875f8ad35", null ],

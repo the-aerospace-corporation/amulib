@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"group__scpi__aux__commands.html#scpi_sunsensor_reference":[12,1,5,2],
+"group__scpi__commands.html":[12,1],
+"group__scpi__dut__commands.html":[12,1,2],
 "group__scpi__dut__commands.html#scpi_dut_reference":[12,1,2,0],
 "group__scpi__measurement__commands.html":[12,1,1],
 "group__scpi__measurement__commands.html#scpi_measurement_reference":[12,1,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "parser_8c.html#abdda250fe6b46d0a083dc25fbb13f018":[14,0,1,0,0,16,73],
 "parser_8c.html#ac6def7673420118c450c5bdfbdcb16b0":[14,0,1,0,0,16,72],
 "parser_8c.html#acb789c363d03c3a91bf2c9b37d6c52a9":[14,0,1,0,0,16,65],
-"parser_8c.html#acb98ca9c05eec3e437149e79202a9940":[14,0,1,0,0,16,12],
-"parser_8c.html#ad04036c5b294f701a204545df6348e04":[14,0,1,0,0,16,13],
-"parser_8c.html#ad19797da3213a0499b0bd917400fc43e":[14,0,1,0,0,16,60],
-"parser_8c.html#ad68ae865e3871baa3cff0f432ae413bf":[14,0,1,0,0,16,79]
+"parser_8c.html#acb98ca9c05eec3e437149e79202a9940":[14,0,1,0,0,16,12]
 };
