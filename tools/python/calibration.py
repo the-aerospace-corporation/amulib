@@ -66,23 +66,30 @@ def info(file=None):
 
 def getIVCoefficients():
 
-    voltagePGA = amu.query("ADC:VOLT:PGA?")
-    currentPGA = amu.query("ADC:CURR:PGA?")
+    voltagePGA = amu.query("ADC:CH0:PGA?")
+    currentPGA = amu.query("ADC:CH1:PGA?")
 
     coeff_str = "PGA\tVoff\tVgain\tIoff\tIgain\n"
 
     for i in range(8):
-        amu.send("ADC:VOLT:PGA " + str(i))
-        amu.send("ADC:CURR:PGA " + str(i))
+        amu.send("ADC:CH0:PGA " + str(i))
+        time.sleep(0.25)
         coeff_str += str(i) + "\t"
-        coeff_str += amu.query("ADC:VOLT:OFF?") + "\t"
-        coeff_str += amu.query("ADC:VOLT:GAIN?") + "\t"
-        coeff_str += amu.query("ADC:CURR:OFF?") + "\t"
-        coeff_str += amu.query("ADC:CURR:GAIN?") + "\n"
+        coeff_str += amu.query("ADC:CH0:OFF?") + "\t"
+        time.sleep(0.1)
+        coeff_str += amu.query("ADC:CH0:GAIN?") + "\t"
+        time.sleep(0.1)
+        amu.send("ADC:CH1:PGA " + str(i))
+        time.sleep(0.25)
+        coeff_str += amu.query("ADC:CH1:OFF?") + "\t"
+        time.sleep(0.1)
+        coeff_str += amu.query("ADC:CH1:GAIN?") + "\n"
+        time.sleep(0.1)
     
-    amu.send("ADC:VOLT:PGA " + voltagePGA)      # reset original voltage PGA setting
-    amu.send("ADC:CURR:PGA " + currentPGA)      # reset original current PGA setting
-
+    amu.send("ADC:CH0:PGA " + voltagePGA)      # reset original voltage PGA setting
+    time.sleep(0.25)
+    amu.send("ADC:CH1:PGA " + currentPGA)      # reset original current PGA setting
+    time.sleep(0.25)
     return coeff_str
 
 
@@ -116,9 +123,10 @@ def calibrateVoltage(pga = 0, steps = 10, save=False, printResult=False, file = 
     amu.query("SWEEP:TRIG:VOC?")      # make sure open circuit voltage condition is in place
     time.sleep(0.5)
 
-    amu.send("ADC:VOLT:PGA " + str(pga))   # set voltage pga
+    amu.send("ADC:CH0:PGA " + str(pga))   # set voltage pga
+    time.sleep(0.25)
 
-    vmax = float(amu.query("ADC:VOLT:MAX?").strip())
+    vmax = float(amu.query("ADC:CH0:MAX?").strip())
 
     # filePrintln(file, "ADC:CH0:OFF?\t" + amu.query("ADC:CH0:OFF?"))
     # filePrintln(file, "ADC:CH0:GAIN?\t" + amu.query("ADC:CH0:GAIN?"))
@@ -131,16 +139,16 @@ def calibrateVoltage(pga = 0, steps = 10, save=False, printResult=False, file = 
     time.sleep(0.5)
 
     filePrintln(None, "\nVoltage Set to ZERO")
-    filePrintln(None, "ADC:VOLT:OFF?\t" + amu.query("ADC:VOLT:OFF?"))
-    filePrintln(None, "ADC:VOLT:GAIN?\t" + amu.query("ADC:VOLT:GAIN?"))
+    filePrintln(None, "ADC:CH0:OFF?\t" + amu.query("ADC:CH0:OFF?"))
+    filePrintln(None, "ADC:CH0:GAIN?\t" + amu.query("ADC:CH0:GAIN?"))
 
     # Perform AMU offset calibration
-    amu.send("ADC:VOLT:CAL:ZERO", error_check=False)
+    amu.send("ADC:CH0:CAL:ZERO", error_check=False)
     time.sleep(2.5)
 
     filePrintln(None, "\nCAL ZERO")
-    filePrintln(file, "ADC:VOLT:OFF?\t" + amu.query("ADC:VOLT:OFF?"))
-    filePrintln(file, "ADC:VOLT:GAIN?\t" + amu.query("ADC:VOLT:GAIN?"))
+    filePrintln(file, "ADC:CH0:OFF?\t" + amu.query("ADC:CH0:OFF?"))
+    filePrintln(file, "ADC:CH0:GAIN?\t" + amu.query("ADC:CH0:GAIN?"))
 
     # Set source meter to full scale voltage * 0.98 from vmax, adjust until meter reads <10uV
     instruments.set_voltage_with_feedback(vmax * 0.98, max_error=vmax*.000001)
@@ -154,24 +162,24 @@ def calibrateVoltage(pga = 0, steps = 10, save=False, printResult=False, file = 
     instruments.measure_voltage()
     
     # Perform AMU full scale calibration
-    amu.send("ADC:VOLT:CAL:FULL", error_check=False)
+    amu.send("ADC:CH0:CAL:FULL", error_check=False)
     time.sleep(2.5)
     # amu.send("ADC:CH0:CAL:FULL")
 
     filePrintln(None, "\nCAL FULL")
-    filePrintln(None, "ADC:VOLT:OFF?\t" + amu.query("ADC:VOLT:OFF?"))
-    filePrintln(None, "ADC:VOLT:GAIN?\t" + amu.query("ADC:VOLT:GAIN?"))
+    filePrintln(None, "ADC:CH0:OFF?\t" + amu.query("ADC:CH0:OFF?"))
+    filePrintln(None, "ADC:CH0:GAIN?\t" + amu.query("ADC:CH0:GAIN?"))
 
     if save:
-        amu.send("ADC:VOLT:CAL:SAVE")
-
+        amu.send("ADC:CH0:CAL:SAVE")
 
 def checkVoltageCal(steps=10, file=None):
 
     amu.query("SWEEP:TRIG:VOC?")      # make sure open circuit voltage condition is in place
     time.sleep(0.5)
 
-    vmax = float(amu.query("ADC:VOLT:MAX?").strip())
+    # vmax = float(amu.query("ADC:VOLT:MAX?").strip())
+    vmax = float(amu.query("ADC:CH0:MAX?").strip())
 
     # if(vmax > 10):
     #     setVoltageMode(vmax, res=1e-5, current_limit = 0.005)
@@ -214,10 +222,10 @@ def calibrateCurrent(pga = 0, steps = 10, save=False, printResult=False, file=No
     amu.query("SWEEP:TRIG:ISC?")      # make sure short circuit condition is in place
     time.sleep(0.50)
 
-    amu.send("ADC:CURR:PGA " + str(pga))   # set current pga
+    amu.send("ADC:CH1:PGA " + str(pga))   # set current pga
     time.sleep(0.25)
 
-    imax = float(amu.query("ADC:CURR:MAX?"))
+    imax = float(amu.query("ADC:CH1:MAX?"))
 
     instruments.set_current_mode(imax, res='MIN')
 
@@ -225,17 +233,17 @@ def calibrateCurrent(pga = 0, steps = 10, save=False, printResult=False, file=No
     instruments.set_current_with_feedback(0.000, max_error=imax*.00001)
 
     filePrintln(None, "\nCurrent Set to ZERO")
-    filePrintln(None, "ADC:CURR:OFF?\t" + amu.query("ADC:CURR:OFF?"))
-    filePrintln(None, "ADC:CURR:GAIN?\t" + amu.query("ADC:CURR:GAIN?"))
+    filePrintln(None, "ADC:CH1:OFF?\t" + amu.query("ADC:CH1:OFF?"))
+    filePrintln(None, "ADC:CH1:GAIN?\t" + amu.query("ADC:CH1:GAIN?"))
 
     time.sleep(0.5)
     # Perform AMU offset calibration
-    amu.send("ADC:CURR:CAL:ZERO", error_check=False)    
+    amu.send("ADC:CH1:CAL:ZERO", error_check=False)    
     time.sleep(2.5)
 
     filePrintln(None, "\nCAL ZERO")
-    filePrintln(file, "ADC:CURR:OFF?\t" + amu.query("ADC:CURR:OFF?"))
-    filePrintln(file, "ADC:CURR:GAIN?\t" + amu.query("ADC:CURR:GAIN?"))
+    filePrintln(file, "ADC:CH1:OFF?\t" + amu.query("ADC:CH1:OFF?"))
+    filePrintln(file, "ADC:CH1:GAIN?\t" + amu.query("ADC:CH1:GAIN?"))
 
 
     # Set source meter to full scale voltage from vmax, adjust until meter reads <10uV
@@ -244,28 +252,27 @@ def calibrateCurrent(pga = 0, steps = 10, save=False, printResult=False, file=No
     instruments.measure_current()
 
     filePrintln(None, "\nCurrent Set to " + str(imax*0.98) + " Amps")
-    filePrintln(file, "ADC:CURR:OFF?\t" + amu.query("ADC:CURR:OFF?"))
-    filePrintln(file, "ADC:CURR:GAIN?\t" + amu.query("ADC:CURR:GAIN?"))
+    filePrintln(file, "ADC:CH1:OFF?\t" + amu.query("ADC:CH1:OFF?"))
+    filePrintln(file, "ADC:CH1:GAIN?\t" + amu.query("ADC:CH1:GAIN?"))
 
     # Perform AMU full scale calibration
-    amu.send("ADC:CURR:CAL:FULL", error_check=False)
+    amu.send("ADC:CH1:CAL:FULL", error_check=False)
     time.sleep(2.5)
     # amu.send("ADC:CH1:CAL:FULL")
 
     filePrintln(None, "\nCAL FULL")
-    filePrintln(None, "ADC:CURR:OFF?\t" + amu.query("ADC:CURR:OFF?"))
-    filePrintln(None, "ADC:CURR:GAIN?\t" + amu.query("ADC:CURR:GAIN?"))
+    filePrintln(None, "ADC:CH1:OFF?\t" + amu.query("ADC:CH1:OFF?"))
+    filePrintln(None, "ADC:CH1:GAIN?\t" + amu.query("ADC:CH1:GAIN?"))
 
     if save:
-        amu.send("ADC:CURR:CAL:SAVE")
-
+        amu.send("ADC:CH1:CAL:SAVE")
     
 def checkCurrentCal(steps=10, file=None):
 
     amu.query("SWEEP:TRIG:ISC?")      # make sure short circuit condition is in place
     time.sleep(0.5)
 
-    imax = float(amu.query("ADC:CURR:MAX?").strip())
+    imax = float(amu.query("ADC:CH1:MAX?").strip())
 
     # Check calibration:
     # if(imax > 1):
@@ -310,9 +317,10 @@ def calibrateDAC(save=False, file=None):
 
     amu.query("SWEEP:TRIG:VOC?")        # make sure open circuit voltage condition is in place
 
-    amu.send("ADC:VOLT:PGA 0")          # set voltage pga to max scale
+    amu.send("ADC:CH0:PGA 0")          # set voltage pga to max scale
+    time.sleep(0.25)
 
-    vmax = float(amu.query("ADC:VOLT:MAX?"))
+    vmax = float(amu.query("ADC:CH0:MAX?"))
 
     filePrintln(file, "Setting source meter to " + str(vmax) + " Volts\n")
 
@@ -336,7 +344,7 @@ def calibrateDAC(save=False, file=None):
 
 def checkDACCal(steps=10, file=None):
 
-    vmax = float(amu.query("ADC:VOLT:MAX?"))
+    vmax = float(amu.query("ADC:CH0:MAX?"))
 
     # instruments.set_current_meter(0.1, res=1e-2)
     instruments.set_voltage_mode(vmax + 1, current_limit = 0.005, res=1e-2)
@@ -443,11 +451,13 @@ def main():
                        help='Number of measurement points to collect (default: 200)')
     parser.add_argument('--port', type=str, 
                        help='Specify COM port (e.g., COM4). If not specified, auto-detect AMU device.')
+    parser.add_argument('--channel', type=int,
+                       help='Channel number for passthrough communication (1-based). Commands will use @n SCPI address format.')
     args = parser.parse_args()
 
-    # Initialize AMU connection with optional COM port specification
+    # Initialize AMU connection with optional COM port and channel specification
     print("Initializing AMU connection...")
-    amu = AMU(com_port=args.port)
+    amu = AMU(com_port=args.port, channel=args.channel)
 
     if not amu.available:
         if args.port:
@@ -456,7 +466,7 @@ def main():
             print("AMU device not available. Please check connection or specify COM port with --port.")
         return
 
-    amu.send("*CLS")
+    amu.send("*CLS", local=True)  # Clear status registers
 
     firmware = amu.query("SYST:FIRM?")
     print("AMU connected with firmware version", firmware)
@@ -468,10 +478,10 @@ def main():
     if args.command:
         try:
             if '?' in args.command:
-                response = amu.query(args.command)
+                response = amu.query(args.command, local=True)
                 print(f"Response: {response}")
             else:
-                amu.send(args.command)
+                amu.send(args.command, local=True)
                 print("Command sent successfully")
         except Exception as e:
             print(f"Error executing command: {e}")
@@ -550,13 +560,13 @@ def main():
         elif user_input != 'exit':
             if '?' in user_input:
                 try:
-                    response = amu.query(user_input)
+                    response = amu.query(user_input, local=True)
                     print(response)
                 except Exception as e:
                     print(f"Error executing query: {e}")
             else:
                 try:
-                    amu.send(user_input)
+                    amu.send(user_input, local=True)
                     print("Command sent successfully")
                 except Exception as e:
                     print(f"Error sending command: {e}")

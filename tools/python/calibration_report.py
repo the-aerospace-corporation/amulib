@@ -116,19 +116,19 @@ class CalibrationReport:
                 'syst_temp': amu.query("SYST:TEMP?"),
                 'rtd_temp': f"{float(amu.query('MEAS:ADC:TSENS?')):.2f}",
                 'sweep_config': amu.query("SWEEP:CONFIG?"),
-                'voltage_pga': amu.query("ADC:VOLT:PGA?"),
-                'voltage_max': amu.query("ADC:VOLT:MAX?"),
-                'current_pga': amu.query("ADC:CURR:PGA?"),
-                'current_max': amu.query("ADC:CURR:MAX?"),
+                'voltage_pga': amu.query("ADC:CH0:PGA?"),
+                'voltage_max': amu.query("ADC:CH0:MAX?"),
+                'current_pga': amu.query("ADC:CH1:PGA?"),
+                'current_max': amu.query("ADC:CH1:MAX?"),
                 'dut_notes': amu.query("DUT:NOTES?"),
-                'dut_manufacturer': amu.query("DUT:MAN?"),
-                'dut_model': amu.query("DUT:MOD?"),
-                'dut_technology': amu.query("DUT:TECH?"),
-                'dut_serial': amu.query("DUT:SER?"),
-                'dut_coverglass': amu.query("DUT:COVER?"),
-                'dut_junction': amu.query("DUT:JUNC?"),
-                'dut_energy': amu.query("DUT:ENERGY?"),
-                'dut_dose': amu.query("DUT:DOSE?")
+                # 'dut_manufacturer': amu.query("DUT:MAN?"),
+                # 'dut_model': amu.query("DUT:MOD?"),
+                # 'dut_technology': amu.query("DUT:TECH?"),
+                # 'dut_serial': amu.query("DUT:SER?"),
+                # 'dut_coverglass': amu.query("DUT:COVER?"),
+                # 'dut_junction': amu.query("DUT:JUNC?"),
+                # 'dut_energy': amu.query("DUT:ENERGY?"),
+                # 'dut_dose': amu.query("DUT:DOSE?")
             }
 
             # print device_info
@@ -175,13 +175,14 @@ class CalibrationReport:
             # Set up for voltage calibration
             amu.query("SWEEP:TRIG:VOC?")
             time.sleep(0.5)
-            amu.send("ADC:VOLT:PGA " + str(pga))
-            vmax = float(amu.query("ADC:VOLT:MAX?").strip())
+            amu.send("ADC:CH0:PGA " + str(pga))
+            time.sleep(0.25)
+            vmax = float(amu.query("ADC:CH0:MAX?").strip())
             
             if calibrate:
                 # Store initial coefficients
-                initial_offset = amu.query("ADC:VOLT:OFF?")
-                initial_gain = amu.query("ADC:VOLT:GAIN?")
+                initial_offset = amu.query("ADC:CH0:OFF?")
+                initial_gain = amu.query("ADC:CH0:GAIN?")
                 
                 # Set up instruments
                 instruments.set_voltage_mode(vmax, res=0.0001)
@@ -189,20 +190,20 @@ class CalibrationReport:
                 # Zero calibration
                 instruments.set_voltage_with_feedback(0.000, max_error=vmax*0.0001)
                 time.sleep(0.5)
-                amu.send("ADC:VOLT:CAL:ZERO", error_check=False)
+                amu.send("ADC:CH0:CAL:ZERO", error_check=False)
                 time.sleep(2.5)
                 
-                zero_offset = amu.query("ADC:VOLT:OFF?")
-                zero_gain = amu.query("ADC:VOLT:GAIN?")
+                zero_offset = amu.query("ADC:CH0:OFF?")
+                zero_gain = amu.query("ADC:CH0:GAIN?")
                 
                 # Full scale calibration  
                 instruments.set_voltage_with_feedback(vmax * 0.98, max_error=vmax*0.000001)
                 time.sleep(0.5)
-                amu.send("ADC:VOLT:CAL:FULL", error_check=False)
+                amu.send("ADC:CH0:CAL:FULL", error_check=False)
                 time.sleep(2.5)
             
-                final_offset = amu.query("ADC:VOLT:OFF?")
-                final_gain = amu.query("ADC:VOLT:GAIN?")
+                final_offset = amu.query("ADC:CH0:OFF?")
+                final_gain = amu.query("ADC:CH0:GAIN?")
                 
                 # Store coefficients
                 self.voltage_coefficients[pga] = {
@@ -217,8 +218,8 @@ class CalibrationReport:
                 }
             else:
 
-                final_offset = amu.query("ADC:VOLT:OFF?")
-                final_gain = amu.query("ADC:VOLT:GAIN?")
+                final_offset = amu.query("ADC:CH0:OFF?")
+                final_gain = amu.query("ADC:CH0:GAIN?")
                 
                 # Store coefficients
                 self.voltage_coefficients[pga] = {
@@ -234,7 +235,7 @@ class CalibrationReport:
             
             # Save calibration
             if save_data:
-                amu.send("ADC:VOLT:CAL:SAVE")
+                amu.send("ADC:CH0:CAL:SAVE")
             
             # Collect accuracy data
             self.collect_voltage_accuracy_data(pga, steps)
@@ -244,13 +245,16 @@ class CalibrationReport:
 
     def collect_voltage_accuracy_data(self, pga, steps=10):
         """Collect voltage accuracy verification data"""
-        print(f"Collecting voltage accuracy data for PGA {pga}...")
+        
         
         try:
             amu.query("SWEEP:TRIG:VOC?")
             time.sleep(0.5)
-            amu.send("ADC:VOLT:PGA " + str(pga))
-            vmax = float(amu.query("ADC:VOLT:MAX?").strip())
+            amu.send("ADC:CH0:PGA " + str(pga))
+            time.sleep(0.25)
+            vmax = float(amu.query("ADC:CH0:MAX?").strip())
+
+            print(f"Collecting voltage accuracy data for PGA {pga} with Vmax={vmax}...")
             
             instruments.set_voltage_mode(vmax, res='MIN', current_limit=0.005)
             
@@ -314,14 +318,14 @@ class CalibrationReport:
             # Set up for current calibration
             amu.query("SWEEP:TRIG:ISC?")
             time.sleep(0.5)
-            amu.send("ADC:CURR:PGA " + str(pga))
+            amu.send("ADC:CH1:PGA " + str(pga))
             time.sleep(0.25)
-            imax = float(amu.query("ADC:CURR:MAX?"))
+            imax = float(amu.query("ADC:CH1:MAX?"))
             
             if calibrate:
                 # Store initial coefficients
-                initial_offset = amu.query("ADC:CURR:OFF?")
-                initial_gain = amu.query("ADC:CURR:GAIN?")
+                initial_offset = amu.query("ADC:CH1:OFF?")
+                initial_gain = amu.query("ADC:CH1:GAIN?")
                 
                 # Set up instruments
                 instruments.set_current_mode(imax, res='MIN')
@@ -329,20 +333,20 @@ class CalibrationReport:
                 # Zero calibration
                 instruments.set_current_with_feedback(0.000, max_error=imax*0.00001)
                 time.sleep(0.5)
-                amu.send("ADC:CURR:CAL:ZERO", error_check=False)
+                amu.send("ADC:CH1:CAL:ZERO", error_check=False)
                 time.sleep(2.5)
                 
-                zero_offset = amu.query("ADC:CURR:OFF?")
-                zero_gain = amu.query("ADC:CURR:GAIN?")
+                zero_offset = amu.query("ADC:CH1:OFF?")
+                zero_gain = amu.query("ADC:CH1:GAIN?")
                 
                 # Full scale calibration
                 instruments.set_current_with_feedback(imax * 0.98, max_error=imax*0.00001)
                 time.sleep(0.5)
-                amu.send("ADC:CURR:CAL:FULL", error_check=False)
+                amu.send("ADC:CH1:CAL:FULL", error_check=False)
                 time.sleep(2.5)
             
-                final_offset = amu.query("ADC:CURR:OFF?")
-                final_gain = amu.query("ADC:CURR:GAIN?")
+                final_offset = amu.query("ADC:CH1:OFF?")
+                final_gain = amu.query("ADC:CH1:GAIN?")
                 
                 # Store coefficients
                 self.current_coefficients[pga] = {
@@ -358,8 +362,8 @@ class CalibrationReport:
             
             else:   
 
-                final_offset = amu.query("ADC:CURR:OFF?")
-                final_gain = amu.query("ADC:CURR:GAIN?")
+                final_offset = amu.query("ADC:CH1:OFF?")
+                final_gain = amu.query("ADC:CH1:GAIN?")
                 
                 # Store coefficients
                 self.current_coefficients[pga] = {
@@ -376,7 +380,7 @@ class CalibrationReport:
 
             # Save calibration
             if save_data:
-                amu.send("ADC:CURR:CAL:SAVE")
+                amu.send("ADC:CH1:CAL:SAVE")
             
             # Collect accuracy data
             self.collect_current_accuracy_data(pga, steps)
@@ -391,8 +395,9 @@ class CalibrationReport:
         try:
             amu.query("SWEEP:TRIG:ISC?")
             time.sleep(0.5)
-            amu.send("ADC:CURR:PGA " + str(pga))
-            imax = float(amu.query("ADC:CURR:MAX?").strip())
+            amu.send("ADC:CH1:PGA " + str(pga))
+            time.sleep(0.25)
+            imax = float(amu.query("ADC:CH1:MAX?").strip())
             
             instruments.set_current_mode(imax, res='MIN', voltage_limit=5.00)
             
@@ -454,9 +459,9 @@ class CalibrationReport:
         try:
             # Set up for DAC calibration
 
-            amu.send("ADC:VOLT:PGA 0")
+            amu.send("ADC:CH0:PGA 0")
             time.sleep(0.25)
-            vmax = float(amu.query("ADC:VOLT:MAX?"))
+            vmax = float(amu.query("ADC:CH0:MAX?"))
             time.sleep(0.10)
 
             amu.query("SWEEP:TRIG:VOC?")
@@ -519,7 +524,7 @@ class CalibrationReport:
         print("Collecting DAC accuracy data...")
         
         try:
-            vmax = float(amu.query("ADC:VOLT:MAX?"))
+            vmax = float(amu.query("ADC:CH0:MAX?"))
             instruments.set_voltage_mode(vmax + 1, current_limit=0.005, res=1e-2)
             
             accuracy_data = []
@@ -941,6 +946,7 @@ def main():
                        help='Do not calibrate the device, only generate report based on existing data and run verification')
     parser.add_argument('--channel', type=int,
                        help='Channel number for passthrough communication (1-based). Commands will use @n SCPI address format.')
+
     args = parser.parse_args()
     
     # Initialize AMU connection
@@ -961,7 +967,7 @@ def main():
             amu.disconnect()
             return
     
-    amu.send("*CLS")
+    amu.send("*CLS", local=True)
     
     firmware = amu.query("SYST:FIRM?")
     if args.channel:

@@ -181,16 +181,28 @@ void amu_dev_read_load_current(void) {
 // Arduino wire transfer called by twi_transfer
 int arduino_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
 
+    // if(read == 0) {
+    //   Serial.printf("Writing to address 0x%02X, reg 0x%02X ", address, reg);
+    //   for(size_t i = 0; i < len; i++) {
+    //     Serial.printf("0x%02X ", data[i]);
+    //   }
+    //   Serial.println();
+    // }
+    
 
     if (read) {
         if (len > 0) {
 
-            // Serial.printf("Reading from address 0x%02X, reg 0x%02X, len %u\n", address, reg, len);
+            // Serial.printf("Reading from address 0x%02X, reg 0x%02X, len %u - ", address, reg, len);
             wire->beginTransmission(address);
             wire->write(reg);
             wire->endTransmission();
             wire->requestFrom(address, len);
             wire->readBytes(data, len);
+            // for(size_t i=0; i<len; i++) {
+            //   Serial.printf("0x%02X ", data[i]);
+            // }
+            // Serial.println();
 
         }
         else {

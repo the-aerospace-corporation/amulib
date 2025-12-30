@@ -51,7 +51,7 @@ class amu:
                     
                     # Try to query hardware version to verify it's an AMU
                     try:
-                        hardware_response = self.query("SYST:HARD?")
+                        hardware_response = self.query("SYST:HARD?", local=True)
                         # Handle potential echo or formatting issues
                         if hardware_response and hardware_response.strip():
                             # Try to extract numeric value
@@ -72,7 +72,7 @@ class amu:
                     except Exception as hw_error:
                         # If hardware query fails, check if it responds to basic commands
                         try:
-                            response = self.query("*IDN?")
+                            response = self.query("*IDN?", local=True)
                             if "AMU" in response:
                                 print(f"AMU device found on {self.serial_dev.name}")
                             else:
@@ -146,7 +146,7 @@ class amu:
 
                         # Try to query hardware version to verify it's an AMU
                         try:
-                            hardware_response = self.query("SYST:HARD?")
+                            hardware_response = self.query("SYST:HARD?", local=True)
                             # Handle potential echo or formatting issues
                             if hardware_response and hardware_response.strip():
                                 print(f"AMU device found on {self.serial_dev.name} (Hardware response: 0x{int(hardware_response):02X})")
@@ -240,7 +240,7 @@ class amu:
         
         while attempts < max_attempts:
             try:
-                error_response = self.query("SYST:ERR?")
+                error_response = self.query("SYST:ERR?", local=True)
                 # Check for various forms of "No error" response
                 if (error_response == "0,\"No error" or 
                     error_response == "0,No error" or 
@@ -273,7 +273,7 @@ class amu:
             return True  # No channel specified, always valid
         
         try:
-            scan_response = self.query("SYST:TWI:SCAN?")
+            scan_response = self.query("SYST:TWI:SCAN?", local=True)
             # Parse the response - first number is the count of devices
             parts = scan_response.split(',')
             if len(parts) > 0:
@@ -293,13 +293,13 @@ class amu:
             print(f"Error validating channel: {e}")
             return False
     
-    def _format_command(self, command):
+    def _format_command(self, command, local=False):
         """
         Format command with channel address if channel is specified.
         SCPI channel format:
-        - Queries: MEAS:ADC:VOLT? @2
-        - Commands: SWEEP:TRIG: @2
-        - Commands with data: SYST:TIME:UTC 1541536, @2
+        - Queries: MEAS:ADC:VOLT? (@2)
+        - Commands: SWEEP:TRIG: (@2)
+        - Commands with data: SYST:TIME:UTC 1541536, (@2)
         
         Args:
             command (str): Original SCPI command
@@ -309,22 +309,28 @@ class amu:
         """
         if self.channel is None:
             return command
+    
+        if local == True:
+            return command
+        
+
         
         # For query commands (ending with ?), insert space and @n before the ?
         if command.endswith('?'):
             return command + f" (@{self.channel})"
         else:
             # For set commands, append comma, space, and @n at the end
-            return command + f", (@{self.channel})"
+            return command + f",(@{self.channel})"
     
 
     
-    def query(self, command):
+    def query(self, command, local=False):
         # Clear any existing data in the buffer before sending command
         self.serial_dev.reset_input_buffer()
         
         # Format command with channel if specified
-        formatted_command = self._format_command(command)
+        formatted_command = self._format_command(command, local=local)
+        # print("Querying command:", formatted_command)
         
         self.__write__(formatted_command)
         
@@ -354,9 +360,10 @@ class amu:
         
         return response
     
-    def send(self, command, error_check=False):
+    def send(self, command, error_check=False, local=False):
         # Format command with channel if specified
-        formatted_command = self._format_command(command)
+        formatted_command = self._format_command(command, local=local)
+        # print("Sending command:", formatted_command)
         
         self.__write__(formatted_command)
 
@@ -367,7 +374,7 @@ class amu:
         if(error_check):
             error = ""
             while(error != "0,\"No error"):
-                error = self.query("SYST:ERR?")
+                error = self.query("SYST:ERR?", local=True)
                 if(error != "0,\"No error"):
                     print("AMU COMMAND \"" + formatted_command + "\" error: ", error)
                 return error

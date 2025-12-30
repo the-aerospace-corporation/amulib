@@ -85,7 +85,10 @@ scpi_result_t scpi_cmd_rw_##TYPE(scpi_t *context) {																	\
 			SCPI_Result_##TYPE(context, *data);																		\
 		}																											\
 		else {																										\
-			_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE), false);									\
+			if( channel == -1)																						\
+				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE), false);								\
+			else																									\
+				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE) + 1, false);							\
 		}																											\
 	}																												\
 																													\
