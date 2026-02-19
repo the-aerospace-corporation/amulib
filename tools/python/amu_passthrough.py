@@ -12,9 +12,9 @@ Example usage:
         device_count = passthrough.get_device_count()
         print(f"Found {device_count} remote AMU devices")
         
-        # Query device 2 serial number
+        # Query channel 2 serial number
         serial = passthrough.query_device(2, "SYST:SER?")
-        print(f"Device 2 serial: {serial}")
+        print(f"Channel 2 serial: {serial}")
         
         passthrough.disconnect()
 
@@ -124,12 +124,12 @@ class AMUPassthrough:
         """
         return self.device_count
     
-    def query_device(self, device_address, command):
+    def query_device(self, channel, command):
         """
         Send a query to a specific device through the passthrough board
         
         Args:
-            device_address (int): Address of the target device (1-based)
+            channel (int): Channel number of the target device (1-based)
             command (str): SCPI command to send
             
         Returns:
@@ -139,13 +139,18 @@ class AMUPassthrough:
             print("Error: Not connected to passthrough board")
             return None
         
-        if device_address < 1 or device_address > self.device_count:
-            print(f"Error: Invalid device address {device_address}. Valid range: 1-{self.device_count}")
+        if channel < 1 or channel > self.device_count:
+            print(f"Error: Invalid channel {channel}. Valid range: 1-{self.device_count}")
             return None
         
         try:
-            # Format the command with SCPI addressing
-            addressed_command = f"{command} (@{device_address})"
+            # Format the command with SCPI channel addressing
+            # Commands with data use comma: "CMD data, (@n)"
+            # Commands without data use space: "CMD (@n)"
+            if ' ' in command:
+                addressed_command = f"{command}, (@{channel})"
+            else:
+                addressed_command = f"{command} (@{channel})"
             
             # Send the query through the passthrough board
             response = self.amu.query(addressed_command)
@@ -153,15 +158,15 @@ class AMUPassthrough:
             return response.strip() if response else None
             
         except Exception as e:
-            print(f"Error querying device {device_address}: {e}")
+            print(f"Error querying channel {channel}: {e}")
             return None
     
-    def send_device(self, device_address, command):
+    def send_device(self, channel, command):
         """
         Send a command to a specific device through the passthrough board
         
         Args:
-            device_address (int): Address of the target device (1-based)
+            channel (int): Channel number of the target device (1-based)
             command (str): SCPI command to send
             
         Returns:
@@ -171,13 +176,18 @@ class AMUPassthrough:
             print("Error: Not connected to passthrough board")
             return False
         
-        if device_address < 1 or device_address > self.device_count:
-            print(f"Error: Invalid device address {device_address}. Valid range: 1-{self.device_count}")
+        if channel < 1 or channel > self.device_count:
+            print(f"Error: Invalid channel {channel}. Valid range: 1-{self.device_count}")
             return False
         
         try:
-            # Format the command with SCPI addressing
-            addressed_command = f"{command} (@{device_address})"
+            # Format the command with SCPI channel addressing
+            # Commands with data use comma: "CMD data, (@n)"
+            # Commands without data use space: "CMD (@n)"
+            if ' ' in command:
+                addressed_command = f"{command}, (@{channel})"
+            else:
+                addressed_command = f"{command} (@{channel})"
             
             # Send the command through the passthrough board
             self.amu.send(addressed_command)
@@ -185,7 +195,7 @@ class AMUPassthrough:
             return True
             
         except Exception as e:
-            print(f"Error sending command to device {device_address}: {e}")
+            print(f"Error sending command to channel {channel}: {e}")
             return False
     
     def query_all_devices(self, command):
@@ -196,7 +206,7 @@ class AMUPassthrough:
             command (str): SCPI command to send to all devices
             
         Returns:
-            dict: Dictionary mapping device address to response
+            dict: Dictionary mapping channel number to response
         """
         if not self.connected:
             print("Error: Not connected to passthrough board")
@@ -204,21 +214,21 @@ class AMUPassthrough:
         
         responses = {}
         
-        for device_addr in range(1, self.device_count + 1):
-            response = self.query_device(device_addr, command)
+        for channel in range(1, self.device_count + 1):
+            response = self.query_device(channel, command)
             if response is not None:
-                responses[device_addr] = response
+                responses[channel] = response
             else:
-                responses[device_addr] = "ERROR"
+                responses[channel] = "ERROR"
         
         return responses
     
-    def get_device_info(self, device_address):
+    def get_device_info(self, channel):
         """
         Get basic information about a specific device
         
         Args:
-            device_address (int): Address of the target device
+            channel (int): Channel number of the target device
             
         Returns:
             dict: Dictionary containing device information
@@ -239,7 +249,7 @@ class AMUPassthrough:
             }
             
             for key, command in commands.items():
-                response = self.query_device(device_address, command)
+                response = self.query_device(channel, command)
                 if response:
                     info[key] = response
                 else:
@@ -248,7 +258,7 @@ class AMUPassthrough:
             return info
             
         except Exception as e:
-            print(f"Error getting device info for device {device_address}: {e}")
+            print(f"Error getting device info for channel {channel}: {e}")
             return {}
     
     def scan_all_devices(self):
@@ -256,7 +266,7 @@ class AMUPassthrough:
         Scan all connected devices and return their basic information
         
         Returns:
-            dict: Dictionary mapping device address to device info
+            dict: Dictionary mapping channel number to device info
         """
         if not self.connected:
             print("Error: Not connected to passthrough board")
@@ -266,10 +276,10 @@ class AMUPassthrough:
         
         all_devices = {}
         
-        for device_addr in range(1, self.device_count + 1):
-            print(f"  Scanning device {device_addr}...")
-            device_info = self.get_device_info(device_addr)
-            all_devices[device_addr] = device_info
+        for channel in range(1, self.device_count + 1):
+            print(f"  Scanning channel {channel}...")
+            device_info = self.get_device_info(channel)
+            all_devices[channel] = device_info
         
         return all_devices
 
@@ -282,7 +292,7 @@ def main():
     parser.add_argument('--scan', action='store_true',
                        help='Scan all connected devices and show their information')
     parser.add_argument('--device', type=int,
-                       help='Query specific device address (1-based)')
+                       help='Query specific channel number (1-based)')
     parser.add_argument('--command', type=str, default='SYST:SER?',
                        help='SCPI command to send (default: SYST:SER?)')
     
