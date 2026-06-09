@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AMU Library: /home/runner/work/amulib/amulib/src/amulibc/libscpi/parser_private.h File Reference</title>
+<title>AMU Library</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +18,23 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 <link href="custom_enum_style.css" rel="stylesheet" type="text/css"/>
+<!-- doxygen-awesome-css extensions -->
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -91,168 +108,16 @@ $(document).ready(function(){initNavTree('parser__private_8h.html',''); initResi
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">parser_private.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>SCPI Parser private definitions.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utils__private_8h_source.html">utils_private.h</a>&quot;</code><br />
-</div>
-<p><a href="parser__private_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae8d5cc8ad62bd3d735bda129d4646429" id="r_ae8d5cc8ad62bd3d735bda129d4646429"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parser__private_8h.html#ae8d5cc8ad62bd3d735bda129d4646429">scpiParser_parseProgramData</a> (lex_state_t *state, scpi_token_t *token)</td></tr>
-<tr class="separator:ae8d5cc8ad62bd3d735bda129d4646429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fcb7ac2815c257bcfabdb875d59aa50" id="r_a4fcb7ac2815c257bcfabdb875d59aa50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parser__private_8h.html#a4fcb7ac2815c257bcfabdb875d59aa50">scpiParser_parseAllProgramData</a> (lex_state_t *state, scpi_token_t *token, int *numberOfParameters)</td></tr>
-<tr class="separator:a4fcb7ac2815c257bcfabdb875d59aa50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdda250fe6b46d0a083dc25fbb13f018" id="r_abdda250fe6b46d0a083dc25fbb13f018"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parser__private_8h.html#abdda250fe6b46d0a083dc25fbb13f018">scpiParser_detectProgramMessageUnit</a> (scpi_parser_state_t *state, char *buffer, int len)</td></tr>
-<tr class="separator:abdda250fe6b46d0a083dc25fbb13f018"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SCPI Parser private definitions. </p>
-
-<p class="definition">Definition in file <a class="el" href="parser__private_8h_source.html">parser_private.h</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="abdda250fe6b46d0a083dc25fbb13f018" name="abdda250fe6b46d0a083dc25fbb13f018"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdda250fe6b46d0a083dc25fbb13f018">&#9670;&#160;</a></span>scpiParser_detectProgramMessageUnit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int scpiParser_detectProgramMessageUnit </td>
-          <td>(</td>
-          <td class="paramtype">scpi_parser_state_t *&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Skip complete command line - program header and parameters </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td></td></tr>
-    <tr><td class="paramname">buffer</td><td></td></tr>
-    <tr><td class="paramname">len</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="parser_8c_source.html#l01522">1522</a> of file <a class="el" href="parser_8c_source.html">parser.c</a>.</p>
-
-</div>
-</div>
-<a id="a4fcb7ac2815c257bcfabdb875d59aa50" name="a4fcb7ac2815c257bcfabdb875d59aa50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fcb7ac2815c257bcfabdb875d59aa50">&#9670;&#160;</a></span>scpiParser_parseAllProgramData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int scpiParser_parseAllProgramData </td>
-          <td>(</td>
-          <td class="paramtype">lex_state_t *&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">scpi_token_t *&#160;</td>
-          <td class="paramname"><em>token</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>numberOfParameters</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Skip all parameters to correctly detect end of command line. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td></td></tr>
-    <tr><td class="paramname">token</td><td></td></tr>
-    <tr><td class="paramname">numberOfParameters</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="parser_8c_source.html#l01472">1472</a> of file <a class="el" href="parser_8c_source.html">parser.c</a>.</p>
-
-</div>
-</div>
-<a id="ae8d5cc8ad62bd3d735bda129d4646429" name="ae8d5cc8ad62bd3d735bda129d4646429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8d5cc8ad62bd3d735bda129d4646429">&#9670;&#160;</a></span>scpiParser_parseProgramData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int scpiParser_parseProgramData </td>
-          <td>(</td>
-          <td class="paramtype">lex_state_t *&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">scpi_token_t *&#160;</td>
-          <td class="paramname"><em>token</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Parse one parameter and detect type </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td></td></tr>
-    <tr><td class="paramname">token</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="parser_8c_source.html#l01433">1433</a> of file <a class="el" href="parser_8c_source.html">parser.c</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8d4eae6c48ac37397aa326ec06fcc2e3.html">amulibc</a></li><li class="navelem"><a class="el" href="dir_058e54503fd46e0c609dd34616927f6c.html">libscpi</a></li><li class="navelem"><a class="el" href="parser__private_8h.html">parser_private.h</a></li>
-    <li class="footer">Generated on Mon Nov 3 2025 18:54:28 for AMU Library by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jun 9 2026 02:14:15 for AMU Library by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

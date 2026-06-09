@@ -7,7 +7,7 @@ var searchData=
   ['adc_5fraw_4',['adc_raw',['../structamu__twi__regs__t.html#aaf468cfb6f2b839f7a74f5cc954fa995',1,'amu_twi_regs_t']]],
   ['adc_5fstatus_5',['adc_status',['../structamu__twi__regs__t.html#a8fc8b00a2c35bdc71f6735ca95e722ff',1,'amu_twi_regs_t']]],
   ['adc_5ftemp_6',['adc_temp',['../unionadc__channels__t.html#adb5d4e8afb7f13204af82cd32eaee1ed',1,'adc_channels_t']]],
-  ['aldo_7',['aldo',['../unionadc__channels__t.html#ab3f4e17669d089cb91251c8915bd94cd',1,'adc_channels_t::aldo'],['../structamu__int__volt__t.html#ac77d1fc1be2464e8b948b51ada0753e8',1,'amu_int_volt_t::aldo']]],
+  ['aldo_7',['aldo',['../structamu__int__volt__t.html#ac77d1fc1be2464e8b948b51ada0753e8',1,'amu_int_volt_t::aldo'],['../unionadc__channels__t.html#ab3f4e17669d089cb91251c8915bd94cd',1,'adc_channels_t::aldo']]],
   ['am0_8',['am0',['../structivsweep__config__t.html#a7ebf7e00206a7205f6a1550f4dd00e2d',1,'ivsweep_config_t']]],
   ['amu_5fdev_5finitialized_9',['amu_dev_initialized',['../amu__device_8c.html#a7fa96302dbe6bbf031fb973acd1fe4b6',1,'amu_device.c']]],
   ['amu_5fdevice_10',['amu_device',['../amu__device_8h.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c'],['../amu__device_8c.html#a002d666f32256637d0309eefafd5c531',1,'amu_device:&#160;amu_device.c']]],
@@ -18,8 +18,6 @@ var searchData=
   ['amu_5ftransfer_5freg_15',['amu_transfer_reg',['../amu__device_8c.html#aa1bc78e5002778c7090732e3e7e24bfb',1,'amu_device.c']]],
   ['amu_5ftwi_5fregs_16',['amu_twi_regs',['../amu__regs_8c.html#abdfcbd548e7555654d71f769ddb902db',1,'amu_regs.c']]],
   ['angle_17',['angle',['../structquad__photo__sensor__t.html#a833e177c0f122e8f6d0eb02e2ab0730d',1,'quad_photo_sensor_t']]],
-  ['arbitrary_5freminding_18',['arbitrary_reminding',['../struct__scpi__t.html#a1872c7d9d9a1d4b19fc3ca13feeb61d3',1,'_scpi_t']]],
-  ['area_19',['area',['../structivsweep__config__t.html#a4e5b1ecbe4a447d369013cb31e5fbfe3',1,'ivsweep_config_t']]],
-  ['aux_5fcmdlist_20',['aux_cmdlist',['../struct__scpi__t.html#aad217ee38df10f8307f9b3c1e921af89',1,'_scpi_t']]],
-  ['avdd_21',['avdd',['../structamu__int__volt__t.html#a5a0d4de8fbbcbc82a8d68e5ec1036ba7',1,'amu_int_volt_t::avdd'],['../unionadc__channels__t.html#a90f477aa8c88c294bb4b7baefd50c2b8',1,'adc_channels_t::avdd']]]
+  ['area_18',['area',['../structivsweep__config__t.html#a4e5b1ecbe4a447d369013cb31e5fbfe3',1,'ivsweep_config_t']]],
+  ['avdd_19',['avdd',['../structamu__int__volt__t.html#a5a0d4de8fbbcbc82a8d68e5ec1036ba7',1,'amu_int_volt_t::avdd'],['../unionadc__channels__t.html#a90f477aa8c88c294bb4b7baefd50c2b8',1,'adc_channels_t::avdd']]]
 ];

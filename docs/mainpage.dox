@@ -1,0 +1,189 @@
+/**
+ * @mainpage AMU Library
+ *
+ * @section intro_sec Introduction
+ *
+ * The AMU (Aerospace Measurement Unit) Library is a comprehensive, Arduino-compatible
+ * C/C++ interface for communicating with AMU hardware over I2C and USB. It pairs a
+ * high-level C++ class with full SCPI (Standard Commands for Programmable Instruments)
+ * support for precise measurement and control of solar-cell test hardware.
+ *
+ * @subsection features_subsec Key Features
+ *
+ * - **Dual interface** — identical functionality over I2C (binary) and standards-compliant USB/SCPI (text)
+ * - **Arduino compatible** — drops into Arduino and PlatformIO projects
+ * - **Comprehensive measurements** — voltage, current, temperature, and sun-sensor data
+ * - **I-V sweeps** — solar-cell characterization
+ * - **Calibration** — built-in routines with EEPROM storage
+ * - **Auxiliary control** — DAC output, heater control, and LED patterns
+ *
+ * @subsection getting_started_subsec Getting Started
+ *
+ * **Installation**
+ *
+ * 1. Download the library from the repository.
+ * 2. Arduino IDE — install it as a ZIP library.
+ * 3. PlatformIO — add it to `lib_deps` in `platformio.ini`.
+ *
+ * **Basic usage**
+ *
+ * @code
+ * #include <Wire.h>
+ * #include <amulib.h>
+ *
+ * // Custom I2C transfer function for AMU communication
+ * int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
+ *     if (read) {
+ *         if (len > 0) {
+ *             Wire.beginTransmission(address);
+ *             Wire.write(reg);
+ *             Wire.endTransmission();
+ *             Wire.requestFrom(address, (uint8_t)len);
+ *             if (Wire.available()) {
+ *                 Wire.readBytes(data, len);
+ *             }
+ *         } else {
+ *             // Device scanning - just check if device responds
+ *             Wire.beginTransmission(address);
+ *             return Wire.endTransmission();
+ *         }
+ *     } else {
+ *         Wire.beginTransmission(address);
+ *         Wire.write(reg);
+ *         if (len > 0) {
+ *             Wire.write(data, len);
+ *         }
+ *         Wire.endTransmission();
+ *     }
+ *     return 0;
+ * }
+ *
+ * AMU amu;
+ *
+ * void setup() {
+ *     Serial.begin(115200);
+ *     Wire.begin();
+ *     Wire.setClock(400000);
+ *
+ *     while (!Serial);
+ *
+ *     // Scan for AMU device (default address is 0x0B)
+ *     uint8_t address = 0x0B;
+ *     if (twi_transfer(address, 0, NULL, 0, 1) == 0) {
+ *         Serial.println("AMU found! Initializing...");
+ *
+ *         // Initialize AMU with custom transfer function
+ *         amu.begin(address, twi_transfer);
+ *
+ *         // Set LED pattern to indicate device is ready
+ *         amu.setLEDmode(AMU_LED_PATTERN_GREEN_FLASH);
+ *
+ *         Serial.println("AMU device ready!");
+ *     } else {
+ *         Serial.println("No AMU device found.");
+ *     }
+ * }
+ *
+ * void loop() {
+ *     // Trigger a Voc measurement
+ *     amu.triggerVoc();
+ *
+ *     // Wait for measurement to complete
+ *     amu.waitUntilReady(250);
+ *
+ *     // Read measurement data
+ *     amu_meas_t measurement = amu.readMeasurement();
+ *
+ *     Serial.print("Voltage: ");
+ *     Serial.print(measurement.measurement, 6);
+ *     Serial.print(" V\tTemperature: ");
+ *     Serial.print(measurement.temperature, 2);
+ *     Serial.println(" °C");
+ *
+ *     delay(1000);
+ * }
+ * @endcode
+ *
+ * @subsection api_ref_subsec C++ API Reference
+ *
+ * The C++ API exposes the device through a single `AMU` class plus a set of structured data
+ * types (sun-sensor measurements, I-V sweep configurations, calibration coefficients, and
+ * more). Most methods return a status code — check it and handle errors. The most commonly
+ * used methods:
+ *
+ * **Initialization**
+ * - `begin(uint8_t twiAddress)` — initialize with an I2C address
+ * - `begin(uint8_t twiAddress, amu_transfer_fptr_t i2c_transfer_func)` — initialize with a custom I2C transfer function
+ * - `waitUntilReady(uint32_t timeout)` — wait for the device to be ready
+ *
+ * **Measurements**
+ * - `measureVoltage()` — read voltage
+ * - `measureCurrent()` — read current
+ * - `measureTSensor()` — read the RTD temperature sensor
+ *
+ * **Device control**
+ * - `setActiveChannels(uint16_t channels)` — set active measurement channels
+ * - `setLEDcolor(float red, float grn, float blu)` — set LED color
+ * - `setLEDmode(amu_led_pattern_t mode)` — set LED pattern
+ * - `sleep()` — enter sleep mode
+ * - `getPGA(AMU_ADC_CH_t channel)` — read the programmable-gain-amplifier setting
+ *
+ * **Device information**
+ * - `readSerialStr()` — read the serial number
+ * - `readFirmwareStr()` — read the firmware version
+ * - `readNotes(char *notes, uint8_t len)` — read device notes into `notes`
+ *
+ * @subsection command_overview_subsec Commands Overview
+ *
+ * The same functionality is reachable two ways: binary register access over I2C
+ * (via the C++ `AMU` class), or text SCPI commands over USB. Over 100 SCPI
+ * commands are organized into functional groups:
+ *
+ * - **System** — device control, status, identification, LED, and timestamps
+ * - **DUT** — device-under-test configuration and metadata
+ * - **Measurement** — channel reads: voltage, current, temperature, sun-sensor angles, internal voltages, pressure
+ * - **ADC Channel** — per-channel ADC configuration and calibration
+ * - **Execution & Calibration** — measurement triggers and calibration procedures
+ * - **Sweep** — I-V sweep control, data, and metadata (Voc, Isc, solar-cell characterization)
+ * - **Auxiliary** — DAC output, heater, and sun-sensor control
+ * - **Memory** — EEPROM calibration storage (USB only)
+ *
+ * See the <a href="topics.html"><b>Commands</b></a> tab for the full per-command reference.
+ *
+ * @subsection examples_subsec Code Examples
+ *
+ * Complete, working sketches are in the `examples/` directory:
+ *
+ * - **simple** — discover the device on the I2C bus, read its notes, set an LED pattern, and trigger a Voc measurement
+ * - **iv_sweep** — run a full I-V sweep with Voc/Isc, including a low-memory data-read variant
+ * - **twi_passthrough** — USB/SCPI-to-I2C bridge that forwards host commands to one or more AMUs, with button and load-current handling on a dev board
+ *
+ * @subsection hardware_subsec Hardware Reference
+ *
+ * **Electrical**
+ *
+ * - Supply voltage: 3.3 V – 5 V
+ * - Current consumption: < 100 mA typical
+ * - Measurement resolution: 24-bit ADC
+ * - Temperature range: −40 °C to +85 °C
+ *
+ * **Interfaces**
+ *
+ * - I2C: up to 400 kHz, address range 0x08–0x77 (configurable), 4.7 kΩ pull-ups recommended
+ * - USB: CDC virtual COM port, 115200 baud (virtual), no flow control
+ *
+ * @subsection compatibility_subsec Compatibility
+ *
+ * - **Boards** — Arduino Uno, Nano, ESP32, ESP8266, and compatible; all PlatformIO platforms
+ * - **Logic levels** — 3.3 V and 5 V compatible
+ *
+ * @subsection license_subsec License
+ *
+ * Released under the MIT License — see the LICENSE file for details.
+ *
+ * @subsection author_subsec Author
+ *
+ * Colin Mann — The Aerospace Corporation.
+ *
+ * @date 2026
+ */

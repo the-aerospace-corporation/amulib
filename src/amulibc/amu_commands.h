@@ -6,28 +6,37 @@
  * I2C and USB communication interfaces. Each command is mapped to specific SCPI strings
  * in scpi.h to provide a standardized instrument control interface.
  * 
- * @section cmd_structure Command Structure
- * Commands are organized hierarchically with offset-based grouping:
- * - System commands: Device control and status
- * - DUT commands: Device Under Test configuration  
- * - Execution commands: Measurement and calibration operations
- * - Sweep commands: I-V sweep control
- * - Auxiliary commands: DAC, heater, and sensor control
- * - ADC commands: Channel configuration and calibration
- * 
- * @section cmd_interfaces Supported Interfaces
- * - I2C: All commands with CMD_I2C_USB prefix
- * - USB: All commands including CMD_USB_ONLY prefix
- * 
+ * Commands use offset-based grouping: each group is a 16-command block, the high bit of the
+ * low byte flags read vs. write, and the high byte selects the interface root (CMD_I2C_USB
+ * for I2C+USB commands, CMD_USB_ONLY for USB-only). The groups themselves are defined as the
+ * @c cmd_* Doxygen groups below.
+ *
  * @author	CJM28241
  * @date	10/25/2018 10:47:55 PM
  */ 
-
 
 #ifndef __AMU_COMMANDS_H__
 #define __AMU_COMMANDS_H__
 
 #include "amu_types.h"
+
+/** @defgroup cmd_system System Commands
+ *  @brief Device control, status, identification, LED, and timestamps. */
+/** @defgroup cmd_dut DUT Commands
+ *  @brief Device-under-test configuration and metadata. */
+/** @defgroup cmd_exec Execution & Calibration
+ *  @brief Measurement triggers and calibration procedures. */
+/** @defgroup cmd_sweep Sweep Commands
+ *  @brief I-V sweep control, data, and metadata. */
+/** @defgroup cmd_aux Auxiliary Commands
+ *  @brief DAC, heater, and sun sensor control. */
+/** @defgroup cmd_adc ADC Channel Commands
+ *  @brief Per-channel ADC configuration and calibration. */
+/** @defgroup cmd_meas Measurement Commands
+ *  @brief Channel measurement reads. */
+/** @defgroup cmd_memory Memory Commands
+ *  @brief EEPROM calibration storage (USB only). */
+
 #include "amu_config_internal.h"
 
 #define CMD_RW_BIT		7
@@ -43,8 +52,8 @@
  * callbacks or the amu internal registers.
  */
 
-#define CMD_I2C_USB				0x0100		/*!< Root command for I2C/USB commands */
-#define CMD_USB_ONLY			0x0200		/*!< Root command for USB only commands */
+#define CMD_I2C_USB				0x0100		// Root command for I2C/USB commands
+#define CMD_USB_ONLY			0x0200		// Root command for USB only commands
 
 #define CMD_SYSTEM_OFFSET					CMD_I2C_USB + 0x00
 #define CMD_SYSTEM_LED_OFFSET				CMD_I2C_USB + 0x10
@@ -88,158 +97,311 @@ typedef enum {
 
 /**
  * @brief I2C System command identifiers
- * @ingroup i2c_system_commands
- * 
+ * @ingroup cmd_system
+ *
  * System commands control basic device functionality and provide device information.
  * These I2C commands are available on both I2C and USB interfaces.
  * Many have corresponding SCPI command equivalents.
  */
 typedef enum {
-	/** @brief No operation command - Communication test
-	 *  @details Tests device communication without performing any operation or changing state.
-	 *           Used for verifying interface connectivity and basic device responsiveness.
-	 *  @param None
+	/** @amutitle{System — Self-Test}
+	 *  @amudesc{No operation command - communication test}
 	 *  @return Status code (0 = success)
-	 *  @par SCPI Equivalent:
-	 *  `*TST?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{*TST?}
+	 *  @amupanelex
+	 *  *TST?
+	 *  0
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_NO_CMD}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SYSTEM_NO_CMD);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SYSTEM_NO_CMD =						CMD_SYSTEM_OFFSET + 0x00,
 	
-	/** @brief Performs complete software reset
-	 *  @details Performs a complete software reset of the device, restoring all settings 
-	 *           to factory defaults and reinitializing all subsystems.
-	 *  @par SCPI Equivalent:
-	 *  `*RST`
-	 *  @warning All user configuration will be lost
-	 *  @note Device will disconnect briefly during reset process
+	/** @amutitle{System — Reset}
+	 *  @amudesc{Performs complete software reset}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{*RST}
+	 *  @amupanelex
+	 *  *RST
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_RESET}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SYSTEM_RESET);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @warning All user configuration will be lost.
+	 *  @note Device will disconnect briefly during the reset process.
 	 */
 	CMD_SYSTEM_RESET =						CMD_SYSTEM_OFFSET + 0x01,
 	
-	/** @brief Returns microcontroller fuse configuration
-	 *  @details Returns the microcontroller fuse configuration as a 32-bit hexadecimal value.
-	 *           Fuse bits control fundamental hardware behavior and security features.
+	/** @amutitle{System — XMEGA Fuses}
+	 *  @amudesc{Returns microcontroller fuse configuration}
 	 *  @return 32-bit fuse configuration (hex format: 0xAABBCCDD)
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:XMEGA:FUSES?`
-	 *  @note Read-only command for diagnostic purposes
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:XMEGA:FUSES?}
+	 *  @amupanelex
+	 *  SYSTem:XMEGA:FUSES?
+	 *  0xFF00FFCC
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_XMEGA_FUSES}
+	 *  @amupanelex
+	 *  uint32_t fuses = amu.query<uint32_t>(CMD_SYSTEM_XMEGA_FUSES);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Read-only command for diagnostic purposes.
 	 */
 	CMD_SYSTEM_XMEGA_FUSES =				CMD_SYSTEM_OFFSET + 0x02,
 	
-	/** @brief Sets or queries I2C slave address
-	 *  @details Sets or queries the device I2C slave address for TWI communication.
-	 *           Address changes take effect immediately but are not saved to EEPROM.
+	/** @amutitle{System — TWI Address}
+	 *  @amudesc{Sets or queries I2C slave address}
 	 *  @param address 7-bit I2C address (range: 0x08-0x77, excludes reserved addresses)
 	 *  @return Current I2C address (7-bit, no R/W bit)
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TWI:ADDress[?]`
-	 *  @warning Address 0x00-0x07 and 0x78-0x7F are reserved and will be rejected
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TWI:ADDress[?]}
+	 *  @amupanelex
+	 *  SYSTem:TWI:ADDress 0x42
+	 *  SYSTem:TWI:ADDress?
+	 *  66
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_TWI_ADDRESS}
+	 *  @amupanelex
+	 *  uint8_t addr = amu.query<uint8_t>(CMD_SYSTEM_TWI_ADDRESS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @warning Addresses 0x00-0x07 and 0x78-0x7F are reserved and will be rejected.
+	 *  @note Address changes take effect immediately but are not saved to EEPROM.
 	 */
 	CMD_SYSTEM_TWI_ADDRESS =				CMD_SYSTEM_OFFSET + 0x03,
 	
-	/** @brief Scans I2C bus for devices
-	 *  @details Performs an I2C bus scan and returns the number of responding devices.
-	 *           Scans all valid 7-bit addresses (0x08-0x77) and counts acknowledgments.
+	/** @amutitle{System — TWI Device Count}
+	 *  @amudesc{Scans I2C bus and counts devices}
 	 *  @return Number of detected I2C devices (0-112)
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TWI:NUMdevices?`
-	 *  @note Scan may take up to 2 seconds to complete
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TWI:NUMdevices?}
+	 *  @amupanelex
+	 *  SYSTem:TWI:NUMdevices?
+	 *  3
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_TWI_NUM_DEVICES}
+	 *  @amupanelex
+	 *  uint8_t n = amu.query<uint8_t>(CMD_SYSTEM_TWI_NUM_DEVICES);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Scan may take up to 2 seconds to complete.
 	 */
 	CMD_SYSTEM_TWI_NUM_DEVICES =			CMD_SYSTEM_OFFSET + 0x04,
 	
-	/** @brief Returns I2C interface status
-	 *  @details Returns comprehensive I2C interface status including error conditions,
-	 *           bus state, and communication statistics.
+	/** @amutitle{System — TWI Status}
+	 *  @amudesc{Returns I2C interface status}
 	 *  @return Status bitfield: [7:4]=Reserved [3]=Bus_Error [2]=Arbitration_Lost [1]=NACK [0]=Active
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TWI:STATus?`
-	 *  @note Status bits are cleared after reading
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TWI:STATus?}
+	 *  @amupanelex
+	 *  SYSTem:TWI:STATus?
+	 *  0
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_TWI_STATUS}
+	 *  @amupanelex
+	 *  uint8_t status = amu.query<uint8_t>(CMD_SYSTEM_TWI_STATUS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Bitfield: [7:4]=Reserved [3]=Bus_Error [2]=Arbitration_Lost [1]=NACK [0]=Active. Status bits are cleared after reading.
 	 */
 	CMD_SYSTEM_TWI_STATUS =					CMD_SYSTEM_OFFSET + 0x05,
 	
-	/** @brief Returns firmware version string
-	 *  @details Returns the current firmware version string in semantic versioning format.
-	 *           Includes major.minor.patch version numbers.
+	/** @amutitle{System — Firmware}
+	 *  @amudesc{Returns firmware version string}
 	 *  @return Version string (format: "X.Y.Z", e.g., "2.1.0")
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:FIRMware?`
-	 *  @note Maximum string length: 16 characters
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware?}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware?
+	 *  3.0.1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_FIRMWARE}
+	 *  @amupanelex
+	 *  char fw[AMU_FIRMWARE_STR_LEN]; amu.query<char>(CMD_SYSTEM_FIRMWARE, fw, sizeof(fw));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Maximum string length: 16 characters.
 	 */
 	CMD_SYSTEM_FIRMWARE =					CMD_SYSTEM_OFFSET + 0x06,
 	
-	/** @brief Returns unique device serial number
-	 *  @details Returns the factory-programmed unique serial number for device identification
-	 *           and traceability. Serial number is burned into EEPROM during manufacturing.
+	/** @amutitle{System — Serial}
+	 *  @amudesc{Returns unique device serial number}
 	 *  @return Serial number string (format: "AMU-YYYYMMDD-XXXX")
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:SERial?`
-	 *  @note Serial numbers are globally unique across all devices
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:SERial?}
+	 *  @amupanelex
+	 *  SYSTem:SERial?
+	 *  AMU-20240115-0042
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_SERIAL_NUM}
+	 *  @amupanelex
+	 *  char sn[AMU_SERIALNUM_STR_LEN]; amu.query<char>(CMD_SYSTEM_SERIAL_NUM, sn, sizeof(sn));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Serial numbers are globally unique across all devices.
 	 */
 	CMD_SYSTEM_SERIAL_NUM =					CMD_SYSTEM_OFFSET + 0x07,
 	
-	/** @brief Internal MCU temperature sensor
-	 *  @details Reads the built-in microcontroller temperature sensor for thermal monitoring.
-	 *           Accuracy is ±3°C, primarily used for thermal protection and diagnostics.
-	 *  @param None
+	/** @amutitle{System — Temperature}
+	 *  @amudesc{Internal MCU temperature sensor}
 	 *  @return Temperature in degrees Celsius (range: -40 to +85°C)
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TEMPerature?`
-	 *  @note Sensor is factory calibrated at 25°C
-	 *  @warning High temperatures may indicate thermal stress
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TEMPerature?}
+	 *  @amupanelex
+	 *  SYSTem:TEMPerature?
+	 *  23.5
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_TEMPERATURE}
+	 *  @amupanelex
+	 *  float tempC = amu.query<float>(CMD_SYSTEM_TEMPERATURE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Sensor is factory calibrated at 25°C (accuracy ±3°C).
+	 *  @warning High temperatures may indicate thermal stress.
 	 */
 	CMD_SYSTEM_TEMPERATURE =				CMD_SYSTEM_OFFSET + 0x08,
 	
-	/** @brief Sets or queries system timestamp
-	 *  @details Sets or queries the system timestamp representing seconds since device boot.
-	 *           Useful for timing measurements and event correlation.
+	/** @amutitle{System — Timestamp}
+	 *  @amudesc{Sets or queries system timestamp}
 	 *  @param timestamp Seconds since boot (32-bit unsigned, rolls over at ~136 years)
 	 *  @return Current timestamp in seconds
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TIMEstamp[?]`
-	 *  @note Timestamp is reset to 0 on power cycle or reset
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TIMEstamp[?]}
+	 *  @amupanelex
+	 *  SYSTem:TIMEstamp?
+	 *  12345
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_TIME}
+	 *  @amupanelex
+	 *  uint32_t t = amu.query<uint32_t>(CMD_SYSTEM_TIME);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Timestamp is reset to 0 on power cycle or reset; rolls over at ~136 years.
 	 */
 	CMD_SYSTEM_TIME =						CMD_SYSTEM_OFFSET + 0x09,
 	
-	/** @brief Sets or queries UTC timestamp
-	 *  @details Sets or queries absolute UTC timestamp in Unix epoch format (seconds since Jan 1, 1970).
-	 *           Requires external time synchronization for accuracy.
+	/** @amutitle{System — Timestamp UTC}
+	 *  @amudesc{Sets or queries UTC timestamp}
 	 *  @param utc_time Unix epoch timestamp (32-bit, valid until 2038)
 	 *  @return Current UTC timestamp
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:TIMEstamp:UTC[?]`
-	 *  @note Time is not maintained across power cycles without external RTC
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TIMEstamp:UTC[?]}
+	 *  @amupanelex
+	 *  SYSTem:TIMEstamp:UTC?
+	 *  1705312200
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_UTC_TIME}
+	 *  @amupanelex
+	 *  uint32_t utc = amu.query<uint32_t>(CMD_SYSTEM_UTC_TIME);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Unix epoch format (seconds since Jan 1, 1970); valid until 2038. Not maintained across power cycles without an external RTC.
 	 */
 	CMD_SYSTEM_UTC_TIME =					CMD_SYSTEM_OFFSET + 0x0A,
 	
-	/** @brief Sets or queries status LED color
-	 *  @details Sets or queries the status LED RGB color values for visual feedback.
-	 *           Each color component uses floating-point values for smooth transitions.
+	/** @amutitle{System — LED Color}
+	 *  @amudesc{Sets or queries status LED color}
 	 *  @param red Red component intensity (range: 0.0-1.0)
-	 *  @param green Green component intensity (range: 0.0-1.0) 
+	 *  @param green Green component intensity (range: 0.0-1.0)
 	 *  @param blue Blue component intensity (range: 0.0-1.0)
 	 *  @return Current RGB values as comma-separated floats
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:LED:COLOR[?]`
-	 *  @note LED brightness is automatically adjusted for optimal visibility
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:LED:COLOR[?]}
+	 *  @amupanelex
+	 *  SYSTem:LED:COLOR 1.0,0.0,0.5
+	 *  SYSTem:LED:COLOR?
+	 *  1.000,0.000,0.500
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_LED_COLOR}
+	 *  @amupanelex
+	 *  float colors[3] = {0.0f, 1.0f, 0.0f}; amu.sendCommand(CMD_SYSTEM_LED_COLOR, colors, sizeof(colors));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Components are comma-separated floats; LED brightness is automatically adjusted for optimal visibility.
 	 */
 	CMD_SYSTEM_LED_COLOR =					CMD_SYSTEM_OFFSET + 0x0B,
 	
-	/** @brief Returns microcontroller signature bytes
-	 *  @details Returns the microcontroller's unique signature bytes for device identification
-	 *           and debugging purposes. Contains manufacturer ID and device type information.
+	/** @amutitle{System — XMEGA Signature}
+	 *  @amudesc{Returns microcontroller signature bytes}
 	 *  @return 3-byte signature (format: 0xAABBCC)
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:XMEGA:SIGnature?`
-	 *  @note Signature is factory-programmed and cannot be modified
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:XMEGA:SIGnature?}
+	 *  @amupanelex
+	 *  SYSTem:XMEGA:SIGnature?
+	 *  0x1E9842
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_XMEGA_USER_SIGNATURES}
+	 *  @amupanelex
+	 *  uint32_t sig = amu.query<uint32_t>(CMD_SYSTEM_XMEGA_USER_SIGNATURES);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Signature is factory-programmed and cannot be modified.
 	 */
 	CMD_SYSTEM_XMEGA_USER_SIGNATURES =		CMD_SYSTEM_OFFSET + 0x0C,
 	
-	/** @brief Enters low-power sleep mode
-	 *  @details Puts the device into low-power sleep mode to conserve energy.
-	 *           Device will wake on USB activity, I2C communication, or external interrupt.
-	 *  @par SCPI Equivalent:
-	 *  `SYSTem:SLEEP`
-	 *  @note Current measurements will be suspended during sleep
-	 *  @warning USB communication may be interrupted briefly
+	/** @amutitle{System — Sleep}
+	 *  @amudesc{Enters low-power sleep mode}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:SLEEP}
+	 *  @amupanelex
+	 *  SYSTem:SLEEP
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_SLEEP}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SYSTEM_SLEEP);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Device wakes on USB activity, I2C communication, or external interrupt; measurements are suspended during sleep.
+	 *  @warning USB communication may be interrupted briefly.
 	 */
 	CMD_SYSTEM_SLEEP =						CMD_SYSTEM_OFFSET + 0x0F,
 } CMD_SYSTEM_t;
@@ -247,158 +409,319 @@ typedef enum {
 
 /**
  * @brief Device Under Test (DUT) command identifiers
- * @ingroup i2c_dut_commands
+ * @ingroup cmd_dut
  * 
  * DUT commands configure and query parameters related to the device being tested.
  * These include physical characteristics, manufacturer information, and calibration data.
  */
 typedef enum {
-	/** @brief Sets or queries DUT junction type
-	 *  @details Sets or queries the DUT junction type identifier for proper measurement
-	 *           configuration. Junction type affects I-V curve characteristics and measurement parameters.
+	/** @amutitle{DUT — Junction}
+	 *  @amudesc{Sets or queries DUT junction type.}
 	 *  @param junction Junction type ID (0=Unknown, 1=Silicon, 2=GaAs, 3=InGaP, 4=Ge)
 	 *  @return Current junction type identifier
-	 *  @par SCPI Equivalent:
-	 *  `DUT:JUNCtion[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:JUNCtion[?]}
+	 *  @amupanelex
+	 *  DUT:JUNCtion 1
+	 *  DUT:JUNCtion?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_JUNCTION}
+	 *  @amupanelex
+	 *  uint8_t junction = amu.query<uint8_t>(CMD_DUT_JUNCTION);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Junction type affects measurement range and calibration coefficients
 	 */
 	CMD_DUT_JUNCTION =						CMD_DUT_OFFSET + 0x00,
 	
-	/** @brief Sets or queries DUT coverglass type
-	 *  @details Sets or queries the DUT coverglass type for optical correction factors.
-	 *           Coverglass thickness and material affect light transmission characteristics.
+	/** @amutitle{DUT — Coverglass}
+	 *  @amudesc{Sets or queries DUT coverglass type.}
 	 *  @param coverglass Coverglass type ID (0=None, 1=0.1mm, 2=0.2mm, 3=0.3mm, 4=Custom)
-	 *  @return Current coverglass type identifier  
-	 *  @par SCPI Equivalent:
-	 *  `DUT:COVERglass[?]`
+	 *  @return Current coverglass type identifier
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:COVERglass[?]}
+	 *  @amupanelex
+	 *  DUT:COVERglass 2
+	 *  DUT:COVERglass?
+	 *  2
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_COVERGLASS}
+	 *  @amupanelex
+	 *  uint8_t coverglass = amu.query<uint8_t>(CMD_DUT_COVERGLASS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Affects optical calibration and measurement corrections
 	 */
 	CMD_DUT_COVERGLASS =					CMD_DUT_OFFSET + 0x01,
 	
-	/** @brief Sets or queries DUT interconnect type
-	 *  @details Sets or queries the DUT interconnect type for resistance compensation.
-	 *           Different interconnect methods have varying parasitic resistances.
+	/** @amutitle{DUT — Interconnect}
+	 *  @amudesc{Sets or queries DUT interconnect type.}
 	 *  @param interconnect Interconnect type ID (0=Wire bonds, 1=Solder, 2=Conductive epoxy, 3=Other)
 	 *  @return Current interconnect type identifier
-	 *  @par SCPI Equivalent:
-	 *  `DUT:INTERconnect[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:INTERconnect[?]}
+	 *  @amupanelex
+	 *  DUT:INTERconnect 2
+	 *  DUT:INTERconnect?
+	 *  2
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_INTERCONNECT}
+	 *  @amupanelex
+	 *  uint8_t ic = amu.query<uint8_t>(CMD_DUT_INTERCONNECT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Affects series resistance compensation in measurements
 	 */
 	CMD_DUT_INTERCONNECT =					CMD_DUT_OFFSET + 0x02,
 	
-	/** @brief Reserved for future expansion
-	 *  @details Reserved command ID for future DUT configuration features.
-	 *           Currently not implemented - will return error if accessed.
+	/** @amutitle{DUT — Reserved}
+	 *  @amudesc{Reserved for future expansion.}
+	 *
+	 *  @amupanels
+	 *  @amui2c{CMD_DUT_RESERVED}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_DUT_RESERVED);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @warning Do not use - reserved for future firmware versions
 	 */
 	CMD_DUT_RESERVED =						CMD_DUT_OFFSET + 0x03,
 	
-	/** @brief Sets or queries DUT manufacturer name
-	 *  @details Sets or queries the DUT manufacturer name string for documentation
-	 *           and traceability purposes. Stored in device memory for test reports.
+	/** @amutitle{DUT — Manufacturer}
+	 *  @amudesc{Sets or queries DUT manufacturer name.}
 	 *  @param manufacturer Manufacturer name string (max 32 characters)
 	 *  @return Current manufacturer name
-	 *  @par SCPI Equivalent:
-	 *  `DUT:MANufacturer[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:MANufacturer[?]}
+	 *  @amupanelex
+	 *  DUT:MANufacturer?
+	 *  Acme Solar
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_MANUFACTURER}
+	 *  @amupanelex
+	 *  char mfr[AMU_DUT_MANUFACTURER_STR_LEN]; amu.query<char>(CMD_DUT_MANUFACTURER, mfr, sizeof(mfr));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Used in automated test report generation
 	 */
 	CMD_DUT_MANUFACTURER =					CMD_DUT_OFFSET + 0x04,
 	
-	/** @brief Sets or queries DUT model/part number
-	 *  @details Sets or queries the DUT model/part number string for device identification.
-	 *           Critical for maintaining test data correlation with specific device types.
+	/** @amutitle{DUT — Model}
+	 *  @amudesc{Sets or queries DUT model/part number.}
 	 *  @param model Model/part number string (max 32 characters)
 	 *  @return Current model designation
-	 *  @par SCPI Equivalent:
-	 *  `DUT:MODel[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:MODel[?]}
+	 *  @amupanelex
+	 *  DUT:MODel?
+	 *  AC-240
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_MODEL}
+	 *  @amupanelex
+	 *  char model[AMU_DUT_MODEL_STR_LEN]; amu.query<char>(CMD_DUT_MODEL, model, sizeof(model));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Essential for test data traceability and analysis
 	 */
 	CMD_DUT_MODEL =							CMD_DUT_OFFSET + 0x05,
 	
-	/** @brief Sets or queries DUT semiconductor technology
-	 *  @details Sets or queries the DUT semiconductor technology description for
-	 *           proper measurement parameter selection and data interpretation.
+	/** @amutitle{DUT — Technology}
+	 *  @amudesc{Sets or queries DUT semiconductor technology.}
 	 *  @param technology Technology string (e.g., "Silicon", "GaAs", "InGaP/GaAs/Ge", max 32 chars)
 	 *  @return Current technology description
-	 *  @par SCPI Equivalent:
-	 *  `DUT:TECHnology[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:TECHnology[?]}
+	 *  @amupanelex
+	 *  DUT:TECHnology?
+	 *  IMM3J
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_TECHNOLOGY}
+	 *  @amupanelex
+	 *  char tech[AMU_DUT_TECHNOLOGY_STR_LEN]; amu.query<char>(CMD_DUT_TECHNOLOGY, tech, sizeof(tech));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Affects default measurement parameters and analysis algorithms
 	 */
 	CMD_DUT_TECHNOLOGY =					CMD_DUT_OFFSET + 0x06,
 	
-	/** @brief Sets or queries DUT serial number
-	 *  @details Sets or queries the DUT serial number for individual device tracking
-	 *           throughout testing and analysis phases.
+	/** @amutitle{DUT — Serial Number}
+	 *  @amudesc{Sets or queries DUT serial number.}
 	 *  @param serial Serial number string (max 32 characters)
 	 *  @return Current DUT serial number
-	 *  @par SCPI Equivalent:
-	 *  `DUT:SERialnumber[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:SERialnumber[?]}
+	 *  @amupanelex
+	 *  DUT:SERialnumber "DUT-2023-001"
+	 *  DUT:SERialnumber?
+	 *  DUT-2023-001
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_SERIAL_NUMBER}
+	 *  @amupanelex
+	 *  char serial[AMU_DUT_SERIALNUM_STR_LEN]; amu.query<char>(CMD_DUT_SERIAL_NUMBER, serial, sizeof(serial));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Critical for individual device performance tracking
 	 */
 	CMD_DUT_SERIAL_NUMBER =					CMD_DUT_OFFSET + 0x07,
 	
-	/** @brief Sets or queries DUT radiation energy exposure
-	 *  @details Sets or queries the total radiation energy exposure accumulated by the DUT.
-	 *           Used for tracking radiation degradation effects on device performance.
+	/** @amutitle{DUT — Energy}
+	 *  @amudesc{Sets or queries DUT radiation energy exposure.}
 	 *  @param energy Total energy exposure in MeV (floating-point, 0.0 to 1e12)
 	 *  @return Current cumulative energy exposure
-	 *  @par SCPI Equivalent:
-	 *  `DUT:ENERGY[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:ENERGY[?]}
+	 *  @amupanelex
+	 *  DUT:ENERGY 1.5e15
+	 *  DUT:ENERGY?
+	 *  1.500000e+15
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_ENERGY}
+	 *  @amupanelex
+	 *  float energy = amu.query<float>(CMD_DUT_ENERGY);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Essential for radiation effects analysis and modeling
 	 */
 	CMD_DUT_ENERGY =						CMD_DUT_OFFSET + 0x08,
 	
-	/** @brief Sets or queries DUT ionizing radiation dose
-	 *  @details Sets or queries the total ionizing radiation dose accumulated by the DUT.
-	 *           Tracks total ionizing dose (TID) effects on device characteristics.
+	/** @amutitle{DUT — Dose}
+	 *  @amudesc{Sets or queries DUT ionizing radiation dose.}
 	 *  @param dose Total dose in krad(Si) (floating-point, 0.0 to 10000.0)
 	 *  @return Current cumulative dose exposure
-	 *  @par SCPI Equivalent:
-	 *  `DUT:DOSE[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:DOSE[?]}
+	 *  @amupanelex
+	 *  DUT:DOSE 2.5e14
+	 *  DUT:DOSE?
+	 *  2.500000e+14
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_DOSE}
+	 *  @amupanelex
+	 *  float dose = amu.query<float>(CMD_DUT_DOSE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Used for TID degradation analysis and lifetime predictions
 	 */
 	CMD_DUT_DOSE =							CMD_DUT_OFFSET + 0x09,
 	
-	/** @brief Sets or queries DUT documentation notes
-	 *  @details Sets or queries free-form text notes about the DUT for documentation
-	 *           and special handling instructions. Supports markdown formatting.
+	/** @amutitle{DUT — Notes}
+	 *  @amudesc{Sets or queries DUT documentation notes.}
 	 *  @param notes Text notes string (max 256 characters)
 	 *  @return Current notes content
-	 *  @par SCPI Equivalent:
-	 *  `DUT:NOTEs[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:NOTEs[?]}
+	 *  @amupanelex
+	 *  DUT:NOTEs "Post-irradiation test #3"
+	 *  DUT:NOTEs?
+	 *  Post-irradiation test #3
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_NOTES}
+	 *  @amupanelex
+	 *  char notes[AMU_NOTES_SIZE];
+	 *  amu.query<char>(CMD_DUT_NOTES, notes, sizeof(notes));
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Supports basic markdown formatting for rich documentation
 	 */
 	CMD_DUT_NOTES =							CMD_DUT_OFFSET + 0x0B,
 	
-	/** @brief Sets or queries DUT temperature sensor type
-	 *  @details Sets or queries the type of temperature sensor attached to the DUT
-	 *           for thermal monitoring during testing. Affects calibration algorithms.
+	/** @amutitle{DUT — Temperature Sensor Type}
+	 *  @amudesc{Sets or queries DUT temperature sensor type.}
 	 *  @param type Sensor type ID (0=None, 1=Thermocouple, 2=RTD, 3=Thermistor, 4=Diode)
 	 *  @return Current sensor type identifier
-	 *  @par SCPI Equivalent:
-	 *  `DUT:TSENSor:TYPE[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:TSENSor:TYPE[?]}
+	 *  @amupanelex
+	 *  DUT:TSENSor:TYPE 1
+	 *  DUT:TSENSor:TYPE?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_TSENSOR_TYPE}
+	 *  @amupanelex
+	 *  uint8_t type = amu.query<uint8_t>(CMD_DUT_TSENSOR_TYPE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Sensor type determines calibration coefficients and measurement range
 	 */
 	CMD_DUT_TSENSOR_TYPE =					CMD_DUT_OFFSET + 0x0D,
 	
-	/** @brief Sets or queries number of DUT temperature sensors
-	 *  @details Sets or queries the number of temperature sensors connected to the DUT
-	 *           for multi-point thermal monitoring and gradient measurements.
+	/** @amutitle{DUT — Temperature Sensor Number}
+	 *  @amudesc{Sets or queries number of DUT temperature sensors.}
 	 *  @param count Number of sensors (range: 0-4)
 	 *  @return Current number of configured sensors
-	 *  @par SCPI Equivalent:
-	 *  `DUT:TSENSor:NUMber[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:TSENSor:NUMber[?]}
+	 *  @amupanelex
+	 *  DUT:TSENSor:NUMber 4
+	 *  DUT:TSENSor:NUMber?
+	 *  4
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_TSENSOR_NUMBER}
+	 *  @amupanelex
+	 *  uint8_t count = amu.query<uint8_t>(CMD_DUT_TSENSOR_NUMBER);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Maximum 4 sensors supported per DUT
 	 */
 	CMD_DUT_TSENSOR_NUMBER =				CMD_DUT_OFFSET + 0x0E,
 	
-	/** @brief Sets or queries temperature sensor calibration coefficients
-	 *  @details Sets or queries the temperature sensor calibration polynomial coefficients
-	 *           for accurate temperature conversion from raw ADC readings.
+	/** @amutitle{DUT — Temperature Sensor Fit}
+	 *  @amudesc{Sets or queries temperature sensor calibration coefficients.}
 	 *  @param coeffs Polynomial coefficients array [a0, a1, a2, a3] (T = a0 + a1*x + a2*x² + a3*x³)
 	 *  @return Current calibration coefficients
-	 *  @par SCPI Equivalent:
-	 *  `DUT:TSENSor:FIT[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:TSENSor:FIT[?]}
+	 *  @amupanelex
+	 *  DUT:TSENSor:FIT 1.0,0.5,0.01
+	 *  DUT:TSENSor:FIT?
+	 *  1.000000,0.500000,0.010000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_DUT_TSENSOR_FIT}
+	 *  @amupanelex
+	 *  amu_coeff_t coeffs = amu.query<amu_coeff_t>(CMD_DUT_TSENSOR_FIT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 *  @note Coefficients must be determined through calibration procedure
 	 */
 	CMD_DUT_TSENSOR_FIT =					CMD_DUT_OFFSET + 0x0F,
@@ -407,123 +730,304 @@ typedef enum {
 
 /**
  * @brief Execution and measurement command identifiers
- * @ingroup i2c_measurement_commands
+ * @ingroup cmd_exec
  * 
  * These commands trigger measurements and calibration procedures.
  * Most return measurement data or perform calibration operations.
  */
 typedef enum {
-	/** @brief Measures all active ADC channels
-	 *  @details Returns measurements from all currently active ADC channels
+	/** @amutitle{Measure — ADC Active}
+	 *  @amudesc{Measures all active ADC channels}
 	 *  @return Measurement data from all active channels
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:ACTive[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:ACTive?}
+	 *  @amuscpialt{MEASure:ADC:ACTive:RAW?}
+	 *  @amupanelex
+	 *  MEASure:ADC:ACTive?
+	 *  1.234567
+	 *  MEASure:ADC:ACTive:RAW?
+	 *  52341
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_MEAS_ACTIVE_CHANNELS}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_MEAS_ACTIVE_CHANNELS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_ACTIVE_CHANNELS =			CMD_EXEC_OFFSET + 0x00,
 	
-	/** @brief Measures specified ADC channel
-	 *  @details Returns measurement from specified ADC channel (0-15)
+	/** @amutitle{Measure — ADC Channel}
+	 *  @amudesc{Measures specified ADC channel.}
 	 *  @param channel ADC channel number (0-15)
 	 *  @return Measurement data from specified channel
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:CH#[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:CH#[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:CH0?
+	 *  2.567890
+	 *  MEASure:ADC:CH3:RAW?
+	 *  41256
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_VOLTAGE}
+	 *  @amupanelex
+	 *  float value = amu.measureChannel(3); // read ADC channel 3
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_CHANNEL =					CMD_EXEC_OFFSET + 0x01,
 	
-	/** @brief Measures all configured temperature sensors
-	 *  @details Returns temperature measurements from all configured sensors
+	/** @amutitle{Measure — ADC TSENSORS}
+	 *  @amudesc{Measures all configured temperature sensors.}
 	 *  @return Temperature data from all configured sensors
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TSENSORS[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TSENSORS[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TSENSORS?
+	 *  25.3,26.1,24.8,25.5
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_MEAS_TSENSORS}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_MEAS_TSENSORS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_TSENSORS =				CMD_EXEC_OFFSET + 0x02,
 	
-	/** @brief Measures internal supply voltages
-	 *  @details Returns internal supply voltage measurements (AVDD, IOVDD, etc.)
+	/** @amutitle{Measure — Internal Voltages}
+	 *  @amudesc{Measures internal supply voltages.}
 	 *  @return Internal supply voltage measurements
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:INTERNALvoltages?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:INTERNALvoltages?}
+	 *  @amupanelex
+	 *  MEASure:INTERNALvoltages?
+	 *  3.30,5.02,12.01,-12.03
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_MEAS_INTERNAL_VOLTAGES}
+	 *  @amupanelex
+	 *  amu_int_volt_t volts = amu.query<amu_int_volt_t>(CMD_EXEC_MEAS_INTERNAL_VOLTAGES);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_INTERNAL_VOLTAGES =		CMD_EXEC_OFFSET + 0x03,
 	
-	/** @brief Calculates sun sensor angles
-	 *  @details Returns calculated sun sensor yaw and pitch angles
+	/** @amutitle{Measure — Sun Sensor}
+	 *  @amudesc{Calculates sun sensor angles}
 	 *  @return Sun sensor yaw and pitch angle measurements
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:SUNSensor?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:SUNSensor?}
+	 *  @amupanelex
+	 *  MEASure:SUNSensor?
+	 *  15.2,-8.7,0.856
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_MEAS_SUN_SENSOR}
+	 *  @amupanelex
+	 *  quad_photo_sensor_t ss = amu.query<quad_photo_sensor_t>(CMD_EXEC_MEAS_SUN_SENSOR);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_SUN_SENSOR =				CMD_EXEC_OFFSET + 0x04,
 	
-	/** @brief Measures pressure sensor
-	 *  @details Returns pressure sensor measurement data
+	/** @amutitle{Measure — Pressure}
+	 *  @amudesc{Measures pressure sensor}
 	 *  @return Pressure sensor measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:PRESSure?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:PRESSure?}
+	 *  @amupanelex
+	 *  MEASure:PRESSure?
+	 *  1013.25
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_MEAS_PRESSURE_SENSOR}
+	 *  @amupanelex
+	 *  press_data_t press = amu.query<press_data_t>(CMD_EXEC_MEAS_PRESSURE_SENSOR);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_MEAS_PRESSURE_SENSOR =			CMD_EXEC_OFFSET + 0x05,
 	
-	/** @brief Initiates ADC calibration procedure
-	 *  @details Initiates ADC calibration procedure and returns calibration value
+	/** @amutitle{ADC — Calibrate}
+	 *  @amudesc{Initiates ADC calibration procedure.}
+	 *  @param coeff ADC calibration coefficient to write (omit to query)
 	 *  @return ADC calibration value
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CALibrate[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CALibrate[?]}
+	 *  @amupanelex
+	 *  ADC:CALibrate
+	 *  ADC:CALibrate?
+	 *  COMPLETE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_ADC_CAL}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_ADC_CAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_ADC_CAL =						CMD_EXEC_OFFSET + 0x07,
 	
-	/** @brief Calibrates all internal ADC references
-	 *  @details Performs calibration on all internal ADC reference channels
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CALibrate:ALL:INTernal`
+	/** @amutitle{ADC — Calibrate All Internal}
+	 *  @amudesc{Calibrates all internal ADC references.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CALibrate:ALL:INTernal}
+	 *  @amupanelex
+	 *  ADC:CALibrate:ALL:INTernal
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_ADC_CAL_ALL_INTERNAL}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_ADC_CAL_ALL_INTERNAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_ADC_CAL_ALL_INTERNAL =			CMD_EXEC_OFFSET + 0x08,
 	
-	/** @brief Saves internal ADC calibration data
-	 *  @details Saves all internal ADC calibration data to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `ADC:SAVE:ALL:INTernal`
+	/** @amutitle{ADC — Save All Internal}
+	 *  @amudesc{Saves internal ADC calibration data.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:SAVE:ALL:INTernal}
+	 *  @amupanelex
+	 *  ADC:SAVE:ALL:INTernal
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL =	CMD_EXEC_OFFSET + 0x09,
 	
-	/** @brief Initiates DAC calibration procedure
-	 *  @details Initiates DAC calibration procedure and returns calibration value
+	/** @amutitle{DAC — Calibrate}
+	 *  @amudesc{Initiates DAC calibration procedure.}
+	 *  @param coeff DAC calibration coefficient to write (omit to query)
 	 *  @return DAC calibration value
-	 *  @par SCPI Equivalent:
-	 *  `DAC:CALibrate[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:CALibrate[?]}
+	 *  @amupanelex
+	 *  DAC:CALibrate
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_DAC_CAL}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_DAC_CAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_DAC_CAL =						CMD_EXEC_OFFSET + 0x0A,
 	
-	/** @brief Saves DAC calibration data
-	 *  @details Saves DAC calibration data to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `DAC:CALibrate:SAVe`
+	/** @amutitle{DAC — Calibrate Save}
+	 *  @amudesc{Saves DAC calibration data.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:CALibrate:SAVe}
+	 *  @amupanelex
+	 *  DAC:CALibrate
+	 *  DAC:CALibrate:SAVe
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_DAC_CAL_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_DAC_CAL_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_DAC_CAL_SAVE =					CMD_EXEC_OFFSET + 0x0B,
 	
-	/** @brief Calibrates temperature sensor at 25°C
-	 *  @details Performs temperature sensor calibration at 25°C reference
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CALibrate:TSENSor`
+	/** @amutitle{ADC — Calibrate Temperature Sensor}
+	 *  @amudesc{Calibrates temperature sensor at 25°C.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CALibrate:TSENSor}
+	 *  @amupanelex
+	 *  ADC:CALibrate:TSENSor
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_TSENSOR_CAL_25C}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_TSENSOR_CAL_25C);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_TSENSOR_CAL_25C =				CMD_EXEC_OFFSET + 0x0C,
 	
-	/** @brief Saves temperature sensor calibration coefficients
-	 *  @details Saves temperature sensor calibration coefficients to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `DUT:TSENSor:FIT:SAVE`
+	/** @amutitle{DUT — Temperature Sensor Fit Save}
+	 *  @amudesc{Saves temperature sensor calibration coefficients.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DUT:TSENSor:FIT:SAVE}
+	 *  @amupanelex
+	 *  DUT:TSENSor:FIT:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_TSENSOR_COEFF_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_TSENSOR_COEFF_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_TSENSOR_COEFF_SAVE =			CMD_EXEC_OFFSET + 0x0D,
 	
-	/** @brief Saves sun sensor calibration coefficients
-	 *  @details Saves sun sensor calibration coefficients to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:FIT:SAVE`
+	/** @amutitle{Sun Sensor — Fit Save}
+	 *  @amudesc{Saves sun sensor calibration coefficients.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:FIT:SAVE}
+	 *  @amupanelex
+	 *  SUNSensor:FIT:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_SUNSENSOR_COEFF_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_SUNSENSOR_COEFF_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_SUNSENSOR_COEFF_SAVE =			CMD_EXEC_OFFSET + 0x0E,
 	
-	/** @brief Saves heater PID controller parameters
-	 *  @details Saves heater PID controller parameters to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `HEATer:PID:SAVE`
+	/** @amutitle{Heater — PID Save}
+	 *  @amudesc{Saves heater PID controller parameters.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{HEATer:PID:SAVE}
+	 *  @amupanelex
+	 *  HEATer:PID:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXEC_HEATER_PID_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_EXEC_HEATER_PID_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_EXEC_HEATER_PID_SAVE  =				CMD_EXEC_OFFSET + 0x0F,
 } CMD_EXEC_t;
@@ -531,104 +1035,250 @@ typedef enum {
 
 /**
  * @brief I-V sweep control command identifiers
- * @ingroup i2c_sweep_commands
+ * @ingroup cmd_sweep
  * 
  * These commands control current-voltage sweep operations for solar cell characterization.
  * Sweeps can be configured, triggered, and data can be stored/retrieved from EEPROM.
  */
 typedef enum {
-	/** @brief Disables sweep functionality
-	 *  @details Disables sweep functionality and stops any ongoing sweep
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:DISable`
+	/** @amutitle{Sweep — Disable}
+	 *  @amudesc{Disables sweep functionality.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:DISable}
+	 *  @amupanelex
+	 *  SWEEP:DISable
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_DISABLE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_DISABLE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_DISABLE =						CMD_SWEEP_OFFSET + 0x00,
 	
-	/** @brief Enables sweep functionality
-	 *  @details Enables sweep functionality for I-V measurements
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:ENAble`
+	/** @amutitle{Sweep — Enable}
+	 *  @amudesc{Enables sweep functionality.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:ENAble}
+	 *  @amupanelex
+	 *  SWEEP:ENAble
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_ENABLE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_ENABLE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_ENABLE =						CMD_SWEEP_OFFSET + 0x01,
 	
-	/** @brief Initiates complete I-V sweep measurement
-	 *  @details Initiates a complete I-V sweep measurement
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:TRIGger`
+	/** @amutitle{Sweep — Trigger}
+	 *  @amudesc{Initiates complete I-V sweep measurement.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:TRIGger}
+	 *  @amupanelex
+	 *  SWEEP:ENAble
+	 *  SWEEP:TRIGger
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_TRIG_SWEEP}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_TRIG_SWEEP);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_TRIG_SWEEP =					CMD_SWEEP_OFFSET + 0x02,
 	
-	/** @brief Measures short-circuit current
-	 *  @details Measures and returns short-circuit current value
+	/** @amutitle{Sweep — Trigger ISC}
+	 *  @amudesc{Measures short-circuit current.}
 	 *  @return Short-circuit current (Isc) value
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:TRIGger:ISC?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:TRIGger:ISC?}
+	 *  @amupanelex
+	 *  SWEEP:TRIGger:ISC?
+	 *  0.00234567
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_TRIG_ISC}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_TRIG_ISC);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_TRIG_ISC =					CMD_SWEEP_OFFSET + 0x03,
 	
-	/** @brief Measures open-circuit voltage
-	 *  @details Measures and returns open-circuit voltage value
+	/** @amutitle{Sweep — Trigger VOC}
+	 *  @amudesc{Measures open-circuit voltage.}
 	 *  @return Open-circuit voltage (Voc) value
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:TRIGger:VOC?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:TRIGger:VOC?}
+	 *  @amupanelex
+	 *  SWEEP:TRIGger:VOC?
+	 *  0.567890
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_TRIG_VOC}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_TRIG_VOC);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_TRIG_VOC =					CMD_SWEEP_OFFSET + 0x04,
 	
-	/** @brief Saves sweep configuration
-	 *  @details Saves current sweep configuration to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:CONFig:SAVe`
+	/** @amutitle{Sweep — Config Save}
+	 *  @amudesc{Saves sweep configuration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:CONFig:SAVe}
+	 *  @amupanelex
+	 *  SWEEP:CONFig:SAVe
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_CONFIG_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_CONFIG_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_CONFIG_SAVE =					CMD_SWEEP_OFFSET + 0x05,
 	
-	/** @brief Saves sweep data to EEPROM
-	 *  @details Saves sweep measurement data to EEPROM
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:EEPROM:SAVE`
+	/** @amutitle{Sweep — EEPROM Save}
+	 *  @amudesc{Saves sweep data to EEPROM.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:EEPROM:SAVE}
+	 *  @amupanelex
+	 *  SWEEP:EEPROM:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_IV_SAVE_TO_EEPROM}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_IV_SAVE_TO_EEPROM);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_IV_SAVE_TO_EEPROM =			CMD_SWEEP_OFFSET + 0x06,
 	
-	/** @brief Loads sweep data from EEPROM
-	 *  @details Loads previously saved sweep data from EEPROM
+	/** @amutitle{Sweep — EEPROM LOAD}
+	 *  @amudesc{Loads sweep data from EEPROM.}
 	 *  @return Previously saved sweep measurement data
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:EEPROM:LOAD`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:EEPROM:LOAD}
+	 *  @amupanelex
+	 *  SWEEP:EEPROM:LOAD
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_IV_LOAD_FROM_EEPROM}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_IV_LOAD_FROM_EEPROM);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_IV_LOAD_FROM_EEPROM =			CMD_SWEEP_OFFSET + 0x07,
 	
-	/** @brief Encrypts sweep data using AES
-	 *  @details Encrypts sweep data using AES encryption
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:AES:ENCode`
+	/** @amutitle{Sweep — AES Encode}
+	 *  @amudesc{Encrypts sweep data using AES.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:AES:ENCode}
+	 *  @amupanelex
+	 *  SWEEP:AES:ENCode
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_AES_ENCODE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_AES_ENCODE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_AES_ENCODE =					CMD_SWEEP_OFFSET + 0x08,
 	
-	/** @brief Decrypts AES-encrypted sweep data
-	 *  @details Decrypts AES-encrypted sweep data
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:AES:DECode`
+	/** @amutitle{Sweep — AES Decode}
+	 *  @amudesc{Decrypts AES-encrypted sweep data.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:AES:DECode}
+	 *  @amupanelex
+	 *  SWEEP:AES:DECode
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_AES_DECODE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_AES_DECODE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_AES_DECODE =					CMD_SWEEP_OFFSET + 0x09,
 	
-	/** @brief Saves single voltage/current data point
-	 *  @details Saves a single voltage/current data point
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:DATApoint:SAVE`
+	/** @amutitle{Sweep — Datapoint Save}
+	 *  @amudesc{Saves single voltage/current data point.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:DATApoint:SAVE}
+	 *  @amupanelex
+	 *  SWEEP:DATApoint:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_DATAPOINT_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_DATAPOINT_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_DATAPOINT_SAVE =				CMD_SWEEP_OFFSET + 0x0A,
 	
-	/** @brief Initializes sweep trigger system
-	 *  @details Initializes the sweep trigger system
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:TRIGger:INITialize`
+	/** @amutitle{Sweep — Trigger Initialize}
+	 *  @amudesc{Initializes sweep trigger system.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:TRIGger:INITialize}
+	 *  @amupanelex
+	 *  SWEEP:TRIGger:INITialize
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_TRIG_INIT}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_TRIG_INIT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_TRIG_INIT =					CMD_SWEEP_OFFSET + 0x0B,
 	
-	/** @brief Loads single voltage/current data point
-	 *  @details Loads a single voltage/current data point
+	/** @amutitle{Sweep — Datapoint LOAD}
+	 *  @amudesc{Loads single voltage/current data point.}
 	 *  @return Single voltage/current data point
-	 *  @par SCPI Equivalent:
-	 *  `SWEEP:DATApoint:LOAD`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:DATApoint:LOAD}
+	 *  @amupanelex
+	 *  SWEEP:DATApoint:LOAD
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SWEEP_DATAPOINT_LOAD}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_SWEEP_DATAPOINT_LOAD);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_SWEEP_DATAPOINT_LOAD =				CMD_SWEEP_OFFSET + 0x0C,
 } CMD_SWEEP_t;
@@ -636,153 +1286,359 @@ typedef enum {
 
 /**
  * @brief Auxiliary subsystem command identifiers
- * @ingroup i2c_aux_commands
+ * @ingroup cmd_aux
  * 
  * These commands control auxiliary subsystems including DAC output, heater control,
  * and sun sensor calibration. Commands support both raw values and calibrated units.
  */
 typedef enum {	
-	/** @brief Sets or queries DAC output enable state
-	 *  @details Sets or queries DAC output enable state (0=disabled, 1=enabled)
+	/** @amutitle{DAC — State}
+	 *  @amudesc{Sets or queries DAC output enable state.}
 	 *  @param state DAC enable state (0=disabled, 1=enabled)
 	 *  @return Current DAC enable state
-	 *  @par SCPI Equivalent:
-	 *  `DAC:STATE[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:STATE[?]}
+	 *  @amupanelex
+	 *  DAC:STATE 1
+	 *  DAC:STATE?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_STATE}
+	 *  @amupanelex
+	 *  uint8_t val = amu.query<uint8_t>(CMD_AUX_DAC_STATE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_STATE =						CMD_AUX_OFFSET + 0x00,
 	
-	/** @brief Sets or queries DAC current output
-	 *  @details Sets or queries DAC current output in amperes
+	/** @amutitle{DAC — Current}
+	 *  @amudesc{Sets or queries DAC current output.}
 	 *  @param current Current output in amperes
 	 *  @return Current DAC current setting in amperes
-	 *  @par SCPI Equivalent:
-	 *  `DAC:CURRent[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:CURRent[?]}
+	 *  @amupanelex
+	 *  DAC:CURRent 0.5
+	 *  DAC:CURRent?
+	 *  0.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_CURRENT}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_DAC_CURRENT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_CURRENT =					CMD_AUX_OFFSET + 0x01,
 	
-	/** @brief Sets or queries DAC current output (raw)
-	 *  @details Sets or queries DAC current output as raw 16-bit value
+	/** @amutitle{DAC — Current Raw}
+	 *  @amudesc{Sets or queries DAC current output (raw).}
 	 *  @param raw_value Raw 16-bit DAC value
 	 *  @return Current raw DAC value
-	 *  @par SCPI Equivalent:
-	 *  `DAC:CURRent:RAW[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:CURRent:RAW[?]}
+	 *  @amupanelex
+	 *  DAC:CURRent:RAW 2048
+	 *  DAC:CURRent:RAW?
+	 *  2048
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_CURRENT_RAW}
+	 *  @amupanelex
+	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_CURRENT_RAW);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_CURRENT_RAW =				CMD_AUX_OFFSET + 0x02,
 	
-	/** @brief Sets or queries DAC voltage output
-	 *  @details Sets or queries DAC voltage output in volts
+	/** @amutitle{DAC — Voltage}
+	 *  @amudesc{Sets or queries DAC voltage output.}
 	 *  @param voltage Voltage output in volts
 	 *  @return Current DAC voltage setting in volts
-	 *  @par SCPI Equivalent:
-	 *  `DAC:VOLTage[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:VOLTage[?]}
+	 *  @amupanelex
+	 *  DAC:VOLTage 2.5
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_VOLTAGE}
+	 *  @amupanelex
+	 *  float voltage = amu.query<float>(CMD_AUX_DAC_VOLTAGE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_VOLTAGE =					CMD_AUX_OFFSET + 0x03,
 	
-	/** @brief Sets or queries DAC voltage output (raw)
-	 *  @details Sets or queries DAC voltage output as raw 16-bit value
+	/** @amutitle{DAC — Voltage Raw}
+	 *  @amudesc{Sets or queries DAC voltage output (raw).}
 	 *  @param raw_value Raw 16-bit DAC value
 	 *  @return Current raw DAC voltage value
-	 *  @par SCPI Equivalent:
-	 *  `DAC:VOLTage:RAW[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:VOLTage:RAW[?]}
+	 *  @amupanelex
+	 *  DAC:VOLTage:RAW 2048
+	 *  DAC:VOLTage:RAW?
+	 *  2048
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_VOLTAGE_RAW}
+	 *  @amupanelex
+	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_VOLTAGE_RAW);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_VOLTAGE_RAW =				CMD_AUX_OFFSET + 0x04,
 	
-	/** @brief Sets or queries DAC offset calibration
-	 *  @details Sets or queries DAC offset calibration value
+	/** @amutitle{DAC — Offset}
+	 *  @amudesc{Sets or queries DAC offset calibration.}
 	 *  @param offset DAC offset calibration value
 	 *  @return Current DAC offset value
-	 *  @par SCPI Equivalent:
-	 *  `DAC:OFFset[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:OFFset[?]}
+	 *  @amupanelex
+	 *  DAC:OFFset 2048
+	 *  DAC:OFFset?
+	 *  2048
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_OFFSET}
+	 *  @amupanelex
+	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_OFFSET);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_OFFSET =					CMD_AUX_OFFSET + 0x05,
 	
-	/** @brief Sets or queries DAC offset correction coefficient
-	 *  @details Sets or queries DAC offset correction coefficient
+	/** @amutitle{DAC — Offset Correction}
+	 *  @amudesc{Sets or queries DAC offset correction coefficient.}
 	 *  @param correction DAC offset correction coefficient
 	 *  @return Current DAC offset correction coefficient
-	 *  @par SCPI Equivalent:
-	 *  `DAC:OFFset:CORRection[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:OFFset:CORRection[?]}
+	 *  @amupanelex
+	 *  DAC:OFFset:CORRection 0.0
+	 *  DAC:OFFset:CORRection?
+	 *  0.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_OFFSET_CORRECTION}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_DAC_OFFSET_CORRECTION);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_OFFSET_CORRECTION =			CMD_AUX_OFFSET + 0x06,
 	
-	/** @brief Sets or queries DAC gain correction coefficient
-	 *  @details Sets or queries DAC gain correction coefficient
+	/** @amutitle{DAC — Gain Correction}
+	 *  @amudesc{Sets or queries DAC gain correction coefficient.}
 	 *  @param correction DAC gain correction coefficient
 	 *  @return Current DAC gain correction coefficient
-	 *  @par SCPI Equivalent:
-	 *  `DAC:GAIN:CORRection[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{DAC:GAIN:CORRection[?]}
+	 *  @amupanelex
+	 *  DAC:GAIN:CORRection 1.0
+	 *  DAC:GAIN:CORRection?
+	 *  1.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_DAC_GAIN_CORRECTION}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_DAC_GAIN_CORRECTION);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_GAIN_CORRECTION =			CMD_AUX_OFFSET + 0x07,
 	
-	/** @brief Sets or queries heater enable state
-	 *  @details Sets or queries heater enable state (0=off, 1=on)
+	/** @amutitle{Heater — State}
+	 *  @amudesc{Sets or queries heater enable state.}
 	 *  @param state Heater enable state (0=off, 1=on)
 	 *  @return Current heater enable state
-	 *  @par SCPI Equivalent:
-	 *  `HEATer:STATE[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{HEATer:STATE[?]}
+	 *  @amupanelex
+	 *  HEATer:STATE 1
+	 *  HEATer:STATE?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_HEATER_STATE}
+	 *  @amupanelex
+	 *  uint8_t val = amu.query<uint8_t>(CMD_AUX_HEATER_STATE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_HEATER_STATE =					CMD_AUX_OFFSET + 0x08,
 	
-	/** @brief Sets or queries heater temperature setpoint
-	 *  @details Sets or queries heater temperature setpoint in Celsius
+	/** @amutitle{Heater — Setpoint}
+	 *  @amudesc{Sets or queries heater temperature setpoint.}
 	 *  @param setpoint Temperature setpoint in Celsius
 	 *  @return Current heater temperature setpoint
-	 *  @par SCPI Equivalent:
-	 *  `HEATer:SETpoint[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{HEATer:SETpoint[?]}
+	 *  @amupanelex
+	 *  HEATer:SETpoint 25.0
+	 *  HEATer:SETpoint?
+	 *  25.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_HEATER_SETPOINT}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_HEATER_SETPOINT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_HEATER_SETPOINT =				CMD_AUX_OFFSET + 0x09,
 	
-	/** @brief Sets or queries heater PID controller coefficients
-	 *  @details Sets or queries heater PID controller coefficients (Kp, Ki, Kd)
+	/** @amutitle{Heater — PID}
+	 *  @amudesc{Sets or queries heater PID controller coefficients.}
 	 *  @param coeffs PID controller coefficients [Kp, Ki, Kd]
 	 *  @return Current PID controller coefficients
-	 *  @par SCPI Equivalent:
-	 *  `HEATer:PID[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{HEATer:PID[?]}
+	 *  @amupanelex
+	 *  HEATer:PID 1.0,0.1,0.01
+	 *  HEATer:PID?
+	 *  1.000000,0.100000,0.010000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_HEATER_PID}
+	 *  @amupanelex
+	 *  amu_pid_t pid = amu.query<amu_pid_t>(CMD_AUX_HEATER_PID);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_HEATER_PID =					CMD_AUX_OFFSET + 0x0A,
 	
-	/** @brief Sets or queries sun sensor yaw calibration coefficients
-	 *  @details Sets or queries sun sensor yaw angle calibration polynomial coefficients
+	/** @amutitle{Sun Sensor — Fit YAW}
+	 *  @amudesc{Sets or queries sun sensor yaw calibration coefficients.}
 	 *  @param coeffs Yaw angle calibration polynomial coefficients
 	 *  @return Current yaw angle calibration coefficients
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:FIT:YAW[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:FIT:YAW[?]}
+	 *  @amupanelex
+	 *  SUNSensor:FIT:YAW 1.0,0.0,0.0
+	 *  SUNSensor:FIT:YAW?
+	 *  1.000000,0.000000,0.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_SUNSENSOR_FIT_YAW_COEFF}
+	 *  @amupanelex
+	 *  amu_coeff_t coeff = amu.query<amu_coeff_t>(CMD_AUX_SUNSENSOR_FIT_YAW_COEFF);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_SUNSENSOR_FIT_YAW_COEFF =		CMD_AUX_OFFSET + 0x0B,
 	
-	/** @brief Sets or queries sun sensor pitch calibration coefficients
-	 *  @details Sets or queries sun sensor pitch angle calibration polynomial coefficients
+	/** @amutitle{Sun Sensor — Fit PITCH}
+	 *  @amudesc{Sets or queries sun sensor pitch calibration coefficients.}
 	 *  @param coeffs Pitch angle calibration polynomial coefficients
 	 *  @return Current pitch angle calibration coefficients
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:FIT:PITCH[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:FIT:PITCH[?]}
+	 *  @amupanelex
+	 *  SUNSensor:FIT:PITCH 1.0,0.0,0.0
+	 *  SUNSensor:FIT:PITCH?
+	 *  1.000000,0.000000,0.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF}
+	 *  @amupanelex
+	 *  amu_coeff_t coeff = amu.query<amu_coeff_t>(CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF =		CMD_AUX_OFFSET + 0x0C,
 	
-	/** @brief Sets or queries sun sensor horizontal reference
-	 *  @details Sets or queries sun sensor horizontal reference calibration value
+	/** @amutitle{Sun Sensor — HVAL}
+	 *  @amudesc{Sets or queries sun sensor horizontal reference.}
 	 *  @param hval Horizontal reference calibration value
 	 *  @return Current horizontal reference value
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:HVAL[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:HVAL[?]}
+	 *  @amupanelex
+	 *  SUNSensor:HVAL 1.0
+	 *  SUNSensor:HVAL?
+	 *  1.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_SUNSENSOR_HVAL}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_HVAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_SUNSENSOR_HVAL =				CMD_AUX_OFFSET + 0x0D,
 	
-	/** @brief Sets or queries sun sensor radial reference
-	 *  @details Sets or queries sun sensor radial reference calibration value
+	/** @amutitle{Sun Sensor — RVAL}
+	 *  @amudesc{Sets or queries sun sensor radial reference.}
 	 *  @param rval Radial reference calibration value
 	 *  @return Current radial reference value
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:RVAL[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:RVAL[?]}
+	 *  @amupanelex
+	 *  SUNSensor:RVAL 1.0
+	 *  SUNSensor:RVAL?
+	 *  1.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_SUNSENSOR_RVAL}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_RVAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_SUNSENSOR_RVAL =				CMD_AUX_OFFSET + 0x0E,
 	
-	/** @brief Sets or queries sun sensor detection threshold
-	 *  @details Sets or queries sun sensor detection threshold value
+	/** @amutitle{Sun Sensor — Threshold}
+	 *  @amudesc{Sets or queries sun sensor detection threshold.}
 	 *  @param threshold Sun sensor detection threshold value
 	 *  @return Current detection threshold value
-	 *  @par SCPI Equivalent:
-	 *  `SUNSensor:THRESHold[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SUNSensor:THRESHold[?]}
+	 *  @amupanelex
+	 *  SUNSensor:THRESHold 0.1
+	 *  SUNSensor:THRESHold?
+	 *  0.100000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_AUX_SUNSENSOR_THRESHOLD}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_THRESHOLD);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_AUX_SUNSENSOR_THRESHOLD =			CMD_AUX_OFFSET + 0x0F,	
 } CMD_AUX_t;
@@ -790,154 +1646,349 @@ typedef enum {
 
 /**
  * @brief ADC channel configuration command identifiers
- * @ingroup i2c_adc_commands
+ * @ingroup cmd_adc
  * 
  * These commands configure individual ADC channels including setup, filtering,
  * gain settings, and calibration procedures. Channel numbers range from 0-15.
  */
 typedef enum {
-	/** @brief Sets or queries ADC channel register
-	 *  @details Sets or queries ADC channel register configuration
+	/** @amutitle{ADC — Channel}
+	 *  @amudesc{Sets or queries ADC channel register.}
 	 *  @param channel Channel number (0-15)
 	 *  @param value Register configuration value
 	 *  @return Current ADC channel register value
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#[?]}
+	 *  @amupanelex
+	 *  ADC:CH0 2048
+	 *  ADC:CH0?
+	 *  2048
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_REG}
+	 *  @amupanelex
+	 *  uint16_t val = amu.query<uint16_t>(CMD_ADC_CH_REG);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_REG =						CMD_ADC_CH_OFFSET + 0x00,
 	
-	/** @brief Sets or queries ADC channel setup
-	 *  @details Sets or queries ADC channel setup register (input selection, etc.)
+	/** @amutitle{ADC — Channel Setup}
+	 *  @amudesc{Sets or queries ADC channel setup.}
 	 *  @param channel Channel number (0-15)
 	 *  @param setup Setup register configuration
 	 *  @return Current ADC channel setup configuration
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:SETup[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:SETup[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:SETup 2048
+	 *  ADC:CH0:SETup?
+	 *  2048
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_SETUP}
+	 *  @amupanelex
+	 *  uint16_t val = amu.query<uint16_t>(CMD_ADC_CH_SETUP);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_SETUP =						CMD_ADC_CH_OFFSET + 0x01,
 	
-	/** @brief Sets or queries ADC channel filter
-	 *  @details Sets or queries ADC channel digital filter settings
+	/** @amutitle{ADC — Channel Filter}
+	 *  @amudesc{Sets or queries ADC channel filter.}
 	 *  @param channel Channel number (0-15)
 	 *  @param filter Digital filter configuration
 	 *  @return Current ADC channel filter settings
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:FILTer[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:FILTer[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:FILTer 8388608
+	 *  ADC:CH0:FILTer?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_FILTER}
+	 *  @amupanelex
+	 *  uint32_t val = amu.query<uint32_t>(CMD_ADC_CH_FILTER);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_FILTER =						CMD_ADC_CH_OFFSET + 0x02,
 	
-	/** @brief Sets or queries ADC channel sample rate
-	 *  @details Sets or queries ADC channel sample rate in Hz
+	/** @amutitle{ADC — Channel Rate}
+	 *  @amudesc{Sets or queries ADC channel sample rate.}
 	 *  @param channel Channel number (0-15)
 	 *  @param rate Sample rate in Hz
 	 *  @return Current ADC channel sample rate
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:RATE[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:RATE[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:RATE 100.0
+	 *  ADC:CH0:RATE?
+	 *  100.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_RATE}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_ADC_CH_RATE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_RATE =						CMD_ADC_CH_OFFSET + 0x03,
 	
-	/** @brief Sets or queries ADC channel PGA setting
-	 *  @details Sets or queries programmable gain amplifier setting (1, 2, 4, 8, 16, 32, 64, 128)
+	/** @amutitle{ADC — Channel PGA}
+	 *  @amudesc{Sets or queries ADC channel PGA setting.}
 	 *  @param channel Channel number (0-15)
 	 *  @param gain PGA gain setting (1, 2, 4, 8, 16, 32, 64, 128)
 	 *  @return Current ADC channel PGA setting
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:PGA[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:PGA[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:PGA 4
+	 *  ADC:CH0:PGA?
+	 *  4
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_PGA}
+	 *  @amupanelex
+	 *  uint8_t val = amu.query<uint8_t>(CMD_ADC_CH_PGA);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_PGA =						CMD_ADC_CH_OFFSET + 0x04,
 	
-	/** @brief Queries maximum input range for current PGA
-	 *  @details Queries maximum input range for current PGA setting
+	/** @amutitle{ADC — Channel Max}
+	 *  @amudesc{Queries maximum input range for current PGA.}
 	 *  @param channel Channel number (0-15)
 	 *  @return Maximum input range for current PGA setting
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:MAX?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:MAX?}
+	 *  @amupanelex
+	 *  ADC:CH0:MAX?
+	 *  2.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_PGA_MAX}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_MAX);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_PGA_MAX =					CMD_ADC_CH_OFFSET + 0x05,
 	
-	/** @brief Queries maximum voltage range for PGA
-	 *  @details Queries maximum voltage range for specified PGA setting
+	/** @amutitle{ADC — Voltage Max PGA}
+	 *  @amudesc{Queries maximum voltage range for PGA.}
 	 *  @param pga PGA gain setting
 	 *  @return Maximum voltage range for specified PGA setting
-	 *  @par SCPI Equivalent:
-	 *  `ADC:VOLTage:MAX:PGA#?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:MAX:PGA#?}
+	 *  @amupanelex
+	 *  ADC:VOLTage:MAX:PGA0 2.5
+	 *  ADC:VOLTage:MAX:PGA0?
+	 *  2.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_PGA_VMAX}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_VMAX);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_PGA_VMAX =					CMD_ADC_CH_OFFSET + 0x06,
 	
-	/** @brief Queries maximum current range for PGA
-	 *  @details Queries maximum current range for specified PGA setting
+	/** @amutitle{ADC — Current Max PGA}
+	 *  @amudesc{Queries maximum current range for PGA.}
 	 *  @param pga PGA gain setting
 	 *  @return Maximum current range for specified PGA setting
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CURRent:MAX:PGA#?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:MAX:PGA#?}
+	 *  @amupanelex
+	 *  ADC:CURRent:MAX:PGA0 2.5
+	 *  ADC:CURRent:MAX:PGA0?
+	 *  2.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_PGA_IMAX}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_IMAX);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_PGA_IMAX =					CMD_ADC_CH_OFFSET + 0x07,
 	
-	/** @brief Saves ADC channel configuration
-	 *  @details Saves current channel configuration to EEPROM
+	/** @amutitle{ADC — Channel Save}
+	 *  @amudesc{Saves ADC channel configuration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:SAVE`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:SAVE}
+	 *  @amupanelex
+	 *  ADC:CH0:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_SAVE =						CMD_ADC_CH_OFFSET + 0x08,
 	
-	/** @brief Sets or queries ADC channel offset coefficient
-	 *  @details Sets or queries ADC channel offset calibration coefficient
+	/** @amutitle{ADC — Channel Offset}
+	 *  @amudesc{Sets or queries ADC channel offset coefficient.}
 	 *  @param channel Channel number (0-15)
 	 *  @param coefficient Offset calibration coefficient
 	 *  @return Current offset calibration coefficient (int32_t format)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:OFFset[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:OFFset[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:OFFset -512
+	 *  ADC:CH0:OFFset?
+	 *  -512
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_OFFSET_COEFF}
+	 *  @amupanelex
+	 *  int32_t val = amu.query<int32_t>(CMD_ADC_CH_OFFSET_COEFF);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_OFFSET_COEFF =				CMD_ADC_CH_OFFSET + 0x09,
 	
-	/** @brief Sets or queries ADC channel gain coefficient
-	 *  @details Sets or queries ADC channel gain calibration coefficient
+	/** @amutitle{ADC — Channel Gain}
+	 *  @amudesc{Sets or queries ADC channel gain coefficient.}
 	 *  @param channel Channel number (0-15)
 	 *  @param coefficient Gain calibration coefficient
 	 *  @return Current gain calibration coefficient (uint32_t format)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:GAIN[?]`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:GAIN[?]}
+	 *  @amupanelex
+	 *  ADC:CH0:GAIN 8388608
+	 *  ADC:CH0:GAIN?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_GAIN_COEFF}
+	 *  @amupanelex
+	 *  uint32_t val = amu.query<uint32_t>(CMD_ADC_CH_GAIN_COEFF);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_GAIN_COEFF =					CMD_ADC_CH_OFFSET + 0x0A,
 	
-	/** @brief Performs internal ADC channel calibration
-	 *  @details Performs internal calibration for the specified channel
+	/** @amutitle{ADC — Channel Calibrate Internal}
+	 *  @amudesc{Performs internal ADC channel calibration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:CALibrate:INTernal`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:CALibrate:INTernal}
+	 *  @amupanelex
+	 *  ADC:CH0:CALibrate:INTernal
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_CAL_INTERNAL}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_CAL_INTERNAL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_CAL_INTERNAL =				CMD_ADC_CH_OFFSET + 0x0B,
 	
-	/** @brief Performs zero-scale ADC calibration
-	 *  @details Performs zero-scale calibration for the specified channel
+	/** @amutitle{ADC — Channel Calibrate Zero}
+	 *  @amudesc{Performs zero-scale ADC calibration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:CALibrate:ZERO`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:CALibrate:ZERO}
+	 *  @amupanelex
+	 *  ADC:CH0:CALibrate:ZERO
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_CAL_ZERO_SCALE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_CAL_ZERO_SCALE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_CAL_ZERO_SCALE =				CMD_ADC_CH_OFFSET + 0x0C,
 	
-	/** @brief Performs full-scale ADC calibration
-	 *  @details Performs full-scale calibration for the specified channel
+	/** @amutitle{ADC — Channel Calibrate Full}
+	 *  @amudesc{Performs full-scale ADC calibration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:CALibrate:FULL`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:CALibrate:FULL}
+	 *  @amupanelex
+	 *  ADC:CH0:CALibrate:FULL
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_CAL_FULL_SCALE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_CAL_FULL_SCALE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_CAL_FULL_SCALE =				CMD_ADC_CH_OFFSET + 0x0D,
 	
-	/** @brief Resets ADC channel calibration
-	 *  @details Resets channel calibration to factory defaults
+	/** @amutitle{ADC — Channel Calibrate Reset}
+	 *  @amudesc{Resets ADC channel calibration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:CALibrate:RESet`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:CALibrate:RESet}
+	 *  @amupanelex
+	 *  ADC:CH0:CALibrate:RESet
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_CAL_RESET}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_CAL_RESET);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_CAL_RESET =					CMD_ADC_CH_OFFSET + 0x0E,
 	
-	/** @brief Saves ADC channel calibration
-	 *  @details Saves channel calibration coefficients to EEPROM
+	/** @amutitle{ADC — Channel Calibrate Save}
+	 *  @amudesc{Saves ADC channel calibration.}
 	 *  @param channel Channel number (0-15)
-	 *  @par SCPI Equivalent:
-	 *  `ADC:CH#:CALibrate:SAVe`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CH#:CALibrate:SAVe}
+	 *  @amupanelex
+	 *  ADC:CH0:CALibrate:SAVe
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_ADC_CH_CAL_SAVE}
+	 *  @amupanelex
+	 *  amu.sendCommand(CMD_ADC_CH_CAL_SAVE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_ADC_CH_CAL_SAVE =					CMD_ADC_CH_OFFSET + 0x0F,
 } CMD_ADC_CH_t;
@@ -945,145 +1996,349 @@ typedef enum {
 
 /**
  * @brief Measurement channel command identifiers
- * @ingroup i2c_measurement_commands
+ * @ingroup cmd_meas
  * 
  * These commands perform measurements on specific ADC channels.
  * Channel assignments are based on AMU_ADC_CH_t definitions.
  */
 typedef enum {
-	/** @brief Measures dedicated voltage channel
-	 *  @details Measures voltage on the dedicated voltage input channel
+	/** @amutitle{Measure — ADC Voltage}
+	 *  @amudesc{Measures dedicated voltage channel.}
 	 *  @return Voltage measurement from dedicated voltage channel
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:VOLTage[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:VOLTage[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:VOLTage?
+	 *  2.305000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_VOLTAGE}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_VOLTAGE);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_VOLTAGE =					CMD_MEAS_CH_CMD_OFFSET + 0x00,
 	
-	/** @brief Measures dedicated current channel
-	 *  @details Measures current on the dedicated current input channel
+	/** @amutitle{Measure — ADC Current}
+	 *  @amudesc{Measures dedicated current channel.}
 	 *  @return Current measurement from dedicated current channel
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:CURRent[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:CURRent[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:CURRent?
+	 *  0.152300
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_CURRENT}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_CURRENT);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_CURRENT =					CMD_MEAS_CH_CMD_OFFSET + 0x01,
 	
-	/** @brief Measures primary temperature sensor
-	 *  @details Measures primary temperature sensor (same as TSENSOR0)
+	/** @amutitle{Measure — ADC Temperature Sensor}
+	 *  @amudesc{Measures primary temperature sensor.}
 	 *  @return Temperature measurement from primary sensor
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TSENSor[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TSENSor[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TSENSor?
+	 *  25.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_TSENSOR}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_TSENSOR =					CMD_MEAS_CH_CMD_OFFSET + 0x02,
 	
-	/** @brief Measures temperature sensor 0
-	 *  @details Measures temperature sensor 0
+	/** @amutitle{Measure — ADC TSENSOR0}
+	 *  @amudesc{Measures temperature sensor 0.}
 	 *  @return Temperature measurement from sensor 0
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TSENSOR0[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TSENSOR0[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TSENSOR0?
+	 *  25.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_TSENSOR_0}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_0);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_TSENSOR_0 =					CMD_MEAS_CH_CMD_OFFSET + 0x02,
 	
-	/** @brief Measures temperature sensor 1
-	 *  @details Measures temperature sensor 1
+	/** @amutitle{Measure — ADC TSENSOR1}
+	 *  @amudesc{Measures temperature sensor 1.}
 	 *  @return Temperature measurement from sensor 1
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TSENSOR1[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TSENSOR1[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TSENSOR1?
+	 *  25.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_TSENSOR_1}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_1);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_TSENSOR_1 =					CMD_MEAS_CH_CMD_OFFSET + 0x03,
 	
-	/** @brief Measures temperature sensor 2
-	 *  @details Measures temperature sensor 2
+	/** @amutitle{Measure — ADC TSENSOR2}
+	 *  @amudesc{Measures temperature sensor 2.}
 	 *  @return Temperature measurement from sensor 2
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TSENSOR2[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TSENSOR2[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TSENSOR2?
+	 *  25.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_TSENSOR_2}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_2);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_TSENSOR_2 =					CMD_MEAS_CH_CMD_OFFSET + 0x04,
 	
-	/** @brief Measures bias voltage reference
-	 *  @details Measures bias voltage reference
+	/** @amutitle{Measure — ADC BIAS}
+	 *  @amudesc{Measures bias voltage reference.}
 	 *  @return Bias voltage reference measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:BIAS[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:BIAS[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:BIAS?
+	 *  0.000100
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_BIAS}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_BIAS);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_BIAS =						CMD_MEAS_CH_CMD_OFFSET + 0x05,
 	
-	/** @brief Measures offset calibration reference
-	 *  @details Measures offset calibration reference
+	/** @amutitle{Measure — ADC Offset}
+	 *  @amudesc{Measures offset calibration reference.}
 	 *  @return Offset calibration reference measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:OFFset[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:OFFset[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:OFFset?
+	 *  0.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_OFFSET}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_OFFSET);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_OFFSET =					CMD_MEAS_CH_CMD_OFFSET + 0x06,
 	
-	/** @brief Measures internal MCU temperature
-	 *  @details Measures internal MCU temperature sensor
+	/** @amutitle{Measure — ADC Temperature}
+	 *  @amudesc{Measures internal MCU temperature.}
 	 *  @return Internal MCU temperature measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:TEMP[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:TEMP[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:TEMP?
+	 *  25.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_TEMP}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_TEMP);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_TEMP =						CMD_MEAS_CH_CMD_OFFSET + 0x07,
 	
-	/** @brief Measures analog supply voltage
-	 *  @details Measures analog supply voltage (AVDD)
+	/** @amutitle{Measure — ADC AVDD}
+	 *  @amudesc{Measures analog supply voltage.}
 	 *  @return Analog supply voltage measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:AVDD[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:AVDD[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:AVDD?
+	 *  3.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_AVDD}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_AVDD);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_AVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x08,
 	
-	/** @brief Measures I/O supply voltage
-	 *  @details Measures I/O supply voltage (IOVDD)
+	/** @amutitle{Measure — ADC IOVDD}
+	 *  @amudesc{Measures I/O supply voltage.}
 	 *  @return I/O supply voltage measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:IOVDD[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:IOVDD[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:IOVDD?
+	 *  3.300000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_IOVDD}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_IOVDD);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_IOVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x09,
 	
-	/** @brief Measures analog LDO output voltage
-	 *  @details Measures analog LDO regulator output voltage
+	/** @amutitle{Measure — ADC ALDO}
+	 *  @amudesc{Measures analog LDO output voltage.}
 	 *  @return Analog LDO regulator voltage measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:ALDO[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:ALDO[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:ALDO?
+	 *  1.800000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_ALDO}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_ALDO);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_ALDO =						CMD_MEAS_CH_CMD_OFFSET + 0x0A,
 	
-	/** @brief Measures digital LDO output voltage
-	 *  @details Measures digital LDO regulator output voltage
+	/** @amutitle{Measure — ADC DLDO}
+	 *  @amudesc{Measures digital LDO output voltage.}
 	 *  @return Digital LDO regulator voltage measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:DLDO[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:DLDO[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:DLDO?
+	 *  1.800000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_DLDO}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_DLDO);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_DLDO =						CMD_MEAS_CH_CMD_OFFSET + 0x0B,
 	
-	/** @brief Measures sun sensor top-left quadrant
-	 *  @details Measures sun sensor top-left quadrant photodiode
+	/** @amutitle{Measure — ADC SSTL}
+	 *  @amudesc{Measures sun sensor top-left quadrant.}
 	 *  @return Sun sensor top-left quadrant measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:SSTL[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:SSTL[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:SSTL?
+	 *  0.250000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_SS_TL}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_TL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_SS_TL =						CMD_MEAS_CH_CMD_OFFSET + 0x0C,
 	
-	/** @brief Measures sun sensor bottom-left quadrant
-	 *  @details Measures sun sensor bottom-left quadrant photodiode
+	/** @amutitle{Measure — ADC SSBL}
+	 *  @amudesc{Measures sun sensor bottom-left quadrant.}
 	 *  @return Sun sensor bottom-left quadrant measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:SSBL[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:SSBL[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:SSBL?
+	 *  0.250000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_SS_BL}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_BL);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_SS_BL=						CMD_MEAS_CH_CMD_OFFSET + 0x0D,
 	
-	/** @brief Measures sun sensor bottom-right quadrant
-	 *  @details Measures sun sensor bottom-right quadrant photodiode
+	/** @amutitle{Measure — ADC SSBR}
+	 *  @amudesc{Measures sun sensor bottom-right quadrant.}
 	 *  @return Sun sensor bottom-right quadrant measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:SSBR[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:SSBR[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:SSBR?
+	 *  0.250000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_SS_BR}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_BR);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_SS_BR =						CMD_MEAS_CH_CMD_OFFSET + 0x0E,
 	
-	/** @brief Measures sun sensor top-right quadrant
-	 *  @details Measures sun sensor top-right quadrant photodiode
+	/** @amutitle{Measure — ADC SSTR}
+	 *  @amudesc{Measures sun sensor top-right quadrant.}
 	 *  @return Sun sensor top-right quadrant measurement
-	 *  @par SCPI Equivalent:
-	 *  `MEASure:ADC:SSTR[:RAW]?`
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEASure:ADC:SSTR[:RAW]?}
+	 *  @amupanelex
+	 *  MEASure:ADC:SSTR?
+	 *  0.250000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_MEAS_CH_SS_TR}
+	 *  @amupanelex
+	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_TR);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_MEAS_CH_SS_TR =						CMD_MEAS_CH_CMD_OFFSET + 0x0F,
 } CMD_MEAS_CH_t;
@@ -1092,38 +2347,96 @@ typedef enum {
 
 /**
  * @brief USB-only system command identifiers
- * 
+ * @ingroup cmd_system
+ *
  * These commands are only available via USB interface and provide
  * extended system functionality not accessible over I2C.
  */
 typedef enum {
-	/** @brief Enter bootloader mode
-	 *  @scpi_cmd SYSTem:BOOTloader
-	 *  @description Enters bootloader mode for firmware updates (USB only)
+	/** @amutitle{System — Bootloader}
+	 *  @amuusbonly
+	 *  @amudesc{Enter bootloader mode.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:BOOTloader}
+	 *  @amupanelex
+	 *  SYSTem:BOOTloader
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_ENTER_BOOTLOADER =		CMD_USB_SYSTEM_OFFSET + 0x00,
 	
-	/** @brief List available SCPI commands
-	 *  @scpi_cmd SYSTem:SCPI:LIST?
-	 *  @description Returns list of all supported SCPI commands (USB only)
+	/** @amutitle{System — SCPI List}
+	 *  @amuusbonly
+	 *  @amudesc{Lists every registered SCPI command (interactive discovery aid).}
+	 *  @return Newline-separated list of all supported SCPI command patterns
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:SCPI:LIST?}
+	 *  @amupanelex
+	 *  SYSTem:SCPI:LIST?
+	 *  *IDN?
+	 *  *RST
+	 *  SYSTem:FIRMware?
+	 *  ...
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_LIST_SCPI_COMMANDS =		CMD_USB_SYSTEM_OFFSET + 0x01,
 	
-	/** @brief Scan I2C bus for devices
-	 *  @scpi_cmd SYSTem:TWI:SCAN?
-	 *  @description Scans I2C bus and returns list of device addresses (USB only)
+	/** @amutitle{System — TWI Scan}
+	 *  @amuusbonly
+	 *  @amudesc{Scans the I2C bus and reports every address that acknowledges.}
+	 *  @return Comma-separated list of responding 7-bit I2C addresses (hex)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TWI:SCAN?}
+	 *  @amupanelex
+	 *  SYSTem:TWI:SCAN?
+	 *  0x0B,0x40,0x68
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_TWI_SCAN =				CMD_USB_SYSTEM_OFFSET + 0x02,
 	
-	/** @brief I2C mode configuration
-	 *  @scpi_cmd SYSTem:TWI:MODE[?]
-	 *  @description Sets or queries I2C operating mode (USB only)
+	/** @amutitle{System — TWI Mode}
+	 *  @amuusbonly
+	 *  @amudesc{Sets or queries the I2C bus mode (e.g. master/slave role).}
+	 *  @param mode Mode value to set (omit to query)
+	 *  @return Current I2C mode
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:TWI:MODE[?]}
+	 *  @amupanelex
+	 *  SYSTem:TWI:MODE 1
+	 *  SYSTem:TWI:MODE?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_TWI_MODE =				CMD_USB_SYSTEM_OFFSET + 0x03,
 	
-	/** @brief Debug value access
-	 *  @scpi_cmd SYSTem:DEBug#?
-	 *  @description Sets or queries debug values for development (USB only)
+	/** @amutitle{System — Debug}
+	 *  @amuusbonly
+	 *  @amudesc{Reads or writes an indexed firmware debug float (the '#' selects the slot).}
+	 *  @param # Debug slot index (replaces the '#' in the mnemonic, e.g. 0, 1, 2)
+	 *  @param value Float to write (omit to query)
+	 *  @return Float value held in the addressed debug slot
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:DEBug#[?]}
+	 *  @amupanelex
+	 *  SYSTem:DEBug0 3.14
+	 *  SYSTem:DEBug0?
+	 *  3.140000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note USB/SCPI only; slot meanings are firmware-defined (engineering use).
 	 */
 	CMD_USB_SYSTEM_DEBUG =					CMD_USB_SYSTEM_OFFSET + 0x04
 } CMD_USB_SYSTEM_t;
@@ -1132,56 +2445,145 @@ typedef enum {
 
 /**
  * @brief USB-only EEPROM command identifiers
- * 
+ * @ingroup cmd_memory
+ *
  * These commands provide direct EEPROM access for calibration data management.
  * Only available via USB interface for security and data integrity.
  */
 typedef enum {
-	/** @brief Erase all EEPROM data
-	 *  @scpi_cmd MEMory:ERASE:ALL
-	 *  @description Erases all user data from EEPROM (USB only)
+	/** @amutitle{Memory — Erase All}
+	 *  @amuusbonly
+	 *  @amudesc{Erase all EEPROM data.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:ERASE:ALL}
+	 *  @amupanelex
+	 *  MEMory:ERASE:ALL
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_ERASE_ALL =				CMD_USB_EEPROM_CMD_OFFSET + 0x00,
 	
-	/** @brief Erase configuration data
-	 *  @scpi_cmd MEMory:ERASE:CONFig
-	 *  @description Erases configuration data from EEPROM (USB only)
+	/** @amutitle{Memory — Erase Config}
+	 *  @amuusbonly
+	 *  @amudesc{Erase configuration data.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:ERASE:CONFig}
+	 *  @amupanelex
+	 *  MEMory:ERASE:CONFig
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_ERASE_CONFIG =			CMD_USB_EEPROM_CMD_OFFSET + 0x01,
 	
-	/** @brief ADC channel offset calibration data
-	 *  @scpi_cmd MEMory:ADC:CH#:OFFset[?]
-	 *  @description Sets or queries EEPROM-stored ADC channel offset calibration (USB only)
+	/** @amutitle{Memory — ADC Channel Offset}
+	 *  @amuusbonly
+	 *  @amudesc{ADC channel offset calibration data.}
+	 *  @param offset ADC channel offset calibration value to store (uint32_t; omit to query)
+	 *  @return Stored ADC channel offset calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:ADC:CH#:OFFset[?]}
+	 *  @amupanelex
+	 *  MEMory:ADC:CH0:OFFset 8388608
+	 *  MEMory:ADC:CH0:OFFset?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_OFFSET =					CMD_USB_EEPROM_CMD_OFFSET + 0x02,
 	
-	/** @brief ADC channel gain calibration data
-	 *  @scpi_cmd MEMory:ADC:CH#:GAIN[?]
-	 *  @description Sets or queries EEPROM-stored ADC channel gain calibration (USB only)
+	/** @amutitle{Memory — ADC Channel Gain}
+	 *  @amuusbonly
+	 *  @amudesc{ADC channel gain calibration data.}
+	 *  @param gain ADC channel gain calibration value to store (uint32_t; omit to query)
+	 *  @return Stored ADC channel gain calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:ADC:CH#:GAIN[?]}
+	 *  @amupanelex
+	 *  MEMory:ADC:CH0:GAIN 8388608
+	 *  MEMory:ADC:CH0:GAIN?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_GAIN =					CMD_USB_EEPROM_CMD_OFFSET + 0x03,
 	
-	/** @brief Voltage measurement offset calibration
-	 *  @scpi_cmd MEMory:VOLTage:OFFset#[?]
-	 *  @description Sets or queries EEPROM-stored voltage offset calibration (USB only)
+	/** @amutitle{Memory — Voltage Offset}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage measurement offset calibration.}
+	 *  @param offset Voltage offset calibration value to store (uint32_t; omit to query)
+	 *  @return Stored voltage offset calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:VOLTage:OFFset#[?]}
+	 *  @amupanelex
+	 *  MEMory:VOLTage:OFFset0 8388608
+	 *  MEMory:VOLTage:OFFset0?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_VOLTAGE_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x04,
 	
-	/** @brief Current measurement offset calibration
-	 *  @scpi_cmd MEMory:CURRent:OFFset#[?]
-	 *  @description Sets or queries EEPROM-stored current offset calibration (USB only)
+	/** @amutitle{Memory — Current Offset}
+	 *  @amuusbonly
+	 *  @amudesc{Current measurement offset calibration.}
+	 *  @param offset Current offset calibration value to store (uint32_t; omit to query)
+	 *  @return Stored current offset calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:CURRent:OFFset#[?]}
+	 *  @amupanelex
+	 *  MEMory:CURRent:OFFset0 8388608
+	 *  MEMory:CURRent:OFFset0?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_CURRENT_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x05,
 	
-	/** @brief Voltage measurement gain calibration
-	 *  @scpi_cmd MEMory:VOLTage:GAIN#[?]
-	 *  @description Sets or queries EEPROM-stored voltage gain calibration (USB only)
+	/** @amutitle{Memory — Voltage Gain}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage measurement gain calibration.}
+	 *  @param gain Voltage gain calibration value to store (uint32_t; omit to query)
+	 *  @return Stored voltage gain calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:VOLTage:GAIN#[?]}
+	 *  @amupanelex
+	 *  MEMory:VOLTage:GAIN0 8388608
+	 *  MEMory:VOLTage:GAIN0?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_VOLTAGE_GAIN =			CMD_USB_EEPROM_CMD_OFFSET + 0x06,
 	
-	/** @brief Current measurement gain calibration
-	 *  @scpi_cmd MEMory:CURRent:GAIN#[?]
-	 *  @description Sets or queries EEPROM-stored current gain calibration (USB only)
+	/** @amutitle{Memory — Current Gain}
+	 *  @amuusbonly
+	 *  @amudesc{Current measurement gain calibration.}
+	 *  @param gain Current gain calibration value to store (uint32_t; omit to query)
+	 *  @return Stored current gain calibration value (uint32_t)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{MEMory:CURRent:GAIN#[?]}
+	 *  @amupanelex
+	 *  MEMory:CURRent:GAIN0 8388608
+	 *  MEMory:CURRent:GAIN0?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_EEPROM_CURRENT_GAIN =			CMD_USB_EEPROM_CMD_OFFSET + 0x07,
 } CMD_USB_EEPROM_t;
@@ -1189,70 +2591,168 @@ typedef enum {
 
 /**
  * @brief USB-only voltage ADC command identifiers
- * 
+ * @ingroup cmd_adc
+ *
  * These commands provide direct voltage channel control and calibration.
  * Extended functionality only available via USB interface.
  */
 typedef enum {
-	/** @brief Voltage channel zero-scale calibration
-	 *  @scpi_cmd ADC:VOLTage:CALibrate:ZERO
-	 *  @description Performs zero-scale calibration for voltage channel (USB only)
+	/** @amutitle{ADC — Voltage Calibrate Zero}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel zero-scale calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:CALibrate:ZERO}
+	 *  @amupanelex
+	 *  ADC:VOLTage:CALibrate:ZERO
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_CAL_ZERO =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x00,
 	
-	/** @brief Voltage channel full-scale calibration
-	 *  @scpi_cmd ADC:VOLTage:CALibrate:FULL
-	 *  @description Performs full-scale calibration for voltage channel (USB only)
+	/** @amutitle{ADC — Voltage Calibrate Full}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel full-scale calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:CALibrate:FULL}
+	 *  @amupanelex
+	 *  ADC:VOLTage:CALibrate:FULL
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_CAL_FULL =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x01,
 	
-	/** @brief Reset voltage channel calibration
-	 *  @scpi_cmd ADC:VOLTage:CALibrate:RESet
-	 *  @description Resets voltage channel calibration to defaults (USB only)
+	/** @amutitle{ADC — Voltage Calibrate Reset}
+	 *  @amuusbonly
+	 *  @amudesc{Reset voltage channel calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:CALibrate:RESet}
+	 *  @amupanelex
+	 *  ADC:VOLTage:CALibrate:RESet
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_CAL_RESET =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x02,
 	
-	/** @brief Save voltage channel calibration
-	 *  @scpi_cmd ADC:VOLTage:CALibrate:SAVe
-	 *  @description Saves voltage channel calibration to EEPROM (USB only)
+	/** @amutitle{ADC — Voltage Calibrate Save}
+	 *  @amuusbonly
+	 *  @amudesc{Save voltage channel calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:CALibrate:SAVe}
+	 *  @amupanelex
+	 *  ADC:VOLTage:CALibrate:SAVe
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_CAL_SAVE =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x03,
 	
-	/** @brief Voltage channel PGA setting
-	 *  @scpi_cmd ADC:VOLTage:PGA[?]
-	 *  @description Sets or queries voltage channel PGA setting (USB only)
+	/** @amutitle{ADC — Voltage PGA}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel PGA setting.}
+	 *  @param gain PGA gain setting to write (uint8_t gain index; omit to query)
+	 *  @return Current PGA gain setting (uint8_t gain index)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:PGA[?]}
+	 *  @amupanelex
+	 *  ADC:VOLTage:PGA 4
+	 *  ADC:VOLTage:PGA?
+	 *  4
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_PGA =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x04,
 	
-	/** @brief Voltage channel maximum range
-	 *  @scpi_cmd ADC:VOLTage:MAX?
-	 *  @description Queries voltage channel maximum input range (USB only)
+	/** @amutitle{ADC — Voltage Max}
+	 *  @amuusbonly
+	 *  @amudesc{Full-scale input voltage for the voltage channel (range used to scale readings).}
+	 *  @param value Maximum voltage to set, in volts (omit to query)
+	 *  @return Maximum input voltage, in volts
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:MAX[?]}
+	 *  @amupanelex
+	 *  ADC:VOLTage:MAX?
+	 *  2.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_MAX =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x05,
 	
-	/** @brief Voltage channel offset coefficient
-	 *  @scpi_cmd ADC:VOLTage:OFFset[?]
-	 *  @description Sets or queries voltage channel offset coefficient (USB only)
+	/** @amutitle{ADC — Voltage Offset}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel offset coefficient.}
+	 *  @param offset Offset calibration coefficient to write (int32_t; omit to query)
 	 *  @return Voltage offset calibration coefficient (int32_t format)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:OFFset[?]}
+	 *  @amupanelex
+	 *  ADC:VOLTage:OFFset -512
+	 *  ADC:VOLTage:OFFset?
+	 *  -512
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_OFFSET =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x06,
 	
-	/** @brief Voltage channel gain coefficient
-	 *  @scpi_cmd ADC:VOLTage:GAIN[?]
-	 *  @description Sets or queries voltage channel gain coefficient (USB only)
+	/** @amutitle{ADC — Voltage Gain}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel gain coefficient.}
+	 *  @param gain Gain calibration coefficient to write (uint32_t; omit to query)
 	 *  @return Voltage gain calibration coefficient (uint32_t format)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:GAIN[?]}
+	 *  @amupanelex
+	 *  ADC:VOLTage:GAIN 8388608
+	 *  ADC:VOLTage:GAIN?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_GAIN =			CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x07,
 
-	/** @brief Voltage channel PGA maximum setting for given PGA setting
-	 *  @scpi_cmd ADC:VOLTage:MAX:PGA[#]?
-	 *  @description Queries voltage channel PGA maximum setting for given PGA setting (USB only)
+	/** @amutitle{ADC — Voltage Max PGA (config)}
+	 *  @amuusbonly
+	 *  @amudesc{Full-scale input voltage for a specific PGA gain (the '#' selects the gain).}
+	 *  @param # PGA gain index (replaces the '#' in the mnemonic, e.g. 0, 1, 2)
+	 *  @param value Maximum voltage to set, in volts (omit to query)
+	 *  @return Maximum input voltage for that PGA setting, in volts
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:MAX:PGA#[?]}
+	 *  @amupanelex
+	 *  ADC:VOLTage:MAX:PGA0?
+	 *  2.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_MAX_PGA = 		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x08,
 
-	/** @brief Voltage channel save pga settings
-	 *  @scpi_cmd ADC:VOLTage:PGA:SAVE
-	 *  @description Saves voltage channel PGA settings to EEPROM (USB only)
+	/** @amutitle{ADC — Voltage PGA Save}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage channel save pga settings.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:VOLTage:PGA:SAVE}
+	 *  @amupanelex
+	 *  ADC:VOLTage:PGA:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_VOLTAGE_PGA_SAVE =		CMD_USB_ADC_VOLTAGE_CMD_OFFSET + 0x09,
 } CMD_USB_ADC_VOLTAGE_t;
@@ -1261,70 +2761,168 @@ typedef enum {
 
 /**
  * @brief USB-only current ADC command identifiers
- * 
+ * @ingroup cmd_adc
+ *
  * These commands provide direct current channel control and calibration.
  * Extended functionality only available via USB interface.
  */
 typedef enum {
-	/** @brief Current channel zero-scale calibration
-	 *  @scpi_cmd ADC:CURRent:CALibrate:ZERO
-	 *  @description Performs zero-scale calibration for current channel (USB only)
+	/** @amutitle{ADC — Current Calibrate Zero}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel zero-scale calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:CALibrate:ZERO}
+	 *  @amupanelex
+	 *  ADC:CURRent:CALibrate:ZERO
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_CAL_ZERO =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x00,
 	
-	/** @brief Current channel full-scale calibration
-	 *  @scpi_cmd ADC:CURRent:CALibrate:FULL
-	 *  @description Performs full-scale calibration for current channel (USB only)
+	/** @amutitle{ADC — Current Calibrate Full}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel full-scale calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:CALibrate:FULL}
+	 *  @amupanelex
+	 *  ADC:CURRent:CALibrate:FULL
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_CAL_FULL =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x01,
 	
-	/** @brief Reset current channel calibration
-	 *  @scpi_cmd ADC:CURRent:CALibrate:RESet
-	 *  @description Resets current channel calibration to defaults (USB only)
+	/** @amutitle{ADC — Current Calibrate Reset}
+	 *  @amuusbonly
+	 *  @amudesc{Reset current channel calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:CALibrate:RESet}
+	 *  @amupanelex
+	 *  ADC:CURRent:CALibrate:RESet
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_CAL_RESET =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x02,
 	
-	/** @brief Save current channel calibration
-	 *  @scpi_cmd ADC:CURRent:CALibrate:SAVe
-	 *  @description Saves current channel calibration to EEPROM (USB only)
+	/** @amutitle{ADC — Current Calibrate Save}
+	 *  @amuusbonly
+	 *  @amudesc{Save current channel calibration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:CALibrate:SAVe}
+	 *  @amupanelex
+	 *  ADC:CURRent:CALibrate:SAVe
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_CAL_SAVE =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x03,
 	
-	/** @brief Current channel PGA setting
-	 *  @scpi_cmd ADC:CURRent:PGA[?]
-	 *  @description Sets or queries current channel PGA setting (USB only)
+	/** @amutitle{ADC — Current PGA}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel PGA setting.}
+	 *  @param gain PGA gain setting to write (uint8_t gain index; omit to query)
+	 *  @return Current PGA gain setting (uint8_t gain index)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:PGA[?]}
+	 *  @amupanelex
+	 *  ADC:CURRent:PGA 4
+	 *  ADC:CURRent:PGA?
+	 *  4
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_PGA =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x04,
 	
-	/** @brief Current channel maximum range
-	 *  @scpi_cmd ADC:CURRent:MAX?
-	 *  @description Queries current channel maximum input range (USB only)
+	/** @amutitle{ADC — Current Max}
+	 *  @amuusbonly
+	 *  @amudesc{Full-scale input current for the current channel (range used to scale readings).}
+	 *  @param value Maximum current to set, in amperes (omit to query)
+	 *  @return Maximum input current, in amperes
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:MAX[?]}
+	 *  @amupanelex
+	 *  ADC:CURRent:MAX?
+	 *  0.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_MAX =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x05,
 	
-	/** @brief Current channel offset coefficient
-	 *  @scpi_cmd ADC:CURRent:OFFset[?]
-	 *  @description Sets or queries current channel offset coefficient (USB only)
+	/** @amutitle{ADC — Current Offset}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel offset coefficient.}
+	 *  @param offset Offset calibration coefficient to write (int32_t; omit to query)
 	 *  @return Current offset calibration coefficient (int32_t format)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:OFFset[?]}
+	 *  @amupanelex
+	 *  ADC:CURRent:OFFset -512
+	 *  ADC:CURRent:OFFset?
+	 *  -512
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_OFFSET =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x06,
 	
-	/** @brief Current channel gain coefficient
-	 *  @scpi_cmd ADC:CURRent:GAIN[?]
-	 *  @description Sets or queries current channel gain coefficient (USB only)
+	/** @amutitle{ADC — Current Gain}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel gain coefficient.}
+	 *  @param gain Gain calibration coefficient to write (uint32_t; omit to query)
 	 *  @return Current gain calibration coefficient (uint32_t format)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:GAIN[?]}
+	 *  @amupanelex
+	 *  ADC:CURRent:GAIN 8388608
+	 *  ADC:CURRent:GAIN?
+	 *  8388608
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_GAIN =			CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x07,
 
-	/** @brief Current channel PGA maximum setting for given PGA setting
-	 *  @scpi_cmd ADC:CURRent:MAX:PGA[#]?
-	 *  @description Queries current channel PGA maximum setting for given PGA setting (USB only)
+	/** @amutitle{ADC — Current Max PGA (config)}
+	 *  @amuusbonly
+	 *  @amudesc{Full-scale input current for a specific PGA gain (the '#' selects the gain).}
+	 *  @param # PGA gain index (replaces the '#' in the mnemonic, e.g. 0, 1, 2)
+	 *  @param value Maximum current to set, in amperes (omit to query)
+	 *  @return Maximum input current for that PGA setting, in amperes
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:MAX:PGA#[?]}
+	 *  @amupanelex
+	 *  ADC:CURRent:MAX:PGA0?
+	 *  0.500000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_MAX_PGA = 		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x08,
 
-	/** @brief Current channel save pga settings
-	 *  @scpi_cmd ADC:CURRent:PGA:SAVE
-	 *  @description Saves current channel PGA settings to EEPROM (USB only)
+	/** @amutitle{ADC — Current PGA Save}
+	 *  @amuusbonly
+	 *  @amudesc{Current channel save pga settings.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{ADC:CURRent:PGA:SAVE}
+	 *  @amupanelex
+	 *  ADC:CURRent:PGA:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_ADC_CURRENT_PGA_SAVE =		CMD_USB_ADC_CURRENT_CMD_OFFSET + 0x09,
 } CMD_USB_ADC_CURRENT_t;
@@ -1332,13 +2930,22 @@ typedef enum {
 
 /**
  * @brief USB-only sweep command identifiers
- * 
+ * @ingroup cmd_sweep
+ *
  * These commands provide USB-specific sweep functionality.
  */
 typedef enum {
-	/** @brief Trigger sweep via USB
-	 *  @scpi_cmd SWEEP:TRIGger:USB
-	 *  @description Triggers I-V sweep with USB-specific parameters (USB only)
+	/** @amutitle{Sweep — Trigger USB}
+	 *  @amuusbonly
+	 *  @amudesc{Trigger sweep via USB.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SWEEP:TRIGger:USB}
+	 *  @amupanelex
+	 *  SWEEP:TRIGger:USB
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SWEEP_TRIGGER =					CMD_USB_SWEEP_OFFSET + 0x00,
 } CMD_USB_SWEEP_t;
@@ -1346,44 +2953,98 @@ typedef enum {
 
 /**
  * @brief USB-only system configuration command identifiers
- * 
+ * @ingroup cmd_system
+ *
  * These commands configure system-level hardware parameters and save configuration.
  * Only available via USB for security and to prevent accidental misconfiguration.
  */
 typedef enum {
-	/** @brief Current measurement gain setting
-	 *  @scpi_cmd SYSTem:CONFig:CURRent:GAIN[?]
-	 *  @description Sets or queries current measurement amplifier gain (USB only)
+	/** @amutitle{System — Config Current Gain}
+	 *  @amuusbonly
+	 *  @amudesc{Current measurement gain setting.}
+	 *  @param gain Current-measurement gain factor to write (float; omit to query)
+	 *  @return Current-measurement gain factor (float)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:CONFig:CURRent:GAIN[?]}
+	 *  @amupanelex
+	 *  SYSTem:CONFig:CURRent:GAIN 1.0
+	 *  SYSTem:CONFig:CURRent:GAIN?
+	 *  1.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_CONFIG_CURR_GAIN =		CMD_USB_SYSTEM_CONFIG_OFFSET + 0x00,
 	
-	/** @brief Current measurement sense resistor value
-	 *  @scpi_cmd SYSTem:CONFig:CURRent:Rsense[?]
-	 *  @description Sets or queries current sense resistor value in ohms (USB only)
+	/** @amutitle{System — Config Current Sense Resistor}
+	 *  @amuusbonly
+	 *  @amudesc{Current measurement sense resistor value.}
+	 *  @param rsense Current sense resistor value to write, in ohms (float; omit to query)
+	 *  @return Current sense resistor value, in ohms (float)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:CONFig:CURRent:Rsense[?]}
+	 *  @amupanelex
+	 *  SYSTem:CONFig:CURRent:Rsense 0.05
+	 *  SYSTem:CONFig:CURRent:Rsense?
+	 *  0.050000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_CONFIG_CURR_RSENSE =		CMD_USB_SYSTEM_CONFIG_OFFSET + 0x01,
 	
-	/** @brief Voltage divider R1 resistor value
-	 *  @scpi_cmd SYSTem:CONFig:VOLTage:R1[?]
-	 *  @description Sets or queries voltage divider R1 resistor value in ohms (USB only)
+	/** @amutitle{System — Config Voltage R1}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage divider R1 resistor value.}
+	 *  @param r1 Voltage-divider R1 resistance to write, in ohms (float; omit to query)
+	 *  @return Voltage-divider R1 resistance, in ohms (float)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:CONFig:VOLTage:R1[?]}
+	 *  @amupanelex
+	 *  SYSTem:CONFig:VOLTage:R1 100000.0
+	 *  SYSTem:CONFig:VOLTage:R1?
+	 *  100000.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_CONFIG_VOLT_R1 =			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x02,
 	
-	/** @brief Voltage divider R2 resistor value
-	 *  @scpi_cmd SYSTem:CONFig:VOLTage:R2[?]
-	 *  @description Sets or queries voltage divider R2 resistor value in ohms (USB only)
+	/** @amutitle{System — Config Voltage R2}
+	 *  @amuusbonly
+	 *  @amudesc{Voltage divider R2 resistor value.}
+	 *  @param r2 Voltage-divider R2 resistance to write, in ohms (float; omit to query)
+	 *  @return Voltage-divider R2 resistance, in ohms (float)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:CONFig:VOLTage:R2[?]}
+	 *  @amupanelex
+	 *  SYSTem:CONFig:VOLTage:R2 10000.0
+	 *  SYSTem:CONFig:VOLTage:R2?
+	 *  10000.000000
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_CONFIG_VOLT_R2 =			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x03,
 	
-	/** @brief Save system configuration
-	 *  @scpi_cmd SYSTem:CONFig:SAVE
-	 *  @description Saves current system configuration to EEPROM (USB only)
+	/** @amutitle{System — Config Save}
+	 *  @amuusbonly
+	 *  @amudesc{Save system configuration.}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:CONFig:SAVE}
+	 *  @amupanelex
+	 *  SYSTem:CONFig:SAVE
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
 	 */
 	CMD_USB_SYSTEM_CONFIG_SAVE = 			CMD_USB_SYSTEM_CONFIG_OFFSET + 0x07,
 } CMD_USB_SYSTEM_CONFIG_t;
 #undef CMD_USB_SYSTEM_CONFIG_OFFSET
-
-
-
 
 #endif /* __AMU_COMMANDS_H__ */

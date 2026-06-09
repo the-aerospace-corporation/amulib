@@ -1,12 +1,21 @@
 var searchData=
 [
-  ['_5fmessage_5ftermination_5ft_0',['_message_termination_t',['../types_8h.html#a07e78e120181bedd91baa37d17f9271b',1,'types.h']]],
-  ['_5fscpi_5farray_5fformat_5ft_1',['_scpi_array_format_t',['../types_8h.html#af0c3e209885497892ab028112f2c291c',1,'types.h']]],
-  ['_5fscpi_5fctrl_5fname_5ft_2',['_scpi_ctrl_name_t',['../types_8h.html#ab33fee84b9e338a2bd47634f9092ac6e',1,'types.h']]],
-  ['_5fscpi_5fexpr_5fresult_5ft_3',['_scpi_expr_result_t',['../expression_8h.html#a810fa104d42ef99e96cf10bf47e57b5a',1,'expression.h']]],
-  ['_5fscpi_5freg_5fname_5ft_4',['_scpi_reg_name_t',['../types_8h.html#a3ac659efa042b2c2659898d4e278f127',1,'types.h']]],
-  ['_5fscpi_5fresult_5ft_5',['_scpi_result_t',['../types_8h.html#a363cdefff8a0bc1d900eaa75e513fce7',1,'types.h']]],
-  ['_5fscpi_5fspecial_5fnumber_5ft_6',['_scpi_special_number_t',['../types_8h.html#ad24539293ba205cbf15e463636e0dac1',1,'types.h']]],
-  ['_5fscpi_5ftoken_5ftype_5ft_7',['_scpi_token_type_t',['../types_8h.html#ad79121098313db4610d1b7575f068a2a',1,'types.h']]],
-  ['_5fscpi_5funit_5ft_8',['_scpi_unit_t',['../types_8h.html#a59e58b7e50aea1b1e7491b42bfcb67fb',1,'types.h']]]
+  ['amu_5fadc_5fch_5ft_0',['amu_adc_ch_t',['../amu__types_8h.html#a34cc7b9e91d0eacde8cbe419902c3e1e',1,'amu_types.h']]],
+  ['amu_5fadc_5fpga_5ft_1',['amu_adc_pga_t',['../amu__types_8h.html#a94e75d6200905426dabf637cc8e571f9',1,'amu_types.h']]],
+  ['amu_5fadc_5fpower_5fmode_5ft_2',['amu_adc_power_mode_t',['../amu__types_8h.html#a6037f42b6d6fe1fa9300a8a3cc755ff2',1,'amu_types.h']]],
+  ['amu_5fch_5fen_5ft_3',['amu_ch_en_t',['../amu__types_8h.html#a367bb0ebbb54719f3f2726350bb7b14c',1,'amu_types.h']]],
+  ['amu_5fhardware_5frevision_5ft_4',['amu_hardware_revision_t',['../amu__types_8h.html#a49f5cd5d81fd835e341a9e391ea6d050',1,'amu_types.h']]],
+  ['amu_5fled_5fpattern_5ft_5',['amu_led_pattern_t',['../amu__types_8h.html#a7ef8543aa880eba5d322d47d7714a3d7',1,'amu_types.h']]],
+  ['amu_5freg_5fadc_5fdata_5ft_6',['AMU_REG_ADC_DATA_t',['../amu__regs_8h.html#ade7088da76b8caba7fd5fa1f69a136a8',1,'amu_regs.h']]],
+  ['amu_5freg_5fdata_5fptr_5ft_7',['AMU_REG_DATA_PTR_t',['../amu__regs_8h.html#a525af9b833212e0ba61732b0f0ce479e',1,'amu_regs.h']]],
+  ['amu_5freg_5fdut_5ft_8',['AMU_REG_DUT_t',['../amu__regs_8h.html#ac4b9301d520390c6dfa807d4fa9fc9eb',1,'amu_regs.h']]],
+  ['amu_5freg_5fsunsensor_5ft_9',['AMU_REG_SUNSENSOR_t',['../amu__regs_8h.html#adb06c7f1f76930ceeda8aa9eb0d62227',1,'amu_regs.h']]],
+  ['amu_5freg_5fsweep_5fconfig_5ft_10',['AMU_REG_SWEEP_CONFIG_t',['../amu__regs_8h.html#a821c732c63253c6e1b7beedc13b020fa',1,'amu_regs.h']]],
+  ['amu_5freg_5fsweep_5fmeta_5ft_11',['AMU_REG_SWEEP_META_t',['../amu__regs_8h.html#a6ecef4fa16abf881776d89e5af854ca8',1,'amu_regs.h']]],
+  ['amu_5freg_5fsystem_5ft_12',['AMU_REG_SYSTEM_t',['../amu__regs_8h.html#a49dfc79173d12624363746126721d4ac',1,'amu_regs.h']]],
+  ['amu_5freg_5ft_13',['AMU_REG_t',['../amu__regs_8h.html#a308036ed5bb66f037c9b47c0d14f5c79',1,'amu_regs.h']]],
+  ['amu_5freg_5ftime_5ft_14',['AMU_REG_TIME_t',['../amu__regs_8h.html#a3ff8d41c240feeccb734d35124906802',1,'amu_regs.h']]],
+  ['amu_5fsleep_5fmode_5ft_15',['amu_sleep_mode_t',['../amu__types_8h.html#a7af8bda1cfd51952a8c98ceaf2c9142b',1,'amu_types.h']]],
+  ['amu_5fstatus_5ft_16',['amu_status_t',['../amu__types_8h.html#a2bea52594814b3652859c3659f6e91f6',1,'amu_types.h']]],
+  ['amu_5ftsensor_5ftype_5ft_17',['amu_tsensor_type_t',['../amu__types_8h.html#ac010281625333581d41d34ce102cf614',1,'amu_types.h']]]
 ];
