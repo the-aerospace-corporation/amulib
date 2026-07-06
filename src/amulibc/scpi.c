@@ -5,11 +5,11 @@
  * @author	CJM28241
  * @date	5/7/2019 7:16:32 PM
  */
-
 #include "scpi.h"
 #include "amu_device.h"
 #include "amu_regs.h"
 #include "amu_config_internal.h"
+#include "amulib_version.h"
 
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
@@ -72,7 +72,7 @@ scpi_result_t scpi_cmd_rw_##TYPE(scpi_t *context) {																	\
 	else																											\
 		channel = 0;																								\
 																													\
-	_scpi_get_channelList(context);																					\
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}										\
 																													\
 	for(uint8_t *device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {							\
 		if(context->query)	{																						\
@@ -119,7 +119,7 @@ scpi_result_t scpi_cmd_exec_qry_##TYPE(scpi_t *context) {															\
 																													\
 	scpi_amu_dev->transfer_reg[0] = channel;																		\
 																													\
-	_scpi_get_channelList(context);																					\
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}										\
 																													\
 	for(uint8_t *device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {							\
 		if(context->query)	{																						\
@@ -155,7 +155,7 @@ scpi_result_t scpi_cmd_execute(scpi_t* context) {
 
 	SCPI_CommandNumbers(context, commandNumber, 1, -1);
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 		if (*commandNumber == -1)
@@ -170,7 +170,7 @@ scpi_result_t _scpi_read_ptr(scpi_t* context) {
 
 	uint8_t numPoints;
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 
@@ -219,7 +219,7 @@ scpi_result_t _scpi_write_sweep_ptr(scpi_t* context) {
 
 	if (!SCPI_ParamArrayFloat(context, (void*)scpi_amu_dev->transfer_reg, AMU_TRANSFER_REG_SIZE / sizeof(float), &o_count, SCPI_FORMAT_ASCII, TRUE)) return SCPI_RES_ERR;
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 		if (o_count <= IVSWEEP_MAX_POINTS)
@@ -242,7 +242,7 @@ scpi_result_t _scpi_write_config_ptr(scpi_t* context) {
 	if (!SCPI_ParamFloat(context, am0, TRUE)) return SCPI_RES_ERR;
 	if (!SCPI_ParamFloat(context, area, TRUE)) return SCPI_RES_ERR;
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	//Convert uint32_t values to uint8_t and move them into the transfer register
 	for (uint8_t i = 0; i < 8; i++) {
@@ -261,7 +261,7 @@ scpi_result_t _scpi_write_meta_ptr(scpi_t* context) {
 	if (!SCPI_ParamArrayFloat(context, (void*)scpi_amu_dev->transfer_reg, 9, &o_count, SCPI_FORMAT_ASCII, TRUE)) return SCPI_RES_ERR;
 	if (!SCPI_ParamUInt32(context, (void*)&scpi_amu_dev->transfer_reg[36], TRUE)) return SCPI_RES_ERR;
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 		_amu_route_command(*device, SCPI_CmdTag(context), sizeof(ivsweep_meta_t), context->query);
@@ -274,7 +274,7 @@ scpi_result_t _scpi_cmd_led(scpi_t* context) {
 
 	if (!SCPI_ParamUInt32(context, (void*)scpi_amu_dev->transfer_reg, TRUE)) return SCPI_RES_ERR;
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 		_amu_route_command(*device, (CMD_t)(SCPI_CmdTag(context) + scpi_amu_dev->transfer_reg[0]), sizeof(uint8_t), false);
@@ -303,7 +303,7 @@ scpi_result_t _scpi_cmd_measure_channel(scpi_t* context) {
 		return SCPI_RES_ERR;
 	}
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 
@@ -324,7 +324,7 @@ scpi_result_t _scpi_cmd_measure_channel(scpi_t* context) {
 
 scpi_result_t _scpi_cmd_measure_active_ch(scpi_t* context) {
 
-	_scpi_get_channelList(context);					// Get the list of channels to act on
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	uint16_t* activeChannels = (uint16_t*)scpi_amu_dev->transfer_reg;
 	uint8_t numChannels = 0;
@@ -350,7 +350,7 @@ scpi_result_t _scpi_cmd_measure_active_ch(scpi_t* context) {
 
 scpi_result_t _scpi_cmd_measure_tsensors(scpi_t* context) {
 
-	_scpi_get_channelList(context);					// Get the list of channels to act on
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}					
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 
@@ -368,7 +368,7 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 		if (!SCPI_ParamCopyText(context, (void*)scpi_amu_dev->transfer_reg, AMU_TRANSFER_REG_SIZE, &o_count, TRUE))	return SCPI_RES_ERR;
 	}
 
-	_scpi_get_channelList(context);					// Get the list of channels to act on
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 
@@ -377,6 +377,7 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 				switch (SCPI_CmdTag(context)) {
 				case CMD_SYSTEM_FIRMWARE:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), AMU_FIRMWARE_STR_LEN, true);										break;
 				case CMD_SYSTEM_SERIAL_NUM:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), AMU_SERIALNUM_STR_LEN, true);									break;
+				case CMD_SYSTEM_AMULIB:				_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), AMU_AMULIB_STR_LEN, true);										break;
 				case CMD_DUT_MANUFACTURER:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.manufacturer), true);			break;
 				case CMD_DUT_MODEL:					_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.model), true);				break;
 				case CMD_DUT_TECHNOLOGY:			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(scpi_amu_dev->amu_regs->dut.technology), true);			break;
@@ -417,22 +418,24 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 }
 
 scpi_result_t _scpi_cmd_twi_scan(scpi_t* context) {
+	if (!context->query) {return SCPI_RES_ERR;}
 
-	int32_t* commandNumber = (int32_t*)scpi_amu_dev->transfer_reg;
+	int32_t *commandNumber = (int32_t*)scpi_amu_dev->transfer_reg;
 
 	SCPI_CommandNumbers(context, commandNumber, 1, -1);
 
-	_scpi_get_channelList(context);
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {return SCPI_RES_ERR;}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
 		if (*device == AMU_THIS_DEVICE) {
-			_amu_route_command(*device, SCPI_CmdTag(context), sizeof(uint8_t), context->query);
+			_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(uint8_t), context->query);
 			SCPI_ResultInt8(context, amu_get_num_devices());
 			for (uint8_t i = 0; i < amu_get_num_devices(); i++) {
-				if (i == AMU_THIS_DEVICE)
+				if (i == AMU_THIS_DEVICE) {
 					SCPI_ResultUInt8(context, scpi_amu_dev->twi_address);
-				else
+				} else {
 					SCPI_ResultUInt8(context, amu_get_device_address(i));
+				}
 			}
 		}
 	}
@@ -530,6 +533,8 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 	SCPI_CMD_LIST_END
 #endif
 };
+
+const scpi_command_t* amu_scpi_get_command_list(void) {return scpi_def_commands;}
 
 #endif
 
@@ -645,55 +650,45 @@ void amu_scpi_list_commands(void) {
 
 }
 
-
-
-int16_t _scpi_get_channelList(scpi_t* context) {
-
+scpi_result_t _scpi_get_channelList(scpi_t* context) {
 	scpi_parameter_t channel_list_param;
 	uint8_t scpi_list_iterator = 0;
 
 	//Checks for any parameter
 	if (SCPI_Parameter(context, &channel_list_param, FALSE)) {
-
 		scpi_bool_t is_range;
 		size_t dimensions;
 
-		/* the next statement is valid usage and it gets only real number of dimensions for the first item (index 0) */
-		if (!SCPI_ExprChannelListEntry(context, &channel_list_param, 0, &is_range, NULL, NULL, 0, &dimensions)) {
+		size_t param_idx = 0; /* index for channel list */
+		int8_t direction = 1; /* direction of counter for rows, +/-1 */
+		int32_t address_start = 0;
+		int32_t address_end = 0;
 
-			size_t param_idx = 0;			/* index for channel list */
-			int8_t direction = 1; /* direction of counter for rows, +/-1 */
-			int32_t address_start = 0;
-			int32_t address_end = 0;
-
-
-			while (SCPI_EXPR_OK == SCPI_ExprChannelListEntry(context, &channel_list_param, param_idx, &is_range, &address_start, &address_end, 1, &dimensions)) {
-
-				if ((dimensions != 1) | (address_start > 63)) {
-					scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
-					return FALSE;
-				}
-
-				if (is_range) {
-
-					if (address_end > 63) {
-						scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
-						return FALSE;
-					}
-
-					for ((address_start > address_end) ? (direction = -1) : (direction = 1); address_start != address_end; address_start += direction)
-					scpi_channel_list[scpi_list_iterator++] = address_start;
-
-					scpi_channel_list[scpi_list_iterator++] = address_start;
-
-				}
-				else {
-					scpi_channel_list[scpi_list_iterator++] = address_start;
-				}
-
-				/* increase index */
-				param_idx++;
+		while (SCPI_EXPR_OK == SCPI_ExprChannelListEntry(context, &channel_list_param, param_idx, &is_range, &address_start, &address_end, 1, &dimensions)) {
+			if ((dimensions != 1) | (address_start > 63)) {
+				scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
+				return SCPI_RES_ERR;
 			}
+
+			if (is_range) {
+
+				if (address_end > 63) {
+					scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
+					return SCPI_RES_ERR;
+				}
+
+				for ((address_start > address_end) ? (direction = -1) : (direction = 1); address_start != address_end; address_start += direction)
+				scpi_channel_list[scpi_list_iterator++] = address_start;
+
+				scpi_channel_list[scpi_list_iterator++] = address_start;
+
+			}
+			else {
+				scpi_channel_list[scpi_list_iterator++] = address_start;
+			}
+
+			/* increase index */
+			param_idx++;
 		}
 	}
 	else {	//No parameter list
@@ -702,5 +697,15 @@ int16_t _scpi_get_channelList(scpi_t* context) {
 
 	scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
 
-	return TRUE;
+	// Protected commands cannot target remote devices (device > 0)
+	if (SCPI_CmdTag(context) & CMD_USB_ONLY) {
+		for (uint8_t i = 0; scpi_channel_list[i] != AMU_DEVICE_END_LIST; i++) {
+			if (scpi_channel_list[i] > 0) {
+				SCPI_ErrorPush(context, SCPI_ERROR_COMMAND_PROTECTED);
+				return SCPI_RES_ERR;
+			}
+		}
+	}
+
+	return SCPI_RES_OK;
 }

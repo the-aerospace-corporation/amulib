@@ -14,7 +14,7 @@ volatile amu_twi_regs_t* amu_regs_get_twi_regs_ptr(void) {
 uint16_t amu_regs_get_register_length(uint8_t reg) {
 
     switch(reg) {
-
+        
         case AMU_REG_SYSTEM_CMD:                        return MEMBER_SIZE(amu_twi_regs_t, command);                break;
         case AMU_REG_SYSTEM_AMU_STATUS:                 return MEMBER_SIZE(amu_twi_regs_t, amu_status);             break;
         case AMU_REG_SYSTEM_TWI_STATUS:                 return MEMBER_SIZE(amu_twi_regs_t, twi_status);             break;

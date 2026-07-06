@@ -374,7 +374,7 @@ T AMU::queryChannel(CMD_t command, uint8_t channel) {
 	
 	_amu_transfer_write(0, &channel, 1);
 	
-	int8_t result = amu_dev_query_command(address, command, 0, sizeof(T));
+	int8_t result = amu_dev_query_command(address, command, 1, sizeof(T));
 	if (result != 0) {
 		if (AMU::errorPrintFncPtr) {
 			AMU::errorPrintFncPtr("Query command failed with error: %d\n", result);

@@ -384,9 +384,30 @@ typedef enum {
 	 *  @note Signature is factory-programmed and cannot be modified.
 	 */
 	CMD_SYSTEM_XMEGA_USER_SIGNATURES =		CMD_SYSTEM_OFFSET + 0x0C,
-	
-	/** @amutitle{System — Sleep}
-	 *  @amudesc{Enters low-power sleep mode}
+
+	/** @amutitle{System — AMULIB Version}
+	 *  @amudesc{Returns AMULIB library version string including semantic version\, git commit hash\, branch\, and build timestamp}
+	 *  @return Version string (format: "v1.0.0+git.32f6f37-dirty")
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:AMULIB?}
+	 *  @amupanelex
+	 *  SYSTem:AMULIB?
+	 *  v1.0.0+git.32f6f37-dirty
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_AMULIB}
+	 *  @amupanelex
+	 *  String version = amu.query<String>(CMD_SYSTEM_AMULIB);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *  @note Read-only query command. Returns AMULIB_VERSION_FULL from amulib_version.h.
+	 */
+	CMD_SYSTEM_AMULIB =						CMD_SYSTEM_OFFSET + 0x0D,
+
+	/** @amutitle{System — Sleep Mode}
+	 *  @amudesc{Puts the device into low-power sleep mode to conserve energy. Device will wake on USB activity\, I2C communication\, or external interrupt}
 	 *
 	 *  @amupanels
 	 *  @amuscpi{SYSTem:SLEEP}
@@ -400,7 +421,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
-	 *  @note Device wakes on USB activity, I2C communication, or external interrupt; measurements are suspended during sleep.
+	 *  @note Current measurements will be suspended during sleep.
 	 *  @warning USB communication may be interrupted briefly.
 	 */
 	CMD_SYSTEM_SLEEP =						CMD_SYSTEM_OFFSET + 0x0F,
