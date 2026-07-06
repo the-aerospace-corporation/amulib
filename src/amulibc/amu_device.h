@@ -12,6 +12,7 @@
 #include "amu_commands.h"
 #include "amu_types.h"
 #include "amu_config_internal.h"
+#include "amulib_version.h"
 
 #define AMU_TWI_DEFAULT_ADDRESS			0x0F
 #define AMU_TWI_ALLCALL_ADDRESS			0x0A
@@ -27,6 +28,7 @@
 #define AMU_MANUFACTURER_STR_LEN		20
 #define AMU_SERIALNUM_STR_LEN			26
 #define AMU_FIRMWARE_STR_LEN			16
+#define AMU_AMULIB_STR_LEN				AMULIB_VERSION_STR_LEN
 
 #define AMU_DEVICE_DEFAULT_STR			"AMU-M0+"
 #define AMU_MANUFACTURER_DEFAULT_STR	"AEROSPACE"

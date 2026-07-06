@@ -43,6 +43,7 @@ extern "C" {
     void amu_scpi_update_buffer(const char* buffer, size_t len);
 	void amu_scpi_list_commands(void);
 	void amu_scpi_add_aux_commands(const scpi_command_t* aux_cmd_list);
+	const scpi_command_t* amu_scpi_get_command_list(void);
 	scpi_result_t scpi_cmd_execute(scpi_t *context);
 	
 	
@@ -79,7 +80,7 @@ extern "C" {
 	scpi_result_t _scpi_cmd_query_str(scpi_t *context);
 	scpi_result_t _scpi_cmd_led(scpi_t *context);
 
-	int16_t _scpi_get_channelList(scpi_t *context);
+	scpi_result_t _scpi_get_channelList(scpi_t *context);
 
 #if defined(__AMU_USE_SCPI__)
 
@@ -116,6 +117,7 @@ extern "C" {
         SCPI_COMMAND("SYSTem:DEBug#?",					scpi_cmd_rw_float,					CMD_USB_SYSTEM_DEBUG				)	\
         SCPI_COMMAND("SYSTem:FIRMware?",				_scpi_cmd_query_str,				CMD_SYSTEM_FIRMWARE					)	\
         SCPI_COMMAND("SYSTem:HARDware?",				scpi_cmd_rw_uint8_t,				AMU_REG_SYSTEM_HARDWARE_REVISION	)	\
+        SCPI_COMMAND("SYSTem:AMULIB?",					_scpi_cmd_query_str,				CMD_SYSTEM_AMULIB					)	\
         SCPI_COMMAND("SYSTem:LED:PAT",					_scpi_cmd_led,						CMD_SYSTEM_LED						)	\
         SCPI_COMMAND("SYSTem:LED:COLOR[?]",				scpi_cmd_rw_amu_pid_t,				CMD_SYSTEM_LED_COLOR				)	\
         SCPI_COMMAND("SYSTem:SERial?",					_scpi_cmd_query_str,				CMD_SYSTEM_SERIAL_NUM				)	\

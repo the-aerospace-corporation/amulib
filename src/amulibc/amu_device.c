@@ -21,7 +21,6 @@
 static uint8_t amu_dev_initialized = 0;
 static uint8_t amu_device_addresses[AMU_MAX_CONNECTED_DEVICES];
 static volatile uint8_t amu_transfer_reg[AMU_TRANSFER_REG_SIZE];
-static uint16_t transfer_reg_data_len = 0;
 
 #ifdef __AMU_DEVICE__
 static uint8_t amu_num_devices = 1;
@@ -59,11 +58,7 @@ volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 
 	if (amu_dev_initialized > 0)
 		return &amu_device;
-
 	else {
-
-		
-
 		amu_device.transfer = transfer_ptr;
 
 #ifdef __AMU_DEVICE__
@@ -77,7 +72,6 @@ volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 #ifdef __AMU_USE_SCPI__
 		amu_scpi_init(&amu_device, dev_deviceType_str, dev_manufacturer_str, dev_serialNumber_str, dev_firmware_str);
 #endif
-
 		amu_dev_initialized = 1;
 
 		return &amu_device;
@@ -109,8 +103,8 @@ uint8_t amu_dev_busy(uint8_t address) {
 // 	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&amu_device.amu_regs->twi_status, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
 // 	return amu_device.amu_regs->twi_status;
 // #else
-	uint8_t cmd;
-	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, &cmd, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
+	uint8_t cmd = 1;
+	amu_dev_transfer(address, (uint8_t) AMU_REG_CMD, &cmd, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
 	return cmd;
 // #endif
 }
@@ -177,7 +171,6 @@ int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandData
  * @return uint8_t 	Number of devices found, including this device if __AMU_DEVICE__ is defined
  */
 uint8_t amu_scan_for_devices(uint8_t startAddress, uint8_t endAddress) {
-
 #ifdef __AMU_DEVICE__
 	amu_num_devices = 1;
 	amu_device_addresses[0] = AMU_THIS_DEVICE;
@@ -185,24 +178,16 @@ uint8_t amu_scan_for_devices(uint8_t startAddress, uint8_t endAddress) {
 	amu_num_devices = 0;
 #endif
 
-	amu_device_addresses[amu_num_devices] = AMU_NO_ADDRESS_MATCH;		//termination
-
 	for (uint8_t i = startAddress; i < endAddress; i++) {
+		if (i == AMU_TWI_ALLCALL_ADDRESS) {continue;}
+		if (amu_dev_transfer(i, 0, NULL, 0, AMU_TWI_TRANSFER_READ) != 0) {continue;}
+		if (amu_num_devices >= AMU_MAX_CONNECTED_DEVICES - 1) {break;} // Reserve last slot for termination
 
-		if (i == AMU_TWI_ALLCALL_ADDRESS)
-			continue;
-		else {
-			if (amu_dev_transfer(i, 0, NULL, 0, AMU_TWI_TRANSFER_READ) == 0) {
-				amu_device_addresses[amu_num_devices] = i;
-				amu_num_devices = amu_num_devices + 1;
-				if (amu_num_devices == AMU_MAX_CONNECTED_DEVICES) {
-					break;
-				}
-			}
-		}
+		amu_device_addresses[amu_num_devices] = i;
+		amu_num_devices++;
 	}
 
-	amu_device_addresses[amu_num_devices] = AMU_NO_ADDRESS_MATCH;		//termination
+	amu_device_addresses[amu_num_devices] = AMU_NO_ADDRESS_MATCH; // Termination
 
 	return amu_num_devices;
 }
@@ -307,9 +292,9 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 void _amu_transfer_read(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
 		memcpy(data, (void*)&amu_transfer_reg[offset], len);
-	}
-	else
+	} else {
 		memset(data, 0, len);
+	}
 }
 
 /**
@@ -322,10 +307,8 @@ void _amu_transfer_read(size_t offset, void* data, size_t len) {
 void _amu_transfer_write(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
 		memcpy((void*)&amu_transfer_reg[offset], data, len);
-
-		transfer_reg_data_len = offset + len; // Update the length of data in the transfer register
 	}
-	
+
 }
 
 volatile uint8_t* amu_dev_get_transfer_reg_ptr(void) { return amu_transfer_reg; }
@@ -452,13 +435,12 @@ char* amu_dev_setFirmwareStr(const char* firmwareStr) {
 }
 
 uint16_t amu_reg_get_length(uint8_t reg) {
-	if(reg == AMU_REG_TRANSFER_PTR) {
-		return transfer_reg_data_len;
-	}
-	else {
+	if (reg == AMU_REG_TRANSFER_PTR) {
+		return AMU_TRANSFER_REG_SIZE;
+	} else {
 		return amu_regs_get_register_length(reg);
 	}
-	
+
 }
 
 #endif

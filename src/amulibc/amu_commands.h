@@ -232,7 +232,17 @@ typedef enum {
 	 *  @note Signature is factory-programmed and cannot be modified
 	 */
 	CMD_SYSTEM_XMEGA_USER_SIGNATURES =		CMD_SYSTEM_OFFSET + 0x0C,
-	
+
+	/** @brief Returns AMULIB library version string
+	 *  @details Returns the AMULIB library version string including semantic version,
+	 *           git commit hash, branch, and build timestamp.
+	 *  @return Version string (format: "v1.0.0+git.32f6f37-dirty")
+	 *  @par SCPI Equivalent:
+	 *  `SYSTem:AMULIB?`
+	 *  @note Read-only query command. Returns AMULIB_VERSION_FULL from amulib_version.h
+	 */
+	CMD_SYSTEM_AMULIB =						CMD_SYSTEM_OFFSET + 0x0D,
+
 	/** @brief Enters low-power sleep mode
 	 *  @details Puts the device into low-power sleep mode to conserve energy.
 	 *           Device will wake on USB activity, I2C communication, or external interrupt.
