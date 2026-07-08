@@ -343,7 +343,6 @@ typedef struct {
 	/*! Function to print errors, typically used for debugging, pass through to printf typically */
 	amu_print_fptr_t print;
 
-
 	/*! function to execute local commands */
 	uint8_t(*process_cmd)(uint16_t cmd);
 

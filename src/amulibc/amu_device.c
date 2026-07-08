@@ -25,12 +25,10 @@ static volatile uint8_t amu_transfer_reg[AMU_TRANSFER_REG_SIZE];
 #ifdef __AMU_DEVICE__
 static uint8_t amu_num_devices = 1;
 
-
 char dev_deviceType_str[AMU_DEVICE_STR_LEN] = AMU_DEVICE_DEFAULT_STR;
 char dev_manufacturer_str[AMU_MANUFACTURER_STR_LEN] = AMU_MANUFACTURER_DEFAULT_STR;
 char dev_serialNumber_str[AMU_SERIALNUM_STR_LEN] = AMU_SERIALNUM_DEFAULT_STR;
 char dev_firmware_str[AMU_FIRMWARE_STR_LEN] = AMU_FIRMWARE_DEFAULT_STR;
-
 
 #else
 static uint8_t amu_num_devices = 0;

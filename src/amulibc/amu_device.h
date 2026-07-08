@@ -4,8 +4,6 @@
  * @author	CJM28241
  * @date	5/7/2019 3:56:32 PM
  */
-
-
 #ifndef __AMU_DEVICE_H__
 #define __AMU_DEVICE_H__
 
@@ -16,6 +14,7 @@
 
 #define AMU_TWI_DEFAULT_ADDRESS			0x0F
 #define AMU_TWI_ALLCALL_ADDRESS			0x0A
+#define AMU3_TWI_ALLCALL_ADDRESS        0x00
 #define AMU_EYAS_ADDRESS				0x07
 
 #ifdef __AMU_LOW_MEMORY__

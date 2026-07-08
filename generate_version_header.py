@@ -16,9 +16,9 @@ import re
 from datetime import datetime
 
 # Configuration
-VERSION_FORMAT = 'full'        # Which format to use for VERSION_STR (full, compact, semantic, minimal, commit, build)
-PROJECT_PREFIX = "AMULIB"      # Prefix for macros/variables (e.g., AMULIB_VERSION_FULL)
-OUTPUT_DIR = 'src/amulibc'     # Where to write generated files
+VERSION_FORMAT = 'full' # Which format to use for VERSION_STR (full, short, build)
+PROJECT_PREFIX = "AMULIB" # Prefix for macros/variables (e.g., AMULIB_VERSION_FULL)
+OUTPUT_DIR = 'include'     # Where to write generated files
 
 def run_git_command(command):
     result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=os.path.dirname(__file__))
@@ -68,24 +68,13 @@ def format_full(info):
         parts.append("-dirty")
     return ''.join(parts)
 
-def format_compact(info):
+def format_short(info):
     parts = [f"v{info['semantic_version']}"]
     if info['commit'] != 'unknown':
         parts.append(f"-{info['commit']}")
         if info['dirty']:
             parts.append("*")
     return ''.join(parts)
-
-def format_semantic(info):
-    return f"v{info['semantic_version']}"
-
-def format_minimal(info):
-    return info['semantic_version']
-
-def format_commit(info):
-    if info['commit'] != 'unknown':
-        return info['commit'] + ('*' if info['dirty'] else '')
-    return 'unknown'
 
 def format_build(info):
     return f"{info['semantic_version']}.{info['commit_count']}"
@@ -122,12 +111,20 @@ def get_version_info():
     # Build all formats using registry
     format_funcs = {name[7:]: func for name, func in globals().items()
                     if name.startswith('format_') and callable(func)}
+
+    # Check for conflicts with version_info keys and common generator field names
+    # This protects all generators (C, Python, etc.) from duplicate definitions
+    reserved = set(version_info.keys()) | {'major', 'minor', 'patch', 'str', 'str_len'}
+    conflicts = set(format_funcs.keys()) & reserved
+    if conflicts:
+        raise ValueError(f"Format names conflict with reserved fields: {', '.join(conflicts)}")
+
     formats = {name: func(version_info) for name, func in format_funcs.items()}
 
     version_str = formats.get(VERSION_FORMAT)
     if not version_str:
-        print(f"Warning: Unknown VERSION_FORMAT '{VERSION_FORMAT}', using 'compact'")
-        version_str = formats['compact']
+        print(f"Warning: Unknown VERSION_FORMAT '{VERSION_FORMAT}', using 'full'")
+        version_str = formats['full']
 
     version_info['formats'] = formats
     version_info['version_str'] = version_str
@@ -144,19 +141,17 @@ def generate_c_header(version_info, output_file, prefix):
     header_content = f'''#ifndef {pfx}VERSION_H
 #define {pfx}VERSION_H
 
-#include <stdio.h>
-
 #define {pfx}VERSION_MAJOR {major}
 #define {pfx}VERSION_MINOR {minor}
 #define {pfx}VERSION_PATCH {patch}
 #define {pfx}VERSION_SEMANTIC "{version_info['semantic_version']}"
 
-#define {pfx}VERSION_COMMIT "{version_info['commit']}"
-#define {pfx}VERSION_BRANCH "{version_info['branch']}"
-#define {pfx}VERSION_TIMESTAMP "{version_info['timestamp']}"
+#define {pfx}GIT_COMMIT "{version_info['commit']}"
+#define {pfx}GIT_BRANCH "{version_info['branch']}"
+#define {pfx}GIT_DIRTY {1 if version_info['dirty'] else 0}
+#define {pfx}GIT_COMMIT_COUNT {version_info['commit_count']}
 
-#define {pfx}VERSION_DIRTY {1 if version_info['dirty'] else 0}
-#define {pfx}VERSION_COMMIT_COUNT {version_info['commit_count']}
+#define {pfx}BUILD_TIMESTAMP "{version_info['timestamp']}"
 
 {format_macros}
 
@@ -165,7 +160,7 @@ def generate_c_header(version_info, output_file, prefix):
 
 #endif // {pfx}VERSION_H
 '''
-    return write_if_changed(output_file, header_content, ['VERSION_TIMESTAMP'])
+    return write_if_changed(output_file, header_content, ['BUILD_TIMESTAMP'])
 
 def generate_python_module(version_info, output_file, prefix):
     major, minor, patch = version_info['semantic_version'].split('.')
