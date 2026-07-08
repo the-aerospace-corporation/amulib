@@ -5,7 +5,6 @@
  * @author	CJM28241
  * @date	5/7/2019 3:56:47 PM
  */
-
 #include "amu_config_internal.h"
 #pragma message(AMULIBC_CONFIG_MESSAGE)
 
@@ -47,11 +46,6 @@ volatile amu_device_t amu_device = {
 	.process_cmd = NULL,
 };
 
-/**
- * @brief TODO
- *
- * @param amu_device_t Any AMU device
- */
 volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 
 	if (amu_dev_initialized > 0)
@@ -76,73 +70,29 @@ volatile amu_device_t* amu_dev_init(amu_transfer_fptr_t transfer_ptr) {
 	}
 }
 
-/**
- * @brief Transfering... TODO
- *
- * @param address 	TODO
- * @param reg 		TODO
- * @param data 		TODO
- * @param len 		TODO
- * @param rw 		TODO
- * @return int8_t
- */
 int8_t amu_dev_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t rw) {
 	return amu_device.transfer(address, reg, data, len, rw);
 }
 
-/**
- * @brief Checks to see if the AMU device is busy
- *
- * @param address 	TODO
- * @return uint8_t 	1 is busy, 0 otherwise
- */
 uint8_t amu_dev_busy(uint8_t address) {
-// #ifdef __AMU_DEVICE__
-// 	amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&amu_device.amu_regs->twi_status, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
-// 	return amu_device.amu_regs->twi_status;
-// #else
 	uint8_t cmd = 1;
 	amu_dev_transfer(address, (uint8_t) AMU_REG_CMD, &cmd, sizeof(uint8_t), AMU_TWI_TRANSFER_READ);
 	return cmd;
-// #endif
 }
 
-/**
- * @brief Sends a command to an AMU device
- *
- * @param address TODO
- * @param command Command for the device
- * @return int8_t TODO
- */
 int8_t amu_dev_send_command(uint8_t address, CMD_t command) {
 	return amu_dev_transfer(address, (uint8_t)AMU_REG_CMD, (uint8_t*)&command, 1, AMU_TWI_TRANSFER_WRITE);
 }
 
-/**
- * @brief Move local transfer reg to remote transfer reg, then send command
- *
- * @param address 	TODO
- * @param command 	Command for the device
- * @param len 		Length of TODO
- * @return int8_t TODO
- */
 int8_t amu_dev_send_command_data(uint8_t address, CMD_t command, uint8_t len) {
-	if (len > 0)
+	if (len > 0) {
 		amu_dev_transfer(address, (uint8_t)AMU_REG_TRANSFER_PTR, (uint8_t*)amu_transfer_reg, len, AMU_TWI_TRANSFER_WRITE);
+	}
+
 	return amu_dev_send_command(address, command);
 }
 
-/**
- * @brief TODO
- *
- * @param address 			TODO
- * @param command 			TODO
- * @param commandDataLen 	TODO
- * @param responseLength 	TODO
- * @return int8_t
- */
 int8_t amu_dev_query_command(uint8_t address, CMD_t command, uint8_t commandDataLen, uint8_t responseLength) {
-	
 	uint8_t repeat = 0;
 
 	amu_dev_send_command_data(address, (command | CMD_READ), commandDataLen);
@@ -198,12 +148,6 @@ int8_t amu_get_num_connected_devices() {
 	return amu_num_devices - 1;
 }
 
-/**
- * @brief Device addresses are used for TODO
- *
- * @param deviceNum Device number of interest
- * @return uint8_t Device address
- */
 uint8_t amu_get_device_address(uint8_t deviceNum) {
 	if (deviceNum < amu_num_devices)
 		return amu_device_addresses[deviceNum];
@@ -211,26 +155,13 @@ uint8_t amu_get_device_address(uint8_t deviceNum) {
 		return AMU_NO_ADDRESS_MATCH;
 }
 
-/**
- * @brief TODO
- *
- * TODO
- *
- * @param deviceNum 	TODO
- * @param cmd 			TODO
- * @param transferLen 	TODO
- * @param query 		TODO
- * @return uint8_t TODO
- */
 uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bool query) {
-
 	uint8_t twi_address;
 
-	if (cmd == (CMD_t)CMD_SYSTEM_NO_CMD)
-		return 0;
+	if (cmd == (CMD_t) CMD_SYSTEM_NO_CMD) {return 0;}
 
 	if ((deviceNum >= amu_num_devices) || (deviceNum == AMU_DEVICE_END_LIST)) {
-		memset((uint8_t*)amu_transfer_reg, 0x00, transferLen);			// Clear the transfer reg
+		memset((uint8_t*)amu_transfer_reg, 0x00, transferLen); // Clear the transfer reg
 		return 0;
 	}
 
@@ -249,28 +180,27 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 			}
 			else {
 				if (query) {
-					memset((void *)amu_transfer_reg, 0x00, transferLen);			//clear transfer reg to zeros before new data is read in.
-					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_READ);
+					memset((void *)amu_transfer_reg, 0x00, transferLen);
+					amu_dev_transfer(twi_address, (uint8_t) cmd, (uint8_t*) amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_READ);
+				} else {
+					amu_dev_transfer(twi_address, (uint8_t) cmd, (uint8_t*) amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_WRITE);
 				}
-				else
-					amu_dev_transfer(twi_address, (uint8_t)cmd, (uint8_t*)amu_transfer_reg, transferLen, AMU_TWI_TRANSFER_WRITE);
 			}
 		}
-	}
-	else {
+	} else {
 		if (cmd >= CMD_I2C_USB) {
-			if (amu_device.process_cmd != NULL)
+			if (amu_device.process_cmd != NULL) {
 				amu_device.process_cmd(cmd);
-			else
+			} else {
 				amu_command_complete();
+			}
 		}
 		else {
 			amu_data_reg_t* amu_register = amu_get_register_ptr(cmd & 0xFF);
 
 			if (query) {
 				memcpy((uint8_t*)amu_transfer_reg, (uint8_t*)amu_register, transferLen);
-			}
-			else {
+			} else {
 				memcpy((uint8_t*)amu_register, (uint8_t*)amu_transfer_reg, transferLen);
 			}
 		}
@@ -279,32 +209,17 @@ uint8_t _amu_route_command(uint8_t deviceNum, CMD_t cmd, size_t  transferLen, bo
 	return true;
 }
 
-
-/**
- * @brief TODO: explain the transfer part of a transfer read
- *
- * @param offset 	TODO
- * @param data 		TODO
- * @param len 		TODO
- */
 void _amu_transfer_read(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
-		memcpy(data, (void*)&amu_transfer_reg[offset], len);
+		memcpy(data, (void*) &amu_transfer_reg[offset], len);
 	} else {
 		memset(data, 0, len);
 	}
 }
 
-/**
- * @brief TODO: explain the transfer part of a transfer write
- *
- * @param offset 	TODO
- * @param data 		TODO
- * @param len 		TODO
- */
 void _amu_transfer_write(size_t offset, void* data, size_t len) {
 	if ((offset + len) < AMU_TRANSFER_REG_SIZE) {
-		memcpy((void*)&amu_transfer_reg[offset], data, len);
+		memcpy((void*) &amu_transfer_reg[offset], data, len);
 	}
 
 }
@@ -403,7 +318,6 @@ amu_data_reg_t* amu_get_register_ptr(uint8_t reg) {
     }
 
 }
-
 
 #ifdef __AMU_DEVICE__
 
