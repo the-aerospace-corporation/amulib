@@ -6,6 +6,9 @@
  * @date	5/7/2019 7:16:32 PM
  */
 #include "scpi.h"
+
+#include <stdio.h>
+
 #include "amu_device.h"
 #include "amu_regs.h"
 #include "amu_config_internal.h"
@@ -13,7 +16,6 @@
 
 static uint8_t scpi_channel_list[AMU_MAX_CONNECTED_DEVICES + 1];
 static volatile amu_device_t* scpi_amu_dev;
-
 
 #ifdef __AMU_USE_SCPI__
 static char scpi_input_buffer[AMULIBC_SCPI_INPUT_BUFFER_LENGTH];
@@ -26,74 +28,91 @@ static scpi_interface_t scpi_interface;
 static size_t o_count = 1;
 
 #define SCPI_Param_amu_pid_t(c, v, b)		SCPI_ParamArrayFloat(c, v, 3, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_amu_pid_t(c, v)			SCPI_ResultArrayFloat(c, (float *)&(v), 3, SCPI_FORMAT_ASCII)
+#define SCPI_Result_amu_pid_t(c, v)			SCPI_ResultArrayFloat(c, (float *) &(v), 3, SCPI_FORMAT_ASCII)
 
 #define SCPI_Param_amu_coeff_t(c, v, b)		SCPI_ParamArrayFloat(c, v, 4, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_amu_coeff_t(c, v)		SCPI_ResultArrayFloat(c, (float *)&(v), 4, SCPI_FORMAT_ASCII)
+#define SCPI_Result_amu_coeff_t(c, v)		SCPI_ResultArrayFloat(c, (float *) &(v), 4, SCPI_FORMAT_ASCII)
 
 #define SCPI_Param_amu_notes_t(c, v, b)		SCPI_ParamCopyText(c, v, AMU_NOTES_SIZE, &o_count, b)
-#define SCPI_Result_amu_notes_t(c, v)		SCPI_ResultText(c, (char *)v)
+#define SCPI_Result_amu_notes_t(c, v)		SCPI_ResultText(c, (char *) v)
 
 #define SCPI_Param_ss_angle_t(c, v, b)		SCPI_ParamArrayFloat(c, v, 6, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_ss_angle_t(c, v)		SCPI_ResultArrayFloat(c, (float *)&(v), 6, SCPI_FORMAT_ASCII)
+#define SCPI_Result_ss_angle_t(c, v)		SCPI_ResultArrayFloat(c, (float *) &(v), 6, SCPI_FORMAT_ASCII)
 
 #define SCPI_Param_press_data_t(c, v, b)	SCPI_ParamArrayFloat(c, v, 4, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_press_data_t(c, v)		SCPI_ResultArrayFloat(c, (float *)&(v), 4, SCPI_FORMAT_ASCII)
+#define SCPI_Result_press_data_t(c, v)		SCPI_ResultArrayFloat(c, (float *) &(v), 4, SCPI_FORMAT_ASCII)
 
 #define SCPI_Param_amu_int_volt_t(c, v, b)	SCPI_ParamArrayFloat(c, v, 4, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_amu_int_volt_t(c, v)	SCPI_ResultArrayFloat(c, (float *)&(v), 4, SCPI_FORMAT_ASCII)
+#define SCPI_Result_amu_int_volt_t(c, v)	SCPI_ResultArrayFloat(c, (float *) &(v), 4, SCPI_FORMAT_ASCII)
 
 #define SCPI_Param_amu_meas_t(c, v, b)		SCPI_ParamArrayFloat(c, v, 2, &o_count, SCPI_FORMAT_ASCII, b)
-#define SCPI_Result_amu_meas_t(c, v)		SCPI_ResultArrayFloat(c, (float *)&(v), 2, SCPI_FORMAT_ASCII)
+#define SCPI_Result_amu_meas_t(c, v)		SCPI_ResultArrayFloat(c, (float *) &(v), 2, SCPI_FORMAT_ASCII)
 
-amu_notes_t* notes_ptr;
+typedef scpi_bool_t (*scpi_param_fn_t)(scpi_t *context, void *value);
+typedef void (*scpi_result_fn_t)(scpi_t *context, void *value);
 
+/*
+ * Shared body for the scpi_cmd_rw_<type> and scpi_cmd_exec_qry_<type> handlers.
+ * param == NULL marks a no-payload (exec/query) command: writes send only the
+ * optional channel byte.
+ */
+static scpi_result_t _scpi_cmd_rw(scpi_t *context, size_t size, scpi_param_fn_t param, scpi_result_fn_t result) {
+	int32_t channel = -1;
+	size_t write_len = (param != NULL) ? size : 0;
+	void *payload = (void *) scpi_amu_dev->transfer_reg;
 
-#define SCPI_CMD_RW(TYPE)                                                                                       \
-scpi_result_t scpi_cmd_rw_##TYPE(scpi_t *context) {                                                             \
-	int32_t channel = -1;                                                                                       \
-	                                                                                                            \
-	memset((void *) scpi_amu_dev->transfer_reg, 0, sizeof(TYPE));                                               \
-	                                                                                                            \
-	SCPI_CommandNumbers(context, &channel, 1, -1);                                                              \
-	                                                                                                            \
-	if (!context->query) {                                                                                      \
-		if (channel >= 0) {                                                                                     \
-			scpi_amu_dev->transfer_reg[0] = (uint8_t) channel;                                                  \
-			if (!SCPI_Param_##TYPE(context, (void *) &scpi_amu_dev->transfer_reg[1], TRUE)) {                   \
-				return SCPI_RES_ERR;                                                                            \
-			}                                                                                                   \
-		} else {                                                                                                \
-			if (!SCPI_Param_##TYPE(context, (void *) scpi_amu_dev->transfer_reg, TRUE)) {                       \
-				return SCPI_RES_ERR;                                                                            \
-			}                                                                                                   \
-		}                                                                                                       \
-	}                                                                                                           \
-	                                                                                                            \
-	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {                                                       \
-		return SCPI_RES_ERR;                                                                                    \
-	}                                                                                                           \
-	                                                                                                            \
-	for (uint8_t *device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {                       \
-		if (context->query) {                                                                                   \
-			if (SCPI_CmdTag(context) >= CMD_I2C_USB) {                                                          \
-				_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(TYPE), true);             \
-			} else {                                                                                            \
-				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE), true);                          \
-			}                                                                                                   \
-			                                                                                                    \
-			TYPE *data = (TYPE *) scpi_amu_dev->transfer_reg;                                                   \
-			SCPI_Result_##TYPE(context, *data);                                                                 \
-		} else {                                                                                                \
-			if (channel == -1) {                                                                                \
-				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE), false);                         \
-			} else {                                                                                            \
-				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE) + 1, false);                     \
-			}                                                                                                   \
-		}                                                                                                       \
-	}                                                                                                           \
-	                                                                                                            \
-	return SCPI_RES_OK;                                                                                         \
+	memset((void *) scpi_amu_dev->transfer_reg, 0, size);
+
+	// Channels are placed in first byte of transfer register
+	SCPI_CommandNumbers(context, &channel, 1, -1);
+	if (channel >= 0) {
+		scpi_amu_dev->transfer_reg[0] = (uint8_t) channel;
+		payload = (void *) &scpi_amu_dev->transfer_reg[1];
+		write_len++;
+	}
+
+	// Retrieve any parameters on a write
+	if (!context->query && (param != NULL)) {
+		if (!param(context, payload)) {
+			return SCPI_RES_ERR;
+		}
+	}
+
+	// Parse channel list with format (@n,...)
+	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {
+		return SCPI_RES_ERR;
+	}
+
+	// Set read bit on command
+	uint16_t cmd = SCPI_CmdTag(context);
+	if (context->query && (cmd >= CMD_I2C_USB)) {
+		cmd |= CMD_READ;
+	}
+
+	// Route to remote devices
+	for (uint8_t *device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
+		if (context->query) {
+			_amu_route_command(*device, cmd, size, true);
+			if (result != NULL) {
+				result(context, (void *) scpi_amu_dev->transfer_reg);
+			}
+		} else {
+			_amu_route_command(*device, cmd, write_len, false);
+		}
+	}
+
+	return SCPI_RES_OK;
+}
+
+#define SCPI_CMD_RW(TYPE)                                                                   \
+static scpi_bool_t _scpi_param_##TYPE(scpi_t *context, void *value) {                       \
+	return SCPI_Param_##TYPE(context, value, TRUE);                                         \
+}                                                                                           \
+static void _scpi_result_##TYPE(scpi_t *context, void *value) {                             \
+	SCPI_Result_##TYPE(context, *(TYPE *) value);                                           \
+}                                                                                           \
+scpi_result_t scpi_cmd_rw_##TYPE(scpi_t *context) {                                         \
+	return _scpi_cmd_rw(context, sizeof(TYPE), _scpi_param_##TYPE, _scpi_result_##TYPE);    \
 }
 
 SCPI_CMD_RW(uint8_t)
@@ -109,51 +128,16 @@ SCPI_CMD_RW(press_data_t)
 SCPI_CMD_RW(amu_int_volt_t)
 SCPI_CMD_RW(amu_meas_t)
 
-#define SCPI_CMD_EXEC_QRY(TYPE)                                                                         \
-scpi_result_t scpi_cmd_exec_qry_##TYPE(scpi_t *context) {                                               \
-	int32_t channel = -1;                                                                               \
-	                                                                                                    \
-	memset((void *) scpi_amu_dev->transfer_reg, 0, sizeof(TYPE));                                       \
-	                                                                                                    \
-	SCPI_CommandNumbers(context, &channel, 1, -1);                                                      \
-	                                                                                   	                \
-	if (channel >= 0) {                                                                                 \
-		scpi_amu_dev->transfer_reg[0] = (uint8_t) channel;                                              \
-	}                                                                                                   \
-	                                                                                                    \
-	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {                                               \
-		return SCPI_RES_ERR;                                                                            \
-	}                                                                                                   \
-	                                                                                                    \
-	for (uint8_t *device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {               \
-		if (context->query) {                                                                           \
-			if (SCPI_CmdTag(context) >= CMD_I2C_USB) {                                                  \
-				_amu_route_command(*device, (SCPI_CmdTag(context) | CMD_READ), sizeof(TYPE), true);     \
-			} else {                                                                                    \
-				_amu_route_command(*device, SCPI_CmdTag(context), sizeof(TYPE), true);                  \
-			}                                                                                           \
-			                                                                                            \
-			TYPE *data = (TYPE *) scpi_amu_dev->transfer_reg;                                           \
-			SCPI_Result_##TYPE(context, *data);                                                         \
-		} else {                                                                                        \
-			if (channel == -1) {                                                                        \
-				_amu_route_command(*device, SCPI_CmdTag(context), 0, false);                            \
-			} else {                                                                                    \
-				_amu_route_command(*device, SCPI_CmdTag(context), 1, false);                            \
-			}                                                                                           \
-		}                                                                                               \
-	}                                                                                                   \
-	                                                                                                    \
-	return SCPI_RES_OK;                                                                                 \
-}																										\
+#define SCPI_CMD_EXEC_QRY(TYPE)                                                             \
+scpi_result_t scpi_cmd_exec_qry_##TYPE(scpi_t *context) {                                   \
+	return _scpi_cmd_rw(context, sizeof(TYPE), NULL, _scpi_result_##TYPE);                  \
+}
 
 SCPI_CMD_EXEC_QRY(uint8_t)
 SCPI_CMD_EXEC_QRY(uint16_t)
 SCPI_CMD_EXEC_QRY(uint32_t)
 SCPI_CMD_EXEC_QRY(float)
 
-// If commmand number exists, it's placed in the first byte of the transfer register
-// NO parameters, otherwise error is thrown.
 scpi_result_t scpi_cmd_execute(scpi_t* context) {
 	int32_t* commandNumber = (int32_t *) scpi_amu_dev->transfer_reg;
 
@@ -232,65 +216,52 @@ scpi_result_t _scpi_write_sweep_ptr(scpi_t* context) {
 	}
 
 	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
-		if (o_count <= IVSWEEP_MAX_POINTS) {
-			_amu_route_command(*device, SCPI_CmdTag(context), (o_count * sizeof(float)), false);
-		} else {
-			return SCPI_RES_ERR;
-		}
+		if (o_count > IVSWEEP_MAX_POINTS) {return SCPI_RES_ERR;}
+		_amu_route_command(*device, SCPI_CmdTag(context), (o_count * sizeof(float)), false);
 	}
 
 	return SCPI_RES_OK;
+}
+
+static scpi_bool_t _scpi_param_ivsweep_config_t(scpi_t *context, void *value) {
+	// 8 = uint8_t settings fields before am0 in ivsweep_config_t
+	uint32_t sweepSettings[8];
+	uint8_t *bytes = (uint8_t *) value;
+
+	if (!SCPI_ParamArrayUInt32(context, sweepSettings, 8, &o_count, SCPI_FORMAT_ASCII, TRUE)) {
+		return FALSE;
+	}
+	if (!SCPI_ParamFloat(context, bytes + offsetof(ivsweep_config_t, am0), TRUE)) {
+		return FALSE;
+	}
+	if (!SCPI_ParamFloat(context, bytes + offsetof(ivsweep_config_t, area), TRUE)) {
+		return FALSE;
+	}
+
+	// libscpi's smallest array parse is uint32; narrow to the struct's uint8_t fields
+	for (uint8_t i = 0; i < 8; i++) {
+		bytes[i] = (uint8_t) sweepSettings[i];
+	}
+	return TRUE;
 }
 
 scpi_result_t _scpi_write_config_ptr(scpi_t* context) {
-	uint32_t sweepSettingsUint32_t[8];
-	uint8_t* sweepSettings = (uint8_t *) scpi_amu_dev->transfer_reg;
-	float* am0 = (float *) &scpi_amu_dev->transfer_reg[8];
-	float* area = (float *) &scpi_amu_dev->transfer_reg[12];
+	return _scpi_cmd_rw(context, sizeof(ivsweep_config_t), _scpi_param_ivsweep_config_t, NULL);
+}
 
-	if (!SCPI_ParamArrayUInt32(context, sweepSettingsUint32_t, 8, &o_count, SCPI_FORMAT_ASCII, TRUE)) {
-		return SCPI_RES_ERR;
-	}
-	if (!SCPI_ParamFloat(context, am0, TRUE)) {
-		return SCPI_RES_ERR;
-	}
-	if (!SCPI_ParamFloat(context, area, TRUE)) {
-		return SCPI_RES_ERR;
+static scpi_bool_t _scpi_param_ivsweep_meta_t(scpi_t *context, void *value) {
+	uint8_t *bytes = (uint8_t *) value;
+
+	/// @todo Original had 9, which failed to include adc?
+	if (!SCPI_ParamArrayFloat(context, (void *) bytes, 10, &o_count, SCPI_FORMAT_ASCII, TRUE)) {
+		return FALSE;
 	}
 
-	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {
-		return SCPI_RES_ERR;
-	}
-
-	// Convert uint32_t values to uint8_t and move them into the transfer register
-	for (uint8_t i = 0; i < 8; i++) {
-		sweepSettings[i] = (uint8_t) sweepSettingsUint32_t[i];
-	}
-
-	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
-		_amu_route_command(*device, SCPI_CmdTag(context), sizeof(ivsweep_config_t), context->query);
-	}
-
-	return SCPI_RES_OK;
+	return SCPI_ParamUInt32(context, bytes + (10 * sizeof(float)), TRUE);
 }
 
 scpi_result_t _scpi_write_meta_ptr(scpi_t* context) {
-	if (!SCPI_ParamArrayFloat(context, (void *) scpi_amu_dev->transfer_reg, 9, &o_count, SCPI_FORMAT_ASCII, TRUE)) {
-		return SCPI_RES_ERR;
-	}
-	if (!SCPI_ParamUInt32(context, (void *) &scpi_amu_dev->transfer_reg[36], TRUE)) {
-		return SCPI_RES_ERR;
-	}
-
-	if (_scpi_get_channelList(context) == SCPI_RES_ERR) {
-		return SCPI_RES_ERR;
-	}
-
-	for (uint8_t* device = scpi_channel_list; *device != AMU_DEVICE_END_LIST; device++) {
-		_amu_route_command(*device, SCPI_CmdTag(context), sizeof(ivsweep_meta_t), context->query);
-	}
-
-	return SCPI_RES_OK;
+	return _scpi_cmd_rw(context, sizeof(ivsweep_meta_t), _scpi_param_ivsweep_meta_t, NULL);
 }
 
 scpi_result_t _scpi_cmd_led(scpi_t* context) {
@@ -424,6 +395,7 @@ scpi_result_t _scpi_cmd_query_str(scpi_t* context) {
 				}
 			}
 
+			scpi_amu_dev->transfer_reg[AMU_TRANSFER_REG_SIZE - 1] = '\0';
 			SCPI_ResultText(context, (const char*) scpi_amu_dev->transfer_reg);
 		} else {
 			if (SCPI_CmdTag(context) >= CMD_I2C_USB) {
@@ -524,7 +496,6 @@ static scpi_result_t SCPI_Flush(scpi_t* context) {
 
 	return SCPI_RES_OK;
 }
-
 
 // This is difficult to read, but necessary in order to place SCPI strings in program memory, otherwise, we use up ~3K of SRAM or ~40%
 // First SCPI_COMMAND def applies above, (SCPI_COMMANDS hasn't been called yet, so we can define it after)
@@ -662,55 +633,59 @@ void amu_scpi_list_commands(void) {
 	scpi_context.interface->write(&scpi_context, SCPI_LINE_ENDING, sizeof(SCPI_LINE_ENDING));
 }
 
+static scpi_bool_t _scpi_append_devices(uint8_t* count, int32_t start, int32_t end) {
+	// Appending can happen in either direction (forwards or backwards)
+	// Valid list ordering -> (@2:5) or (@5:2)
+	int8_t step = (start <= end) ? 1 : -1;
+
+	for (int32_t device = start; ; device += step) {
+		// Out of room in list
+		if (*count >= AMU_MAX_CONNECTED_DEVICES) {return FALSE;}
+
+		scpi_channel_list[(*count)++] = (uint8_t) device;
+
+		if (device == end) {return TRUE;}
+	}
+}
+
 scpi_result_t _scpi_get_channelList(scpi_t* context) {
 	scpi_parameter_t channel_list_param;
-	uint8_t scpi_list_iterator = 0;
+	scpi_bool_t is_range;
+	size_t dimensions;
+	int32_t start, end;
+	uint8_t count = 0;
 
-	// Checks for any parameter
-	if (SCPI_Parameter(context, &channel_list_param, FALSE)) {
-		scpi_bool_t is_range;
-		size_t dimensions;
-
-		size_t param_idx = 0; /* Index for channel list */
-		int8_t direction = 1; /* Direction of counter for rows, +/-1 */
-		int32_t address_start = 0;
-		int32_t address_end = 0;
-
-		while (SCPI_EXPR_OK == SCPI_ExprChannelListEntry(context, &channel_list_param, param_idx, &is_range, &address_start, &address_end, 1, &dimensions)) {
-			if ((dimensions != 1) | (address_start > 63)) {
-				scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
-				return SCPI_RES_ERR;
-			}
-
-			if (is_range) {
-
-				if (address_end > 63) {
-					scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
-					return SCPI_RES_ERR;
-				}
-
-				for ((address_start > address_end) ? (direction = -1) : (direction = 1); address_start != address_end; address_start += direction) {
-					scpi_channel_list[scpi_list_iterator++] = address_start;
-				}
-
-				scpi_channel_list[scpi_list_iterator++] = address_start;
-
-		} else {
-			scpi_channel_list[scpi_list_iterator++] = address_start;
-		}
-
-			/* increase index */
-			param_idx++;
-		}
-	} else { // No parameter list
-		scpi_channel_list[scpi_list_iterator++] = 0;
+	// No parameter list
+	if (!SCPI_Parameter(context, &channel_list_param, FALSE)) {
+		scpi_channel_list[0] = 0; // Only include self
+		scpi_channel_list[1] = AMU_DEVICE_END_LIST;
+		return SCPI_RES_OK;
 	}
 
-	scpi_channel_list[scpi_list_iterator] = AMU_DEVICE_END_LIST;
+	// Parse each list entry into start/end
+	// A param with format (@0,2:4,7) becomes list [0, 2, 3, 4, 7, AMU_DEVICE_END_LIST]
+	for (size_t param_idx = 0;
+	     SCPI_EXPR_OK == SCPI_ExprChannelListEntry(context, &channel_list_param, param_idx, &is_range, &start, &end, 1, &dimensions);
+	     param_idx++) {
+
+		// No range is given, just a single number
+		if (!is_range) {end = start;}
+
+		// Reject malformed entries and attempt to add the device to the channel list
+		// AMU device lists are 1D as opposed to a switch matrix (2D)
+		if ((dimensions != 1) || (start < 0) || (start > AMU_MAX_CONNECTED_DEVICES)
+		                      || (end < 0)   || (end > AMU_MAX_CONNECTED_DEVICES)
+		                      || !_scpi_append_devices(&count, start, end)) {
+			scpi_channel_list[count] = AMU_DEVICE_END_LIST;
+			return SCPI_RES_ERR;
+		}
+	}
+
+	scpi_channel_list[count] = AMU_DEVICE_END_LIST;
 
 	// Protected commands cannot target remote devices (device > 0)
 	if (SCPI_CmdTag(context) & CMD_USB_ONLY) {
-		for (uint8_t i = 0; scpi_channel_list[i] != AMU_DEVICE_END_LIST; i++) {
+		for (uint8_t i = 0; i < count; i++) {
 			if (scpi_channel_list[i] > 0) {
 				SCPI_ErrorPush(context, SCPI_ERROR_COMMAND_PROTECTED);
 				return SCPI_RES_ERR;

@@ -68,6 +68,7 @@ extern "C" {
 
 	void						_amu_transfer_read(size_t offset, void *data, size_t len);
 	void						_amu_transfer_write(size_t offset, void *data, size_t len);
+	void						_amu_transfer_reset_len(void);
 
 	volatile uint8_t*			amu_dev_get_transfer_reg_ptr(void);
 
