@@ -13,7 +13,7 @@
 #ifndef __SCPI_H__
 #define __SCPI_H__
 
-#include "libscpi\libscpi.h"
+#include "libscpi/libscpi.h"
 #include "amu_commands.h"
 
 
