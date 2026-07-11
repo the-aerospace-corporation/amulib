@@ -57,7 +57,7 @@ void setup() {
 
 	AMU_DEV_TWI_BUS.begin(AMU_DEV_TWI_SDA_PIN, AMU_DEV_TWI_SCL_PIN, 400000UL);
 	AMU_DEV_TWI_BUS.setBufferSize(1024);
-	AMU_DEV_TWI_BUS.setTimeOut(2000); 
+	AMU_DEV_TWI_BUS.setTimeOut(1000); 
 
 	dev_sw0.attach(AMU_DEV_SW0_PIN, INPUT_PULLUP);
 	dev_sw1.attach(AMU_DEV_SW1_PIN, INPUT_PULLUP);
@@ -172,17 +172,18 @@ void amu_dev_read_load_current(void) {
 	float load_current = analogRead(AMU_DEV_LOAD_CURRENT_PIN) / 4095. / 2.00;
 }
 
-// TWI/I2C transfer function
 int arduino_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
-    int rv = 4;
+    int rv = 4; // Other
 
     if (read) {
         if (len > 0) {
             wire->beginTransmission(address);
             wire->write(reg);
             rv = wire->endTransmission();
-            wire->requestFrom(address, len);
+            if (rv != 0) {return rv;}
+            if (wire->requestFrom(address, len) != len) {return 5;} // Timeout
             wire->readBytes(data, len);
+            rv = 0;
         } else {
             wire->beginTransmission(address);
             rv = wire->endTransmission();
@@ -198,7 +199,7 @@ int arduino_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* 
 }
 
 int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) {
-	return (int8_t) arduino_wire_transfer(&AMU_DEV_TWI_BUS, address, reg, data, len, read);
+	return arduino_wire_transfer(&AMU_DEV_TWI_BUS, address, reg, data, len, read);
 }
 
 void hal_usb_flush() {
