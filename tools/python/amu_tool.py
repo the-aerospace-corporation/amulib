@@ -2,12 +2,10 @@ import os
 import sys
 import time
 import argparse
-import winsound
 from datetime import datetime
 from amu import amu
 import numpy as np
 import teleplot as teleplot
-import winsound
 from instruments import CalibrationInstruments
 import pandas as pd
 import plotly.graph_objects as go
@@ -469,16 +467,22 @@ def fullCalibration(steps):
 
     bell()
 
+try:
+    import winsound     # Windows only -> real tones
+    def _beep(freq, ms):
+        winsound.Beep(freq, ms)
+except ImportError:      # Linux/macOS -> terminal bell
+    def _beep(freq, ms):
+        print("\a", end="", flush=True)
+        time.sleep(ms / 1000.0)
+
+
 def bell():
-    winsound.Beep(440, 200)
-    #time.sleep(0.1)
-    winsound.Beep(880, 200)
-    #time.sleep(0.1)
-    winsound.Beep(1760, 200)
-    #time.sleep(0.1)
-    winsound.Beep(880, 200)
-    #time.sleep(0.1)
-    winsound.Beep(440, 200)
+    _beep(440, 200)
+    _beep(880, 200)
+    _beep(1760, 200)
+    _beep(880, 200)
+    _beep(440, 200)
 
 
 def eyas_serial_numbers(num_devices):

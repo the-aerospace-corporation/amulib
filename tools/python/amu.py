@@ -354,9 +354,10 @@ class amu:
                 if response.startswith('"') and response.endswith('"'):
                     response = response[1:-1]
         
-        # Remove any leading control characters or prompt symbols
+        # Strip leading control characters only. An allowlist of word chars here would also eat
+        # legitimate leading punctuation -> "<NOT SAVED>" became "NOT SAVED>", "#210AB" became "210AB"
         import re
-        response = re.sub(r'^[^\w\d\-\.\+]*', '', response)
+        response = re.sub(r'^[\x00-\x1f]+', '', response)
         
         return response
     

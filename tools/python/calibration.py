@@ -1,7 +1,7 @@
+import os
 import sys
 import time
 import argparse
-import winsound
 from datetime import datetime
 from amu import amu as AMU
 import numpy as np
