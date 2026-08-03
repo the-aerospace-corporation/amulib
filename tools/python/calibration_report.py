@@ -2,6 +2,7 @@ import sys
 import time
 import argparse
 import os
+import html
 from datetime import datetime
 from amu import amu as AMU
 import numpy as np
@@ -32,6 +33,16 @@ source_meter_visa = 'USB0::0x0957::0x8D18::MY51140506::0::INSTR'
 
 instruments = CalibrationInstruments(source_meter_visa)
 amu = None
+
+
+def esc(value):
+    """Escape a device or user supplied string for HTML.
+
+    Report fields are interpolated into the template raw, so anything containing < > &
+    corrupts the markup -> the firmware's "<NOT SAVED>" sentinel rendered as an empty cell.
+    """
+    return html.escape(str(value))
+
 
 class CalibrationReport:
     """Class to handle calibration data collection and report generation"""
@@ -233,8 +244,8 @@ class CalibrationReport:
                     'final_gain': final_gain
                 }
             
-            # Save calibration
-            if save_data:
+            # Nothing was calibrated -> nothing new to persist
+            if save_data and calibrate:
                 amu.send("ADC:CH0:CAL:SAVE")
             
             # Collect accuracy data
@@ -329,7 +340,7 @@ class CalibrationReport:
                 
                 # Set up instruments
                 instruments.set_current_mode(imax, res='MIN')
-                
+
                 # Zero calibration
                 instruments.set_current_with_feedback(0.000, max_error=imax*0.00001)
                 time.sleep(0.5)
@@ -378,8 +389,8 @@ class CalibrationReport:
                 }
 
 
-            # Save calibration
-            if save_data:
+            # Nothing was calibrated -> nothing new to persist
+            if save_data and calibrate:
                 amu.send("ADC:CH1:CAL:SAVE")
             
             # Collect accuracy data
@@ -478,10 +489,10 @@ class CalibrationReport:
                 instruments.set_voltage_mode(vmax)
                 instruments.set_voltage(vmax)
                 time.sleep(2.0)
-                
+
                 dac_response = amu.query("DAC:CAL?")
                 time.sleep(2)
-            
+
                 final_gain_corr = amu.query("DAC:GAIN:CORR?")
                 final_offset_corr = amu.query("DAC:OFF:CORR?")
                 
@@ -510,8 +521,8 @@ class CalibrationReport:
                     'final_offset_correction': final_offset_corr
                 }
 
-            if save_data:
-                amu.send("DAC:CAL:SAVE") # save cal value to eeprom
+            if save_data and calibrate:
+                amu.send("DAC:CAL:SAVE")
 
             # Collect accuracy data
             self.collect_dac_accuracy_data(steps)
@@ -711,21 +722,21 @@ class CalibrationReport:
         <div class="header">
             <h1>AMU Calibration Report</h1>
             <p><strong>Generated:</strong> {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p><strong>Device:</strong> {self.device_info.get('hardware_name', 'Unknown')}</p>
-            <p><strong>Serial Number:</strong> {self.device_info.get('amu_serial', 'Unknown')}</p>
-            <p><strong>Calibration Reference:</strong> {self.device_info.get('calibration_reference', 'Unknown')}</p>
+            <p><strong>Device:</strong> {esc(self.device_info.get('hardware_name', 'Unknown'))}</p>
+            <p><strong>Serial Number:</strong> {esc(self.device_info.get('amu_serial', 'Unknown'))}</p>
+            <p><strong>Calibration Reference:</strong> {esc(self.device_info.get('calibration_reference', 'Unknown'))}</p>
         </div>
         
         <div class="section">
             <h2>Device Information</h2>
             <table class="table">
-                <tr><td><strong>Hardware Version</strong></td><td>{self.device_info.get('hardware_name', 'Unknown')}</td></tr>
-                <tr><td><strong>Firmware</strong></td><td>{self.device_info.get('firmware', 'Unknown')}</td></tr>
-                <tr><td><strong>AMU Serial</strong></td><td>{self.device_info.get('amu_serial', 'Unknown')}</td></tr>
+                <tr><td><strong>Hardware Version</strong></td><td>{esc(self.device_info.get('hardware_name', 'Unknown'))}</td></tr>
+                <tr><td><strong>Firmware</strong></td><td>{esc(self.device_info.get('firmware', 'Unknown'))}</td></tr>
+                <tr><td><strong>AMU Serial</strong></td><td>{esc(self.device_info.get('amu_serial', 'Unknown'))}</td></tr>
                 <tr><td><strong>I2C Address</strong></td><td>{self.format_register_value(str(self.device_info.get('i2c_address', 'Unknown')).strip(), digits=2)}</td></tr>
                 <tr><td><strong>Temperature</strong></td><td>{self.device_info.get('rtd_temp', 'Unknown')} &deg;C</td></tr>
                 <tr><td><strong>System Temperature</strong></td><td>{self.device_info.get('syst_temp', 'Unknown')} &deg;C</td></tr>
-                <tr><td><strong>Notes</strong></td><td>{self.device_info.get('dut_notes', 'Unknown')}</td></tr>
+                <tr><td><strong>Notes</strong></td><td>{esc(self.device_info.get('dut_notes', 'Unknown'))}</td></tr>
             </table>
         </div>
         
@@ -902,28 +913,27 @@ class CalibrationReport:
         # Collect device information
         self.collect_device_info()
         
-        # Calibrate and collect voltage data for all PGAs
-        for pga in range(8):
-            self.calibrate_and_collect_voltage_data(pga, steps, save_data=save_data, calibrate=calibrate)
-        
-        # Calibrate and collect current data for all PGAs  
-        for pga in range(8):
-            self.calibrate_and_collect_current_data(pga, steps, save_data=save_data, calibrate=calibrate)
+        try:
+            # Calibrate and collect voltage data for all PGAs
+            for pga in range(8):
+                self.calibrate_and_collect_voltage_data(pga, steps, save_data=save_data, calibrate=calibrate)
 
-        # Calibrate and collect DAC data
-        self.calibrate_and_collect_dac_data(steps, save_data=save_data, calibrate=calibrate)
+            # Calibrate and collect current data for all PGAs
+            for pga in range(8):
+                self.calibrate_and_collect_current_data(pga, steps, save_data=save_data, calibrate=calibrate)
+
+            # Calibrate and collect DAC data
+            self.calibrate_and_collect_dac_data(steps, save_data=save_data, calibrate=calibrate)
+        finally:
+            try:
+                instruments.source_meter.write(":OUTP OFF")
+                print("Source meter output turned off.")
+            except Exception as e:
+                print(f"Warning: Could not turn off source meter output: {e}")
 
         # Generate HTML report
         html_filename = self.generate_html_report()
-    
-               
-        # Turn off source meter output after calibration is complete
-        try:
-            instruments.source_meter.write("OUTP OFF")
-            print("Source meter output turned off.")
-        except Exception as e:
-            print(f"Warning: Could not turn off source meter output: {e}")
-        
+
         print("Calibration report complete!")
         return html_filename
 

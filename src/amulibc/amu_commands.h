@@ -11,10 +11,9 @@
  * for I2C+USB commands, CMD_USB_ONLY for USB-only). The groups themselves are defined as the
  * @c cmd_* Doxygen groups below.
  *
- * @author	CJM28241
- * @date	10/25/2018 10:47:55 PM
+ * @author CJM28241
+ * @date 10/25/2018
  */ 
-
 #ifndef __AMU_COMMANDS_H__
 #define __AMU_COMMANDS_H__
 
@@ -44,14 +43,11 @@
 #define CMD_WRITE		(0<<CMD_RW_BIT)
 
 /**
- * @brief TODO
- * 
  * Command structure is a single byte, wherein the highest bit determines
  * whether the command is a read or write operation.
  * The CMD_OFFSET is used when processing the command to indicate routing
  * callbacks or the amu internal registers.
  */
-
 #define CMD_I2C_USB				0x0100		// Root command for I2C/USB commands
 #define CMD_USB_ONLY			0x0200		// Root command for USB only commands
 
@@ -89,10 +85,14 @@ typedef enum {
 	CMD_USB_SYSTEM_CONFIG =		CMD_USB_SYSTEM_CONFIG_OFFSET
 } CMD_t;
 
-#define AMU_GET_CMD_ROOT(cmd)		(cmd & 0xFF70)		/*!< clear the lower nibble and the read bit */
-#define AMU_GET_CMD_BRANCH(cmd)		(cmd & 0x000F)		/*!< remove lower nibble (might not be used...) */
-// With the READ WRITE BIT, we only have SEVEN available "root" enums of 16 comands each
-// 
+#define AMU_GET_CMD_ROOT(cmd)		(cmd & 0xFF70) /*!< clear the lower nibble and the read bit */
+#define AMU_GET_CMD_BRANCH(cmd)		(cmd & 0x000F) /*!< remove lower nibble (might not be used...) */
+
+/*!< tags below CMD_I2C_USB are raw register addresses served from the register map;
+     tags at or above it execute on the device and stage a result */
+#define AMU_CMD_IS_REG(cmd)			((uint16_t) (cmd) < CMD_I2C_USB)
+#define AMU_CMD_IS_EXEC(cmd)		((uint16_t) (cmd) >= CMD_I2C_USB)
+// With the READ WRITE BIT, we only have SEVEN available "root" enums of 16 commands each
 
 
 /**
@@ -116,9 +116,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_NO_CMD}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SYSTEM_NO_CMD);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -128,14 +126,14 @@ typedef enum {
 	 *  @amudesc{Performs complete software reset}
 	 *
 	 *  @amupanels
-	 *  @amuscpi{*RST}
+	 *  @amuscpi{SYSTem:REBoot}
 	 *  @amupanelex
-	 *  *RST
+	 *  SYSTem:REBoot
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_RESET}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SYSTEM_RESET);
+	 *  amu.reset();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -145,6 +143,7 @@ typedef enum {
 	CMD_SYSTEM_RESET =						CMD_SYSTEM_OFFSET + 0x01,
 	
 	/** @amutitle{System — XMEGA Fuses}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Returns microcontroller fuse configuration}
 	 *  @return 32-bit fuse configuration (hex format: 0xAABBCCDD)
 	 *
@@ -156,9 +155,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_XMEGA_FUSES}
-	 *  @amupanelex
-	 *  uint32_t fuses = amu.query<uint32_t>(CMD_SYSTEM_XMEGA_FUSES);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Read-only command for diagnostic purposes.
@@ -180,7 +177,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_TWI_ADDRESS}
 	 *  @amupanelex
-	 *  uint8_t addr = amu.query<uint8_t>(CMD_SYSTEM_TWI_ADDRESS);
+	 *  uint8_t addr = amu.getAddress(); // The address begin() was called with, not a live device query
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -201,9 +198,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_TWI_NUM_DEVICES}
-	 *  @amupanelex
-	 *  uint8_t n = amu.query<uint8_t>(CMD_SYSTEM_TWI_NUM_DEVICES);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Scan may take up to 2 seconds to complete.
@@ -222,9 +217,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_TWI_STATUS}
-	 *  @amupanelex
-	 *  uint8_t status = amu.query<uint8_t>(CMD_SYSTEM_TWI_STATUS);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Bitfield: [7:4]=Reserved [3]=Bus_Error [2]=Arbitration_Lost [1]=NACK [0]=Active. Status bits are cleared after reading.
@@ -244,7 +237,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_FIRMWARE}
 	 *  @amupanelex
-	 *  char fw[AMU_FIRMWARE_STR_LEN]; amu.query<char>(CMD_SYSTEM_FIRMWARE, fw, sizeof(fw));
+	 *  char* fw = amu.readFirmwareStr();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -265,7 +258,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_SERIAL_NUM}
 	 *  @amupanelex
-	 *  char sn[AMU_SERIALNUM_STR_LEN]; amu.query<char>(CMD_SYSTEM_SERIAL_NUM, sn, sizeof(sn));
+	 *  char* sn = amu.readSerialStr();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -286,7 +279,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_TEMPERATURE}
 	 *  @amupanelex
-	 *  float tempC = amu.query<float>(CMD_SYSTEM_TEMPERATURE);
+	 *  float tempC = amu.measureSystemTemperature();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -308,9 +301,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_TIME}
-	 *  @amupanelex
-	 *  uint32_t t = amu.query<uint32_t>(CMD_SYSTEM_TIME);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Timestamp is reset to 0 on power cycle or reset; rolls over at ~136 years.
@@ -330,9 +321,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_UTC_TIME}
-	 *  @amupanelex
-	 *  uint32_t utc = amu.query<uint32_t>(CMD_SYSTEM_UTC_TIME);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Unix epoch format (seconds since Jan 1, 1970); valid until 2038. Not maintained across power cycles without an external RTC.
@@ -356,7 +345,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_LED_COLOR}
 	 *  @amupanelex
-	 *  float colors[3] = {0.0f, 1.0f, 0.0f}; amu.sendCommand(CMD_SYSTEM_LED_COLOR, colors, sizeof(colors));
+	 *  amu.setLEDcolor(0.0f, 1.0f, 0.0f);
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -365,6 +354,7 @@ typedef enum {
 	CMD_SYSTEM_LED_COLOR =					CMD_SYSTEM_OFFSET + 0x0B,
 	
 	/** @amutitle{System — XMEGA Signature}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Returns microcontroller signature bytes}
 	 *  @return 3-byte signature (format: 0xAABBCC)
 	 *
@@ -376,9 +366,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_XMEGA_USER_SIGNATURES}
-	 *  @amupanelex
-	 *  uint32_t sig = amu.query<uint32_t>(CMD_SYSTEM_XMEGA_USER_SIGNATURES);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Signature is factory-programmed and cannot be modified.
@@ -397,14 +385,44 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_AMULIB}
-	 *  @amupanelex
-	 *  String version = amu.query<String>(CMD_SYSTEM_AMULIB);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @note Read-only query command. Returns AMULIB_VERSION_FULL from amulib_version.h.
 	 */
 	CMD_SYSTEM_AMULIB =						CMD_SYSTEM_OFFSET + 0x0D,
+
+	/** @amutitle{System — Extended Command}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Escape into the 16-bit extended command space. The extended command
+	 *  occupies bytes 0-1 of the transfer register and any payload follows from byte 2}
+	 *
+	 *  The single byte that crosses the TWI wire (@c amu_twi_regs_t::command) allows
+	 *  8 groups of 16 with bit 7 reserved for read/write, and all 8 groups are
+	 *  allocated. Rather than have each new feature invent its own way to squat in
+	 *  the transfer register, this command reserves one slot as a general escape:
+	 *  everything behind it shares one convention and one dispatcher.
+	 *
+	 *  Read/write still comes from bit 7 of this command byte, so @c CMD_READ works
+	 *  on extended commands exactly as it does on ordinary ones.
+	 *
+	 *  @see CMD_EXT_t for the extended command list.
+	 *
+	 *  @amupanels
+	 *  @amuscpinote{none - each extended command documents its own}
+	 *  @amupanelex
+	 *  SYSTem:BLE?
+	 *  SYSTem:FIRMware:BEGin? 225792,3614925700
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_SYSTEM_EXTENDED}
+	 *  @amupanelex
+	 *  amu.enableBluetooth(true);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 */
+	CMD_SYSTEM_EXTENDED =					CMD_SYSTEM_OFFSET + 0x0E,
 
 	/** @amutitle{System — Sleep Mode}
 	 *  @amudesc{Puts the device into low-power sleep mode to conserve energy. Device will wake on USB activity\, I2C communication\, or external interrupt}
@@ -417,7 +435,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SYSTEM_SLEEP}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SYSTEM_SLEEP);
+	 *  amu.sleep();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -427,6 +445,233 @@ typedef enum {
 	CMD_SYSTEM_SLEEP =						CMD_SYSTEM_OFFSET + 0x0F,
 } CMD_SYSTEM_t;
 #undef CMD_SYSTEM_OFFSET
+
+/** @defgroup cmd_ext Extended Commands
+ *  @brief The 16-bit command space reached through @c CMD_SYSTEM_EXTENDED. */
+
+/** @brief Group byte of an extended command id, see @ref CMD_EXT_t
+ *  @ingroup cmd_ext */
+#define AMU_GET_EXT_ROOT(e)		((uint16_t) ((e) & 0xFF00))
+
+#define CMD_EXT_SYSTEM				0x0100
+#define CMD_EXT_FIRMWARE			0x0200
+
+#define CMD_EXT_SYSTEM_OFFSET		CMD_EXT_SYSTEM
+#define CMD_EXT_FIRMWARE_OFFSET		CMD_EXT_FIRMWARE
+
+/**
+ * @brief Extended command identifiers
+ * @ingroup cmd_ext
+ *
+ * Reached by issuing @c CMD_SYSTEM_EXTENDED with the 16-bit value in bytes 0-1 of
+ e the transfer register; any payload follows from byte 2, and responses start at
+ * byte 0. Read/write comes from bit 7 of the outer command byte, so no bit is
+ * reserved here and all 16 are usable.
+ *
+ * Root/branch works as it does in the outer space, but byte-granular rather than
+ * nibble: the high byte selects the group and the low byte the command within it.
+ * That leaves a full byte of branch for commands that carry an index as data, the
+ * way @c CMD_SYSTEM_LED passes an LED pattern and @c CMD_ADC_CH a channel number.
+ * The outer space uses nibbles only because it has 128 values to spend; there is
+ * no reason to inherit that here.
+ */
+typedef enum {
+	/** @amutitle{Extended — Bluetooth State}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Enables or disables the BLE radio. Stored in non-volatile memory and reapplied on boot}
+	 *  @param state 1 to enable the radio, 0 to disable it
+	 *  @return Current radio state (1 = advertising, 0 = off)
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:BLE[?]}
+	 *  @amupanelex
+	 *  SYSTem:BLE 1
+	 *  SYSTem:BLE?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_BLE_STATE}
+	 *  @amupanelex
+	 *  amu.enableBluetooth(true);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 */
+	CMD_EXT_BLE_STATE = CMD_EXT_SYSTEM_OFFSET + 0x00,
+
+	/** @amutitle{Extended — Bluetooth Passkey}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Pins the BLE pairing passkey\, or restores a fresh random one per pairing. Stored in non-volatile memory and reapplied on boot}
+	 *  @param passkey uint32 1-999999 to pin, 0 to unpin
+	 *  @return uint32 pinned passkey, else the last one a pairing drew, else 0
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:BLE:PASSkey[?]}
+	 *  @amupanelex
+	 *  SYSTem:BLE:PASSkey?
+	 *  123456
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_BLE_PASSKEY}
+	 *  @amupanelex
+	 *  uint32_t key = amu.bluetoothPasskey();
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note The device pairs DisplayOnly, so an unpinned passkey exists only for the
+	 *        duration of the exchange. Reading it over TWI is how a master pairs a new
+	 *        host to a device whose console it cannot see.
+	 *  @warning A pinned passkey does not rotate. Prefer reading the random one where
+	 *           the transport allows it.
+	 */
+	CMD_EXT_BLE_PASSKEY = CMD_EXT_SYSTEM_OFFSET + 0x01,
+
+	/** @amutitle{Extended — Firmware Begin}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Selects the inactive slot\, erases it\, and answers once flash is ready}
+	 *  @param size uint32 image size in bytes
+	 *  @return uint32 maximum accepted chunk size
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:BEGin?}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:BEGin? 706181
+	 *  960
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_BEGIN}
+	 *  @amupanelex
+	 *  uint32_t device_chunk = amu.updateBegin(image_size);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note The reply lands only after the erase, so it doubles as the host's
+	 *        signal that the device can accept data.
+	 *  @warning Fails if the running image is uncommitted - the slot that would be
+	 *           erased holds the only remaining fallback.
+	 */
+	CMD_EXT_FIRMWARE_BEGIN = CMD_EXT_FIRMWARE_OFFSET + 0x00,
+
+	/** @amutitle{Extended — Firmware Data}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Appends the next sequential chunk of the image}
+	 *  @param data image bytes, at most the size reported by @c CMD_EXT_FIRMWARE_BEGIN
+	 *  @return uint32 cumulative bytes written
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:DATA?}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:DATA? #3960<960 image bytes>
+	 *  960
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_DATA}
+	 *  @amupanelex
+	 *  uint32_t written = amu.updateData(chunk, len);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note The reply is the flow control - a host cannot outrun the flash writes
+	 *        because it waits for each one.
+	 */
+	CMD_EXT_FIRMWARE_DATA = CMD_EXT_FIRMWARE_OFFSET + 0x01,
+
+	/** @amutitle{Extended — Firmware End}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Verifies the staged image against the SHA-256 it carries\, then sets the boot partition}
+	 *  @return int32, 0 on success and nonzero on failure
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:END?}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:END?
+	 *  0
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_END}
+	 *  @amupanelex
+	 *  int32_t rv = amu.updateEnd();
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note The device restarts shortly after answering.
+	 */
+	CMD_EXT_FIRMWARE_END = CMD_EXT_FIRMWARE_OFFSET + 0x02,
+
+	/** @amutitle{Extended — Firmware Commit}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Confirms the running image. Write commits\, read reports whether committed}
+	 *  @return uint8 1 committed, 0 still uncommitted
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:COMMit[?]}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:COMMit?
+	 *  1
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_COMMIT}
+	 *  @amupanelex
+	 *  amu.updateCommit();
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note A device never commits itself. Whoever pushed the update confirms it
+	 *        after checking the device came back, or the next reset rolls it back.
+	 *  @warning One-way. There is no making a committed image uncommitted again.
+	 */
+	CMD_EXT_FIRMWARE_COMMIT = CMD_EXT_FIRMWARE_OFFSET + 0x03,
+
+	/** @amutitle{Extended — Firmware Abort}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Discards an in-progress transfer and releases the update handle}
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:ABORt}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:ABORt
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_ABORT}
+	 *  @amupanelex
+	 *  amu.updateAbort();
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 */
+	CMD_EXT_FIRMWARE_ABORT = CMD_EXT_FIRMWARE_OFFSET + 0x04,
+
+	/** @amutitle{Extended — Firmware State}
+	 *  @amuhw{AMU3 ESP32 only}
+	 *  @amudesc{Where a transfer got to\, and whether it failed}
+	 *  @return uint8 state (@c amu_fw_state_t), uint32 written, uint32 total, uint32 chunk
+	 *
+	 *  @amupanels
+	 *  @amuscpi{SYSTem:FIRMware:STATe?}
+	 *  @amupanelex
+	 *  SYSTem:FIRMware:STATe?
+	 *  1, 393216, 706181, 960
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @amui2c{CMD_EXT_FIRMWARE_STATE}
+	 *  @amupanelex
+	 *  amu.updateState(&state, &written, &total, &chunk);
+	 *  @endamupanelex
+	 *  @endamupanel
+	 *  @endamupanels
+	 *
+	 *  @note Call before a transfer or after one fails, not during - the response is staged
+	 *        in the transfer register, which is where chunks are written.
+	 *  @note Enough to resume an interrupted push: continue from written, which is the
+	 *        device's own count. A chunk it wrote but never got to answer for is already
+	 *        there, and a host counting it again would send it twice. */
+	CMD_EXT_FIRMWARE_STATE = CMD_EXT_FIRMWARE_OFFSET + 0x05,
+} CMD_EXT_t;
 
 /**
  * @brief Device Under Test (DUT) command identifiers
@@ -451,7 +696,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_JUNCTION}
 	 *  @amupanelex
-	 *  uint8_t junction = amu.query<uint8_t>(CMD_DUT_JUNCTION);
+	 *  uint8_t junction = amu.getDutJunction();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -461,7 +706,7 @@ typedef enum {
 	
 	/** @amutitle{DUT — Coverglass}
 	 *  @amudesc{Sets or queries DUT coverglass type.}
-	 *  @param coverglass Coverglass type ID (0=None, 1=0.1mm, 2=0.2mm, 3=0.3mm, 4=Custom)
+	 *  @param coverglass Caller-defined identifier; the firmware stores it verbatim with no fixed enum
 	 *  @return Current coverglass type identifier
 	 *
 	 *  @amupanels
@@ -474,17 +719,17 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_COVERGLASS}
 	 *  @amupanelex
-	 *  uint8_t coverglass = amu.query<uint8_t>(CMD_DUT_COVERGLASS);
+	 *  uint8_t coverglass = amu.getDutCoverglass();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
-	 *  @note Affects optical calibration and measurement corrections
+	 *  @note DUT metadata only; not read back by any calibration or measurement calculation
 	 */
 	CMD_DUT_COVERGLASS =					CMD_DUT_OFFSET + 0x01,
 	
 	/** @amutitle{DUT — Interconnect}
 	 *  @amudesc{Sets or queries DUT interconnect type.}
-	 *  @param interconnect Interconnect type ID (0=Wire bonds, 1=Solder, 2=Conductive epoxy, 3=Other)
+	 *  @param interconnect Caller-defined identifier; the firmware stores it verbatim with no fixed enum
 	 *  @return Current interconnect type identifier
 	 *
 	 *  @amupanels
@@ -497,11 +742,11 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_INTERCONNECT}
 	 *  @amupanelex
-	 *  uint8_t ic = amu.query<uint8_t>(CMD_DUT_INTERCONNECT);
+	 *  uint8_t interconnect = amu.getDutInterconnect();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
-	 *  @note Affects series resistance compensation in measurements
+	 *  @note DUT metadata only; not read back by any calibration or measurement calculation
 	 */
 	CMD_DUT_INTERCONNECT =					CMD_DUT_OFFSET + 0x02,
 	
@@ -510,9 +755,7 @@ typedef enum {
 	 *
 	 *  @amupanels
 	 *  @amui2c{CMD_DUT_RESERVED}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_DUT_RESERVED);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 *  @warning Do not use - reserved for future firmware versions
@@ -528,12 +771,12 @@ typedef enum {
 	 *  @amuscpi{DUT:MANufacturer[?]}
 	 *  @amupanelex
 	 *  DUT:MANufacturer?
-	 *  Acme Solar
+	 *  Example Solar Co
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_MANUFACTURER}
 	 *  @amupanelex
-	 *  char mfr[AMU_DUT_MANUFACTURER_STR_LEN]; amu.query<char>(CMD_DUT_MANUFACTURER, mfr, sizeof(mfr));
+	 *  char* mfr = amu.getDutManufacturer();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -550,12 +793,12 @@ typedef enum {
 	 *  @amuscpi{DUT:MODel[?]}
 	 *  @amupanelex
 	 *  DUT:MODel?
-	 *  AC-240
+	 *  EXAMPLE-100
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_MODEL}
 	 *  @amupanelex
-	 *  char model[AMU_DUT_MODEL_STR_LEN]; amu.query<char>(CMD_DUT_MODEL, model, sizeof(model));
+	 *  char* model = amu.getDutModel();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -572,16 +815,16 @@ typedef enum {
 	 *  @amuscpi{DUT:TECHnology[?]}
 	 *  @amupanelex
 	 *  DUT:TECHnology?
-	 *  IMM3J
+	 *  InGaP/GaAs/Ge
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_TECHNOLOGY}
 	 *  @amupanelex
-	 *  char tech[AMU_DUT_TECHNOLOGY_STR_LEN]; amu.query<char>(CMD_DUT_TECHNOLOGY, tech, sizeof(tech));
+	 *  char* technology = amu.getDutTechnology();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
-	 *  @note Affects default measurement parameters and analysis algorithms
+	 *  @note DUT metadata only; not read back by any calibration or measurement calculation
 	 */
 	CMD_DUT_TECHNOLOGY =					CMD_DUT_OFFSET + 0x06,
 	
@@ -593,14 +836,14 @@ typedef enum {
 	 *  @amupanels
 	 *  @amuscpi{DUT:SERialnumber[?]}
 	 *  @amupanelex
-	 *  DUT:SERialnumber "DUT-2023-001"
+	 *  DUT:SERialnumber "SN-0001"
 	 *  DUT:SERialnumber?
-	 *  DUT-2023-001
+	 *  SN-0001
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_SERIAL_NUMBER}
 	 *  @amupanelex
-	 *  char serial[AMU_DUT_SERIALNUM_STR_LEN]; amu.query<char>(CMD_DUT_SERIAL_NUMBER, serial, sizeof(serial));
+	 *  char* serial = amu.getDutSerialNumber();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -623,7 +866,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_ENERGY}
 	 *  @amupanelex
-	 *  float energy = amu.query<float>(CMD_DUT_ENERGY);
+	 *  float energy = amu.getDutEnergy();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -646,7 +889,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_DOSE}
 	 *  @amupanelex
-	 *  float dose = amu.query<float>(CMD_DUT_DOSE);
+	 *  float dose = amu.getDutDose();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -662,15 +905,15 @@ typedef enum {
 	 *  @amupanels
 	 *  @amuscpi{DUT:NOTEs[?]}
 	 *  @amupanelex
-	 *  DUT:NOTEs "Post-irradiation test #3"
+	 *  DUT:NOTEs "Example DUT note"
 	 *  DUT:NOTEs?
-	 *  Post-irradiation test #3
+	 *  Example DUT note
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_NOTES}
 	 *  @amupanelex
 	 *  char notes[AMU_NOTES_SIZE];
-	 *  amu.query<char>(CMD_DUT_NOTES, notes, sizeof(notes));
+	 *  amu.readNotes(notes, sizeof(notes));
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -680,20 +923,20 @@ typedef enum {
 	
 	/** @amutitle{DUT — Temperature Sensor Type}
 	 *  @amudesc{Sets or queries DUT temperature sensor type.}
-	 *  @param type Sensor type ID (0=None, 1=Thermocouple, 2=RTD, 3=Thermistor, 4=Diode)
+	 *  @param type Sensor type ID (0=PT1000 RTD, 1=PT100 RTD, 2=AD590)
 	 *  @return Current sensor type identifier
 	 *
 	 *  @amupanels
 	 *  @amuscpi{DUT:TSENSor:TYPE[?]}
 	 *  @amupanelex
-	 *  DUT:TSENSor:TYPE 1
+	 *  DUT:TSENSor:TYPE 0
 	 *  DUT:TSENSor:TYPE?
-	 *  1
+	 *  0
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_TSENSOR_TYPE}
 	 *  @amupanelex
-	 *  uint8_t type = amu.query<uint8_t>(CMD_DUT_TSENSOR_TYPE);
+	 *  uint8_t type = amu.getDutTsensorType();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -703,43 +946,45 @@ typedef enum {
 	
 	/** @amutitle{DUT — Temperature Sensor Number}
 	 *  @amudesc{Sets or queries number of DUT temperature sensors.}
-	 *  @param count Number of sensors (range: 0-4)
+	 *  @param count Number of sensors (range: 1-3; default 1)
 	 *  @return Current number of configured sensors
 	 *
 	 *  @amupanels
 	 *  @amuscpi{DUT:TSENSor:NUMber[?]}
 	 *  @amupanelex
-	 *  DUT:TSENSor:NUMber 4
+	 *  DUT:TSENSor:NUMber 3
 	 *  DUT:TSENSor:NUMber?
-	 *  4
+	 *  3
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_TSENSOR_NUMBER}
 	 *  @amupanelex
-	 *  uint8_t count = amu.query<uint8_t>(CMD_DUT_TSENSOR_NUMBER);
+	 *  uint8_t count = amu.getDutTsensorNumber();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
-	 *  @note Maximum 4 sensors supported per DUT
+	 *  @note Up to 3 sensors supported per DUT (TSENSOR0-TSENSOR2)
 	 */
 	CMD_DUT_TSENSOR_NUMBER =				CMD_DUT_OFFSET + 0x0E,
 	
 	/** @amutitle{DUT — Temperature Sensor Fit}
 	 *  @amudesc{Sets or queries temperature sensor calibration coefficients.}
-	 *  @param coeffs Polynomial coefficients array [a0, a1, a2, a3] (T = a0 + a1*x + a2*x² + a3*x³)
+	 *  @param coeffs Four floats (A, B, C, D). A and B feed the PT100 RTD resistance-to-temperature
+	 *         curve; D is a calibration offset set by the sensor's calibration routine; C is unused
+	 *         by the current firmware.
 	 *  @return Current calibration coefficients
 	 *
 	 *  @amupanels
 	 *  @amuscpi{DUT:TSENSor:FIT[?]}
 	 *  @amupanelex
-	 *  DUT:TSENSor:FIT 1.0,0.5,0.01
+	 *  DUT:TSENSor:FIT 1.0,0.5,0.0,0.0
 	 *  DUT:TSENSor:FIT?
-	 *  1.000000,0.500000,0.010000
+	 *  1.000000,0.500000,0.000000,0.000000
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_DUT_TSENSOR_FIT}
 	 *  @amupanelex
-	 *  amu_coeff_t coeffs = amu.query<amu_coeff_t>(CMD_DUT_TSENSOR_FIT);
+	 *  amu_coeff_t coeffs = amu.getDutTsensorFit();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -773,7 +1018,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_MEAS_ACTIVE_CHANNELS}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_MEAS_ACTIVE_CHANNELS);
+	 *  amu.measureActiveChannels();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -815,9 +1060,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_MEAS_TSENSORS}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_MEAS_TSENSORS);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -836,7 +1079,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_MEAS_INTERNAL_VOLTAGES}
 	 *  @amupanelex
-	 *  amu_int_volt_t volts = amu.query<amu_int_volt_t>(CMD_EXEC_MEAS_INTERNAL_VOLTAGES);
+	 *  amu_int_volt_t volts = amu.measureInternalVoltages();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -856,7 +1099,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_MEAS_SUN_SENSOR}
 	 *  @amupanelex
-	 *  quad_photo_sensor_t ss = amu.query<quad_photo_sensor_t>(CMD_EXEC_MEAS_SUN_SENSOR);
+	 *  quad_photo_sensor_t ss = amu.measureSunSensor();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -864,6 +1107,7 @@ typedef enum {
 	CMD_EXEC_MEAS_SUN_SENSOR =				CMD_EXEC_OFFSET + 0x04,
 	
 	/** @amutitle{Measure — Pressure}
+	 *  @amuhw{EYAS only}
 	 *  @amudesc{Measures pressure sensor}
 	 *  @return Pressure sensor measurement
 	 *
@@ -876,7 +1120,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_MEAS_PRESSURE_SENSOR}
 	 *  @amupanelex
-	 *  press_data_t press = amu.query<press_data_t>(CMD_EXEC_MEAS_PRESSURE_SENSOR);
+	 *  press_data_t press = amu.measurePressureSensor();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -884,6 +1128,7 @@ typedef enum {
 	CMD_EXEC_MEAS_PRESSURE_SENSOR =			CMD_EXEC_OFFSET + 0x05,
 	
 	/** @amutitle{ADC — Calibrate}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Initiates ADC calibration procedure.}
 	 *  @param coeff ADC calibration coefficient to write (omit to query)
 	 *  @return ADC calibration value
@@ -897,15 +1142,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_ADC_CAL}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_ADC_CAL);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_EXEC_ADC_CAL =						CMD_EXEC_OFFSET + 0x07,
 	
 	/** @amutitle{ADC — Calibrate All Internal}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Calibrates all internal ADC references.}
 	 *
 	 *  @amupanels
@@ -915,15 +1159,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_ADC_CAL_ALL_INTERNAL}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_ADC_CAL_ALL_INTERNAL);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_EXEC_ADC_CAL_ALL_INTERNAL =			CMD_EXEC_OFFSET + 0x08,
 	
 	/** @amutitle{ADC — Save All Internal}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Saves internal ADC calibration data.}
 	 *
 	 *  @amupanels
@@ -933,9 +1176,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_ADC_CAL_SAVE_ALL_INTERNAL);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -953,9 +1194,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_DAC_CAL}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_DAC_CAL);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -972,27 +1211,24 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_DAC_CAL_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_DAC_CAL_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_EXEC_DAC_CAL_SAVE =					CMD_EXEC_OFFSET + 0x0B,
 	
 	/** @amutitle{ADC — Calibrate Temperature Sensor}
-	 *  @amudesc{Calibrates temperature sensor at 25°C.}
+	 *  @amudesc{Calibrates the temperature sensor offset against a known reference temperature.}
+	 *  @param temperature Known reference temperature in °C the sensor is held at during calibration (typically 25.0)
 	 *
 	 *  @amupanels
 	 *  @amuscpi{ADC:CALibrate:TSENSor}
 	 *  @amupanelex
-	 *  ADC:CALibrate:TSENSor
+	 *  ADC:CALibrate:TSENSor 25.0
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_TSENSOR_CAL_25C}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_TSENSOR_CAL_25C);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1002,15 +1238,10 @@ typedef enum {
 	 *  @amudesc{Saves temperature sensor calibration coefficients.}
 	 *
 	 *  @amupanels
-	 *  @amuscpi{DUT:TSENSor:FIT:SAVE}
-	 *  @amupanelex
-	 *  DUT:TSENSor:FIT:SAVE
-	 *  @endamupanelex
+	 *  @amuscpinote{none - TWI only}
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_TSENSOR_COEFF_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_TSENSOR_COEFF_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1026,9 +1257,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_SUNSENSOR_COEFF_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_SUNSENSOR_COEFF_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1044,9 +1273,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_EXEC_HEATER_PID_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_EXEC_HEATER_PID_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1063,6 +1290,7 @@ typedef enum {
  */
 typedef enum {
 	/** @amutitle{Sweep — Disable}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Disables sweep functionality.}
 	 *
 	 *  @amupanels
@@ -1072,15 +1300,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_DISABLE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_DISABLE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_SWEEP_DISABLE =						CMD_SWEEP_OFFSET + 0x00,
 	
 	/** @amutitle{Sweep — Enable}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Enables sweep functionality.}
 	 *
 	 *  @amupanels
@@ -1090,9 +1317,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_ENABLE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_ENABLE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1110,7 +1335,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_TRIG_SWEEP}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_TRIG_SWEEP);
+	 *  amu.triggerSweep();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1130,7 +1355,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_TRIG_ISC}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_TRIG_ISC);
+	 *  amu.triggerIsc();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1150,7 +1375,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_TRIG_VOC}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_TRIG_VOC);
+	 *  amu.triggerVoc();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1167,15 +1392,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_CONFIG_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_CONFIG_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_SWEEP_CONFIG_SAVE =					CMD_SWEEP_OFFSET + 0x05,
 	
 	/** @amutitle{Sweep — EEPROM Save}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Saves sweep data to EEPROM.}
 	 *
 	 *  @amupanels
@@ -1185,15 +1409,17 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_IV_SAVE_TO_EEPROM}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_IV_SAVE_TO_EEPROM);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
+	 *
+	 *  @note Intended for an AM0 reference curve: a sweep taken at AM0 is preserved
+	 *        so it can calibrate solar simulators on the ground.
 	 */
 	CMD_SWEEP_IV_SAVE_TO_EEPROM =			CMD_SWEEP_OFFSET + 0x06,
 	
 	/** @amutitle{Sweep — EEPROM LOAD}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Loads sweep data from EEPROM.}
 	 *  @return Previously saved sweep measurement data
 	 *
@@ -1204,15 +1430,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_IV_LOAD_FROM_EEPROM}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_IV_LOAD_FROM_EEPROM);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_SWEEP_IV_LOAD_FROM_EEPROM =			CMD_SWEEP_OFFSET + 0x07,
 	
 	/** @amutitle{Sweep — AES Encode}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Encrypts sweep data using AES.}
 	 *
 	 *  @amupanels
@@ -1222,15 +1447,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_AES_ENCODE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_AES_ENCODE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_SWEEP_AES_ENCODE =					CMD_SWEEP_OFFSET + 0x08,
 	
 	/** @amutitle{Sweep — AES Decode}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Decrypts AES-encrypted sweep data.}
 	 *
 	 *  @amupanels
@@ -1240,9 +1464,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_AES_DECODE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_AES_DECODE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1258,9 +1480,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_DATAPOINT_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_DATAPOINT_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1276,9 +1496,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_TRIG_INIT}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_TRIG_INIT);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1289,14 +1507,11 @@ typedef enum {
 	 *  @return Single voltage/current data point
 	 *
 	 *  @amupanels
-	 *  @amuscpi{SWEEP:DATApoint:LOAD}
-	 *  @amupanelex
-	 *  SWEEP:DATApoint:LOAD
-	 *  @endamupanelex
+	 *  @amuscpinote{none - TWI only}
 	 *  @endamupanel
 	 *  @amui2c{CMD_SWEEP_DATAPOINT_LOAD}
 	 *  @amupanelex
-	 *  amu.sendCommand(CMD_SWEEP_DATAPOINT_LOAD);
+	 *  amu.loadSweepDatapoints(0); // stage datapoints starting at index 0
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1328,7 +1543,8 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_STATE}
 	 *  @amupanelex
-	 *  uint8_t val = amu.query<uint8_t>(CMD_AUX_DAC_STATE);
+	 *  amu.setDACState(true);
+	 *  bool enabled = amu.getDACState();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1336,6 +1552,7 @@ typedef enum {
 	CMD_AUX_DAC_STATE =						CMD_AUX_OFFSET + 0x00,
 	
 	/** @amutitle{DAC — Current}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries DAC current output.}
 	 *  @param current Current output in amperes
 	 *  @return Current DAC current setting in amperes
@@ -1349,15 +1566,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_CURRENT}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_DAC_CURRENT);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_CURRENT =					CMD_AUX_OFFSET + 0x01,
 	
 	/** @amutitle{DAC — Current Raw}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries DAC current output (raw).}
 	 *  @param raw_value Raw 16-bit DAC value
 	 *  @return Current raw DAC value
@@ -1371,9 +1587,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_CURRENT_RAW}
-	 *  @amupanelex
-	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_CURRENT_RAW);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1392,7 +1606,8 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_VOLTAGE}
 	 *  @amupanelex
-	 *  float voltage = amu.query<float>(CMD_AUX_DAC_VOLTAGE);
+	 *  amu.setDACVoltage(2.5f);
+	 *  float voltage = amu.getDACVoltage();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1413,15 +1628,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_VOLTAGE_RAW}
-	 *  @amupanelex
-	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_VOLTAGE_RAW);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_AUX_DAC_VOLTAGE_RAW =				CMD_AUX_OFFSET + 0x04,
 	
 	/** @amutitle{DAC — Offset}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries DAC offset calibration.}
 	 *  @param offset DAC offset calibration value
 	 *  @return Current DAC offset value
@@ -1435,9 +1649,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_OFFSET}
-	 *  @amupanelex
-	 *  uint16_t val = amu.query<uint16_t>(CMD_AUX_DAC_OFFSET);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1457,9 +1669,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_OFFSET_CORRECTION}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_DAC_OFFSET_CORRECTION);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1480,7 +1690,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_DAC_GAIN_CORRECTION}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_DAC_GAIN_CORRECTION);
+	 *  float val = amu.getDACgainCorrection();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1502,7 +1712,8 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_HEATER_STATE}
 	 *  @amupanelex
-	 *  uint8_t val = amu.query<uint8_t>(CMD_AUX_HEATER_STATE);
+	 *  amu.setHeaterState(true);
+	 *  bool enabled = amu.getHeaterState();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1523,9 +1734,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_HEATER_SETPOINT}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_HEATER_SETPOINT);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1545,9 +1754,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_HEATER_PID}
-	 *  @amupanelex
-	 *  amu_pid_t pid = amu.query<amu_pid_t>(CMD_AUX_HEATER_PID);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1568,7 +1775,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_SUNSENSOR_FIT_YAW_COEFF}
 	 *  @amupanelex
-	 *  amu_coeff_t coeff = amu.query<amu_coeff_t>(CMD_AUX_SUNSENSOR_FIT_YAW_COEFF);
+	 *  amu_coeff_t coeff = amu.getYawCoefficients();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1590,7 +1797,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF}
 	 *  @amupanelex
-	 *  amu_coeff_t coeff = amu.query<amu_coeff_t>(CMD_AUX_SUNSENSOR_FIT_PITCH_COEFF);
+	 *  amu_coeff_t coeff = amu.getPitchCoefficients();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1612,7 +1819,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_SUNSENSOR_HVAL}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_HVAL);
+	 *  float val = amu.getSSHVal();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1634,7 +1841,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_SUNSENSOR_RVAL}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_RVAL);
+	 *  float val = amu.getSSRVal();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1656,7 +1863,8 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_AUX_SUNSENSOR_THRESHOLD}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_AUX_SUNSENSOR_THRESHOLD);
+	 *  amu.setSSThreshold(0.1f);
+	 *  float threshold = amu.getSSThreshold();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1674,6 +1882,7 @@ typedef enum {
  */
 typedef enum {
 	/** @amutitle{ADC — Channel}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries ADC channel register.}
 	 *  @param channel Channel number (0-15)
 	 *  @param value Register configuration value
@@ -1688,15 +1897,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_REG}
-	 *  @amupanelex
-	 *  uint16_t val = amu.query<uint16_t>(CMD_ADC_CH_REG);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_ADC_CH_REG =						CMD_ADC_CH_OFFSET + 0x00,
 	
 	/** @amutitle{ADC — Channel Setup}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries ADC channel setup.}
 	 *  @param channel Channel number (0-15)
 	 *  @param setup Setup register configuration
@@ -1711,15 +1919,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_SETUP}
-	 *  @amupanelex
-	 *  uint16_t val = amu.query<uint16_t>(CMD_ADC_CH_SETUP);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_ADC_CH_SETUP =						CMD_ADC_CH_OFFSET + 0x01,
 	
 	/** @amutitle{ADC — Channel Filter}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Sets or queries ADC channel filter.}
 	 *  @param channel Channel number (0-15)
 	 *  @param filter Digital filter configuration
@@ -1734,9 +1941,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_FILTER}
-	 *  @amupanelex
-	 *  uint32_t val = amu.query<uint32_t>(CMD_ADC_CH_FILTER);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1757,9 +1962,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_RATE}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_ADC_CH_RATE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1781,7 +1984,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_PGA}
 	 *  @amupanelex
-	 *  uint8_t val = amu.query<uint8_t>(CMD_ADC_CH_PGA);
+	 *  uint8_t gain = amu.getPGA(AMU_ADC_CH_VOLTAGE); // gain multiplier (1,2,4...), not the raw register code
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -1801,9 +2004,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_PGA_MAX}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_MAX);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1815,7 +2016,7 @@ typedef enum {
 	 *  @return Maximum voltage range for specified PGA setting
 	 *
 	 *  @amupanels
-	 *  @amuscpi{ADC:VOLTage:MAX:PGA#?}
+	 *  @amuscpinote{ADC:VOLTage:MAX:PGA#? (USB) - documented at CMD_USB_ADC_VOLTAGE_MAX_PGA}
 	 *  @amupanelex
 	 *  ADC:VOLTage:MAX:PGA0 2.5
 	 *  ADC:VOLTage:MAX:PGA0?
@@ -1823,9 +2024,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_PGA_VMAX}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_VMAX);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1837,7 +2036,7 @@ typedef enum {
 	 *  @return Maximum current range for specified PGA setting
 	 *
 	 *  @amupanels
-	 *  @amuscpi{ADC:CURRent:MAX:PGA#?}
+	 *  @amuscpinote{ADC:CURRent:MAX:PGA#? (USB) - documented at CMD_USB_ADC_CURRENT_MAX_PGA}
 	 *  @amupanelex
 	 *  ADC:CURRent:MAX:PGA0 2.5
 	 *  ADC:CURRent:MAX:PGA0?
@@ -1845,9 +2044,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_PGA_IMAX}
-	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_ADC_CH_PGA_IMAX);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1864,9 +2061,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1887,9 +2082,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_OFFSET_COEFF}
-	 *  @amupanelex
-	 *  int32_t val = amu.query<int32_t>(CMD_ADC_CH_OFFSET_COEFF);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1910,15 +2103,14 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_GAIN_COEFF}
-	 *  @amupanelex
-	 *  uint32_t val = amu.query<uint32_t>(CMD_ADC_CH_GAIN_COEFF);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
 	CMD_ADC_CH_GAIN_COEFF =					CMD_ADC_CH_OFFSET + 0x0A,
 	
 	/** @amutitle{ADC — Channel Calibrate Internal}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Performs internal ADC channel calibration.}
 	 *  @param channel Channel number (0-15)
 	 *
@@ -1929,9 +2121,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_CAL_INTERNAL}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_CAL_INTERNAL);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1948,9 +2138,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_CAL_ZERO_SCALE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_CAL_ZERO_SCALE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1967,9 +2155,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_CAL_FULL_SCALE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_CAL_FULL_SCALE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -1986,9 +2172,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_CAL_RESET}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_CAL_RESET);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -2005,9 +2189,7 @@ typedef enum {
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @amui2c{CMD_ADC_CH_CAL_SAVE}
-	 *  @amupanelex
-	 *  amu.sendCommand(CMD_ADC_CH_CAL_SAVE);
-	 *  @endamupanelex
+	 *  Not exposed by the public C++ API - issue via SCPI.
 	 *  @endamupanel
 	 *  @endamupanels
 	 */
@@ -2036,7 +2218,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_VOLTAGE}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_VOLTAGE);
+	 *  float val = amu.measureVoltage();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2056,7 +2238,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_CURRENT}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_CURRENT);
+	 *  float val = amu.measureCurrent();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2064,6 +2246,7 @@ typedef enum {
 	CMD_MEAS_CH_CURRENT =					CMD_MEAS_CH_CMD_OFFSET + 0x01,
 	
 	/** @amutitle{Measure — ADC Temperature Sensor}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amudesc{Measures primary temperature sensor.}
 	 *  @return Temperature measurement from primary sensor
 	 *
@@ -2076,7 +2259,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_TSENSOR}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR);
+	 *  float val = amu.measureTSensor();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2096,7 +2279,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_TSENSOR_0}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_0);
+	 *  float val = amu.measureTSensor0();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2104,6 +2287,7 @@ typedef enum {
 	CMD_MEAS_CH_TSENSOR_0 =					CMD_MEAS_CH_CMD_OFFSET + 0x02,
 	
 	/** @amutitle{Measure — ADC TSENSOR1}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures temperature sensor 1.}
 	 *  @return Temperature measurement from sensor 1
 	 *
@@ -2116,7 +2300,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_TSENSOR_1}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_1);
+	 *  float val = amu.measureTSensor1();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2124,6 +2308,7 @@ typedef enum {
 	CMD_MEAS_CH_TSENSOR_1 =					CMD_MEAS_CH_CMD_OFFSET + 0x03,
 	
 	/** @amutitle{Measure — ADC TSENSOR2}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures temperature sensor 2.}
 	 *  @return Temperature measurement from sensor 2
 	 *
@@ -2136,7 +2321,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_TSENSOR_2}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_TSENSOR_2);
+	 *  float val = amu.measureTSensor2();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2144,6 +2329,7 @@ typedef enum {
 	CMD_MEAS_CH_TSENSOR_2 =					CMD_MEAS_CH_CMD_OFFSET + 0x04,
 	
 	/** @amutitle{Measure — ADC BIAS}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures bias voltage reference.}
 	 *  @return Bias voltage reference measurement
 	 *
@@ -2156,7 +2342,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_BIAS}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_BIAS);
+	 *  float val = amu.measureBias();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2164,6 +2350,7 @@ typedef enum {
 	CMD_MEAS_CH_BIAS =						CMD_MEAS_CH_CMD_OFFSET + 0x05,
 	
 	/** @amutitle{Measure — ADC Offset}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures offset calibration reference.}
 	 *  @return Offset calibration reference measurement
 	 *
@@ -2176,7 +2363,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_OFFSET}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_OFFSET);
+	 *  float val = amu.measureOffset();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2184,6 +2371,7 @@ typedef enum {
 	CMD_MEAS_CH_OFFSET =					CMD_MEAS_CH_CMD_OFFSET + 0x06,
 	
 	/** @amutitle{Measure — ADC Temperature}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures internal MCU temperature.}
 	 *  @return Internal MCU temperature measurement
 	 *
@@ -2196,7 +2384,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_TEMP}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_TEMP);
+	 *  float val = amu.measureTemperature();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2204,6 +2392,7 @@ typedef enum {
 	CMD_MEAS_CH_TEMP =						CMD_MEAS_CH_CMD_OFFSET + 0x07,
 	
 	/** @amutitle{Measure — ADC AVDD}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures analog supply voltage.}
 	 *  @return Analog supply voltage measurement
 	 *
@@ -2216,7 +2405,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_AVDD}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_AVDD);
+	 *  float val = amu.measureAvdd();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2224,6 +2413,7 @@ typedef enum {
 	CMD_MEAS_CH_AVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x08,
 	
 	/** @amutitle{Measure — ADC IOVDD}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures I/O supply voltage.}
 	 *  @return I/O supply voltage measurement
 	 *
@@ -2236,7 +2426,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_IOVDD}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_IOVDD);
+	 *  float val = amu.measureIOvdd();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2244,6 +2434,7 @@ typedef enum {
 	CMD_MEAS_CH_IOVDD =						CMD_MEAS_CH_CMD_OFFSET + 0x09,
 	
 	/** @amutitle{Measure — ADC ALDO}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures analog LDO output voltage.}
 	 *  @return Analog LDO regulator voltage measurement
 	 *
@@ -2256,7 +2447,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_ALDO}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_ALDO);
+	 *  float val = amu.measureAldo();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2264,6 +2455,7 @@ typedef enum {
 	CMD_MEAS_CH_ALDO =						CMD_MEAS_CH_CMD_OFFSET + 0x0A,
 	
 	/** @amutitle{Measure — ADC DLDO}
+	 *  @amuhw{Legacy only}
 	 *  @amudesc{Measures digital LDO output voltage.}
 	 *  @return Digital LDO regulator voltage measurement
 	 *
@@ -2276,7 +2468,7 @@ typedef enum {
 	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_DLDO}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_DLDO);
+	 *  float val = amu.measureDldo();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2294,9 +2486,15 @@ typedef enum {
 	 *  0.250000
 	 *  @endamupanelex
 	 *  @endamupanel
+	 *  @amuscpi{SUNSensor:TL?}
+	 *  @amupanelex
+	 *  SUNSensor:TL?
+	 *  2.482
+	 *  @endamupanelex
+	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_SS_TL}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_TL);
+	 *  float val = amu.measureSSTL();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2314,9 +2512,15 @@ typedef enum {
 	 *  0.250000
 	 *  @endamupanelex
 	 *  @endamupanel
+	 *  @amuscpi{SUNSensor:BL?}
+	 *  @amupanelex
+	 *  SUNSensor:BL?
+	 *  2.431
+	 *  @endamupanelex
+	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_SS_BL}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_BL);
+	 *  float val = amu.measureSSBL();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2334,9 +2538,15 @@ typedef enum {
 	 *  0.250000
 	 *  @endamupanelex
 	 *  @endamupanel
+	 *  @amuscpi{SUNSensor:BR?}
+	 *  @amupanelex
+	 *  SUNSensor:BR?
+	 *  2.398
+	 *  @endamupanelex
+	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_SS_BR}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_BR);
+	 *  float val = amu.measureSSBR();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2354,9 +2564,15 @@ typedef enum {
 	 *  0.250000
 	 *  @endamupanelex
 	 *  @endamupanel
+	 *  @amuscpi{SUNSensor:TR?}
+	 *  @amupanelex
+	 *  SUNSensor:TR?
+	 *  2.455
+	 *  @endamupanelex
+	 *  @endamupanel
 	 *  @amui2c{CMD_MEAS_CH_SS_TR}
 	 *  @amupanelex
-	 *  float val = amu.query<float>(CMD_MEAS_CH_SS_TR);
+	 *  float val = amu.measureSSTR();
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
@@ -2410,16 +2626,22 @@ typedef enum {
 	/** @amutitle{System — TWI Scan}
 	 *  @amuusbonly
 	 *  @amudesc{Scans the I2C bus and reports every address that acknowledges.}
-	 *  @return Comma-separated list of responding 7-bit I2C addresses (hex)
+	 *  @param start First 7-bit address to probe (optional, must be paired with stop) @amuhw{AMU3 ESP32 only}
+	 *  @param stop Last 7-bit address to probe, inclusive (optional, must be paired with start) @amuhw{AMU3 ESP32 only}
+	 *  @return Device count, followed by each responding 7-bit I2C address
 	 *
 	 *  @amupanels
 	 *  @amuscpi{SYSTem:TWI:SCAN?}
 	 *  @amupanelex
 	 *  SYSTem:TWI:SCAN?
-	 *  0x0B,0x40,0x68
+	 *  3,11,64,104
+	 *  SYSTem:TWI:SCAN? 64,72
+	 *  1,64
 	 *  @endamupanelex
 	 *  @endamupanel
 	 *  @endamupanels
+	 *  @note Omitting the range leaves the span the device scans up to its firmware. Devices
+	 *        older than AMU3 scan their own fixed span.
 	 */
 	CMD_USB_SYSTEM_TWI_SCAN =				CMD_USB_SYSTEM_OFFSET + 0x02,
 	
@@ -2501,6 +2723,7 @@ typedef enum {
 	CMD_USB_EEPROM_ERASE_CONFIG =			CMD_USB_EEPROM_CMD_OFFSET + 0x01,
 	
 	/** @amutitle{Memory — ADC Channel Offset}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{ADC channel offset calibration data.}
 	 *  @param offset ADC channel offset calibration value to store (uint32_t; omit to query)
@@ -2519,6 +2742,7 @@ typedef enum {
 	CMD_USB_EEPROM_OFFSET =					CMD_USB_EEPROM_CMD_OFFSET + 0x02,
 	
 	/** @amutitle{Memory — ADC Channel Gain}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{ADC channel gain calibration data.}
 	 *  @param gain ADC channel gain calibration value to store (uint32_t; omit to query)
@@ -2537,6 +2761,7 @@ typedef enum {
 	CMD_USB_EEPROM_GAIN =					CMD_USB_EEPROM_CMD_OFFSET + 0x03,
 	
 	/** @amutitle{Memory — Voltage Offset}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{Voltage measurement offset calibration.}
 	 *  @param offset Voltage offset calibration value to store (uint32_t; omit to query)
@@ -2555,6 +2780,7 @@ typedef enum {
 	CMD_USB_EEPROM_VOLTAGE_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x04,
 	
 	/** @amutitle{Memory — Current Offset}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{Current measurement offset calibration.}
 	 *  @param offset Current offset calibration value to store (uint32_t; omit to query)
@@ -2573,6 +2799,7 @@ typedef enum {
 	CMD_USB_EEPROM_CURRENT_OFFSET =			CMD_USB_EEPROM_CMD_OFFSET + 0x05,
 	
 	/** @amutitle{Memory — Voltage Gain}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{Voltage measurement gain calibration.}
 	 *  @param gain Voltage gain calibration value to store (uint32_t; omit to query)
@@ -2591,6 +2818,7 @@ typedef enum {
 	CMD_USB_EEPROM_VOLTAGE_GAIN =			CMD_USB_EEPROM_CMD_OFFSET + 0x06,
 	
 	/** @amutitle{Memory — Current Gain}
+	 *  @amuhw{Not implemented on AMU3}
 	 *  @amuusbonly
 	 *  @amudesc{Current measurement gain calibration.}
 	 *  @param gain Current gain calibration value to store (uint32_t; omit to query)

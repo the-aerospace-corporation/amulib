@@ -1,19 +1,22 @@
 #include <Wire.h>
 #include <amulib.h>
 
-#define AMU_TWI_BUS   Wire
+// 0x00-0x07 are reserved by the I2C spec
+#define AMU_DEV_TWI_SCAN_START_ADDRESS 0x08
+#define AMU_DEV_TWI_SCAN_END_ADDRESS   0x7F
+
+#if defined(ESP32)
+    // Replace with your board's SDA and SCL pins
+    #define AMU_DEV_TWI_SDA_PIN 35
+    #define AMU_DEV_TWI_SCL_PIN 37
+#endif
 
 void triggerSweep(Stream* s);
 void readSweepData(Stream* s, uint8_t numPoints);
-void readSweepDataLowMemory(Stream* s, uint8_t numPoints);
 
 void triggerVOC(Stream* s);
 void triggerISC(Stream* s);
 void printInfo(Stream* s);
-
-int amu_wire_transfer(TwoWire* wire, uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read);
-
-int8_t twi_transfer(uint8_t address, uint8_t reg, uint8_t* data, size_t len, uint8_t read) { return (int8_t)amu_wire_transfer(&AMU_TWI_BUS, address, reg, data, len, read); }
 
 AMU amu;
 
@@ -22,53 +25,46 @@ char notes[32];
 bool amu_found = false;
 
 void setup() {
-  
-    Serial.begin(115200);
+    Serial.begin(AMU_BAUD_RATE);
+    while (!Serial);
 
-    AMU_TWI_BUS.begin();
-    AMU_TWI_BUS.setClock(400000);
-    AMU_TWI_BUS.setTimeout(1000);
+    // Board-specific I2C bus configuration. The ESP32 branch below matches the
+    // TinyS3 dev board; on other cores, add your core's pin/buffer/timeout
+    // setup here (or nothing - begin() with the default pins also works).
+#if defined(ESP32)
+    Wire.setPins(AMU_DEV_TWI_SDA_PIN, AMU_DEV_TWI_SCL_PIN);
+    Wire.setBufferSize(1024);  // Reads are single transactions, so cover the largest register
+    Wire.setTimeOut(1000);
+#endif
+    Wire.begin();
+    Wire.setClock(AMU_TWI_FREQ_HZ);
+    Wire.setTimeout(1000);
 
+    if (amu_scan_for_devices(AMU_DEV_TWI_SCAN_START_ADDRESS, AMU_DEV_TWI_SCAN_END_ADDRESS) > 0) {
+        Serial.println("AMU init...");
 
-    while(!Serial);
+        amu.begin(amu_get_device_address(0));
 
-    uint8_t address = 0x0B;
+        amu.readNotes(notes, sizeof(notes));
 
-    while (address < 128) {
-        if (twi_transfer(address, 0, NULL, 0, 1) == 0) {
+        amu.setLEDmode(AMU_LED_PATTERN_QUICK_RGB_FADE);
 
-            Serial.println("AMU init...");
+        printInfo(&Serial);
 
-            amu.begin(address, twi_transfer);
+        Serial.println();
 
-            amu.readNotes(notes, sizeof(notes));
-
-            amu.setLEDmode(AMU_LED_PATTERN_QUICK_RGB_FADE);
-
-            printInfo(&Serial);
-
-            Serial.println();
-
-            amu_found = true;
-
-            break;
-        }
-        else {
-            address++;
-        }
+        amu_found = true;
     }
-    if (amu_found == false) {
+    else {
         Serial.println(F("No AMUs found."));
-    }        
+    }
 
 }
 
 void loop() {
-
-    static uint8_t loopActive = 0;
+    static bool loopActive = false;
 
     if (amu_found) {
-
         if (Serial.available()) {
             uint8_t b = Serial.read();
             switch (b) {
@@ -86,24 +82,27 @@ void loop() {
                 triggerISC(&Serial);
                 break;
             case 'L':
-                loopActive = 1;
+                loopActive = true;
                 break;
             case 'l':
-                loopActive = 0;
+                loopActive = false;
                 break;
             case 'I':
                 printInfo(&Serial);
                 break;
             }
-            
         }
 
+        if (loopActive) {
+            Serial.println();
+            triggerSweep(&Serial);
+            readSweepData(&Serial, amu.getSweepConfig()->numPoints);
+        }
     }
 
 }
 
 void triggerVOC(Stream* s) {
-
     amu_meas_t measurementData;
 
     amu.triggerVoc();
@@ -118,7 +117,6 @@ void triggerVOC(Stream* s) {
 }
 
 void triggerISC(Stream* s) {
-
     amu_meas_t measurementData;
 
     amu.triggerIsc();
@@ -132,14 +130,13 @@ void triggerISC(Stream* s) {
 }
 
 void triggerSweep(Stream* s) {
-
     amu.triggerSweep();
 
     amu.waitUntilReady(5000);
 
     amu_int_volt_t int_volt = amu.measureInternalVoltages();
     ivsweep_config_t* sweep_config = amu.readSweepConfig();
-    ivsweep_meta_t * meta = amu.readMeta();
+    ivsweep_meta_t* meta = amu.readMeta();
 
     s->print(F("\nAddress\t"));	                s->print(amu.getAddress());
     s->print(F("\nManufacturer\t"));		    s->print(amu.getDutManufacturer());
@@ -156,13 +153,7 @@ void triggerSweep(Stream* s) {
     s->print(sweep_config->ratio);			s->print("\t");
     s->print(sweep_config->power);			s->print("\t");
     s->print(sweep_config->dac_gain);		s->print("\t");
-    s->print(sweep_config->averages);
-
-    s->print(F("\nAMU Internal\t"));
-    s->print(int_volt.avdd, 6);                s->print("\t");
-    s->print(int_volt.iovdd, 6);               s->print("\t");
-    s->print(int_volt.aldo, 6);                s->print("\t");
-    s->print(int_volt.dldo, 6);
+    s->print(sweep_config->adc_averages);
 
     s->print(F("\nVoc (V)\t"));                s->print(meta->voc, 6);
     s->print(F("\nIsc (A)\t"));                s->print(meta->isc);
@@ -177,13 +168,11 @@ void triggerSweep(Stream* s) {
     s->print(F("\nCell Temp (C)\t"));          s->print(meta->tsensor_start, 6);  s->print("\t");     s->print(meta->tsensor_end, 6);
     s->print(F("\nAM0 constant (W/cm^2)\t"));  s->print(sweep_config->am0, 6);
     s->print(F("\nADC\t"));                    s->print(meta->adc, 6);
-    s->print(F("\nCRC-32\t0x"));               s->print(meta->crc, HEX);
     s->print(F("\nAMU Time(ms)\tVoltage (V)\tCurrent (A)"));
 
 }
 
 void readSweepData(Stream* s, uint8_t numPoints) {
-
     uint32_t timestamp[numPoints];
     float voltage[numPoints], current[numPoints];
 
@@ -201,95 +190,28 @@ void readSweepData(Stream* s, uint8_t numPoints) {
     s->println();
 }
 
-void readSweepDataLowMemory(Stream* s, uint8_t numPoints) {
-
-    ivsweep_datapoint_t datapoint;
-
-    for (uint8_t i = 0; i < numPoints / 10; i++) {
-
-        amu.loadSweepDatapoints(i * 10);
-
-        AMU_TWI_BUS.beginTransmission(amu.getAddress());
-        AMU_TWI_BUS.write(AMU_REG_TRANSFER_PTR);
-        AMU_TWI_BUS.endTransmission();
-
-        for (uint8_t j = 0; j < 10; j++) {
-            AMU_TWI_BUS.requestFrom(amu.getAddress(), sizeof(ivsweep_datapoint_t));
-            AMU_TWI_BUS.readBytes((uint8_t*)&datapoint, sizeof(ivsweep_datapoint_t));
-            s->print("\n");
-            s->print(datapoint.voltage, 6);    s->print("\t");
-            s->print(datapoint.current, 6);
-        }
-    }
-
-    s->println();
-
-}
-
-
-int amu_wire_transfer(TwoWire *wire, uint8_t address, uint8_t reg, uint8_t *data, size_t len, uint8_t read) {
-    
-    uint8_t packetNum = 0;
-
-    if (read) {
-        if (len > 0) {
-
-            wire->beginTransmission(address);
-            wire->write(reg);
-            wire->endTransmission();
-            while (len > BUFFER_LENGTH) {
-                wire->requestFrom(address, (uint8_t)BUFFER_LENGTH, false);
-                wire->readBytes(&data[packetNum * BUFFER_LENGTH], BUFFER_LENGTH);
-                packetNum++;
-                len -= BUFFER_LENGTH;
-            }
-            wire->requestFrom(address, (uint8_t)len);
-            wire->readBytes(&data[packetNum * BUFFER_LENGTH], len);
-        }
-        else {
-            wire->beginTransmission(address);
-            return wire->endTransmission();
-        }
-    }
-    else {
-        wire->beginTransmission(address);
-        wire->write(reg);
-        wire->write(data, len);
-        wire->endTransmission();
-    }
-
-    return 0;
-}
-
-
-void printInfo(Stream * s) {
-        
+void printInfo(Stream* s) {
     ivsweep_config_t* sweep_config = amu.getSweepConfig();
     amu_dut_t* dut = amu.getDUT();
 
-    char hardwareRevStr[4];
-    switch (amu.getHardwareRevision()) {
-    case AMU_HARDWARE_REVISION_ISC2:	strcpy(hardwareRevStr, "0.1");		break;
-    case AMU_HARDWARE_REVISION_AMU_1_0: strcpy(hardwareRevStr, "1.0");		break;
-    case AMU_HARDWARE_REVISION_AMU_1_1: strcpy(hardwareRevStr, "1.1");		break;
-    case AMU_HARDWARE_REVISION_AMU_2_0: strcpy(hardwareRevStr, "2.0");		break;
-    case AMU_HARDWARE_REVISION_AMU_2_1: strcpy(hardwareRevStr, "2.1");		break;
-    default:							strcpy(hardwareRevStr, "err");		break;
-    }
-    s->print(F("\nAMU "));	s->print(hardwareRevStr);	s->print(" found at address : 0x");	s->println(amu.getAddress(), HEX);
-    s->print(F("\t:DUT:MANUFACTURER: "));		s->println(dut->manufacturer);
-    s->print(F("\t:DUT:MODEL: "));				s->println(dut->model);
-    s->print(F("\t:DUT:TECH: "));				s->println(dut->technology);
-    s->print(F("\t:DUT:SERIAL: "));			    s->println(dut->serial);
-    s->print(F("\t:DUT:NOTES "));				s->println(notes);
-    s->print(F("\t:FIRMWARE: "));				s->println(amu.getFirmware());
-    s->print(F("\t:SERIAL: "));				    s->println(amu.getSerialNumber());
-    s->print(F("\t:SWEEP CONFIG: \t"));
+    // Hardware revision is BCD-encoded: high nibble = major, low nibble = minor (e.g. 0x21 -> "2.1")
+    uint8_t hardwareRev = amu.getHardwareRevision();
+    char hardwareRevStr[6];
+    snprintf(hardwareRevStr, sizeof(hardwareRevStr), "%u.%u", hardwareRev >> 4, hardwareRev & 0x0F);
+    s->print(F("\nAMU "));	s->print(hardwareRevStr);	s->print(" found at address: 0x");	s->println(amu.getAddress(), HEX);
+    s->print(F("\tDUT:MANUFACTURER: "));		s->println(dut->manufacturer);
+    s->print(F("\tDUT:MODEL: "));				s->println(dut->model);
+    s->print(F("\tDUT:TECH: "));				s->println(dut->technology);
+    s->print(F("\tDUT:SERIAL: "));			    s->println(dut->serial);
+    s->print(F("\tDUT:NOTES "));				s->println(notes);
+    s->print(F("\tFIRMWARE: "));				s->println(amu.getFirmware());
+    s->print(F("\tSERIAL: "));				    s->println(amu.getSerialNumber());
+    s->print(F("\tSWEEP CONFIG: \t"));
     s->print(sweep_config->type);			    s->print("\t");
     s->print(sweep_config->numPoints);		    s->print("\t");
     s->print(sweep_config->delay);			    s->print("\t");
     s->print(sweep_config->ratio);			    s->print("\t");
     s->print(sweep_config->power);			    s->print("\t");
     s->print(sweep_config->dac_gain);		    s->print("\t");
-    s->println(sweep_config->averages);
+    s->println(sweep_config->adc_averages);
 }

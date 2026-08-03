@@ -5,8 +5,7 @@ Doxygen-based docs for the AMU (Aerospace Measurement Unit) library.
 ## Build
 
 ```bash
-./docs/build.sh     # Linux / macOS (or Git Bash / WSL on Windows)
-docs\build.bat      # Windows (cmd / PowerShell)
+python docs/build.py    # all platforms
 ```
 
 The script pulls the theme submodule on first run, then runs Doxygen
@@ -16,7 +15,7 @@ Requires [Doxygen](https://www.doxygen.nl/download.html).
 
 ## Files
 
-- `build.sh` / `build.bat` — one-step build (submodule + Doxygen) for Unix / Windows.
+- `build.py` — one-step build (submodule + Doxygen), cross-platform.
 - `Doxyfile` — Doxygen config; defines the command-card aliases and wires in the theme.
 - `mainpage.dox` — landing page (Introduction + subsections).
 - `custom_enum_style.css` — command-card styling and theme layout tweaks.
@@ -97,4 +96,4 @@ SCPI examples are the raw command-then-response transcript.
 
 1. Add the enum to `amu_commands.h` with a card as above (`@ingroup` the right `cmd_*`).
 2. Add the matching `SCPI_COMMAND(pattern, handler, CMD_ID)` in `scpi.h` (same `CMD_ID`).
-3. Rebuild with the [Build](#build) script (`./docs/build.sh` or `docs\build.bat`).
+3. Rebuild with the [Build](#build) script (`python docs/build.py`).

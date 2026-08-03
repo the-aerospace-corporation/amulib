@@ -218,6 +218,24 @@ h2.groupheader {
     vertical-align: middle !important;
 }
 
+/* Hardware availability badge (@amuhw) on commands whose hardware only exists on
+   some generations. Slate chip, deliberately cooler than the amber USB one. */
+.fielddoc .hwbadge,
+.hwbadge {
+    display: inline-block !important;
+    background-color: #37474f !important;
+    color: #cfd8dc !important;
+    font-size: 0.72em !important;
+    font-weight: bold !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    padding: 2px 8px !important;
+    border-radius: 10px !important;
+    border: 1px solid #607d8b !important;
+    margin: 0 0 6px 0 !important;
+    vertical-align: middle !important;
+}
+
 /* Friendly command title (@amutitle) — sits in the left column of the card. */
 .fielddoc .amucmdtitle,
 .amucmdtitle {
@@ -359,4 +377,31 @@ h2.groupheader {
 html {
     --top-height: 150px;
     --content-maxwidth: 1280px;
+}
+
+/* ---------- Hardware selector (amu-hw-filter.js) ---------- */
+
+#amu-hw-select {
+    margin-left: 12px;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-small, 4px);
+    border: 1px solid var(--separator-color, #ccc);
+    background: var(--page-background-color, #fff);
+    color: var(--page-foreground-color, #000);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* A concrete hardware is selected: commands are filtered, badges are redundant */
+body.amu-hw-filtered .hwbadge { display: none; }
+
+.amu-hw-hidden { display: none !important; }
+
+#amu-hw-notice {
+    margin: 2em;
+    padding: 12px 16px;
+    border-left: 4px solid var(--separator-color, #ccc);
+    background: var(--fragment-background, #f8f9fa);
+    color: var(--page-foreground-color, #000);
+    border-radius: var(--border-radius-small, 4px);
 }

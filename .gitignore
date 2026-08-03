@@ -365,5 +365,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Auto-generated version headers
-src/amulibc/amulib_version.h
+# Python Environment
+.venv
+
+# Calibration tool output (tools/python/calibration_report.py)
+calibration_report_*.html
+
+# Doxygen output - built and deployed by .github/workflows/docs.yml, never committed
+docs/html/

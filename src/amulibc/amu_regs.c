@@ -3,7 +3,6 @@
 
 static volatile amu_twi_regs_t amu_twi_regs;
 
-
 volatile amu_twi_regs_t* amu_regs_get_twi_regs_ptr(void) {
     return &amu_twi_regs;
 }
@@ -11,10 +10,14 @@ volatile amu_twi_regs_t* amu_regs_get_twi_regs_ptr(void) {
 // Macros to get size of struct members without an instance
 #define MEMBER_SIZE(type, member) sizeof(((type*)0)->member)
 
-uint16_t amu_regs_get_register_length(uint8_t reg) {
+static uint16_t amu_regs_get_sweep_points(void) {
+    uint8_t numPoints = amu_twi_regs.sweep_config.numPoints;
 
+    return (numPoints > IVSWEEP_MAX_POINTS) ? (uint16_t) IVSWEEP_MAX_POINTS : (uint16_t) numPoints;
+}
+
+uint16_t amu_regs_get_register_length(uint8_t reg) {
     switch(reg) {
-        
         case AMU_REG_SYSTEM_CMD:                        return MEMBER_SIZE(amu_twi_regs_t, command);                break;
         case AMU_REG_SYSTEM_AMU_STATUS:                 return MEMBER_SIZE(amu_twi_regs_t, amu_status);             break;
         case AMU_REG_SYSTEM_TWI_STATUS:                 return MEMBER_SIZE(amu_twi_regs_t, twi_status);             break;
@@ -55,10 +58,6 @@ uint16_t amu_regs_get_register_length(uint8_t reg) {
         case AMU_REG_ADC_DATA_SS_BR:                    return MEMBER_SIZE(adc_channels_t, val.ss_br);             break;
         case AMU_REG_ADC_DATA_SS_TR:                    return MEMBER_SIZE(adc_channels_t, val.ss_tr);             break;
 
-        // case AMU_REG_SUNSENSOR_TL:                      return MEMBER_SIZE(quad_photo_sensor_t, diode[0]);          break;
-        // case AMU_REG_SUNSENSOR_BL:                      return MEMBER_SIZE(quad_photo_sensor_t, diode[1]);          break;
-        // case AMU_REG_SUNSENSOR_BR:                      return MEMBER_SIZE(quad_photo_sensor_t, diode[2]);          break;
-        // case AMU_REG_SUNSENSOR_TR:                      return MEMBER_SIZE(quad_photo_sensor_t, diode[3]);          break;
         case AMU_REG_SUNSENSOR_YAW:                     return MEMBER_SIZE(ss_angle_t, yaw);                        break;
         case AMU_REG_SUNSENSOR_PITCH:                   return MEMBER_SIZE(ss_angle_t, pitch);                      break;
 
@@ -89,19 +88,18 @@ uint16_t amu_regs_get_register_length(uint8_t reg) {
         case AMU_REG_SWEEP_META_TIMESTAMP:              return MEMBER_SIZE(ivsweep_meta_t, timestamp);              break;
         case AMU_REG_SWEEP_META_CRC:                    return MEMBER_SIZE(ivsweep_meta_t, crc);                    break;
 
-        // case AMU_REG_DATA_PTR_COMMAND:                  return MEMBER_SIZE(amu_twi_regs_t, command);                break;
-        case AMU_REG_DATA_PTR_TIMESTAMP:                
-        case AMU_REG_DATA_PTR_VOLTAGE:                  
-        case AMU_REG_DATA_PTR_CURRENT:                  
-        case AMU_REG_DATA_PTR_SS_YAW:                   
-        case AMU_REG_DATA_PTR_SS_PITCH:                 return amu_twi_regs.sweep_config.numPoints * sizeof(float);
+        case AMU_REG_DATA_PTR_TIMESTAMP:                return amu_regs_get_sweep_points() * sizeof(uint32_t);      break;
+        case AMU_REG_DATA_PTR_VOLTAGE:
+        case AMU_REG_DATA_PTR_CURRENT:
+        case AMU_REG_DATA_PTR_SS_YAW:
+        case AMU_REG_DATA_PTR_SS_PITCH:                 return amu_regs_get_sweep_points() * sizeof(float);         break;
 
         case AMU_REG_DATA_PTR_SWEEP_CONFIG:             return sizeof(ivsweep_config_t);                            break;
         case AMU_REG_DATA_PTR_SWEEP_META:               return sizeof(ivsweep_meta_t);                              break;
-        case AMU_REG_DATA_PTR_SUNSENSOR:                return sizeof(quad_photo_sensor_t);                         break;
-        case AMU_REG_DATA_PTR_PRESSURE:                 return sizeof(press_data_t);                                break;
-
-        case AMU_REG_DATA_PTR_DATAPOINT:                return sizeof(ivsweep_datapoint_t);                          break;
+        case AMU_REG_DATA_PTR_SUNSENSOR:                return sizeof(ss_angle_t);                                  break;
+        case AMU_REG_DATA_PTR_PRESSURE:                 return 0;                                                   break;
+        case AMU_REG_DATA_PTR_DATAPOINT:                return 0;                                                   break;
+        case AMU_REG_TRANSFER_PTR:                      return AMU_TRANSFER_REG_SIZE;                               break;
 
         default:                                        return 0;                                                    break;
     }

@@ -1,12 +1,8 @@
 /**
  * @file amulibc_config.h
- * @brief
- *
- * @author  CJM28241
- * @date    5/8/2019 9:06:17 PM
+ * @author CJM28241
+ * @date 5/8/2019
  */
-
-
 #ifndef AMULIBC_CONFIG_H_
 #define AMULIBC_CONFIG_H_
 

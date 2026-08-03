@@ -1,0 +1,801 @@
+/**
+ * @page reg_commands Register Commands
+ *
+ * SCPI commands that read or write a register directly, rather than executing a
+ * command on the device. Over TWI these are plain register transfers against the
+ * map in amu_regs.h - nothing executes and there is nothing to poll; over SCPI
+ * the parser performs the same access. Each entry links its register by name,
+ * so a renamed register turns into a doc-build warning rather than silently
+ * going stale.
+ *
+ * @section reg_system System
+ *
+ * @amutitle{System — Status}
+ * @amudesc{Device status bitfield}
+ * Register: @ref AMU_REG_SYSTEM_AMU_STATUS, uint8, @c amu_status_t bits.
+ *
+ * | Bit  | Flag    | Meaning                          |
+ * |------|---------|----------------------------------|
+ * | 0x01 | SLEEP   | Analog front end powered down    |
+ * | 0x02 | MEASURE | Measurement in progress          |
+ * | 0x04 | HEATER  | Heater active                    |
+ * | 0x08 | MPPT    | Retired - host side now; the bit stays reserved because deployed masters still test it |
+ * | 0x40 | WIFI    | WiFi active                      |
+ * | 0x80 | BLE     | BLE radio advertising            |
+ *
+ * @amupanels
+ * @amuscpi{SYSTem:STATus?}
+ * @amupanelex
+ * SYSTem:STATus?
+ * 2
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SYSTEM_AMU_STATUS}
+ * @amupanelex
+ * uint8_t s;
+ * amu_dev_transfer(addr, AMU_REG_SYSTEM_AMU_STATUS, &s, sizeof(s), AMU_TWI_TRANSFER_READ);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{System — Hardware Revision}
+ * @amudesc{Hardware revision\, BCD-encoded: high nibble major\, low nibble minor}
+ * Register: @ref AMU_REG_SYSTEM_HARDWARE_REVISION, uint8, an @c amu_hardware_revision_t value.
+ *
+ * | Value | Hardware        |
+ * |-------|-----------------|
+ * | 0x01  | ISC2            |
+ * | 0x10  | AMU 1.0         |
+ * | 0x11  | AMU 1.1         |
+ * | 0x20  | AMU 2.0 (EM)    |
+ * | 0x21  | AMU 2.1         |
+ * | 0x30  | AMU 3.0         |
+ * | 0x32  | AMU 3.2         |
+ * | 0x33  | AMU 3.3         |
+ * | 0x80  | AMU-SP dev      |
+ * | 0x81  | AMU-SP          |
+ * | 0x82  | AMU ESP32 dev   |
+ *
+ * @amupanels
+ * @amuscpi{SYSTem:HARDware?}
+ * @amupanelex
+ * SYSTem:HARDware?
+ * 48
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SYSTEM_HARDWARE_REVISION}
+ * @amupanelex
+ * amu_hardware_revision_t rev = amu.getHardwareRevision();
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @note Hosts branch on this before using AMU3-only features - the extended
+ *       commands (BLE, firmware update) exist only on ESP32-era devices.
+ *
+ * @amutitle{System — LED Pattern}
+ * @amudesc{Starts an LED pattern; the pattern number rides in the command}
+ * Routed as @c CMD_SYSTEM_LED plus an @c amu_led_pattern_t pattern number - not a
+ * register, but documented here because it has no enum of its own to carry it.
+ *
+ * | Value | Pattern         | Value | Pattern       |
+ * |-------|-----------------|-------|---------------|
+ * | 0     | Off             | 4     | Red flash     |
+ * | 1     | White flash     | 5     | Green flash   |
+ * | 2     | Quick RGB fade  | 6     | Blue flash    |
+ * | 3     | Slow RGB fade   |       |               |
+ *
+ * @amupanels
+ * @amuscpi{SYSTem:LED:PAT}
+ * @amupanelex
+ * SYSTem:LED:PAT 2
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{CMD_SYSTEM_LED}
+ * @amupanelex
+ * amu.setLEDmode(AMU_LED_PATTERN_QUICK_RGB_FADE);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @section reg_adc ADC
+ *
+ * @amutitle{ADC — Active Channels}
+ * @amudesc{Bitmask of channels a measurement or sweep converts and returns}
+ * Register: @ref AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS, uint16, @c amu_ch_en_t bits.
+ *
+ * | Bit | Channel        | Bit | Channel        |
+ * |-----|----------------|-----|----------------|
+ * | 0   | Voltage        | 8   | AVDD           |
+ * | 1   | Current        | 9   | IOVDD          |
+ * | 2   | TSensor 0      | 10  | ALDO           |
+ * | 3   | TSensor 1      | 11  | DLDO           |
+ * | 4   | TSensor 2      | 12  | Sun sensor TL  |
+ * | 5   | Bias           | 13  | Sun sensor BL  |
+ * | 6   | Offset         | 14  | Sun sensor BR  |
+ * | 7   | ADC temp       | 15  | Sun sensor TR  |
+ *
+ * @c amu_ch_en_t also defines composite masks (@c AMU_CH_EN_TSENSORS,
+ * @c AMU_CH_EN_SUNSENSOR, @c AMU_CH_EN_INTERNAL_VOLTAGES, @c AMU_CH_EN_ALL).
+ *
+ * @amupanels
+ * @amuscpi{ADC:CH:ACTIVE[?]}
+ * @amupanelex
+ * ADC:CH:ACTIVE 3
+ * ADC:CH:ACTIVE?
+ * 3
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SYSTEM_ADC_ACTIVE_CHANNELS}
+ * @amupanelex
+ * amu.setActiveChannels(AMU_CH_EN_VOLTAGE | AMU_CH_EN_CURRENT);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @note The mask is host state: @c EXEC:MEASure:ACTive? returns one float per set
+ *       bit, so a host that changes the mask without restoring it reads the wrong
+ *       count - silently, as plausible numbers in the wrong slots.
+ *
+ * @amutitle{ADC — Status}
+ * @amudesc{Raw status register of the high-resolution ADC}
+ * Register: @ref AMU_REG_SYSTEM_STATUS_HRADC, uint32 - the STATUS word of the
+ * ADS131M08, bit meanings per the TI datasheet.
+ *
+ * @amupanels
+ * @amuscpi{ADC:STATus?}
+ * @amupanelex
+ * ADC:STATus?
+ * 1280
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SYSTEM_STATUS_HRADC}
+ * @amupanelex
+ * uint32_t s = amu.getADCstatus();
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @section reg_sweep_config Sweep Configuration
+ *
+ * The fields of @c ivsweep_config_t, individually addressable. The whole struct
+ * moves at once through @c SWEEP:CONFig; @c SWEEP:CONFig:SAVe persists it.
+ *
+ * @amutitle{Sweep Config — All}
+ * @amudesc{The whole sweep configuration in one transfer}
+ * Register: @ref AMU_REG_DATA_PTR_SWEEP_CONFIG, an @c ivsweep_config_t - eight
+ * uint8 settings followed by am0 and area as floats.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig[?]}
+ * @amupanelex
+ * SWEEP:CONFig?
+ * 1, 40, 5, 80, 0, 0, 1, 1, 1366.1, 0.0004
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_SWEEP_CONFIG}
+ * @amupanelex
+ * ivsweep_config_t *cfg = amu.readSweepConfig();
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — Type}
+ * @amudesc{Selects the sweep algorithm}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_TYPE, uint8, an @c IVSWEEP_TYPE_t value.
+ *
+ * | Value | Algorithm                                                        |
+ * |-------|------------------------------------------------------------------|
+ * | 0     | Linear: even voltage steps from Voc to Isc                       |
+ * | 1     | Log-linear (default): log steps to past the knee, then linear   |
+ * | 2-7   | User-defined algorithm slots                                     |
+ * | 8     | Sun sensor only - no IV sweep                                    |
+ * | 9     | Sun sensor and temperature                                       |
+ * | 10-12 | Noise tests: IV, voltage only, current only                    |
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:TYPE[?]}
+ * @amupanelex
+ * SWEEP:CONFig:TYPE 1
+ * SWEEP:CONFig:TYPE?
+ * 1
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_TYPE}
+ * @amupanelex
+ * uint8_t type = amu.readSweepConfig()->type;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — Number of Points}
+ * @amudesc{Datapoints per sweep}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_NUM_POINTS, uint8, at most @c IVSWEEP_MAX_POINTS.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:NUMpoints[?]}
+ * @amupanelex
+ * SWEEP:CONFig:NUMpoints 40
+ * SWEEP:CONFig:NUMpoints?
+ * 40
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_NUM_POINTS}
+ * @amupanelex
+ * uint8_t n = amu.readSweepConfig()->numPoints;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — Delay}
+ * @amudesc{Settle time after each load step\, in milliseconds}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_DELAY, uint8, milliseconds.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:DELAY[?]}
+ * @amupanelex
+ * SWEEP:CONFig:DELAY 5
+ * SWEEP:CONFig:DELAY?
+ * 5
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_DELAY}
+ * @amupanelex
+ * uint8_t ms = amu.readSweepConfig()->delay;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @note Too short a delay records points the cell was still moving through,
+ *       which reads as a smeared curve rather than as noise.
+ *
+ * @amutitle{Sweep Config — Ratio}
+ * @amudesc{Sets the second sweep point as a percentage of Voc}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_RATIO, uint8, percent.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:RATIO[?]}
+ * @amupanelex
+ * SWEEP:CONFig:RATIO 80
+ * SWEEP:CONFig:RATIO?
+ * 80
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_RATIO}
+ * @amupanelex
+ * uint8_t pct = amu.readSweepConfig()->ratio;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @note Should approximate the cell's fill factor: for the optimized sweep it
+ *       sets where the logarithmic steps end, so the datapoints crowd the knee
+ *       of the curve around Pmax.
+ *
+ * @amutitle{Sweep Config — Power Mode}
+ * @amudesc{ADC power mode during the sweep}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_PWR_MODE, uint8, an @c amu_adc_power_mode_t
+ * value: 0 low, 1 mid, 2 high, 3 standby.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:POWER[?]}
+ * @amupanelex
+ * SWEEP:CONFig:POWER 2
+ * SWEEP:CONFig:POWER?
+ * 2
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_PWR_MODE}
+ * @amupanelex
+ * uint8_t mode = amu.readSweepConfig()->power;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — DAC Gain}
+ * @amudesc{DAC gain during the sweep\, which sets the current range and step resolution}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_DAC_GAIN, uint8.
+ *
+ * | Mode | Gain | Max current | Step size |
+ * |------|------|-------------|-----------|
+ * | 0    | DIV2 | ~511 mA     | 9.54 µA   |
+ * | 1    | 1X   | 1.136 A     | 19.07 µA  |
+ * | 2    | 2X   | 2.386 A     | 38.15 µA  |
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:GAIN[?]}
+ * @amupanelex
+ * SWEEP:CONFig:GAIN 1
+ * SWEEP:CONFig:GAIN?
+ * 1
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_DAC_GAIN}
+ * @amupanelex
+ * uint8_t gain = amu.readSweepConfig()->dac_gain;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — Sweep Averages}
+ * @amudesc{Whole-sweep repeats averaged together}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_AVERAGES, uint8. Voltages are averaged
+ * across repeats; the current steps are assumed constant.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:AVERages[?]}
+ * @amupanelex
+ * SWEEP:CONFig:AVERages 1
+ * SWEEP:CONFig:AVERages?
+ * 1
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_AVERAGES}
+ * @amupanelex
+ * uint8_t n = amu.readSweepConfig()->sweep_averages;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — ADC Averages}
+ * @amudesc{ADC conversions averaged per datapoint}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_ADC_AVERAGES, uint8.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:ADC:AVERages[?]}
+ * @amupanelex
+ * SWEEP:CONFig:ADC:AVERages 4
+ * SWEEP:CONFig:ADC:AVERages?
+ * 4
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_ADC_AVERAGES}
+ * @amupanelex
+ * uint8_t n = amu.readSweepConfig()->adc_averages;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — AM0}
+ * @amudesc{Solar constant used for the efficiency calculation}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_AM0, float, W/m². Default 1366.1
+ * per ASTM E-490.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:AM0[?]}
+ * @amupanelex
+ * SWEEP:CONFig:AM0 1366.1
+ * SWEEP:CONFig:AM0?
+ * 1366.1
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_AM0}
+ * @amupanelex
+ * float am0 = amu.readSweepConfig()->am0;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Config — Area}
+ * @amudesc{Cell area used for the efficiency calculation}
+ * Register: @ref AMU_REG_SWEEP_CONFIG_AREA, float, m² (a 2x2 cm cell is 0.0004).
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CONFig:AREA[?]}
+ * @amupanelex
+ * SWEEP:CONFig:AREA 0.0004
+ * SWEEP:CONFig:AREA?
+ * 0.0004
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_CONFIG_AREA}
+ * @amupanelex
+ * float area = amu.readSweepConfig()->area;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @section reg_sweep_data Sweep Data
+ *
+ * The arrays a sweep filled, @c SWEEP:CONFig:NUMpoints elements each, read
+ * through the transfer register. The write forms exist so a host can restore
+ * an archived sweep into the device before operating on it.
+ *
+ * @amutitle{Sweep Data — Timestamps}
+ * @amudesc{Millisecond timestamp of each datapoint}
+ * Register: @ref AMU_REG_DATA_PTR_TIMESTAMP, uint32 per point.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:TIMEstamp?}
+ * @amupanelex
+ * SWEEP:TIMEstamp?
+ * 1024, 1029, 1034, ...
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_TIMESTAMP}
+ * @amupanelex
+ * uint32_t t[IVSWEEP_MAX_POINTS]; amu.readSweepTimestamps(t);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Data — Voltage}
+ * @amudesc{Voltage array of the last sweep}
+ * Register: @ref AMU_REG_DATA_PTR_VOLTAGE, float per point.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:VOLTage[?]}
+ * @amupanelex
+ * SWEEP:VOLTage?
+ * 2.4517, 2.4103, 2.3689, ...
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_VOLTAGE}
+ * @amupanelex
+ * float v[IVSWEEP_MAX_POINTS]; amu.readSweepVoltages(v);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Data — Current}
+ * @amudesc{Current array of the last sweep}
+ * Register: @ref AMU_REG_DATA_PTR_CURRENT, float per point.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:CURRent[?]}
+ * @amupanelex
+ * SWEEP:CURRent?
+ * 0.0000, 0.0512, 0.0987, ...
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_CURRENT}
+ * @amupanelex
+ * float i[IVSWEEP_MAX_POINTS]; amu.readSweepCurrents(i);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Data — Yaw}
+ * @amudesc{Sun yaw angle at each datapoint}
+ * Register: @ref AMU_REG_DATA_PTR_SS_YAW, float per point. Not stored under
+ * @c __AMU_LOW_MEMORY__.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:YAW[?]}
+ * @amupanelex
+ * SWEEP:YAW?
+ * 1.02, 1.03, 1.02, ...
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_SS_YAW}
+ * @amupanelex
+ * float yaw[IVSWEEP_MAX_POINTS]; amu.readSweepYaws(yaw);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Data — Pitch}
+ * @amudesc{Sun pitch angle at each datapoint}
+ * Register: @ref AMU_REG_DATA_PTR_SS_PITCH, float per point. Not stored under
+ * @c __AMU_LOW_MEMORY__.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:PITCH[?]}
+ * @amupanelex
+ * SWEEP:PITCH?
+ * -0.44, -0.45, -0.44, ...
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_SS_PITCH}
+ * @amupanelex
+ * float pitch[IVSWEEP_MAX_POINTS]; amu.readSweepPitches(pitch);
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @section reg_sweep_meta Sweep Metadata
+ *
+ * Calculated when a sweep completes, stored as @c ivsweep_meta_t. The whole
+ * record moves through @c SWEEP:META; the fields below read individually.
+ *
+ * @amutitle{Sweep Meta — All}
+ * @amudesc{The whole metadata record in one transfer}
+ * Register: @ref AMU_REG_DATA_PTR_SWEEP_META, an @c ivsweep_meta_t - ten floats
+ * followed by timestamp and crc as uint32. The write form restores an archived
+ * record; crc is not host settable.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META[?]}
+ * @amupanelex
+ * SWEEP:META?
+ * 2.451, 0.489, 24.87, 25.02, 0.82, 28.34, 2.104, 0.462, 0.972, 24.91, 152000, 0
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_SWEEP_META}
+ * @amupanelex
+ * ivsweep_meta_t *meta = amu.readMeta();
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Voc}
+ * @amudesc{Open-circuit voltage measured at the start of the sweep}
+ * Register: @ref AMU_REG_SWEEP_META_VOC, float, volts.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:VOC?}
+ * @amupanelex
+ * SWEEP:META:VOC?
+ * 2.4517
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_VOC}
+ * @amupanelex
+ * float voc = amu.readMeta()->voc;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Isc}
+ * @amudesc{Short-circuit current measured at the end of the sweep}
+ * Register: @ref AMU_REG_SWEEP_META_ISC, float, amps.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:ISC?}
+ * @amupanelex
+ * SWEEP:META:ISC?
+ * 0.4893
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_ISC}
+ * @amupanelex
+ * float isc = amu.readMeta()->isc;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Temperature Start}
+ * @amudesc{Temperature sensor reading when the sweep began}
+ * Register: @ref AMU_REG_SWEEP_META_TSENSOR_START, float, °C. Compared against
+ * the end value to bound how much the cell drifted during the sweep.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:TSENSor:START?}
+ * @amupanelex
+ * SWEEP:META:TSENSor:START?
+ * 24.87
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_TSENSOR_START}
+ * @amupanelex
+ * float t0 = amu.readMeta()->tsensor_start;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Temperature End}
+ * @amudesc{Temperature sensor reading when the sweep completed}
+ * Register: @ref AMU_REG_SWEEP_META_TSENSOR_END, float, °C.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:TSENSor:END?}
+ * @amupanelex
+ * SWEEP:META:TSENSor:END?
+ * 25.02
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_TSENSOR_END}
+ * @amupanelex
+ * float t1 = amu.readMeta()->tsensor_end;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Fill Factor}
+ * @amudesc{Pmax / (Voc x Isc)\, calculated after the sweep}
+ * Register: @ref AMU_REG_SWEEP_META_FF, float, 0-1.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:FF?}
+ * @amupanelex
+ * SWEEP:META:FF?
+ * 0.8205
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_FF}
+ * @amupanelex
+ * float ff = amu.readMeta()->ff;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Efficiency}
+ * @amudesc{Pmax / (AM0 x area)\, calculated after the sweep}
+ * Register: @ref AMU_REG_SWEEP_META_EFF, float, percent. Uses the AM0 and area
+ * values from the sweep configuration.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:EFF?}
+ * @amupanelex
+ * SWEEP:META:EFF?
+ * 28.34
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_EFF}
+ * @amupanelex
+ * float eff = amu.readMeta()->eff;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Vmax}
+ * @amudesc{Voltage at the maximum power point}
+ * Register: @ref AMU_REG_SWEEP_META_VMAX, float, volts.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:VMAX?}
+ * @amupanelex
+ * SWEEP:META:VMAX?
+ * 2.1042
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_VMAX}
+ * @amupanelex
+ * float vmax = amu.readMeta()->vmax;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Imax}
+ * @amudesc{Current at the maximum power point}
+ * Register: @ref AMU_REG_SWEEP_META_IMAX, float, amps.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:IMAX?}
+ * @amupanelex
+ * SWEEP:META:IMAX?
+ * 0.4622
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_IMAX}
+ * @amupanelex
+ * float imax = amu.readMeta()->imax;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Pmax}
+ * @amudesc{Maximum power found on the curve}
+ * Register: @ref AMU_REG_SWEEP_META_PMAX, float, watts.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:PMAX?}
+ * @amupanelex
+ * SWEEP:META:PMAX?
+ * 0.9726
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_PMAX}
+ * @amupanelex
+ * float pmax = amu.readMeta()->pmax;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — ADC Temperature}
+ * @amudesc{Internal ADC temperature during the sweep\, for correcting conversions}
+ * Register: @ref AMU_REG_SWEEP_META_ADC, float, °C.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:ADC?}
+ * @amupanelex
+ * SWEEP:META:ADC?
+ * 24.91
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_ADC}
+ * @amupanelex
+ * float tadc = amu.readMeta()->adc;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — Timestamp}
+ * @amudesc{Millisecond timestamp at the start of the sweep}
+ * Register: @ref AMU_REG_SWEEP_META_TIMESTAMP, uint32.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:TIMEstamp?}
+ * @amupanelex
+ * SWEEP:META:TIMEstamp?
+ * 152000
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_TIMESTAMP}
+ * @amupanelex
+ * uint32_t t = amu.readMeta()->timestamp;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sweep Meta — CRC}
+ * @amudesc{Sweep data checksum - not computed on AMU3}
+ * Register: @ref AMU_REG_SWEEP_META_CRC, uint32, reads 0. The field stays for
+ * record-layout compatibility: older generations stored a CRC-32 (IEEE 802.3)
+ * over the voltage array followed by the current array here.
+ *
+ * @amupanels
+ * @amuscpi{SWEEP:META:CRC?}
+ * @amupanelex
+ * SWEEP:META:CRC?
+ * 0
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SWEEP_META_CRC}
+ * @amupanelex
+ * uint32_t crc = amu.readMeta()->crc;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @section reg_sunsensor Sun Sensor
+ *
+ * Derived sun angles. The raw quadrant photodiode voltages are measured through
+ * the measurement commands (@c MEASure:ADC:SSTL? and friends, or
+ * @c EXEC:MEASure:SUNSensor? for all four plus the angles).
+ *
+ * @amutitle{Sun Sensor — Angles}
+ * @amudesc{Yaw and pitch in one transfer}
+ * Register: @ref AMU_REG_DATA_PTR_SUNSENSOR, an @c ss_angle_t - yaw then pitch,
+ * two floats in degrees.
+ *
+ * @amupanels
+ * @amuscpi{SUNSensor?}
+ * @amupanelex
+ * SUNSensor?
+ * 1.02, -0.44
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_DATA_PTR_SUNSENSOR}
+ * @amupanelex
+ * ss_angle_t *a = amu.readSunSensorAngles();
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sun Sensor — Yaw}
+ * @amudesc{Last computed sun yaw angle}
+ * Register: @ref AMU_REG_SUNSENSOR_YAW, float, degrees.
+ *
+ * @amupanels
+ * @amuscpi{SUNSensor:YAW?}
+ * @amupanelex
+ * SUNSensor:YAW?
+ * 1.02
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SUNSENSOR_YAW}
+ * @amupanelex
+ * float yaw = amu.readSunSensorAngles()->yaw;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ *
+ * @amutitle{Sun Sensor — Pitch}
+ * @amudesc{Last computed sun pitch angle}
+ * Register: @ref AMU_REG_SUNSENSOR_PITCH, float, degrees.
+ *
+ * @amupanels
+ * @amuscpi{SUNSensor:PITCH?}
+ * @amupanelex
+ * SUNSensor:PITCH?
+ * -0.44
+ * @endamupanelex
+ * @endamupanel
+ * @amui2c{AMU_REG_SUNSENSOR_PITCH}
+ * @amupanelex
+ * float pitch = amu.readSunSensorAngles()->pitch;
+ * @endamupanelex
+ * @endamupanel
+ * @endamupanels
+ */

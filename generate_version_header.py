@@ -16,9 +16,9 @@ import re
 from datetime import datetime
 
 # Configuration
-VERSION_FORMAT = 'full' # Which format to use for VERSION_STR (full, short, build)
+VERSION_FORMAT = 'semantic' # Which format to use for VERSION_STR (semantic, full, short, build)
 PROJECT_PREFIX = "AMULIB" # Prefix for macros/variables (e.g., AMULIB_VERSION_FULL)
-OUTPUT_DIR = 'include'     # Where to write generated files
+OUTPUT_DIR = 'src/amulibc' # Where to write generated files
 
 def run_git_command(command):
     result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=os.path.dirname(__file__))
@@ -78,6 +78,34 @@ def format_short(info):
 
 def format_build(info):
     return f"{info['semantic_version']}.{info['commit_count']}"
+
+def format_semantic(info):
+    # The bare VERSION value: the only format with no build-moment git state baked in,
+    # so a committed header stays true between releases
+    return info['semantic_version']
+
+def sync_library_properties(script_dir, semantic_version):
+    """Keep library.properties' version= line in step with VERSION - it has no
+    generator of its own, so it drifts silently otherwise (see pre-push hook)."""
+    props_file = os.path.join(script_dir, 'library.properties')
+    try:
+        with open(props_file, 'r') as f:
+            content = f.read()
+    except FileNotFoundError:
+        return
+
+    new_content, count = re.subn(r'(?m)^version=.*$', f'version={semantic_version}', content)
+    if count == 0:
+        print(f"Warning: no version= line found in {props_file}")
+        return
+
+    if new_content == content:
+        print(f"Unchanged: {props_file}")
+        return
+
+    with open(props_file, 'w') as f:
+        f.write(new_content)
+    print(f"Generated: {props_file}")
 
 def write_if_changed(output_file, content, timestamp_markers):
     """Write file only if content changed (ignoring timestamp lines)"""
@@ -144,7 +172,6 @@ def generate_c_header(version_info, output_file, prefix):
 #define {pfx}VERSION_MAJOR {major}
 #define {pfx}VERSION_MINOR {minor}
 #define {pfx}VERSION_PATCH {patch}
-#define {pfx}VERSION_SEMANTIC "{version_info['semantic_version']}"
 
 #define {pfx}GIT_COMMIT "{version_info['commit']}"
 #define {pfx}GIT_BRANCH "{version_info['branch']}"
@@ -223,6 +250,8 @@ def main():
         bump_version(args[0])
 
     version_info = get_version_info()
+
+    sync_library_properties(script_dir, version_info['semantic_version'])
 
     for lang in languages:
         lang = lang.strip().lower()
