@@ -1,11 +1,10 @@
-/*
- * amu_types.h
+/**
+ * @file amu_types.h
+ * @brief Shared data structures for AMU device state, sweeps, and sensors
  *
- * Created: 5/5/2019 3:57:46 PM
- *  Author: colin
+ * @author: CJM28241
+ * @date: 5/5/2019
  */
-
-
 #ifndef __AMU_TYPES_H__
 #define __AMU_TYPES_H__
 
@@ -20,26 +19,40 @@
 #define AMU_NO_ADDRESS_MATCH			0xFF
 
 #define AMU_DEVICE_END_LIST				0xFF
-
 #define AMU_THIS_DEVICE					0x00
 
-#define AMU_NOTES_SIZE					128
-
 #ifdef __AMU_LOW_MEMORY__
-#define IVSWEEP_MAX_POINTS				40
-#define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float))
+	#define IVSWEEP_MAX_POINTS			40
+	#define AMU_TRANSFER_REG_SIZE		(IVSWEEP_MAX_POINTS * sizeof(float))
 #else
 	#ifndef IVSWEEP_MAX_POINTS
-		#define IVSWEEP_MAX_POINTS				250
+	#define IVSWEEP_MAX_POINTS			250
 	#endif
-#define AMU_TRANSFER_REG_SIZE			(IVSWEEP_MAX_POINTS * sizeof(float) * 2)
+	#define AMU_TRANSFER_REG_SIZE		(IVSWEEP_MAX_POINTS * sizeof(float) * 2)
 #endif
+
+// An extended command is a 16-bit id at the head of the transfer register, payload behind it
+typedef uint16_t amu_ext_cmd_t;
+
+/*!< transfer register offset of an extended command's payload, see CMD_SYSTEM_EXTENDED */
+#define AMU_EXT_PAYLOAD					(sizeof(amu_ext_cmd_t))
+
+// The transport does not report how much of the transfer register the master wrote, so a
+// firmware chunk states its own length ahead of its bytes
+typedef uint16_t amu_ota_chunk_len_t;
+
+/*!< transfer register offset of a firmware chunk's bytes: [ext id][length][payload] */
+#define AMU_OTA_CHUNK_OFFSET			(AMU_EXT_PAYLOAD + sizeof(amu_ota_chunk_len_t))
+
+/*!< largest firmware chunk over TWI: what fits the transfer register behind [ext id][length];
+     a device may accept less - updateBegin/CMD_EXT_FIRMWARE_BEGIN reports its actual limit */
+#define AMU_OTA_CHUNK_TWI				(AMU_TRANSFER_REG_SIZE - AMU_OTA_CHUNK_OFFSET)
 
 #define AMU_DUT_MANUFACTURER_STR_LEN	16
 #define AMU_DUT_MODEL_STR_LEN			16
 #define AMU_DUT_TECHNOLOGY_STR_LEN		16
 #define AMU_DUT_SERIALNUM_STR_LEN		24
-
+#define AMU_NOTES_SIZE					128
 
 typedef enum amu_adc_ch_enum_t {
 	AMU_ADC_CH_VOLTAGE = 0,
@@ -61,7 +74,7 @@ typedef enum amu_adc_ch_enum_t {
 	AMU_ADC_CH_NUM = 16
 } amu_adc_ch_t;
 
-typedef amu_adc_ch_t AMU_ADC_CH_t;	// for backwards consistency 
+typedef amu_adc_ch_t AMU_ADC_CH_t; // For backwards consistency 
 
 typedef enum amu_adc_pga_enum_t {
 	ADC_PGA_1X = 0,
@@ -113,7 +126,7 @@ typedef enum amu_hardware_revision_enum_t {
 	AMU_HARDWARE_REVISION_ISC2 = 0x01,
 	AMU_HARDWARE_REVISION_AMU_1_0 = 0x10,
 	AMU_HARDWARE_REVISION_AMU_1_1 = 0x11,
-	AMU_HARDWARE_REVISION_AMU_2_0 = 0x20,		// em version
+	AMU_HARDWARE_REVISION_AMU_2_0 = 0x20, // em version
 	AMU_HARDWARE_REVISION_AMU_2_1 = 0x21,
     AMU_HARDWARE_REVISION_AMU_3_0 = 0x30,
 	AMU_HARDWARE_REVISION_AMU_3_2 = 0x32,
@@ -144,14 +157,41 @@ typedef enum amu_status_enum_t {
 	AMU_STATUS_SLEEP = 0x01,
 	AMU_STATUS_MEASURE = 0x02,
 	AMU_STATUS_HEATER = 0x04,
-	AMU_STATUS_MPPT = 0x08,
+	AMU_STATUS_MPPT = 0x08,	/*!< Retired: MPPT is host side, so nothing sets this */
+	AMU_STATUS_WIFI = 0x40,
+	AMU_STATUS_BLE = 0x80,
 } amu_status_t;
+
+typedef enum amu_twi_status_enum_t {
+	AMU_TWI_STATUS_OK            = 0,
+	AMU_TWI_STATUS_DATA_TOO_LONG = 1,
+	AMU_TWI_STATUS_NACK_ADDR     = 2,
+	AMU_TWI_STATUS_NACK_DATA     = 3,
+	AMU_TWI_STATUS_ERROR         = 4,
+	AMU_TWI_STATUS_TIMEOUT       = 5,
+} amu_twi_status_t;
+
+typedef enum amu_fw_state_enum_t {
+	AMU_FW_STATE_IDLE = 0,
+	AMU_FW_STATE_RECEIVING = 1,
+	AMU_FW_STATE_PENDING_REBOOT = 2,
+	AMU_FW_STATE_FAILED = 3,
+} amu_fw_state_t;
+
+typedef struct __attribute__((packed)) {
+	uint8_t		state;
+	uint32_t	written;
+	uint32_t	total;
+	uint32_t	chunk;
+} amu_fw_status_t;
+
+typedef char amu_fw_status_must_be_packed[(sizeof(amu_fw_status_t) == 13) ? 1 : -1];
 
 typedef enum amu_sleep_mode_enum_t {
     AMU_SLEEP_MODE_DEEP = 0,
     AMU_SLEEP_MODE_STANDBY = 1,
     AMU_SLEEP_MODE_IDLE = 2,
-    AMU_SLEEP_MODE_OFF = 3,            
+    AMU_SLEEP_MODE_OFF = 3,
 } amu_sleep_mode_t;
 
 typedef union {
@@ -298,11 +338,12 @@ typedef struct {
 } amu_twi_regs_t;
 
 typedef int8_t(*amu_transfer_fptr_t) (
-	uint8_t address,		/*!< Address of AMU */
-	uint8_t reg,			/*!< Register to read or write from */
-	uint8_t* data,			/*!< Data pointer */
-	size_t len,				/*!< Length of data to read/write */
-	uint8_t read );			/*!< 1 for read, 0 for write */
+	uint8_t address,		// Address of AMU 
+	uint8_t reg,			// Register to read or write from
+	uint8_t* data,			// Data pointer
+	size_t len,				// Length of data to read/write
+	uint8_t read			// 1 for read, 0 for write
+);
 
 typedef void(*amu_delay_fptr_t)(uint32_t period);
 typedef void(*amu_watchdog_fptr_t)(void);
@@ -310,9 +351,9 @@ typedef void(*amu_watchdog_reset_fptr_t)(void);
 typedef void(*amu_hardware_reset_fptr_t)(void);
 typedef int(*amu_print_fptr_t)(const char* fmt, ...);
 #if defined(ESP32)
-typedef unsigned long(*amu_milis_fptr_t)(void);
+typedef unsigned long(*amu_millis_fptr_t)(void);
 #else
-typedef uint32_t(*amu_milis_fptr_t)(void);
+typedef uint32_t(*amu_millis_fptr_t)(void);
 #endif
 typedef struct {
 	size_t(*write_cmd)(const char* data, size_t len);
@@ -321,11 +362,11 @@ typedef struct {
 } amu_scpi_dev_t;
 
 typedef struct {
-
 	volatile uint8_t twi_address;
-	volatile amu_twi_regs_t* amu_regs;
-	volatile uint8_t* transfer_reg;
-	volatile ivsweep_packet_t* sweep_data;
+
+	volatile amu_twi_regs_t *amu_regs;
+	volatile uint8_t *transfer_reg;
+	volatile ivsweep_packet_t *sweep_data;
 
 	amu_scpi_dev_t scpi_dev;
 	/*! Read function pointer */
@@ -339,13 +380,12 @@ typedef struct {
 	/*! Hardware reset function pointer */
 	amu_hardware_reset_fptr_t hardware_reset;
 	/*! Function to get current time of system in milliseconds */
-	amu_milis_fptr_t millis;
+	amu_millis_fptr_t millis;
 	/*! Function to print errors, typically used for debugging, pass through to printf typically */
 	amu_print_fptr_t print;
 
 	/*! function to execute local commands */
 	uint8_t(*process_cmd)(uint16_t cmd);
-
 } amu_device_t;
 
 typedef volatile uint8_t amu_data_reg_t;

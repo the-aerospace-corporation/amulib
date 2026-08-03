@@ -1,15 +1,12 @@
 /**
  * @file amu_config_internal.h
- * @brief
- *
- * @author  CJM28241
- * @date    5/8/2019 9:06:17 PM
+ * @brief Internal build configuration; selects a custom or default amulibc_config.h
+ * 
+ * @author CJM28241
+ * @date 5/8/2019
  */
-
-
 #ifndef __AMU_CONFIG_INTERNAL_H__
 #define __AMU_CONFIG_INTERNAL_H__
-
 
 #if defined(__has_include) && (__has_include("amulibc_config.h") || __has_include("../amulibc_config.h"))
 #	define AMULIBC_CONFIG_MESSAGE	"Using CUSTOM amulibc_config.h file"
