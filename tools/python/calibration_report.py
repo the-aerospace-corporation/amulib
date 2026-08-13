@@ -48,15 +48,15 @@ class CalibrationReport:
     """Class to handle calibration data collection and report generation"""
     
     @staticmethod
-    def format_register_value(value, digits=6):
+    def format_register_value(value, digits=6, signed=True):
         """Format register value as 'Hex (Decimal)' """
         try:
             # Convert to integer (handles string input from AMU queries)
             int_val = int(value)
 
             n24 = int_val & 0xFFFFFF
-            signed_24bit = n24 if n24 < 0x800000 else n24 - 0x1000000
-            return f"{signed_24bit} [0x{n24:0{digits}X}]"
+            display_val = (n24 if n24 < 0x800000 else n24 - 0x1000000) if signed else n24
+            return f"{display_val} [0x{n24:0{digits}X}]"
 
         except (ValueError, TypeError):
             # If conversion fails, return original value
@@ -840,7 +840,7 @@ class CalibrationReport:
                         <td>{pga} - {2**pga}X</td>
                         <td>{coeff['vmax']:.4f}</td>
                         <td>{self.format_register_value(coeff['final_offset'])}</td>
-                        <td>{self.format_register_value(coeff['final_gain'])}</td>
+                        <td>{self.format_register_value(coeff['final_gain'], signed=False)}</td>
                         <td>{avg_delta_uV:.2f}</td>
                     </tr>
                 """
@@ -874,7 +874,7 @@ class CalibrationReport:
                         <td>{pga} - {2**pga}X</td>
                         <td>{coeff['imax']:.6f}</td>
                         <td>{self.format_register_value(coeff['final_offset'])}</td>
-                        <td>{self.format_register_value(coeff['final_gain'])}</td>
+                        <td>{self.format_register_value(coeff['final_gain'], signed=False)}</td>
                         <td>{avg_delta_uA:.2f}</td>
                     </tr>
                 """
