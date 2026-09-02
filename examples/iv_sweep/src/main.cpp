@@ -134,7 +134,6 @@ void triggerSweep(Stream* s) {
 
     amu.waitUntilReady(5000);
 
-    amu_int_volt_t int_volt = amu.measureInternalVoltages();
     ivsweep_config_t* sweep_config = amu.readSweepConfig();
     ivsweep_meta_t* meta = amu.readMeta();
 
